@@ -1,3 +1,5 @@
+- fixed broken compilation with audio disabled (2010/10/04 Petr Pisar)
+
 2.6.1:
 - fixed missing font transparency in help screen (24/12/09 MS)
 - fixed bug in menus's level set list that prevented first few entries

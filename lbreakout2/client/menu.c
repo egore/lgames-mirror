@@ -212,8 +212,8 @@ int menu_handle_event( Menu *menu, SDL_Event *event )
                                 break;
                             default: item_used = 0; break;
                         }
-#ifdef AUDIO_ENABLED
                         if ( item_used ) {
+#ifdef AUDIO_ENABLED
                             stk_sound_play( wav_menu_click );
 #endif
                             if ( callback ) (callback)();
@@ -233,8 +233,8 @@ int menu_handle_event( Menu *menu, SDL_Event *event )
                                 break;
                             default: item_used = 0; break;
                         }
-#ifdef AUDIO_ENABLED
                         if ( item_used ) {
+#ifdef AUDIO_ENABLED
                             stk_sound_play( wav_menu_click );
 #endif
                             if ( callback ) (callback)();
