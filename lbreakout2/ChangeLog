@@ -1,3 +1,5 @@
+2.6.2:
+- added some new levelsets and updates (2010/10/05 MS)
 - do not consider grown bricks for warp limit (2010/10/05 MS)
 - fixed possible highscore loss on write error (2010/10/05 MS)
 - fixed broken compilation with audio disabled (2010/10/04 Petr Pisar)
