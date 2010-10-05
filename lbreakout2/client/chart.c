@@ -251,7 +251,7 @@ void chart_save()
     }
     else {
         /* open file */
-        file = fopen( file_name, "w" );
+        file = fopen( file_name, "r+" );
     }
 
     if ( !file ) {
