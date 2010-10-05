@@ -21,6 +21,7 @@ Circle \
 Classique \
 Color \
 Composers \
+Cool \
 Crossing \
 D2K \
 Daves \
@@ -61,6 +62,7 @@ LBreakout2 \
 LinuxFun \
 Lord \
 Maze \
+MegaMan2 \
 Megadoomer \
 MontyHall \
 N_Arenas \
