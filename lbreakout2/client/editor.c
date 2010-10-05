@@ -44,7 +44,7 @@ enum {
     /* tiles */
     BUTTON_NONE = 0,
     BUTTON_FIRST_BRICK,
-    BUTTON_LAST_BRICK = BUTTON_FIRST_BRICK + ( BRICK_COUNT ),
+    BUTTON_LAST_BRICK = BUTTON_FIRST_BRICK + ( BRICK_COUNT_REGULAR ),
     BUTTON_FIRST_EXTRA,
     BUTTON_LAST_EXTRA = BUTTON_FIRST_EXTRA + ( EX_NUMBER -1 ),
     BUTTON_EDIT,
@@ -132,7 +132,7 @@ void editor_switch_tiles()
         edit_sel_type = EDITOR_BRICK;
         /* button map & background */
         i = 0; j = 0;
-        while ( i + j * len < BRICK_COUNT ) {
+        while ( i + j * len < BRICK_COUNT_REGULAR ) {
             edit_buttons[x_off + i][y_off + j] = BUTTON_FIRST_BRICK + i + j * len;
             stk_surface_blit( brick_pic, ( i + j * len ) * BRICK_WIDTH, 0,
                 BRICK_WIDTH, BRICK_HEIGHT,

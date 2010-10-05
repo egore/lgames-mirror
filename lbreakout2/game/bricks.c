@@ -78,6 +78,16 @@ Brick_Conv brick_conv_table[BRICK_COUNT] = {
 	{ 'k', MAP_BRICK,      17,  1, BRICK_SCORE },
 	{ '*', MAP_BRICK_EXP,  18,  1, BRICK_SCORE * 2 },
 	{ '!', MAP_BRICK_GROW, GROW_BRICK_ID,  1, BRICK_SCORE * 2 },
+	/* grown bricks use these ids to be distinguished for warp limit;
+	 * id remains the same! regular bricks d and e are not used since
+	 * E is in use already. */
+	{ 'F', MAP_BRICK,      12,  1, BRICK_SCORE },
+	{ 'G', MAP_BRICK,      13,  1, BRICK_SCORE },
+	{ 'H', MAP_BRICK,      14,  1, BRICK_SCORE },
+	{ 'I', MAP_BRICK,      15,  1, BRICK_SCORE },
+	{ 'J', MAP_BRICK,      16,  1, BRICK_SCORE },
+	{ 'K', MAP_BRICK,      17,  1, BRICK_SCORE },
+	
 };
 
 /*
@@ -137,12 +147,17 @@ static void brick_grow( int mx, int my, int id )
 	cur_game->bricks[mx][my].type = brick_conv_table[id].type;
 	cur_game->bricks[mx][my].score = brick_conv_table[id].score;
 	cur_game->bricks[mx][my].dur = brick_conv_table[id].dur;
+	/* XXX mark grown bricks by upper case. with this trick we can store 
+	 * this information in the level snapshot. */
+	cur_game->bricks[mx][my].brick_c -= 32; /* f->F, ... */
 	/* keep the extra that is already assigned to this position */
 	cur_game->bricks[mx][my].exp_time = -1;
 	cur_game->bricks[mx][my].heal_time = -1;
 	/* adjust brick count */
 	cur_game->bricks_left++;
 	cur_game->brick_count++;
+	/* adjust warp limit (grown bricks don't help hitting the limit) */
+	cur_game->warp_limit++;
 	/* add modification */
 	bricks_add_mod( mx, my, HT_GROW, 0, vector_get(0,0), 0 );
 
@@ -182,6 +197,11 @@ void brick_remove( int mx, int my, int type, Vector imp, Paddle *paddle )
 	/* decrease brick count if no indestructible brick was destroyed */
 	if ( cur_game->bricks[mx][my].dur != -1 ) {
 		--cur_game->bricks_left;
+		
+		/* adjust warp limit which was increased for grown brick (since
+		 * these don't count for warp). */
+		if (IS_GROWN_BRICK_CHAR(cur_game->bricks[mx][my].brick_c))
+			cur_game->warp_limit--;
 		
 		/* update stats */
 		paddle->bricks_cleared++;
@@ -640,6 +660,7 @@ void bricks_init( Game *game, int game_type, Level *level, int score_mod, int re
 {
   int i, j, k;
   int y_off;
+  int num_grown_bricks = 0; /* count grown bricks for proper warp limit */
 
   /* clear everything */
   for (i = 0; i < MAP_WIDTH; i++)
@@ -691,6 +712,11 @@ void bricks_init( Game *game, int game_type, Level *level, int score_mod, int re
 	    if ( level->bricks[i][j] == brick_conv_table[k].c ) {
           brick_set_by_id( game, i+1,j+y_off,brick_conv_table[k].id );
           game->bricks[i + 1][j + y_off].score = (score_mod * brick_conv_table[k].score) / 10;
+	  
+		/* count grown bricks */
+		if (IS_GROWN_BRICK_CHAR(level->bricks[i][j]))
+			num_grown_bricks++;
+	  
 	      break;
 	    }
 	  if ( k == BRICK_COUNT && level->bricks[i][j] != '.' && level->bricks[i][j] != ' ' )
@@ -724,29 +750,30 @@ void bricks_init( Game *game, int game_type, Level *level, int score_mod, int re
     }
   game->brick_count = game->bricks_left;
 
-  /* the above code is fine for levels that are loaded from a 
-   * snapshot identical to the original level which is the
-   * case for first load in local game and always in network
-   * game (as in this case, the complete level is sent and
-   * never restarted). for a local game where a ball gets
-   * lost the total number of bricks gets distorted. to allow
-   * fair usage of the warp function the level's original 
-   * brick count is used in any case. 'game->brick_count as
-   * computed above is screwed anyway for re-initiated levels
-   * as it does not remember the cleared bricks. the original 
-   * number does not take the grown bricks in account. i don't
-   * see an easy way to sync both, so let's keep it, nobody
-   * is hurt as long as no one asks for stats on local games.
-   * DONT ASK FOR STATS ON LOCAL GAMES!!!
-   * okay, grown bricks are not taken in account for the
-   * warp limit, it is computed based on the initial brick
-   * count, thus the additional bricks from a growth must be
-   * cleared without helping to hit the warp limit. that is
-   * not too unfair i think, as it will allow to warp when
-   * you come below the limit and then loose the ball. 
-   * why do i write so much anyway? */
+  /* to compute the warp limit we always use the number of initially 
+   * destructible bricks in the level (level::normal_brick_count). the 
+   * snapshot might have less (some bricks already cleared by the player)
+   * or more (grown bricks) bricks, so game::brick_count cannot be used for
+   * computation. cleared original bricks are okay but to take grown bricks
+   * into the limit is tricky: on the one hand they should not increase the
+   * number of bricks to be cleared for warp, on the other hand they should
+   * not help to hit the limit easily. so the solution is to ignore them for
+   * the warp limit. thus the limit is computed from number of initially 
+   * present bricks. whatever bricks where grown (marked by special ids) are
+   * added to this warp limit (and warp limit is decreased again when grown 
+   * bricks get removed).
+   * quite confusing here is the duplication of the brick functions. 
+   * client/bricks.c seems to be the correct one but for safety I put the 
+   * code also to game/bricks.c (this here is same, I mean the grow/remove 
+   * brick warp limit adjustment). */
   game->warp_limit = ( 100 - rel_warp_limit ) * 
     level->normal_brick_count / 100;
+  game->warp_limit += num_grown_bricks;
+  //printf("Currently %d bricks in level (initially %d), %d grown.\n" 
+  //			"  => Warp allowed if less than %d bricks "
+  //			"remain (%d%% destroyed).\n",
+  //			game->bricks_left, level->normal_brick_count, 
+  //			num_grown_bricks, game->warp_limit, rel_warp_limit);
 	
   /* add regenerating bricks */
   for ( i = 1; i < MAP_WIDTH - 1; i++ )

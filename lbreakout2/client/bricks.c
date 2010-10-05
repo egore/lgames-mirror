@@ -59,9 +59,15 @@ void client_brick_remove( int mx, int my, int type, Vector imp, Paddle *paddle, 
     type = SHR_BY_EXPL; /* WITH_EXPL is not known */
   }
     
-  /* decrease brick count if no indestructible brick was destroyed */
-  if ( game->bricks[mx][my].dur != -1 )
-    game->bricks_left--;
+	/* decrease brick count if no indestructible brick was destroyed */
+	if ( game->bricks[mx][my].dur != -1 ) {
+		game->bricks_left--;
+		
+		/* adjust warp limit if this was a grown brick; then limit
+		 * has to decrease again */
+		if (IS_GROWN_BRICK_CHAR(game->bricks[mx][my].brick_c))
+			game->warp_limit--;
+	}
 
   /* before removing the brick, store the brick id for animation */
   anim_brick_id = game->bricks[mx][my].id;
@@ -159,8 +165,18 @@ static void client_brick_grow( int x, int y, int id )
 	/* keep the extra that is already assigned to this position */
 	brick->exp_time = -1;
 	brick->heal_time = -1;
-	if (!isReplace) game->bricks_left++;
-		
+	
+	/* XXX mark grown bricks by upper case. with this trick we can store 
+	 * this information in the level snapshot. */
+	brick->brick_c -= 32; /* f->F, ... */
+
+	if (!isReplace) {
+		game->bricks_left++;
+
+		/* adjust warp limit (grown bricks don't help hitting limit) */
+		game->warp_limit++;
+	}
+	
 	if ( !game->extra_active[EX_DARKNESS] ) {
 		px = x * BRICK_WIDTH;
 		py = y * BRICK_HEIGHT;
