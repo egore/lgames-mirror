@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: http://lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2009-12-24 12:16+0100\n"
+"POT-Creation-Date: 2010-10-05 20:28+0200\n"
 "PO-Revision-Date: 2005-11-14 08:32+0100\n"
 "Last-Translator: Ronny Standtke <Ronny.Standtke@gmx.net>\n"
 "Language-Team:  <de@li.org>\n"
@@ -59,7 +59,7 @@ msgstr ""
 msgid "Saving highscore chart in: %s\n"
 msgstr "Speichere Bestenliste unter unter %s\n"
 
-#: client/chart.c:216 client/chart.c:346
+#: client/chart.c:216 client/chart.c:347
 msgid "Name      Level Score"
 msgstr "Name     Ebene Punkte"
 
@@ -71,17 +71,17 @@ msgstr "Name.-----"
 msgid "Level"
 msgstr "Ebene"
 
-#: client/chart.c:258
+#: client/chart.c:259
 #, c-format
 msgid "??? Highscore chart loaded properly but cannot save? (%s)\n"
 msgstr "??? Bestenliste geladen aber Speichern nicht moeglich? (%s)\n"
 
-#: client/chart.c:406
+#: client/chart.c:407
 #, c-format
 msgid "First chart query for '%s'. Creating this chart.\n"
 msgstr "Erste Abfrage nach \"%s\". Erzeuge diese Liste.\n"
 
-#: client/chart.c:419
+#: client/chart.c:420
 #, c-format
 msgid "Chart index '%i' is out of range!\n"
 msgstr "Listenindex \"%i\" ist nicht im gueltigen Bereich!\n"
@@ -1118,7 +1118,7 @@ msgstr "                         Viel Spass beim Spielen!"
 msgid "                                                 Michael Speck"
 msgstr "                                                 Michael Speck"
 
-#: client/main.c:192
+#: client/main.c:193
 msgid "Set Name:"
 msgstr "Name der neuen Sammlung:"
 
