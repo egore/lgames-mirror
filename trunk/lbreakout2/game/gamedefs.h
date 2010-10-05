@@ -99,8 +99,9 @@ enum {
 	/* bricks */
 	INVIS_BRICK_ID = 6,	/* id of invisible brick */
 	BRICK_EXP_TIME = 150, 	/* delay until explosion */
-	BRICK_COUNT = 20, 	/* various brick types */
-	BRICK_GROW_FIRST = 10, 	/* only bricks within this range may grow randomly */
+	BRICK_COUNT = 26, 	/* various brick types */
+	BRICK_COUNT_REGULAR = 20, /* number of available bricks for edit */
+	BRICK_GROW_FIRST = 12, 	/* only bricks within this range may grow randomly */
 	BRICK_GROW_LAST = 17,
 	GROW_BRICK_ID = 19,
 	BRICK_HEAL_TIME = 4000,	/* after this time duration is increased */
@@ -167,6 +168,9 @@ enum {
 	LT_DEFENDER,
     LT_LAST
 };
+
+/* small helper to identify grown bricks by char */
+#define IS_GROWN_BRICK_CHAR(ch) ((ch) >= 'F' && (ch) <= 'K')
 
 typedef struct Level {
   char 	author[32], name[32];
