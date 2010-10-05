@@ -91,8 +91,9 @@ int main(int argc, char *argv[])
 #endif    
     
     /* lbreakout info */
-    printf( "LBreakout2 %s\nCopyright 2001-2005 Michael Speck\nPublished under GNU GPL\n---\n", VERSION );
+    printf( "LBreakout2 %s\nCopyright 2001-2010 Michael Speck\nPublished under GNU GPL\n---\n", VERSION );
     printf( "Looking up data in: %s\n", SRC_DIR );
+    printf( "Looking up highscores in: %s\n", HI_DIR );
     printf( "Looking up custom levels in: %s/%s/lbreakout2-levels\n", (getenv( "HOME" )?getenv( "HOME" ):"."), CONFIG_DIR_NAME );
 #ifndef AUDIO_ENABLED
     printf( "Compiled without sound and music\n" );
