@@ -1,3 +1,4 @@
+- fixed possible highscore loss on write error (2010/10/05 MS)
 - fixed broken compilation with audio disabled (2010/10/04 Petr Pisar)
 
 2.6.1:
