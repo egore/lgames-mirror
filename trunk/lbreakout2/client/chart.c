@@ -251,7 +251,8 @@ void chart_save()
     }
     else {
         /* open file */
-        file = fopen( file_name, "r+" );
+        if ((file = fopen( file_name, "r+" )) == NULL)
+            file = fopen( file_name, "w" ); /* either no access or it does not exist so try this */
     }
 
     if ( !file ) {
