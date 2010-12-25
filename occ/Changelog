@@ -1,3 +1,6 @@
+- 
+- workaround bug in accessing array $GLOBALS (10/12/25 Martin Korous)
+
 1.3.2:
 - fixed bug in stalemate detection (08/03/29 MS)
 - added confirmation for accepting/refusing a draw (08/03/29 MS)
