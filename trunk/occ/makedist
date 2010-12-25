@@ -1,0 +1,57 @@
+#!/bin/sh
+version=$1
+pkg=occ-$version
+
+if [ -z "$version" ]; then
+	echo "Version missing!"
+	exit 1
+fi
+
+# Build package structure
+mkdir $pkg
+mkdir $pkg/occ-data
+mkdir $pkg/occ-data/games
+mkdir $pkg/occ-data/archive
+mkdir $pkg/occ-data/users
+mkdir $pkg/occ-data/users/notes
+mkdir $pkg/occ-data/users/lhistory
+mkdir $pkg/tmp
+
+# Copy php scripts and graphics
+cp -R images $pkg
+cp *.php *.js COPYING README Changelog makedist $pkg
+rm -f $pkg/images/default/*xmas* $pkg/images/default/*easter*
+rm -f $pkg/test*.php
+
+# Create default accounts and empty stats file
+accountfile=$pkg/occ-data/users/accounts.php
+echo -n > $accountfile
+echo '<? /* ***** PASSWORDS ***** */' >> $accountfile
+echo '$passwords = array ( ' >> $accountfile
+echo '  "guest" => "guest",' >> $accountfile
+echo '  "guest2" => "guest",' >> $accountfile
+echo ');' >> $accountfile
+echo '/* ***** MAIL-ADDRESSES ***** */' >> $accountfile
+echo '$mail_addresses = array (' >> $accountfile
+echo '  "guest" => "dummy@nowhere.org",' >> $accountfile
+echo '  "guest2" => "someone@world.net"' >> $accountfile
+echo '); ?>' >> $accountfile
+touch $pkg/occ-data/users/stats
+
+# Set properties
+chmod -R 777 $pkg/occ-data $pkg/tmp
+chmod 644 $pkg/occ-data/users/accounts.php
+chmod 666 $pkg/occ-data/users/stats
+
+# Update version
+IFS=$nl
+echo `sed -e "s/#OCCVERSION#/$version/" README` > $pkg/README
+echo `sed -e "s/#OCCVERSION#/$version/" render.php` > $pkg/render.php
+
+# Tarball it
+tar -c $pkg > $pkg.tar
+gzip $pkg.tar
+
+# Remove temp directory
+rm -R $pkg
+
