@@ -6,12 +6,14 @@ echo '<script language="Javascript">theme="'.$theme.'";</script>';
 ?>
 
 <script language="Javascript">
+
 /* Highlight source/destination tile of move. If cmd is null or empty just
  * clear highlighting. 
  * XXX this by-passes style sheet classes and sets background images 
  * directly. So this will not work if a theme uses image names other than
  * the defaults. */
 var moveIdx=new Array(-1,-1); // [0] is Src, [1] is Dst
+var lastMoveIsHighlighted = 0;
 function highlightMove(cmd)
 {
 	/* Clear old highlighting */
@@ -32,6 +34,12 @@ function highlightMove(cmd)
 	/* If command is empty don't highlight again */
 	if (cmd==null || cmd=="")
 		return;
+		
+	/* see render.php: on entering chessboard last move of opponent is 
+	 * highlighted for some time; a new selection will 'overwrite' this
+	 * highlighting so clear flag to prevent timer from clearing a new
+	 * selection. */
+	lastMoveIsHighlighted = 0;
 
 	/* Parse command for source/destination and highlight it */
 	moveIdx[0]=(cmd.charCodeAt(2)-49)*8+(cmd.charCodeAt(1)-97);
@@ -53,6 +61,17 @@ function highlightMove(cmd)
 			if (obj)
 				obj.style.backgroundImage="url(images/"+theme+"/"+img+")";
 		}
+}
+
+/** When board is rendered last move of opponent is highlighted, this function
+ * is called to clear highlight after some time; if player started to enter a
+ * move before timer is called, flag will be cleared in highlightMove(). */
+function clearLastMoveHighlight()
+{
+	if (lastMoveIsHighlighted) {
+		highlightMove(null);
+		lastMoveIsHighlighted = 0;
+	}
 }
 
 function checkMoveButton()
@@ -184,4 +203,3 @@ function onClickRefuseDraw()
 }
 
 </script>
-

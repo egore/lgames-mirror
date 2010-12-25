@@ -127,7 +127,17 @@ function renderCommandForm($game,$cmdres,$move)
 			echo '<INPUT class=warning type="button" value="Resign" onClick="onClickResign()">';
 		echo '</TD></TR></TABLE>';
 		echo '<INPUT type="hidden" size=10 name="move" value="'.$move.'">';
-		echo '<script language="Javascript">checkMoveButton(); highlightMove(window.document.commandForm.move.value)</script>';
+		/* clear move highlight and move button */
+		echo '<script language="Javascript">checkMoveButton(); highlightMove(null)</script>';
+		/* if last move was a normal one, highlight it so one quickly
+		 * sees what the opponent did */
+		if (preg_match("/[NnBbQqPpRrKk][a-h][1-8][x-][a-h][1-8]/", 
+					$game['lastmove']) == "1")
+			echo '<script language="Javascript">'.
+				'highlightMove(\''.$game['lastmove'].'\');'.
+				'lastMoveIsHighlighted = 1;'.
+				'window.setTimeout(clearLastMoveHighlight,2000);'.
+				'</script>';
 	} else {
 		/* User may not move. Show proper info and possibly archive/refresh form */
 		if ($game['curstate']=='D' || $game['curstate']=='?') {
