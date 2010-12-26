@@ -503,7 +503,7 @@ function ioLoadUserList()
 {
 	global $res_users;
 
-	include_once($res_users.'/accounts.php');
+	include($res_users.'/accounts.php');
 
 	$list=array();
 	foreach ($passwords as $usr=>$pwd)
@@ -516,7 +516,7 @@ function ioLoadUserPassword($uid)
 {
 	global $res_users;
 
-	include_once($res_users.'/accounts.php');
+	include($res_users.'/accounts.php');
 
 	if (isset($passwords[$uid]))
 		return $passwords[$uid];
@@ -528,7 +528,7 @@ function ioLoadUserEmailAddress($uid)
 {
 	global $res_users;
 
-	include_once($res_users.'/accounts.php');
+	include($res_users.'/accounts.php');
 
 	if (isset($mail_addresses[$uid]))
 		return $mail_addresses[$uid];

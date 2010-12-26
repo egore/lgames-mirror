@@ -43,8 +43,10 @@ if (empty($uid) && isset($_POST)) {
 if (empty($uid)) {
 	$theme='default';
 	renderPageBegin(null,null,null,null);
-	if (!empty($errmsg))
-		echo '<B class="warning">'.$errmsg.'</B><BR><BR>';
+	if (!empty($errmsg)) {
+		echo '<B class="warning">'.$errmsg.'</B><BR>';
+		echo '<a href="sendpwd.php">Lost your password?</a><br><br>';
+	}
 	echo '<TABLE border=0><TR><TD align="center">';
 	echo '<FORM method="POST"><DIV align="right">';
 	echo 'Username: &nbsp;&nbsp;&nbsp;&nbsp;';
