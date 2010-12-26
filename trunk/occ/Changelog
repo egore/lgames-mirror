@@ -1,3 +1,4 @@
+1.3.3:
 - added option to e-mail forgotten password (10/12/26 Martin Korous)
 - utf8 encoding enabled for special characters (10/12/26 Martin Korous)
 - notify white player by mail if black started game (10/12/26 Martin Korous)
