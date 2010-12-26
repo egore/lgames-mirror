@@ -72,4 +72,19 @@ function getCMDiff($board)
 	return null;
 }
 
+/** Return URL to game with id $gid. */
+function getGameURL( $gid )
+{
+	/* XXX access $_SERVER; otherwise $GLOBALS seems to be empty; 
+	 * maybe a bug in PHP? */
+	$temp = $_SERVER['SERVER_NAME']; // dummy access
+	$prot=($GLOBALS['_SERVER']['HTTPS']=='on')?'https':'http';
+	$script=$GLOBALS['_SERVER']['SCRIPT_NAME'];
+	/* $script is the script calling this function but we want to redirect
+	 * to board.php so we have to replace the name (can't use board.php 
+	 * directly since we don't know path to script on server). */
+	$script = dirname($script)."/board.php";
+	return $prot.'://'.$GLOBALS['_SERVER']['HTTP_HOST'].$script.'?gid='.$gid;
+}
+
 ?>

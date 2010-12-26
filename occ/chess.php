@@ -1329,14 +1329,13 @@ function handleMove($gid,$uid,$move,$comment)
 			$oid=$player_w;
 		$email=ioLoadUserEmailAddress($oid);
 		if ($email) {
-			/* XXX access $_SERVER; otherwise $GLOBALS 
-			 * seems to be empty; maybe a bug in PHP? */
-			$temp = $_SERVER['SERVER_NAME'];
-			$prot=($GLOBALS['_SERVER']['HTTPS']=='on')?'https':'http';
-			$url=$prot.'://'.$GLOBALS['_SERVER']['HTTP_HOST'].$GLOBALS['_SERVER']['SCRIPT_NAME'].'?gid='.$gid;
-			$message="Dear $oid\n\n$uid has just moved.\n\nMove:\n$move\n\nComment:\n$comment\n\nIt is your turn now!\n\nEnter the game:\n$url";
+			$message="Dear $oid,\n\n$uid has just moved.\n\n".
+					"Move:\n$move\n\n".
+					"Comment:\n$comment\n\n".
+					"It is your turn now!\n\n".
+					"Enter the game:\n".getGameURL($gid);
 			mail($email,"[OCC] $player_w vs $player_b: $move",
-						$message,'From: '.$mail_from);
+						$message, $mail_header);
 		}
 
 	}
