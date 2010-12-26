@@ -1,5 +1,6 @@
-- utf8 encoding enabled for special characters (10/12/25 Martin Korous)
-- notify white player by mail if black started game (10/12/25 Martin Korous)
+- added option to e-mail forgotten password (10/12/26 Martin Korous)
+- utf8 encoding enabled for special characters (10/12/26 Martin Korous)
+- notify white player by mail if black started game (10/12/26 Martin Korous)
 - show last move of opponent for 2 secs (10/12/25 Martin Korous)
 - workaround bug in accessing array $GLOBALS (10/12/25 Martin Korous)
 
