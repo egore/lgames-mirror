@@ -11,7 +11,11 @@ function renderPageBegin($pagetitle,$class,$links,$title)
 	if ($pagetitle==null)
 		$pagetitle='Online Chess Club';
 
-	echo '<HTML><HEAD><TITLE>'.$pagetitle.'</TITLE><LINK rel=stylesheet type="text/css" href="images/'.$theme.'/style.css"></HEAD><BODY>';
+	echo '<HTML><HEAD><TITLE>'.$pagetitle.'</TITLE>'.
+		'<LINK rel=stylesheet type="text/css" '.
+		'href="images/'.$theme.'/style.css">'.
+		'<meta http-equiv=Content-Type content="text/html; '.
+		'charset=utf-8"></HEAD><BODY>';
 	echo '<DIV align="center">';
 	echo '<P><IMG alt="" src="images/'.$theme.'/logo.jpg"><BR>';
 	if ($links) {
