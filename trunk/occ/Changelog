@@ -1,3 +1,4 @@
+- notify white player by email if black started game (10/12/25 Martin Korous)
 - show last move of opponent for 2 secs (10/12/25 Martin Korous)
 - workaround bug in accessing array $GLOBALS (10/12/25 Martin Korous)
 

@@ -15,6 +15,22 @@ if (isset($_POST['color']) && isset($_POST['opponent'])) {
 		$comment=$_POST['comment'];
 	}
 	$gid=ioCreateGame($white,$black,$comment);
+	
+	/* send notification about new game, if player is black, for white
+	 * player first move will be sent as notification */
+	if ($_POST['color']=='b') {
+		$email=ioLoadUserEmailAddress($white);
+		if ($email) {
+			$message="Dear $white,\n\n".
+					"$black has started a game.\n\n".
+					"Comment:\n$comment\n\n".
+					"It is your turn now!\n\n".
+					"Enter the game:\n".getGameURL($gid);
+			mail($email,"[OCC] New Game: $white vs $black",
+						$message, $mail_header);
+		}
+	}
+	
 	header('location:board.php?gid='.$gid);
 }
 
@@ -59,4 +75,3 @@ foreach($users as $usr)
 <?
 renderPageEnd(null);
 ?>
-
