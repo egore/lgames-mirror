@@ -17,36 +17,18 @@ mkdir $pkg/occ-data/users/notes
 mkdir $pkg/occ-data/users/lhistory
 mkdir $pkg/tmp
 
-# Copy php scripts and graphics
+# Copy data
 cp -R images $pkg
+find $pkg/images | grep \.svn | xargs rm -fr
 cp *.php *.js COPYING README Changelog makedist $pkg
-rm -f $pkg/images/default/*xmas* $pkg/images/default/*easter*
+cp occ-data/users/accounts.php $pkg/occ-data/users
+touch $pkg/occ-data/users/stats
 rm -f $pkg/test*.php
 
-# Create default accounts and empty stats file
-accountfile=$pkg/occ-data/users/accounts.php
-echo -n > $accountfile
-echo '<? /* ***** PASSWORDS ***** */' >> $accountfile
-echo '$passwords = array ( ' >> $accountfile
-echo '  "guest" => "guest",' >> $accountfile
-echo '  "guest2" => "guest",' >> $accountfile
-echo ');' >> $accountfile
-echo '/* ***** MAIL-ADDRESSES ***** */' >> $accountfile
-echo '$mail_addresses = array (' >> $accountfile
-echo '  "guest" => "dummy@nowhere.org",' >> $accountfile
-echo '  "guest2" => "someone@world.net"' >> $accountfile
-echo '); ?>' >> $accountfile
-touch $pkg/occ-data/users/stats
-
-# Set properties
+# Adjust properties
 chmod -R 777 $pkg/occ-data $pkg/tmp
 chmod 644 $pkg/occ-data/users/accounts.php
 chmod 666 $pkg/occ-data/users/stats
-
-# Update version
-IFS=$nl
-echo `sed -e "s/#OCCVERSION#/$version/" README` > $pkg/README
-echo `sed -e "s/#OCCVERSION#/$version/" render.php` > $pkg/render.php
 
 # Tarball it
 tar -c $pkg > $pkg.tar
