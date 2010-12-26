@@ -49,7 +49,7 @@ function renderPageEnd($credits)
 
 	echo '<HR width=100%>';
 	echo '<TABLE width=100% border=0><TR><TD class="tiny" valign="top">';
-	echo 'Online Chess Club v1.3.2<BR>Published under GNU GPL</TD>';
+	echo 'Online Chess Club v1.3.3<BR>Published under GNU GPL</TD>';
 	echo '<TD valign="top" align="right" class="tiny">';
 	echo '&copy; 2003-2010 Michael Speck<BR><A class="tiny" href="http://lgames.sf.net">http://lgames.sf.net</A>';
 	echo '</TD></TR></TABLE>';
