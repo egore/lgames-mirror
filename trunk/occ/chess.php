@@ -856,7 +856,7 @@ function getHistoryNotation($pcolor,$move)
 /* Verify move (full notation), execute it and modify game. */
 function handleMove($gid,$uid,$move,$comment)
 {
-	global $acerror,$mail_from;
+	global $acerror,$mail_header;
 
 	$game=ioLoadGame($gid,$uid);
 	if ($game==null)
