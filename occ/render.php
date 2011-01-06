@@ -1,6 +1,6 @@
 <?php
 /* General render functions */
-$version = '1.3.3';
+$version = '1.3.4';
 
 /* Render beginning of page (HTML+logo+link bar+title). $class is CSS 
  * class of main table (empty= no class). $title may be null. $pagetitle

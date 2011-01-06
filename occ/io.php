@@ -16,10 +16,10 @@ $res_games='occ-data/games';
 $res_archive='occ-data/archive';
 
 /* E-Mail header for notifications */
-$mail_header='From: noreply-occ@yourdomain.org\n'.
-	'Return-Path: noreply-occ@yourdomain.org\n'.
-	'Content-Type: text/plain; charset=utf-8\n'.
-	'Content-Transfer-Encoding: 8bit\n';
+$mail_header="From: noreply-occ@yourdomain.org\n".
+	"Return-Path: noreply-occ@yourdomain.org\n".
+	"Content-Type: text/plain; charset=utf-8\n".
+	"Content-Transfer-Encoding: 8bit\n";
 
 /* Lock/unlock IO access via locking file. Locking is tried for two seconds
  * then the locking file is replaced. This is to prevent deadlocks through
