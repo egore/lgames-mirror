@@ -102,6 +102,7 @@ Tricky \
 Twilight \
 Vader \
 Weirdness \
+Wizi \
 Wolvie \
 WonderWalls \
 WTF \
