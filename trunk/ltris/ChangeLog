@@ -1,3 +1,10 @@
+- improved random number generator (2011/03/02 MS)
+- generate pieces according to official Tetris guidelines (2011/03/02 Andrey
+Maykov)
+- always deal same sequence of pieces to all players (2011/03/02 MS)
+- in expert mode deal most unsuitable piece out of current bag instead
+  of random piece (2011/03/02 MS)
+
 1.0.15:
 - reenabled compiler option -Wall and fixed some warnings (20/09/10 MS)
 - renamed (unused) full non-ascii turkish and portugese localizations to 

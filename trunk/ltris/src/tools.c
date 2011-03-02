@@ -20,6 +20,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "tools.h"
+#include "ltris.h"
 
 /* compares to strings and returns true if their first strlen(str1) chars are equal */
 inline int strequal( char *str1, char *str2 )
@@ -367,3 +368,29 @@ void fill_int_array_rand( int *array, int start, int count,
     }
 }
 
+
+/** Fill integer array @bag sequentially with @bag_count bags of tetrominoes.
+ * Each bag contains all tetrominoes (BLOCK_COUNT = 7) randomly permuted. */
+void fill_random_block_bags( int *bag, int bag_count )
+{
+	int i, k, l;
+	
+	DPRINTF("Filling %d bags of 7 tetrominoes each\n", bag_count);
+	for( k = 0; k < bag_count; ++k)	{
+		for (i = 0; i < BLOCK_COUNT; i++ )
+			bag[i] = i;
+
+		for (l = 0; l < 3; l++)
+			for(i = 0; i < BLOCK_COUNT; i++) {
+				int j = RANDOM(0, BLOCK_COUNT-1);
+				int t = bag[i];
+				bag[i] = bag[j];
+				bag[j] = t;    
+			}
+
+		DPRINTF("  Bag %d: %d, %d, %d, %d, %d, %d, %d\n", k,
+				bag[0], bag[1], bag[2], bag[3], 
+				bag[4], bag[5], bag[6]);
+		bag += BLOCK_COUNT;
+	}
+}

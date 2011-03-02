@@ -27,7 +27,7 @@
 #define CHECK_FLAGS( source, flags ) ( source & (flags) )
 
 /* return random value between ( and including ) upper,lower limit */
-#define RANDOM( lower, upper ) ( ( rand() % ( ( upper ) - ( lower ) + 1 ) ) + ( lower ) )
+#define RANDOM(lower, upper) ((lower)+(int)(((double)((upper)-(lower)+1))*rand()/(RAND_MAX+1.0)))
 
 /* compute distance of two vectors */
 #define VEC_DIST( vec1, vec2 ) ( sqrt( ( vec1.x - vec2.x ) * ( vec1.x - vec2.x ) + ( vec1.y - vec2.y ) * ( vec1.y - vec2.y ) ) )
@@ -109,5 +109,7 @@ void counter_update( Counter *counter, int ms );
 
 void fill_int_array_rand( int *array, int start, int count, 
                                       int low, int high );
+
+void fill_random_block_bags( int *bag, int bag_count );
 
 #endif
