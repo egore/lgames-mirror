@@ -8,6 +8,8 @@
 # Marc Poiroud <marciun@free.fr>, 2006.
 # Kin Calvin <kincalvin@gmail.com>, 2006.
 # Jose Jorge <jjorge@free.fr>, 2008.
+# Pierre Jarillon <jarillon@free.fr>, 2009
+# Samuel Verschelde <stormi@laposte.net>, 2010
 # translation of fr.po to
 # French translations for lbreakout2 package
 # French messages for lbreakout2.
@@ -255,24 +257,24 @@ msgid ""
 "and a gets a new ball after five seconds penalty time."
 msgstr ""
 "Pour defier un utilisateur vous devez tout d'abord le selectionner dans la "
-"liste se trouvant en haut a droite, le niveau de difficulte est quand a lui "
+"liste se trouvant en haut a droite, le niveau de difficulte est quant a lui "
 "ajustable par le biais de la liste du dessous. Ensuite, ajustez les "
 "preferences du jeu et cliquez sur 'Defier' afin de commencer une partie. "
-"Sachez que l'utilisateur peut choisir d'accepter le defi ou de le refuser, "
-"si l'utilisateur accepte, une connexion sera etabli et le jeu commencera."
-"##DIDDICULTY: Cela influence la rapidite de la balle, la largeur de la "
-"pallette ainsi que le score. Les niveaux de difficultes sont 1 = Facile, 2 = "
-"Standard, 3 = Difficile.##MANCHES: Cela est le nombre de manches joues par "
+"Sachez que l'utilisateur peut choisir d'accepter le defi ou de le refuser. "
+"Si l'utilisateur accepte, une connexion sera etablie et le jeu commencera."
+"##DIFFICULTY: Cela influence la rapidite de la balle, la largeur de la "
+"palette ainsi que le score. Les niveaux de difficulte sont 1 = Facile, 2 = "
+"Standard, 3 = Difficile.##MANCHES: Cela est le nombre de manches jouees par "
 "niveau. Gagner une manche permet le gain d'un point et le joueur ayant le "
 "plus de point gagne la partie.##FRAGS: Dans un niveau pingpong (sans "
-"briques) un joueur gagne un tire a chaque fois que l'adversaire perd une "
+"briques) un joueur gagne un point a chaque fois que l'adversaire perd une "
 "balle. Le joueur qui arrive le premier au meilleur score gagne la manche."
 "#Dans les niveaux avec les briques, cette option est ignoree et le niveau se "
 "termine apres que toutes les briques soient detruites.##BALLS: Dans un "
-"niveau pingpong (sans briques) chaques joueurs a la possibilite de tirer de "
+"niveau pingpong (sans briques) chaque joueur a la possibilite de tirer de "
 "multiples balles. Si un joueur perd une balle, il peut encore tirer. Dans "
-"les niveaux normales (avec briques) cette option est ignore et, en cas de "
-"balle perdu, une nouvelle balle arrive apres 5 secondes de penalite. "
+"les niveaux normaux (avec briques) cette option est ignoree et, en cas de "
+"balle perdue, une nouvelle balle arrive apres 5 secondes de penalite. "
 
 #: client/client_data.c:175
 msgid ""
@@ -280,10 +282,10 @@ msgid ""
 "either an existing or a new channel. You can only talk to and challenge "
 "users in the same channel."
 msgstr ""
-"Pour changer de canal, cliquez sur le bouton 'C' se trouvant au dessus de la "
-"liste des utilisateurs. Vous pouvez ainsi entrer dans un canal deja existant "
-"ou nouveau. Sachez que vous ne pouvez uniquement parler et defier les "
-"utilisateurs se trouvant le meme canal que le votre."
+"Pour changer de canal, cliquez sur le bouton 'C' se trouvant au dessus de "
+"la liste des utilisateurs. Vous pouvez ainsi entrer dans un canal deja "
+"existant ou nouveau. Sachez que vous pouvez uniquement parler a et defier "
+"les utilisateurs se trouvant le meme canal que le votre."
 
 #: client/client_data.c:179
 msgid ""
@@ -309,23 +311,23 @@ msgstr ""
 "dans tout les canaux. ##/version#Donne la version du protocole de "
 "transmission.##/info#Donne la limite utilisateur (userlimit) et le nombre "
 "d'images a la seconde (frame rate).##Commandes de la console admin:##/"
-"admin_says <MSG>#Envoit un message a tous les utilisateurs du canal.##/kick "
+"admin_says <MSG>#Envoie un message a tous les utilisateurs du canal.##/kick "
 "<USER>#Kick revoque un utilisateur du canal.##/addbot <NAME> <SPEED>#Ajoute "
-"un bot. La rapidite est definit en pixel par seconde. Les valeurs allant de "
+"un bot. La rapidite est definie en pixel par seconde. Les valeurs allant de "
 "800 a 1000 sont correctes.##/delbot <NAME>Supprime le bot portant ce nom.##/"
 "set <VAR< <VALUE> #Assigne une valeur a une variable:# userlimit: est le "
-"nombre d'utisateurs qui peuvent se connecter. Si cette valeur est diminue "
+"nombre d'utisateurs qui peuvent se connecter. Si cette valeur est diminuee "
 "lorsque beaucoup d'utilisateurs sont connectes, personne n'est revoque. "
-"Cette limite ne tient pas en compte les admins. # fps: est le nom de fois "
+"Cette limite n'a aucun effet pour les admins. # fps: est le nom de fois "
 "par seconde que le serveur appelle la communication et envoie/recoit des "
 "paquets. Celui ci ne devrait pas etre tres eleve afin d'eviter tout flood "
 "sur le reseau. 40 est une bonne valeur.# packetlimit: si la valeur n'est pas "
-"egal a -1, il s'agit alors du nombre de paquets qui est analyse lors d'une "
-"etape de communication. -1  qui est la valeur par defaut, signifie que la "
-"file d'attende estanalyse jusqu'a ce qu'il soit vide##/addset <NAME>#charge "
+"egale a -1, il s'agit alors du nombre de paquets qui est analyse lors d'une "
+"etape de communication. -1 qui est la valeur par defaut, signifie que la "
+"file d'attente est analysee jusqu'a ce qu'il soit vide##/addset <NAME>#charge "
 "un nouveau niveau qui a ete copie dans le repertoire des niveaux et le rend "
-"accessible aux autres utilisateurs.##/halt#Arrete serveur apres 5 secondes "
-"et en informe tout les utilisateurs, meme ceux en cour de partie. "
+"accessible aux autres utilisateurs.##/halt#Arrete le serveur apres 5 secondes "
+"et en informe tous les utilisateurs, meme ceux en cours de partie. "
 
 #: client/client_data.c:208
 #, fuzzy, no-c-format
@@ -348,22 +350,22 @@ msgid ""
 "your opponent."
 msgstr ""
 "Vous avez l'habitude de jouer en mode solo mais il y a certainement des "
-"chosesque vous allez trouver interressant a savoir.##PINGPONG:#Le but est de "
-"jouer rapidement et d'utiliser toutes vos balles. Utilisez la touche gauche "
-"et droite de votre souris pour tirer les balles pendant que vous manipulez "
-"votre palette. Ainsi, votre adversaire aura plus de mal pour vous renvoyez "
-"la balle. Meme si vous n'etes pas sur qu'il vous reste des balles, continuez "
-"a appuyer sur la touche de tire. Maintenez la touche appuye pendant un "
-"moment ! La cadence de tire est limitee a une balle pour chaque 500 "
-"millisecondes.##NORMAL: Votre but est d'avoir plus de score que votre "
-"adversaire pour gagner la manche. Cela ce fait simplement en detruisant des "
+"choses que vous allez trouver interressantes a savoir.##PINGPONG:#Le but est "
+"de jouer rapidement et d'utiliser toutes vos balles. Utilisez les touches "
+"gauche et droite de votre souris pour tirer les balles pendant que vous "
+"manipulez votre palette. Ainsi, votre adversaire aura plus de mal pour vous "
+"renvoyer la balle. Meme si vous n'etes pas sur qu'il vous reste des balles, "
+"continuez a appuyer sur la touche de tir. Maintenez la touche appuyee "
+"pendant un moment ! La cadence de tir est limitee a une balle toutes les "
+"500 millisecondes.##NORMAL: Votre but est d'avoir plus de score que votre "
+"adversaire pour gagner la manche. Cela se fait simplement en detruisant des "
 "briques et en collectant des bonus mais il y a aussi d'autres solutions:#1)"
-"Perdre une balle empute votre score de 10% son total. Une nouvelle balle "
-"arrive apres cinq secondes de penalite et vous permet ainsi que continuer "
-"votre partie.#2) Touchez la palette de votre adversaire avec une arme plasma "
-"vous donnera 1000 points qui seront directement preleve sur son score.#3) "
+"Perdre une balle ampute votre score de 10% son total. Une nouvelle balle "
+"arrive apres cinq secondes de penalite et vous permet ainsi de continuer "
+"votre partie.#2) Toucher la palette de votre adversaire avec une arme plasma "
+"vous donnera 1000 points qui seront directement preleves sur son score.#3) "
 "Les aimants bonus/malus attireront _tous_ les bonus/malus, meme ceux liberes "
-"par votre adversaire.##Note: Si vous mettez le jeux en pause en appuyant sur "
+"par votre adversaire.##Note: Si vous mettez le jeu en pause en appuyant sur "
 "la touche 'p', une fenetre de chat s'affichera sur votre ecran vous donnant "
 "ainsi la possibilite de parler avec votre adversaire. "
 
@@ -384,22 +386,22 @@ msgid ""
 "and wants to challenge others with it both can engage into a transfer."
 msgstr ""
 "Vous avez la possibilite d'envoyer des niveaux a des joueurs si ceux-ci "
-"desir les recevoir. Cela necessite les etapes suivantes: #1)Selectionnez "
+"desirent les recevoir. Cela necessite les etapes suivantes: #1)Selectionnez "
 "l'utilisateur de votre choix.#2)Appuyez sur le bouton 'L' se trouvant au "
-"dessus de la liste des niveaux.#3)Veuillez patientez en l'attente d'un refus "
+"dessus de la liste des niveaux.#3)Veuillez patienter en l'attente d'un refus "
 "ou d'une autorisation#Si le receveur accepte, l'envoyeur doit: #1) "
 "Selectionner l'utilisateur#2) Selectionner le niveau a transferer #3)Appuyer "
 "sur la touche 'T' se trouvant au dessus de la liste des niveaux #Si le "
 "receveur possede deja le niveau dans son repertoire ~/.lgames/lbreakout2-"
-"levels et que celui ci est a jour, le transfert n'aura pas lieu. Dans le cas "
-"contraire, le receveur est ammene a confirmer et le nouveau niveau sera "
+"levels et que celui-ci est a jour, le transfert n'aura pas lieu. Dans le cas "
+"contraire, le receveur est amene a confirmer et le nouveau niveau sera "
 "transfere dans son repertoire personnel (home). Celui ci sera alors "
-"directement utilisable si prevu sur le reseau (le fichier commence par un "
-"'MP_')#NOTE: Lors d'une partie, seul le challengeur a besoin de posseder les "
-"niveaux, si bien qu'il n'est pas necessaire de transferer des niveaux pour "
-"faire une partie avec un joueur. Neanmoins, si votre adversaire aime vos "
-"niveaux et voudrait les utiliser pour challenger d'autres joueurs, vous "
-"pouvez le lui les transferer. "
+"directement utilisable si prevu pour le jeu en reseau (le fichier commence "
+"par un 'MP_')#NOTE: Lors d'une partie, seul le challengeur a besoin de "
+"posseder les niveaux, si bien qu'il n'est pas necessaire de transferer des "
+"niveaux pour faire une partie avec un joueur. Neanmoins, si votre adversaire "
+"aime vos niveaux et voudrait les utiliser pour defier d'autres joueurs, vous "
+"pouvez les lui transferer. "
 
 #: client/client_handlers.c:114
 #, c-format
@@ -431,7 +433,7 @@ msgstr "%s: connecte !"
 #: client/client_handlers.c:192
 #, c-format
 msgid "ERROR: connection refused: %s"
-msgstr "ERREUR: Connection refuse: %s"
+msgstr "ERREUR: Connection refusee: %s"
 
 #: client/client_handlers.c:200
 msgid "ERROR: server does not respond"
@@ -471,7 +473,7 @@ msgstr "%s est occupe(e) pour le moment."
 #: client/client_recv.c:145 client/comm.c:212
 #, c-format
 msgid "comm_delay set to %i\n"
-msgstr "Delai de communication avec %i\n"
+msgstr "Delai regle sur %i\n"
 
 #: client/client_recv.c:233
 #, c-format
@@ -540,7 +542,7 @@ msgstr "Lieu: %s"
 #: client/editor.c:270
 #, c-format
 msgid "Current Level: %i/%i (Free: %i)"
-msgstr "Niveau en cour: %i/%i (Libre: %i)"
+msgstr "Niveau en cours: %i/%i (Libre: %i)"
 
 #: client/editor.c:276
 #, c-format
@@ -635,7 +637,7 @@ msgid ""
 "score: %6d"
 msgstr ""
 "%s, vous avez casse %d barrieres !##Votre score est de : %5d%%#       "
-"Votrescore : %6d"
+"Votre score : %6d"
 
 #: client/game.c:329
 #, c-format
@@ -648,7 +650,7 @@ msgid ""
 "%s, you hunted down %d bricks!##Your average ratio: %5d%%#        Your "
 "score: %6d"
 msgstr ""
-"%s, vous avez eu %d briques !##Votre score : %5d%%#        Votrescore: %6d"
+"%s, vous avez eu %d briques !##Votre score : %5d%%#        Votre score: %6d"
 
 #: client/game.c:339
 #, c-format
@@ -656,8 +658,8 @@ msgid ""
 "%s, you stopped %d waves#killing a total of %d invaders!##Your average "
 "ratio: %5d%%#        Your score: %6d"
 msgstr ""
-"%s, vous avez arrete %d vagues#tuer un total de %d envahisseurs !"
-"##Votreratio: %5d%%#        Votre score: %6d"
+"%s, vous avez arrete %d vagues#tuant un total de %d envahisseurs !"
+"##Votre ratio: %5d%%#        Votre score: %6d"
 
 #: client/game.c:540
 msgid "Pause"
@@ -665,15 +667,15 @@ msgstr "Pause"
 
 #: client/game.c:543
 msgid "You have paused the game."
-msgstr "Vous avez mis en veille le jeu."
+msgstr "Vous avez mis le jeu en pause."
 
 #: client/game.c:583
 msgid ""
 "Quit Game? y/n#(If yes, this game may be resumed later.#No highscore entry "
 "is created yet.)"
 msgstr ""
-"Quitter le jeu ? o/n#(Si oui, la partie pourra etre reprise plus tard.#Aucun "
-"score ne sera cree pour l'instant.)"
+"Quitter le jeu ? o/n#(Si oui, la partie sera relancee.#Aucun score enregistre "
+"pour l'instant.)"
 
 #: client/game.c:585
 msgid "Quit Game? y/n"
@@ -696,10 +698,10 @@ msgid ""
 "to latency, bonuses on the server are closer than they appear! I'll try to "
 "work on that."
 msgstr ""
-"***** Round %i *****###Vous controlez dans ce niveau la palette %s !#Pour "
-"tirer une balle, MAINTENEZ en continu le bouton de la souris.#Ne faites pas "
-"juste de cliquer.###Appuyez sur n'importe qu'elle touche pour commencer...###"
-"(Vous pouvez mettre le jeu en pause avec 'p')###NOTE: En raison du delais de "
+"***** Round %i *****###Vous controlez la palette %s  dans ce niveau !#Pour "
+"tirer une balle, MAINTENEZ le bouton de la souris enfonce.#Ne faites pas "
+"que cliquer.###Appuyez sur n'importe qu'elle touche pour commencer...###"
+"(Vous pouvez mettre le jeu en pause avec 'p')###NOTE: En raison du delai de "
 "latence, il est possible que les bonus sur le serveur arrive plus rapidement "
 "que vous ne les voyez ! Je vais esssayer de regler ce probleme."
 
@@ -748,9 +750,9 @@ msgstr "DEFAITE"
 
 #: client/game.c:841
 msgid "   DRAW"
-msgstr "    ASPIRATION"
+msgstr "    MATCH NUL"
 
-#: client/game.c:873
+#: client/game.c:871
 #, c-format
 msgid "ERROR: couldn't save game!\n"
 msgstr "ERREUR: impossible de sauvegarder !\n"
@@ -765,7 +767,7 @@ msgstr "Reception des donnees du niveau ..."
 
 #: client/game.c:1200 client/game.c:1258 client/game.c:1458
 msgid "Receiving final stats..."
-msgstr "Reception des stats finals ..."
+msgstr "Reception des stats finales ..."
 
 #: client/game.c:1219
 #, c-format
@@ -774,7 +776,7 @@ msgstr "Prochain Joueur : %s"
 
 #: client/game.c:1337
 msgid "You've cleared all levels...#Congratulations!!!"
-msgstr "Vous avec fini tous les niveaux ...#Felicitations !!!"
+msgstr "Vous avez fini tous les niveaux ...#Felicitations !!!"
 
 #: client/game.c:1373
 #, c-format
@@ -814,7 +816,7 @@ msgstr "Aide rapide"
 #: client/help.c:63
 #, c-format
 msgid "<ESCAPE>: Quit  <LEFT BUTTON>: Next Page  <RIGHT BUTTON>: Previous Page"
-msgstr "<ECHAP>: Quitter  "
+msgstr "<ECHAP>: Quitter  <Clic G>:Page suivante <Clic D>:Page precedente"
 
 #: client/help.c:114
 msgid "Bonuses:"
@@ -822,7 +824,7 @@ msgstr "Bonus:"
 
 #: client/help.c:115
 msgid "Expand paddle"
-msgstr "Augmentez la barre"
+msgstr "Augmente la barre"
 
 #: client/help.c:116
 msgid "Extra life"
@@ -838,7 +840,7 @@ msgstr "Arme au plasma"
 
 #: client/help.c:119
 msgid "200 - 10,000 points extra score"
-msgstr "200 - 10 000 points bonus"
+msgstr "200 - 10 000 points de bonus"
 
 #: client/help.c:120
 msgid "Extra ball"
@@ -846,7 +848,7 @@ msgstr "Extra balle"
 
 #: client/help.c:121
 msgid "Energy balls (penetrate bricks)"
-msgstr "Balles d'Energie (traverse les briques)"
+msgstr "Balles d'Energie (traversent les briques)"
 
 #: client/help.c:122
 msgid "Bonus floor"
@@ -854,11 +856,11 @@ msgstr "Sol bonus"
 
 #: client/help.c:123
 msgid "Deccelerate balls to minimum speed"
-msgstr "Ralenti la balle au minimum"
+msgstr "Ralentit la balle au minimum"
 
 #: client/help.c:124
 msgid "1,000 points extra score from bricks with no bonus"
-msgstr "1 000 points bonus des briques sans extra"
+msgstr "1 000 points en plus pour chaque brique sans bonus ni malus"
 
 #: client/help.c:125
 #, fuzzy
@@ -883,7 +885,7 @@ msgstr "Reduit la barre"
 
 #: client/help.c:133
 msgid "Accelerate balls"
-msgstr "Accelerer balles"
+msgstr "Accelere les balles"
 
 #: client/help.c:134
 msgid "Freeze paddle"
@@ -904,12 +906,12 @@ msgstr "Attire les malus"
 
 #: client/help.c:138
 msgid "Paddle disappears when not moving"
-msgstr "la barre disparait si immobile"
+msgstr "La barre disparait si immobile"
 
 #: client/help.c:139
 #, no-c-format
 msgid "40% chance that a ball doesn't damage brick"
-msgstr "60% de chances qu'une balle casse les briques"
+msgstr "40% de chances que la balle ne casse rien"
 
 #: client/help.c:169
 msgid "Hints:"
@@ -938,7 +940,7 @@ msgstr " f      Bascule en mode plein ecran / fenetre."
 
 #: client/help.c:176
 msgid "        NOTE: Changing resolution takes a while so this is done best"
-msgstr "        NOTE: Changer la resolution prends un certains temps, il est"
+msgstr "        NOTE: Changer la resolution prend un certains temps, il est"
 
 #: client/help.c:177
 msgid "        when game's paused."
@@ -968,7 +970,7 @@ msgstr "        maintenez la touche appuyee."
 
 #: client/help.c:183
 msgid " Tab    Take a screenshot."
-msgstr " Tab    Faire un imprime ecran."
+msgstr " Tab    Faire une capture d'ecran."
 
 #: client/help.c:184
 msgid " Esc    Quit game."
@@ -1013,31 +1015,31 @@ msgstr "Briques speciales"
 
 #: client/help.c:219
 msgid "Indestructible."
-msgstr "Indestrucible"
+msgstr "Indestructible."
 
 #: client/help.c:220
 msgid "May only be destroyed by energy ball else it's indestructible."
-msgstr "Ne peut etre supprime que par le biais de balles d'energie."
+msgstr "Ne peut etre detruit que par le biais de balles d'energie."
 
 #: client/help.c:221
 msgid "As above and balls are reflected randomly at this brick."
-msgstr "Comme ci-dessus et les rebonds sont aleatoires sur cette brique."
+msgstr "Comme ci-dessus mais en plus les balles sont reflechies aleatoirement."
 
 #: client/help.c:222
 msgid "Needs three hits to be destroyed."
-msgstr "Necessite trois tires afin d'etre detruit."
+msgstr "Necessite trois tirs afin d'etre detruit."
 
 #: client/help.c:223
 msgid "As above and regenerates durability every 4 seconds."
-msgstr "Comme ci-dessus et regenere la longevite toutes les 4 secondes ."
+msgstr "Comme ci-dessus mais regenerent leur longevite toutes les 4 secondes."
 
 #: client/help.c:224
 msgid "Explodes and destroys all nearby bricks."
-msgstr "Explose et detruit tous les briques aux alentours."
+msgstr "Explose et detruit toutes les briques aux alentours."
 
 #: client/help.c:225
 msgid "Creates up to 8 bricks on destruction."
-msgstr "Cree jusqu'a 8 briques lors d'une destruction."
+msgstr "Cree jusqu'a 8 briques lors de sa destruction."
 
 #: client/help.c:249
 msgid "Troubleshooting:"
@@ -1060,7 +1062,7 @@ msgstr "    configuration de X."
 
 #: client/help.c:254
 msgid "* Sounds seem to be out of sync and are played with some delay?"
-msgstr "* Le son ne semble pas etre synchonise, est-il joue avec decallage ?"
+msgstr "* Le son ne semble pas etre synchonise, est-il joue avec decalage ?"
 
 #: client/help.c:255
 msgid ""
@@ -1074,13 +1076,13 @@ msgstr "    avec beaucoup d'erreurs, arreter artsd (ou esd) peut aider."
 
 #: client/help.c:257
 msgid "* LBreakout2 gets mute while playing when switching on/off sounds?"
-msgstr "* LBreakout2 devient muet lorsque vous activez le son?"
+msgstr "LBreakout2 devient-il muet pendant le jeu en activant/desactivant le son ? "
 
 #: client/help.c:258
 msgid ""
 "  - SDL_mixer seems to mute active channels. You shouldn't enable/disable"
 msgstr ""
-"SDL mixer semble rendre muet les canals actifs. Vous ne devriez pas toucher"
+"SDL mixer semble rendre muet les canaux actifs. Vous ne devriez pas toucher"
 
 #: client/help.c:259
 msgid "    sounds to often as you'll propably loose all channels then."
@@ -1104,7 +1106,7 @@ msgstr ""
 
 #: client/help.c:266
 msgid "/usr/doc/lbreakout2 or the online version at http://lgames.sf.net."
-msgstr "/usr/doc/lbreakout2 ou la version internet sur http://lgames.sf.net."
+msgstr "/usr/doc/lbreakout2 ou la version en ligne sur http://lgames.sf.net."
 
 #: client/help.c:267
 msgid ""
@@ -1125,7 +1127,7 @@ msgstr "  kulkanie@gmk.net"
 
 #: client/help.c:270
 msgid "                         Enjoy the game!"
-msgstr "                       Profitez du jeu !"
+msgstr "                         Bon jeu ! "
 
 #: client/help.c:271
 msgid "                                                 Michael Speck"
@@ -1157,8 +1159,8 @@ msgid ""
 "If you disable shadows it will speed up the game but won't look that "
 "good. ;-)"
 msgstr ""
-"Si vous enlevez les ombres, le jeu sera plus rapide en depit de "
-"l'esthetique ;-)"
+"Si vous enlevez les ombres, le jeu sera plus rapide au detriment "
+"de l'esthetique ;-)"
 
 #: client/manager.c:62
 #, fuzzy
@@ -1182,8 +1184,8 @@ msgid ""
 "You you don't want LBreakout2 to consume all of your CPU (best performance) "
 "limit the frame rate."
 msgstr ""
-"Si vous ne voulez pas que LBreakout utilise la totalite de votre processeur "
-"(meilleures performances) limitez les images par seconde."
+"Si vous ne voulez pas que LBreakout utilise la totalite de votre CPU "
+"(meilleures performances) limitez le frame rate."
 
 #: client/manager.c:65
 msgid ""
@@ -1192,11 +1194,11 @@ msgid ""
 "you'll have to influence the ball by paddle movement and the hemispherical "
 "ends. For cracks only!"
 msgstr ""
-"Aussi longtemps que cette option est activee, la palette est consideree "
+"Si cette option est activee, la palette est consideree "
 "comme etant un corps convexe afin de pouvoir viser sans mal. Si vous "
-"desactivez cette option, des phenomenes physiques auront lieu, si bien que "
-"l'angle du rebond de la balle sur la palette dependra de sa position sur "
-"celle-ci lors de sa chute. Reserve aux pros !"
+"desactivez cette option, le modele physique sera plus realiste, si bien que "
+"vous aurez a influencer la balle par des mouvements de palette et en "
+"utilisant ses coins arrondis. Reserve aux pros !"
 
 #: client/manager.c:68
 msgid ""
@@ -1204,7 +1206,7 @@ msgid ""
 "this option to 'Above Bonuses'"
 msgstr ""
 "Si vous ne pouvez pas voir la balle lorsque beaucoup de bonus descendent, "
-"veuillez mettre cette option a 'Sur les Bonus'"
+"veuillez regler cette option sur 'Sur les Bonus'"
 
 #: client/manager.c:69
 msgid ""
@@ -1212,7 +1214,7 @@ msgid ""
 "option to 'Below Balls'"
 msgstr ""
 "Si vous ne pouvez pas voir la balle a cause de tous les debris qui "
-"descendent, veuillez mettre l'option a 'Sous les Balles' "
+"descendent, veuillez regler cette option sur 'Sous les Balles' "
 
 #: client/manager.c:70
 msgid ""
@@ -1231,8 +1233,8 @@ msgid ""
 "These are the number of players and their names. If one player looses a ball "
 "or restarts the level it's the next player's turn."
 msgstr ""
-"Ceux sont le nombre de joueurs et leurs noms. Si un joueur perde la balle ou "
-"recommence le niveau, c'est a l'autre joueur de commencer "
+"Nombre de joueurs et leurs noms. Si un joueur perd une balle ou "
+"recommence le niveau, c'est au suivant de jouer."
 
 #: client/manager.c:73
 #, fuzzy
@@ -1267,23 +1269,22 @@ msgid ""
 "in a file by this name."
 msgstr ""
 "Ceci est la liste des niveaux se trouvant dans le repertoire~/.lgames/"
-"lbreakout2-levels que vous pouvez modifier. Si vous selectionnez<CREE "
-"NIVEAU> et cliquez sur 'Editer Niveau', vous serez ammenez a entrerle nom du "
-"niveau et celui ci sera enregistrer dans un fichier portant cenom."
+"lbreakout2-levels que vous pouvez modifier. Si vous selectionnez<CREER "
+"NIVEAU> et cliquez sur 'Editer Niveau', vous serez amene a entrer le nom du "
+"niveau et celui ci sera enregistre dans un fichier portant ce nom."
 
 #: client/manager.c:82
 msgid ""
 "Click here to edit the levelset chosen above.##NOTE: To switch to the bonus "
 "set you'll have to right-click on the brick set and vice versa!"
 msgstr ""
-"Cliquez ici pour editer le niveau choisi si dessus. ##NOTE: Pour passer a un "
-"niveau bonus, vous devez faire un clique droit sur le niveau a brique et "
-"vice versa !"
+"Cliquez ici pour editer le niveau choisi ci dessus. ##NOTE: Pour passer d'un "
+"groupe de niveaux a l'autre, faites un clic droit."
 
 #: client/manager.c:83
 msgid "Click here to delete the chosen levelset (after confirmation)."
 msgstr ""
-"Cliquez ici pour supprimer le niveau selectionner (apres confirmation)."
+"Cliquez ici pour supprimer le niveau selectionne (apres confirmation)."
 
 #: client/manager.c:84
 msgid ""
@@ -1298,16 +1299,17 @@ msgid ""
 "Turbo' will bring all balls to the maximum speed defined in 'Advanced "
 "Options'."
 msgstr ""
-"Si vous jouez avec votre clavier, voici les touches a utiliser('Palette "
-"Turbo' doublera la rapidite de la balle.), envoye de balles/tireset la "
-"retourner sur la palette apres un delai de dix secondes/##Note: Si les "
-"balles sont tirees dans un angle aleatoire, il n'y a pas de difference entre "
-"la touche de tire de gauche et de droite. Une palette collante arrete la "
-"ballejusqu'a ce que celle ci soit envoye par le bais d'une des touches de "
-"tire,l'angle de la balle sera celle de sa reflexion sur la palette. Pour que "
-"sonangle soit de -50 a +50 degres, modifiez 'Angle de tir' qui se trouve "
-"dans 'Options Avancees'.##Lorsque appuye, la 'Ball Turbo' donneraaux balles "
-"leurs vitesses optimales etablient dans 'Options Avancees."
+"Si vous jouez avec votre clavier, voici les touches pour deplacer la palette "
+" (appuyer sur 'Palette Turbo' pour rendre la palette 2 fois plus rapide.), "
+"envoyer des balles/tirs et faire revenir la balle sur la palette apres 10 "
+"secondes.##Note: Si les balles sont tirees dans un angle aleatoire, il n'y a "
+"pas de difference entre la touche de tir de gauche et de droite. Une palette "
+"collante arrete la balle jusqu'a ce que celle ci soit envoyee par le biais "
+"d'une des touches de tir,l'angle de la balle sera celle de sa reflexion sur "
+"la palette. Pour que son angle soit de -50 a +50 degres, modifiez 'Angle de "
+"tir de la balle' qui se trouve dans 'Options Avancees'.##Si on appuie sur "
+"'Balle Turbo' , on donne aux balles leur vitesse maximale definie dans "
+"'Options Avancees'."
 
 #: client/manager.c:89
 msgid ""
@@ -1315,15 +1317,15 @@ msgid ""
 "value is the faster the mouse moves."
 msgstr ""
 "Cela modifie la sensibilite de votre souris. Plus cette valeur (en "
-"pourcentage)est grande et plus votre curseur se deplacera rapidement."
+"pourcentage) est grande et plus votre curseur se deplacera rapidement."
 
 #: client/manager.c:91
 msgid ""
 "If for some reason your mouse movement is inverted you can fix it with this "
 "option."
 msgstr ""
-"Si le curseur de la souris fait le mouvement inverse de lasouris, vous "
-"pouvez regler ce probleme avec cette option."
+"Si les mouvements de la souris sont inverses pour une raison quelconque, "
+"vous pouvez regler ce probleme avec cette option."
 
 #: client/manager.c:92
 msgid ""
@@ -1332,11 +1334,11 @@ msgid ""
 "and if this option is set to 'By Click' you'll have to press the middle "
 "mousebutton or the 'back'-key (default is Backspace)."
 msgstr ""
-"Si la balle ne fait aucun dommage aux briques durant 10 seconde, il est "
-"autorise de revenir sur la palette. Si cette option est a 'auto' cela "
-"retournera automatiquement, et si cette option est a 'Clic', vous devriez "
-"appuyer sur le bouton du milieu de votre souris ou sur la touche arriere de "
-"votre clavier. "
+"Si la balle ne fait aucun dommage aux briques durant 10 seconde, il lui est "
+"autorise de revenir sur la palette. Si cette option est a 'auto' elle "
+"retournera automatiquement, et si cette option est a 'Par Clic', vous "
+"devrez appuyer sur le bouton du milieu de votre souris ou sur la touche "
+"retour arriere de votre clavier. "
 
 #: client/manager.c:95
 msgid ""
@@ -1355,26 +1357,26 @@ msgstr ""
 "Adresse IP du serveur de jeu comme xxx.xxx.xxx.xxx.#NE PAS utiliser "
 "'localhost' si vous hebergez un serveur sur votre ordinateur. Vous serez "
 "dans l'incapacite de defier les utilisateurs. Utilisez a la place votre IP "
-"questionne par /sbin/ifconfig. "
+"donnee par /sbin/ifconfig. "
 
 #: client/manager.c:98
 msgid "Port the game server is bound to."
-msgstr "Le port du serveur de jeu est limite pour."
+msgstr "Le port sur lequel le serveur 'ecoute'."
 
 #: client/manager.c:99
 msgid ""
 "If you're successfully connected to the game server this is your nickname "
 "there."
 msgstr ""
-"Si vous avez pu vous connecter au serveur de jeu, cela est votre speudonyme."
+"Si vous avez pu vous connecter au serveur de jeu, cela est votre pseudonyme."
 
 #: client/manager.c:100
 msgid "Connect to game server."
-msgstr "Se connecter  au serveur de jeu"
+msgstr "Se connecter au serveur de jeu."
 
 #: client/manager.c:101
 msgid "A local game with up to 4 alternating players."
-msgstr "Un jeu local avec plus de 4 joueurs"
+msgstr "Un jeu local avec 4 joueurs au plus."
 
 #: client/manager.c:102
 msgid "A two-player or deathmatch game via Internet or LAN."
@@ -1387,10 +1389,10 @@ msgid ""
 "levelset is either load from ~/.lgames/lbreakout2-levels or the installation "
 "directory."
 msgstr ""
-"C'est le niveau auquel vous voulez jouer. Notez que chaque niveau a son "
-"propre tableau de score (clique droit sur le tableau a droite). Un niveau "
-"peut etre charge a partir de ~/.lgames/lbreakout2-levels ou du repertoire "
-"d'installation."
+"C'est le groupe de niveaux auquel vous voulez jouer. Notez que chaque "
+"groupe de niveaux a son propre tableau de score (clic droit sur le tableau a "
+"droite). Un groupe de niveaux peut etre charge a partir de "
+"~/.lgames/lbreakout2-levels ou du repertoire d'installation."
 
 #: client/manager.c:108
 msgid ""
@@ -1410,10 +1412,10 @@ msgid ""
 msgstr ""
 "Apres avoir detruit ce pourcentage de briques, vous POURREZ passer au niveau "
 "suivant en appuyant sur 'w'. Cela est indique par une petite icone en bas a "
-"droite de votre ecran.#If vous fixez cette option a 0, vous pourrez passer "
+"droite de votre ecran.#Si vous fixez cette option a 0, vous pourrez passer "
 "au niveau suivant quand vous le souhaitez. En revanche, 100 indique que vous "
 "devez detruire toutes les briques.##Note, cette option ne s'applique pas "
-"pour les parties 'Original' et 'LBreakout1' ! "
+"pour les groupes de niveaux 'Original' et 'LBreakout1' ! "
 
 #: client/manager.c:111
 msgid ""
@@ -1422,8 +1424,8 @@ msgid ""
 "'absoluteB','Oz' and 'Moiree' along with the old graphics as theme 'Classic'."
 "#For more themes check out http://lgames.sf.net."
 msgstr ""
-"Vous pouvez changer l'apparence de LBreakout a partir de ce menu. Celui "
-"ciinclu les 3 themes gagnants du Linux Game Tome contest, a savoir "
+"Vous pouvez changer l'apparence de LBreakout a partir de ce menu. Celui-"
+"ci inclut les 3 themes gagnants du Linux Game Tome contest, a savoir "
 "'absoluteB','Oz' et 'Moiree' accompagne de l'ancien theme 'Classic'.#Vous "
 "pouvez trouver d'autres themes sur http://lgames.sf.net."
 
@@ -1436,21 +1438,20 @@ msgid ""
 "indestructible brick reflections if the level is too wrinkled. However, with "
 "the auto return option this is no problem so 'Spherical' is the default."
 msgstr ""
-"Lineaire:#++ Il n'y a aucune chance pour une balle de rester "
-"indefinimantcoince dans une brique bounce combo.#-- Il est assez dur pour "
+"Lineaire:#++ Il n'y a aucune chance pour une balle de rebondir "
+"indefiniment entre les briques.#-- Il est assez dur pour "
 "des balles d'entrer dans des passages etroits.#Spherique:#++ Les balles "
-"passe facilement dans les petits espaces.#--Il est possible que des balles "
-"restent indefinimant coincees dansune serie de indestructible briques "
-"reflechissantes si le niveau est trop froisse.Neanmois, il n'y a pas de "
-"problemes avec l'option auto return, donc 'Spherique'est selectionne par "
-"defaut."
+"passent facilement dans les petits espaces.#--Il est possible que les balles "
+"restent indefiniment coincees dans une serie de rebonds entre briques "
+"indestructibles.Neanmoins, cela n'est pas un probleme avec l'option "
+"auto return, donc 'Spherique'est selectionne par defaut."
 
 #: client/manager.c:118
 msgid ""
 "Network communication is handled by a single UDP socket which will be bound "
 "to this port number."
 msgstr ""
-"La communication reseau est maintenu par un socket UDP qui peut etre limite "
+"La communication reseau est geree par un socket UDP qui peut etre attache "
 "a ce numero de port. "
 
 #: client/manager.c:120
@@ -1460,20 +1461,20 @@ msgid ""
 "the ball is fired at a random angle. In this case a sticky paddle simply "
 "halts the normal reflection until any fire button has been pressed."
 msgstr ""
-"Si '50' la balle est tire dans un angle de 50 degres vers la gauche ou la "
-"droite. Cela depend sur la touche de tire qui a ete utilise. Si cela est "
-"place a 'Aleatoire', la balle est tire a un angle aleatoire. Dans le cas ou "
-"la palette est collante, la reflexion se fait normalement apres avoir appuye "
-"sur la touche de tire "
+"Si '50' la balle est tiree avec un angle de 50 degres vers la gauche ou la "
+"droite. Cela depend de la touche de tir utilisee. Si cela est "
+"place a 'Aleatoire', la balle est tiree avec un angle aleatoire. Dans ce cas "
+"sur une palette collante la reflexion se fait normalement apres avoir "
+"appuye sur la touche de tir."
 
 #: client/manager.c:124
 msgid ""
 "While you keep the middle mouse button pressed (or the acceleration key) all "
 "balls will go this velocity. (in pixels per second)"
 msgstr ""
-"Pendant que vous maintenez le bouton du millieu de votre souris(ou la touche "
-"d'acceleration), toutes les balles iront a cette vitesse.(en pixels par "
-"seconde)"
+"Pendant que vous maintenez le bouton du milieu de votre souris (ou la "
+"touche d'acceleration), toutes les balles iront a cette vitesse. (en pixels "
+"par seconde)"
 
 #: client/manager.c:126
 msgid ""
@@ -1482,8 +1483,8 @@ msgid ""
 "will not loose a life but bring you directly to the next level."
 msgstr ""
 "Si active, la partie aura un nouveau niveau bonus tous les 4 niveaux normaux."
-"##Note : Vous pouvez sauter les niveaux bonus en perdant la balle. Cela ne "
-"vous fera pas perdre de vie et vous amenera au niveau suivant."
+"##Note:Vous pouvez sauter un niveau bonus en perdant la balle. Cela ne vous "
+"fera pas perdre de vie et vous amenera au prochain niveau."
 
 #: client/manager.c:129
 msgid "Play *ALL* available levels in a random order."
@@ -1491,7 +1492,7 @@ msgstr "Jouer a *TOUS* les niveaux dans un ordre aleatoire"
 
 #: client/manager.c:130
 msgid "The complete levelset of LBreakout1 with just minor modifications."
-msgstr "Une partie complete de LBreakout1 avec quelques modifications mineurs."
+msgstr "Tous les niveaux de LBreakout1 avec quelques modifications mineures."
 
 #: client/manager.c:131
 msgid ""
@@ -1504,16 +1505,16 @@ msgid ""
 "OPTIONS AND MAKE EXCESSIVE USE OF YOUR MIDDLE MOUSE BUTTON! Otherwise you "
 "won't stand a chance as these levels require a lot of skill!"
 msgstr ""
-"Il n'y a qu'une brique dont l'esperance de vie est limite. Vous devez la "
-"detruire avant qu'elle disparaisse. Si vous y parvenez, la brique "
-"reapparaitradans un autre endroit avec une esperance de vie encore plus "
-"courte, necessitantainsi plus de rapidite de votre part pour la detruire. Si "
-"vous n'y parvenez pas,la jeu sera termine. Vous pouvez connaitre le temps de "
-"vie restant de la briqueen bas a droite de votre ecran.##Manquer une balle "
-"aura pour consequence de vous envoyer au niveau suivant.##AYEZ 'Acc. "
-"Rapidite' ETABLIE A 900 DANS 'OPTIONS AVANCEES' ET UTILISEZ LE PLUS SOUVENT "
-"POSSIBLE LE BOUTTON DU MILIEU DE VOTRE SOURIS ! Sinon vous n'aurez aucune "
-"chance dans ces niveaux qui necessitent beaucoup de competence !"
+"Il n'y a qu'une brique dont l'esperance de vie est limitee. Vous devez la "
+"detruire avant qu'elle ne disparaisse. Si vous y parvenez, la brique "
+"reapparait dans un autre endroit avec une esperance de vie encore plus "
+"courte, necessitant ainsi plus de rapidite de votre part pour la detruire. "
+"Si vous n'y parvenez pas, le jeu est termine. Vous pouvez connaitre le temps de "
+"vie restant de la brique en bas a droite de votre ecran.##Manquer une balle "
+"aura pour consequence de vous transferer au niveau suivant.## AYEZ "
+"'Acc. rapidite' REGLE SUR 900 DANS 'OPTIONS AVANCEES' ET UTILISEZ LE "
+"PLUS SOUVENT POSSIBLE LE BOUTON DU MILIEU DE VOTRE SOURIS ! Sinon vous n'aurez "
+"aucune chance dans ces niveaux qui necessitent beaucoup de competence !"
 
 #: client/manager.c:140
 msgid ""
@@ -1537,10 +1538,10 @@ msgstr ""
 "decompte cinquante briques sur votre ecran. Vous pouvez savoir si vous vous "
 "approchez de cette limite en observant l'indicateur se trouvant en bas a "
 "droite de votre ecran.Les points sont ajoutes a votre score uniquement "
-"lorsque votre ecran est debarasse de toutes les briques, pas en n'en "
+"lorsque votre ecran est debarrasse de toutes les briques, pas en n'en "
 "detruisant que quelques unes! Le moins vous avez de briques et le mieux cela "
 "sera.##Perdre votre balle aura pour consequence de vous faire passer au "
-"niveau suivant.##AYEZ 'Acc. Rapidite' ETABLIE A 900 DANS 'OPTIONS AVANCEES' "
+"niveau suivant.##AYEZ 'Acc. rapidite' REGLE SUR 900 DANS 'OPTIONS AVANCEES' "
 "ET UTILISEZ LE BOUTON DU MILIEU DE VOTRE SOURIS !Sinon vous n'aurez aucune "
 "chance dans ces niveaux qui sont extremes!"
 
@@ -1586,7 +1587,7 @@ msgid ""
 "screen.##Loosing your ball means going to the next level."
 msgstr ""
 "Il y a huit briques et la balle est attachee au milieu du plafond. Quand "
-"celle ci est libere, une brique sera mise en evidence et votre objectif est "
+"celle ci est liberee, une brique sera mise en evidence et votre objectif est "
 "de la detruire. Si vous y parvenez, vous gagnerez des points sur votre score "
 "et le niveau recommence. Si vous ne detruisez pas la brique qui a ete mise "
 "en evidence DES LE DEBUT, celle ci sera detruite et l'une des septs briques "
@@ -1611,15 +1612,15 @@ msgid ""
 "lot of skill!"
 msgstr ""
 "Votre but est de detruire les briques en manipulant indirectement la brique "
-"de destruction. En effet, les cotes de l'air de jeu possedent une couleur "
+"de destruction. En effet, les cotes de l'aire de jeu possedent une couleur "
 "particuliere et vous devez envoyer la balle vers une de ces couleurs afin de "
-"deplacerla brique de destruction vers la brique a detruire. La brique de "
-"destructionne doit pas toucher les briques de l'air de jeu et vous devez "
+"deplacer la brique de destruction vers la brique a detruire. La brique de "
+"destruction ne doit pas toucher les briques de l'aire de jeu et vous devez "
 "detruire la brique dans un temps imparti qui est indique en bas a droite de "
-"votre ecran. Vous gagnerez plus ou moins de point en fonction de temps que "
+"votre ecran. Vous gagnez plus ou moins de points en fonction du temps que "
 "vous avez pris pour detruire la brique.##Perdre une balle aura pour "
-"consequence de vous faire passer au niveau suivant.##AYEZ 'ACC. RAPIDITE "
-"BALLE' ETABLIE A 900 DANS 'OPTIONS AVANCEES' ET UTILISEZ LE PLUS SOUVENT "
+"consequence de vous faire passer au niveau suivant.##AYEZ 'Acc. rapidite' "
+"REGLE SUR 900 DANS 'OPTIONS AVANCEES' ET UTILISEZ LE PLUS SOUVENT "
 "POSSIBLE LE BOUTTON DU MILIEU DE VOTRE SOURIS ! Sinon vous n'aurez aucune "
 "chance dans ces niveaux qui necessitent beaucoup de competence ! "
 
@@ -1636,15 +1637,15 @@ msgid ""
 "Otherwise you won't stand a chance as these levels require a lot of skill!"
 msgstr ""
 "Arretez les envahissantes vagues de briques! Chaque vague est composee de "
-"50briques qui seront de plus en plus rapides. Chaques briques vous donne du "
-"score.Si vous nettoyez completement l'ecran, la vague sera detruite et vous "
-"recevrez despoints sur votre score en fonction du nombre de briques "
-"restantes. Ensuite,une autre vague plus rapide verra le jour juqu'a ce que "
-"ce qu'une des briques atteint votre palette.##Perdre une balle aura pour "
-"concequence de vous faire passer au niveau suivant.##AYEZ 'Acc. Rapidite' "
-"ETABLIE A 900 DANS 'OPTIONS AVANCEES' ET UTILISEZ LE PLUS SOUVENT POSSIBLE "
-"LE BOUTTON DU MILIEU DE VOTRE SOURIS !Sinon vous n'aurez aucune chance dans "
-"ces niveaux qui necessitent beaucoup de competence!"
+"50 briques qui seront de plus en plus rapides. Chaque brique vous donne des "
+"points. Si vous nettoyez l'ecran completement, la vague sera finie et vous "
+"recevrez des points sur votre score en fonction du nombre de briques "
+"restantes. Ensuite, une autre vague plus rapide verra le jour jusqu'a ce que "
+"ce qu'une des briques atteigne votre palette.##Perdre une balle aura pour "
+"consequence de vous faire passer au niveau suivant.##AYEZ 'Acc. rapidite' "
+"REGLE SUR 900 DANS 'OPTIONS AVANCEES' ET UTILISEZ LE PLUS SOUVENT "
+"POSSIBLE LE BOUTON DU MILIEU DE VOTRE SOURIS ! Sinon vous n'aurez aucune "
+"chance dans ces niveaux ! "
 
 #: client/manager.c:242 client/manager.c:434
 msgid "!JUMPING_JACK!"
@@ -1660,7 +1661,7 @@ msgstr "!BARRIERE!"
 
 #: client/manager.c:245 client/manager.c:443
 msgid "!SITTING_DUCKS!"
-msgstr "!CANARD_REPOSE!"
+msgstr "!CANARDS_ASSIS"
 
 #: client/manager.c:246 client/manager.c:446
 msgid "!HUNTER!"
@@ -1683,7 +1684,7 @@ msgstr "%s v%i.%02i#Auteur: %s"
 #: client/manager.c:463
 #, c-format
 msgid "No info available."
-msgstr "Pas d'informations"
+msgstr "Pas d'informations."
 
 #: client/manager.c:506
 msgid "No Limit"
@@ -1691,7 +1692,7 @@ msgstr "Illimite"
 
 #: client/manager.c:506
 msgid "100 FPS"
-msgstr "100"
+msgstr "100 FPS"
 
 #: client/manager.c:507 client/manager.c:652 client/manager.c:655
 #: client/manager.c:664 client/manager.c:718 client/manager.c:722
@@ -1701,19 +1702,19 @@ msgstr "Non"
 
 #: client/manager.c:507
 msgid "Low"
-msgstr "Peu"
+msgstr "Faible"
 
 #: client/manager.c:507 client/manager.c:508
 msgid "Medium"
-msgstr "Moyen"
+msgstr "Moyenne"
 
 #: client/manager.c:507
 msgid "High"
-msgstr "Maximum"
+msgstr "Elevee"
 
 #: client/manager.c:508
 msgid "Kids"
-msgstr "Enfant"
+msgstr "Enfants"
 
 #: client/manager.c:508
 msgid "Easy"
@@ -1772,7 +1773,7 @@ msgstr "Jeu Reseau"
 #: client/manager.c:693 client/manager.c:720 client/manager.c:741
 #: client/manager.c:752
 msgid "Back"
-msgstr "Sortir"
+msgstr "Retour"
 
 #: client/manager.c:652
 msgid "Sound:"
@@ -1838,23 +1839,23 @@ msgstr "Joueurs:"
 
 #: client/manager.c:688
 msgid "1st:"
-msgstr "1er"
+msgstr "1er:"
 
 #: client/manager.c:689
 msgid "2nd:"
-msgstr "2eme"
+msgstr "2eme:"
 
 #: client/manager.c:690
 msgid "3rd:"
-msgstr "3eme"
+msgstr "3eme:"
 
 #: client/manager.c:691
 msgid "4th:"
-msgstr "4eme"
+msgstr "4eme:"
 
 #: client/manager.c:695
 msgid "Left:"
-msgstr "Gauche"
+msgstr "Gauche:"
 
 #: client/manager.c:696
 msgid "Right:"
@@ -1862,11 +1863,11 @@ msgstr "Droite:"
 
 #: client/manager.c:697
 msgid "Left Fire:"
-msgstr "Tire Gauche:"
+msgstr "Tir Gauche:"
 
 #: client/manager.c:698
 msgid "Right Fire:"
-msgstr "Tire Droit:"
+msgstr "Tir Droit:"
 
 #: client/manager.c:699
 msgid "Paddle Turbo:"
@@ -1874,7 +1875,7 @@ msgstr "Palette Turbo:"
 
 #: client/manager.c:700
 msgid "Ball Turbo:"
-msgstr "Ball Turbo:"
+msgstr "Balle Turbo:"
 
 #: client/manager.c:701
 msgid "Return:"
@@ -1886,11 +1887,11 @@ msgstr "Key Speed:"
 
 #: client/manager.c:715
 msgid "Motion Modifier:"
-msgstr "Modifier le mouvement"
+msgstr "Sensibilite souris"
 
 #: client/manager.c:718
 msgid "Invert Motion:"
-msgstr "Inverser le mouvement"
+msgstr "Inversion souris"
 
 #: client/manager.c:722
 msgid "Convex Paddle:"
@@ -1934,7 +1935,7 @@ msgstr "Auto"
 
 #: client/manager.c:730
 msgid "By Click"
-msgstr "Clic"
+msgstr "Par Clic"
 
 #: client/manager.c:731
 msgid "Use Hints:"
@@ -1958,11 +1959,11 @@ msgstr "Niveaux Bonus:"
 
 #: client/manager.c:744
 msgid "Set:"
-msgstr "Niveau:"
+msgstr "Niveaux:"
 
 #: client/manager.c:749
 msgid "Edit Set"
-msgstr "Editer Niveau"
+msgstr "Editer Niveaux"
 
 #: client/manager.c:754
 msgid "Yes"
@@ -1970,7 +1971,7 @@ msgstr "Oui"
 
 #: client/manager.c:757
 msgid "No"
-msgstr "fNon"
+msgstr "Non"
 
 #: client/manager.c:759
 msgid "Theme:"
@@ -2049,7 +2050,7 @@ msgstr "Zone de stabilite (Score: %i)"
 #: client/misc.c:436
 #, no-c-format
 msgid "Disintegrate Brick? (Costs 5% of your score.) y/n"
-msgstr "Desintegrer la brique? (cela coute 5% de votre score) o/n"
+msgstr "Desintegrer la brique? (coute 5% de votre score) o/n"
 
 #: common/net.c:68
 #, c-format
@@ -2085,7 +2086,7 @@ msgstr "Barriere"
 #: game/game.c:79
 #, c-format
 msgid "Sitting Ducks"
-msgstr "Canard reposant"
+msgstr "Canards assis"
 
 #: game/game.c:83
 #, c-format
@@ -2095,7 +2096,7 @@ msgstr "Chasseur"
 #: game/game.c:87
 #, c-format
 msgid "Defender"
-msgstr "Defence"
+msgstr "Defenseur"
 
 #: game/game.c:91
 #, c-format
@@ -2104,7 +2105,7 @@ msgstr "Type de niveau inconnu"
 
 #: game/levels.h:23
 msgid "<CREATE SET>"
-msgstr "<CREER NIVEAU>"
+msgstr "<CREER NIVEAUX>"
 
 #: game/levels.h:24
 msgid "!FREAKOUT!"
@@ -2113,7 +2114,7 @@ msgstr "!BALLE_PERDUE!"
 #: server/server.c:76
 #, c-format
 msgid "server is going down...\n"
-msgstr "arret du serveur en cour...\n"
+msgstr "arret du serveur en cours...\n"
 
 #: server/server.c:80
 #, c-format
@@ -2158,13 +2159,13 @@ msgstr "Vous venez d'entrer dans un nouveau canal: %s"
 #: server/server.c:455
 #, c-format
 msgid "Login data corrupted, please retry."
-msgstr "Donnees de session corrompu, Veuillez reessayer."
+msgstr "Donnees de session corrompues, Veuillez reessayer."
 
 #: server/server.c:460
 msgid "Your username may only contain letters, digits and underscores.\n"
 msgstr ""
 "Votre nom d'utilisateur ne peut contenir que des chiffres, des lettres, et "
-"des tirets.\n"
+"des tirets bas.\n"
 
 #: server/server.c:473
 #, c-format
@@ -2189,7 +2190,7 @@ msgstr "Veuillez entrer un nom !"
 #: server/server.c:488
 #, c-format
 msgid "Your name must not contain blanks! (But can have underscores.)"
-msgstr "Votre nom ne peut contenir d'espaces ! (mais peut avoir des tirets) "
+msgstr "Votre nom ne peut contenir d'espaces ! (Mais tiret bas autorise) "
 
 #: server/server.c:491 server/server.c:503
 msgid "admin"
@@ -2211,7 +2212,7 @@ msgstr "%i utilisateurs connectes"
 
 #: server/server.c:586
 msgid "search"
-msgstr "search"
+msgstr "recherche"
 
 #: server/server.c:588
 msgid "search: specify a user name!"
@@ -2232,7 +2233,7 @@ msgstr "en train de jouer"
 
 #: server/server.c:596
 msgid "chatting"
-msgstr "en train de chatter"
+msgstr "en train de discuter"
 
 #: server/server.c:600
 msgid "version"
@@ -2385,7 +2386,7 @@ msgstr "arret"
 #: server/server.c:736
 #, c-format
 msgid "unknown command: %s"
-msgstr "commande inconnu: %s"
+msgstr "commande inconnue: %s"
 
 #: server/server.c:771 server/server_game.c:397
 #, c-format
@@ -2395,7 +2396,7 @@ msgstr "%s (%i) s'est deconnecte\n"
 #: server/server.c:802
 #, c-format
 msgid "There is no user by that name."
-msgstr "Aucun utilisateur possede ce nom."
+msgstr "Aucun utilisateur ne possede ce nom."
 
 #: server/server.c:821
 #, c-format
@@ -2428,12 +2429,12 @@ msgstr "zombie"
 #: server/server.c:981
 #, c-format
 msgid "couldn't open directory %s!\n"
-msgstr "N'a pas pu ouvrir le repertoire %s!\n"
+msgstr "impossible d'ouvrir le repertoire %s!\n"
 
 #: server/server.c:990
 #, c-format
 msgid "loaded %i levelsets from directory %s\n"
-msgstr "%i niveaux sont charges du repertoire %s\n"
+msgstr "%i niveaux charges depuis le repertoire %s\n"
 
 #: server/server.c:1000
 #, c-format
@@ -2455,8 +2456,8 @@ msgid ""
 "    [-l <USER_LIMIT>]       Maximum number of users that can login to "
 "server.\n"
 msgstr ""
-"    [-l <USER_LIMIT>]       Le nombre maximum d'utilisateurs qui peuvent se "
-"connecter a server.\n"
+"    [-l <USER_LIMIT>]       Nombre maximum d'utilisateurs qui peuvent se "
+"connecter au serveur.\n"
 
 #: server/server.c:1003
 #, c-format
@@ -2465,20 +2466,20 @@ msgid ""
 "login.\n"
 msgstr ""
 "    [-m <WELCOME_FILE>]     Le texte present dans ce fichier est envoye aux "
-"nouveaux utilisateur a login.\n"
+"nouveaux utilisateur au login.\n"
 
 #: server/server.c:1004
 #, c-format
 msgid ""
 "    [-a <ADMIN_PWD>]        The user logging in as <ADMIN_PWD> will become\n"
 msgstr ""
-"    [-a <ADMIN_PWD>]        L'utilisateur logging en tant que <ADMIN_PWD> "
+"    [-a <ADMIN_PWD>]        L'utilisateur se connectant en tant que <ADMIN_PWD> "
 "deviendra\n"
 
 #: server/server.c:1005
 #, c-format
 msgid "                            the administrator named 'admin'.\n"
-msgstr "                            L'administrateur est nomme 'admin'.\n"
+msgstr "                            l'administrateur nomme 'admin'.\n"
 
 #: server/server.c:1009
 #, c-format
@@ -2491,7 +2492,7 @@ msgstr ""
 #: server/server.c:1010
 #, c-format
 msgid "                            (Default: 33)\n"
-msgstr "                            (Default: 33)\n"
+msgstr "                            (Defaut: 33)\n"
 
 #: server/server.c:1011
 #, c-format
@@ -2505,7 +2506,7 @@ msgstr ""
 #: server/server.c:1012
 #, c-format
 msgid "                            each. (Default: 0)\n"
-msgstr "                            chaque. (Default: 0)\n"
+msgstr "                           chacun. (Defaut: 0)\n"
 
 #: server/server.c:1044
 #, c-format
