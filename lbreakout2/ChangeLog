@@ -1,3 +1,4 @@
+- fixed compile issue with libpng-1.5 (2011/03/02 Thomas Klausner)
 - improved french localisation (2011/03/02 stormi)
 
 2.6.2:
