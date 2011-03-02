@@ -51,15 +51,13 @@ enum {
     /* maximum number of bowls */
     BOWL_COUNT = 3,
 
-    /* number of buffered game blocks */
-    NEXT_BLOCKS_CHUNK_SIZE = 1000,
-
     /* bowl defaults */
     BOWL_BLOCK_SIZE = 20,
     BOWL_WIDTH = 10,
     BOWL_HEIGHT = 20,
     BLOCK_COUNT = 7,
-    BLOCK_TILE_COUNT = 10
+    BLOCK_TILE_COUNT = 10,
+    BLOCK_BAG_COUNT = 100
 };
 
 /* block mask for the block types */
@@ -68,5 +66,12 @@ typedef struct {
     int id;
     int mask[4][4][4];
 } Block_Mask;
+
+//#define DEBUG
+#ifdef DEBUG
+	#define DPRINTF(...) fprintf(stderr,__VA_ARGS__)
+#else
+	#define DPRINTF(...)
+#endif
 
 #endif

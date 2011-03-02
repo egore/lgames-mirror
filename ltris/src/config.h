@@ -59,7 +59,6 @@ typedef struct {
     Player player3;
     int help;
     int slow;
-    int same_blocks_for_all;
     /* multiplayer */
     int holes;
     int rand_holes;

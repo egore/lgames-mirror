@@ -33,10 +33,7 @@ int last_bkgnd_id = -99; /* last background chosen */
 Sound_Chunk *wav_click = 0;
 #endif
 Bowl *bowls[BOWL_COUNT]; /* all bowls */
-int  *next_blocks, next_blocks_size = 0; /* buffered game blocks for
-                                            games where all players
-                                            will receive the same
-                                            blocks */
+int  *next_blocks = NULL, next_blocks_size = 0; /* all receive same blocks */
 
 extern Sdl sdl;
 extern Config config;
@@ -256,16 +253,12 @@ updated to use the fade effect.
 */
 int  tetris_init()
 {
-    /* create next block list if desired and multiplayer */
-    if ( config.same_blocks_for_all && !config.expert &&
-         config.gametype >= 3 )
-    {
-        next_blocks_size = NEXT_BLOCKS_CHUNK_SIZE;
-        next_blocks = calloc( next_blocks_size, sizeof(int) );
-        fill_int_array_rand(next_blocks,
-                            0,next_blocks_size,
-                            0,BLOCK_COUNT-1);
-    }
+	/* create block buffer with several bags each containing all 7 
+	 * tetrominoes permuted randomly */
+	next_blocks_size = BLOCK_BAG_COUNT * BLOCK_COUNT;
+	next_blocks = calloc( next_blocks_size, sizeof(int) );
+	fill_random_block_bags( next_blocks, BLOCK_BAG_COUNT );
+
     /* create bowls according to the gametype */
     switch ( config.gametype ) {
         case GAME_DEMO:
@@ -315,13 +308,13 @@ int  tetris_init()
 void tetris_clear()
 {
     int i;
-    
-    if ( config.same_blocks_for_all && !config.expert &&
-         config.gametype >= 3 )
-    {
-        next_blocks_size = 0;
-        free( next_blocks );
-    }
+
+	if (next_blocks) {
+		next_blocks_size = 0;
+		free( next_blocks );
+		next_blocks = NULL;
+	}
+
     for ( i = 0; i < BOWL_COUNT; i++ ) {
         if ( bowls[i] ) 
             bowl_delete( bowls[i] );

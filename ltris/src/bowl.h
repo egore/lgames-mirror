@@ -85,7 +85,7 @@ typedef struct {
     int preview_sx, preview_sy; /* actuall preview is drawn here */
     float preview_alpha;
     float preview_alpha_change;
-    int cpu_dest_x; /* move block to this position (computed in bowl_create_next_block() */
+    int cpu_dest_x; /* move block to this position (computed in bowl_select_next_block() */
     int cpu_dest_rot; /* destination rotation */
     int cpu_dest_score; /* AI score */
     Delay cpu_delay; /* CPU delay before moving down fast */

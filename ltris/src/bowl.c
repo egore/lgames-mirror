@@ -200,104 +200,132 @@ void bowl_compute_cpu_dest( Bowl *bowl )
 }
 /*
 ====================================================================
-Initate next block.
+Initate next block. Set bowl::block::id to preview and get id of next 
+block to be dealt to bowl::next_block_id.
 ====================================================================
 */
-void bowl_create_next_block( Bowl *bowl ) 
+void bowl_select_next_block( Bowl *bowl ) 
 {
-    int i, min, *new_next_blocks = 0;
-    
-    bowl->block.id = bowl->next_block_id;
-    /* for experts: weight probability of next block against to 
-     * helpfulness with a 50% chance. equal properties else. */
-    if ( config.expert && (rand()%2) ) { 
-        int i, j, threshold, saveblockid; 
-        struct { int block, score; } tmp, scores[BLOCK_COUNT];
+	int i, min, *new_next_blocks = 0;
+	int num_old_blocks = 0;
 
-        saveblockid = bowl->block.id;
-        for (i=0; i<BLOCK_COUNT; i++ ) {
-            bowl->block.id = i;
-            bowl_compute_cpu_dest( bowl );
-            scores[i].block = i;
-            scores[i].score = bowl->cpu_dest_score;
-        }
-        /* Sort */
-        for ( i=0; i<BLOCK_COUNT-1; i++ ) {
-            for ( j=i+1; j<BLOCK_COUNT; j++ ) {
-                if ( scores[j].score < scores[i].score ) {
-                    tmp = scores[i];
-                    scores[i] = scores[j];
-                    scores[j] = tmp;
-                }
-            }
-        }
-        /* 50% chance of worst block, 25% next worse, etc.. */
-        j = rand();
-        threshold = RAND_MAX / 2;
-        for (i=0; i<BLOCK_COUNT-1; i++ ) {
-            if ( j > threshold ) break;
-            threshold /= 2;
-        }
-        bowl->next_block_id = scores[i].block;
-        bowl->block.id = saveblockid;
-    } else {
-        /* Even next-block probabilities */
-        if ( bowl->use_same_blocks )
-        {
-            bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
-            if ( bowl->next_blocks_pos == next_blocks_size )
-            {
-                /* resize block buffer and get new blocks */
-                min = next_blocks_size;
-                for ( i = 0; i < BOWL_COUNT; i++ )
-                    if ( bowls[i] && bowls[i]->next_blocks_pos < min )
-                        min = bowls[i]->next_blocks_pos;
-                for ( i = 0; i < BOWL_COUNT; i++ )
-                    if ( bowls[i] )
-                        bowls[i]->next_blocks_pos -= min;
-                new_next_blocks = 
-                    calloc( next_blocks_size - min + 
-                            NEXT_BLOCKS_CHUNK_SIZE,
-                            sizeof(int) );
-                memcpy( new_next_blocks, &next_blocks[min],
-                        sizeof(int) * (next_blocks_size - min) );
-                fill_int_array_rand( new_next_blocks, 
-                                     next_blocks_size - min,
-                                     NEXT_BLOCKS_CHUNK_SIZE,
-                                     0, BLOCK_COUNT-1 );
-                free( next_blocks );
-                next_blocks = new_next_blocks;
-                next_blocks_size = next_blocks_size - min +
-                                   NEXT_BLOCKS_CHUNK_SIZE;
-            }
-        }
-        else
-        {
-            bowl->next_block_id = rand() % BLOCK_COUNT; 
-            if ( bowl->next_block_id == bowl->block.id )
-                bowl->next_block_id = rand() % BLOCK_COUNT;
-        }
-    }
-    bowl->block.x = 3;
-    bowl->block.y = -3;
-    bowl->block.sx = bowl->sx + bowl->block_size * bowl->block.x;
-    bowl->block.sy = bowl->sy + bowl->block_size * bowl->block.y;
-    bowl->block.rot_id = 0;
-    bowl->block.sw = bowl->block.sh = 4 * bowl->block_size;
-    bowl->block.cur_x = bowl->block.x * bowl->block_size;
-    bowl->block.cur_y = bowl->block.y * bowl->block_size;
-    bowl->block.check_y = (int)bowl->block.cur_y;
-    bowl_compute_help_pos( bowl );
-    bowl_compute_preview_pos( bowl );
-    /* if CPU is in control get destination row & other stuff */
-    if ( !bowl->controls ) {
-        /* destination */
-        bowl_compute_cpu_dest( bowl );
-        /* set delay until cpu waits with dropping block */
-        delay_set( &bowl->cpu_delay, config.cpu_delay );
-        bowl->cpu_down = 0;
-        delay_set( &bowl->cpu_rot_delay, config.cpu_rot_delay );
-    }
+	/* set preview as current block id */
+	bowl->block.id = bowl->next_block_id;
+	
+	/* in expert mode (only for single player as we will alter the bags!)
+	 * test remaining pieces in current bag and swap worst piece to 
+	 * beginning of queue. */
+	if (config.expert && (config.gametype == 1 || config.gametype == 2)) {
+		int num_test_blocks;
+		int j, savedblockid; 
+		struct { int block, score, next_blocks_pos; } tmp, 
+			scores[BLOCK_COUNT];
+
+		/* determine number of remaining blocks in current bag */
+		num_test_blocks = BLOCK_COUNT - (bowl->next_blocks_pos % BLOCK_COUNT);
+		if (num_test_blocks > next_blocks_size - bowl->next_blocks_pos)
+			num_test_blocks = next_blocks_size - bowl->next_blocks_pos;
+		DPRINTF("Expert mode: Testing %d pieces\n", num_test_blocks);
+
+		/* backup current block id, we need field for cpu algorithm */
+		savedblockid = bowl->block.id;
+
+		/* let cpu algorithm compute score for all pieces */
+		for (i = 0; i < num_test_blocks; i++) {
+			bowl->block.id = next_blocks[bowl->next_blocks_pos + i];
+			bowl_compute_cpu_dest( bowl );
+			scores[i].block = bowl->block.id;
+			scores[i].next_blocks_pos = bowl->next_blocks_pos + i;
+			scores[i].score = bowl->cpu_dest_score;
+			DPRINTF("  type = %d, score = %d\n",scores[i].block, 
+					scores[i].score);
+		}
+
+		/* bubblesort scores */
+		for ( i = 0; i < num_test_blocks - 1; i++ ) {
+			for ( j = i + 1; j < num_test_blocks; j++ ) {
+				if ( scores[j].score < scores[i].score ) {
+					tmp = scores[i];
+					scores[i] = scores[j];
+					scores[j] = tmp;
+				}
+			}
+		}
+
+		/* for now always deal worst block */
+		i = next_blocks[scores[0].next_blocks_pos];
+		next_blocks[scores[0].next_blocks_pos] = 
+			next_blocks[bowl->next_blocks_pos];
+		next_blocks[bowl->next_blocks_pos] = i;
+		DPRINTF("Dealing type %d next\n", 
+				next_blocks[bowl->next_blocks_pos]);
+
+		/* restore current block id */
+		bowl->block.id = savedblockid;
+	}
+	
+	/* set new preview from next_blocks and fill more bags if end of
+	 * buffer reached */
+	bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
+	DPRINTF("Bowl %p: Current = %d, Next = %d\n", bowl, bowl->block.id, 
+							bowl->next_block_id);
+	if ( bowl->next_blocks_pos == next_blocks_size ) {
+		DPRINTF("Need to fill new tetrominoes bags\n");
+		/* we have to keep part of buffer which other bowls 
+		 * might still need to go through */
+		min = next_blocks_size;
+		for ( i = 0; i < BOWL_COUNT; i++ )
+			if ( bowls[i] && bowls[i]->next_blocks_pos < min )
+				min = bowls[i]->next_blocks_pos;
+		num_old_blocks = next_blocks_size - min;
+			
+		/* resize buffer and save old blocks */
+		next_blocks_size = num_old_blocks + BLOCK_BAG_COUNT*BLOCK_COUNT;
+		new_next_blocks = calloc(next_blocks_size, sizeof(int));
+		if (num_old_blocks > 0) {
+			memcpy( new_next_blocks, &next_blocks[min],
+					sizeof(int) * num_old_blocks );
+			DPRINTF("Keeping %d pieces: ", num_old_blocks);
+			for (i = 0; i < num_old_blocks; i++)
+				DPRINTF("%d ",new_next_blocks[i]);
+			DPRINTF("\n");
+		}
+		free( next_blocks );
+		next_blocks = new_next_blocks;
+		
+		/* adjust position in next_blocks for all bowls */
+		for ( i = 0; i < BOWL_COUNT; i++ )
+			if ( bowls[i] )
+				bowls[i]->next_blocks_pos -= min;
+			
+		/* fill new bags */
+		fill_random_block_bags( next_blocks + num_old_blocks, 
+							BLOCK_BAG_COUNT );
+	}
+    
+	/* init rest of block structure */
+	bowl->block.x = 3;
+	bowl->block.y = -3;
+	bowl->block.sx = bowl->sx + bowl->block_size * bowl->block.x;
+	bowl->block.sy = bowl->sy + bowl->block_size * bowl->block.y;
+	bowl->block.rot_id = 0;
+	bowl->block.sw = bowl->block.sh = 4 * bowl->block_size;
+	bowl->block.cur_x = bowl->block.x * bowl->block_size;
+	bowl->block.cur_y = bowl->block.y * bowl->block_size;
+	bowl->block.check_y = (int)bowl->block.cur_y;
+	bowl_compute_help_pos( bowl );
+	bowl_compute_preview_pos( bowl );
+
+	/* if CPU is in control get destination row & other stuff */
+	if ( !bowl->controls ) {
+		/* destination */
+		bowl_compute_cpu_dest( bowl );
+		
+		/* set delay until cpu waits with dropping block */
+		delay_set( &bowl->cpu_delay, config.cpu_delay );
+		bowl->cpu_down = 0;
+		delay_set( &bowl->cpu_rot_delay, config.cpu_rot_delay );
+	}
 }
 
 /*
@@ -526,13 +554,21 @@ void bowl_finish_game( Bowl *bowl )
     if ( !bowl->mute ) sound_play( bowl->wav_explosion );
 #endif    
     /* gain the bonus score */
-    if ( !config.preview || bowl->preview_center_sx == -1 )
+    DPRINTF("Basic score before bonuses: %d\n", (int)counter_get(bowl->score));
+    if ( !config.preview || bowl->preview_center_sx == -1 ) {
         score_mod += 0.15;
-    if ( config.gametype != 2 )
+        DPRINTF("Bonus for no preview, current score mod = %1.2g\n",score_mod);
+    }
+    if ( config.gametype != 2 && config.starting_level > 0) {
         score_mod += 0.015 * config.starting_level;
-    if ( config.expert )
+        DPRINTF("Bonus for higher starting level, current score mod = %1.2g\n",score_mod);
+    }
+    if ( config.expert && (config.gametype == 1 || config.gametype == 2) ) {
 	score_mod += 1.0;
+        DPRINTF("Bonus for expert mode, current score mod = %1.2g\n",score_mod);
+    }
     counter_add( &bowl->score, (int)( score_mod * counter_get( bowl->score )) );
+    DPRINTF("Final score with bonuses: %d\n", (int)counter_get(bowl->score));
 }
 
 /*
@@ -681,7 +717,7 @@ void bowl_insert_block( Bowl *bowl )
 	  }
     }
   /* get next block */
-  bowl_create_next_block( bowl );
+  bowl_select_next_block( bowl );
 }
 /*
 ====================================================================
@@ -986,14 +1022,7 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->level = (config.gametype == 2 ) ? 0 : config.starting_level;
     bowl->stored_key = -1;
     bowl_reset_contents( bowl );
-    if ( config.same_blocks_for_all && !config.expert && 
-         config.gametype >= 3 )
-    {
-        bowl->use_same_blocks = 1;
-        bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
-    }
-    else
-        bowl->next_block_id = rand() % BLOCK_COUNT;
+    bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
     delay_set( &bowl->block_hori_delay, config.hori_delay * 12 + 63 );
     bowl->block_hori_vel = (float)bowl->block_size / bowl->block_hori_delay.limit;
     bowl->block_drop_vel = 0.8;
@@ -1001,7 +1030,7 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->help_sw = bowl->help_sh = bowl->block_size * 4;
     bowl->preview_center_sx = preview_x;
     bowl->preview_center_sy = preview_y;
-    bowl_create_next_block( bowl );
+    bowl_select_next_block( bowl );
     bowl->help_alpha_change = 1.2;
     bowl->preview_alpha_change = 0.4;
     bowl->font = load_fixed_font( "f_small_white.bmp", 32, 96, 8 );

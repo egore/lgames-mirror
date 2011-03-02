@@ -67,7 +67,6 @@ void config_reset()
     config.preview = 1;
     config.help = 1;
     config.slow = 0;
-    config.same_blocks_for_all = 1;
     strcpy( config.player1.name, "Michael" );
     strcpy( config.player2.name, "Sabine" );
     strcpy( config.player3.name, "Thomas" );
@@ -165,7 +164,6 @@ void config_load( )
     parser_get_int( pd, "preview", &config.preview );
     parser_get_int( pd, "help", &config.help );
     parser_get_int( pd, "expert", &config.expert );
-    parser_get_int( pd, "same_blocks", &config.same_blocks_for_all );
     parser_get_int( pd, "center_preview", &config.center_preview );
     parser_get_int( pd, "holes", &config.holes );
     parser_get_int( pd, "rand_holes", &config.rand_holes );
@@ -232,7 +230,6 @@ void config_save( )
         fprintf( file, "preview»%i\n", config.preview );
         fprintf( file, "help»%i\n", config.help );
         fprintf( file, "expert»%i\n", config.expert );
-        fprintf( file, "same_blocks»%i\n",config.same_blocks_for_all);
         fprintf( file, "center_preview»%i\n", config.center_preview );
         fprintf( file, "holes»%i\n", config.holes );
 	fprintf( file, "rand_holes»%i\n", config.rand_holes );

@@ -104,10 +104,10 @@ Hint strings for the menu.
                        "hits the ground giving no possibility to move the block below another "\
                        "one.)#If you set this option to 'Async' you may move the block below others but "\
                        "on the cost of slight graphical errors.")
-#define HINT_EXPERT _("In expert mode the propabilities for the next blocks are uneven to give a " \
-		       "block that is most likely difficult to fit anywhere. The game becomes " \
-		       "really hard by this so all score is doubled in the end.")
-#define HINT_SAME _("If ON all players will get exactly the same blocks. So there is no disadvantage to any player due to random blocks. This does not work in expert mode as the block selection depends on your actions there.")
+#define HINT_EXPERT _("In expert mode the most unsuitable piece of the " \
+			"current bag (a bag is a set of all 7 randomly sorted basic pieces) "\
+			"is dealt out next. The game becomes quite "\
+			"difficult by this, so all score is doubled in the end.")
                        
 /*
 ====================================================================
@@ -360,7 +360,6 @@ void manager_create()
     menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_link( _("Back"), HINT_, _main ) );
     /* twoplayer options */
-    menu_add( twoplayer, item_create_switch( _("Same Blocks For All:"), HINT_SAME, &config.same_blocks_for_all, _("Off"), _("On") ) );
     menu_add( twoplayer, item_create_separator( "" ) );
     menu_add( twoplayer, item_create_range( _("Holes:"), HINT_HOLES, &config.holes, 1, 9, 1 ) );
     menu_add( twoplayer, item_create_switch( _("Random Holes:"), HINT_RANDHOLES, &config.rand_holes, _("Off"), _("On") ) );
