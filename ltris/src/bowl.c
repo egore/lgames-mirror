@@ -1031,7 +1031,8 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->preview_center_sx = preview_x;
     bowl->preview_center_sy = preview_y;
     bowl_select_next_block( bowl );
-    bowl->help_alpha_change = 1.2;
+    bowl->help_alpha_change = -0.9;
+    bowl->help_alpha = 255;
     bowl->preview_alpha_change = 0.4;
     bowl->font = load_fixed_font( "f_small_white.bmp", 32, 96, 8 );
 #ifdef SOUND
@@ -1212,7 +1213,7 @@ void bowl_show( Bowl *bowl )
         }
         if ( config.help == 2 ) { /* draw help lines */
             int i, x, y, y1, y2;
-            int red = SDL_MapRGB( sdl.screen->format, 255, 0, 0 );
+            int red = SDL_MapRGB( sdl.screen->format, 64, 192, 64 );
             /* left help line */
             x = bowl->block.sx + left_x * bowl->block_size;
             y1 = bowl->block.sy + (left_y+1) * bowl->block_size;
@@ -1404,9 +1405,9 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         }
     }
     else {
-        if ( bowl->help_alpha < 0 ) {
+        if ( bowl->help_alpha < 64 ) {
             bowl->help_alpha_change = -bowl->help_alpha_change;
-            bowl->help_alpha = 0;
+            bowl->help_alpha = 64;
         }
     }
     /* PREVIEW ALPHA */
