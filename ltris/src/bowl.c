@@ -564,7 +564,7 @@ void bowl_finish_game( Bowl *bowl )
         DPRINTF("Bonus for higher starting level, current score mod = %1.2g\n",score_mod);
     }
     if ( config.expert && (config.gametype == 1 || config.gametype == 2) ) {
-	score_mod += 1.0;
+	score_mod += 0.5;
         DPRINTF("Bonus for expert mode, current score mod = %1.2g\n",score_mod);
     }
     counter_add( &bowl->score, (int)( score_mod * counter_get( bowl->score )) );

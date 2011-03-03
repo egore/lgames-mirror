@@ -104,10 +104,10 @@ Hint strings for the menu.
                        "hits the ground giving no possibility to move the block below another "\
                        "one.)#If you set this option to 'Async' you may move the block below others but "\
                        "on the cost of slight graphical errors.")
-#define HINT_EXPERT _("In expert mode the most unsuitable piece of the " \
+#define HINT_EXPERT _("In expert mode the most unsuitable piece of the "\
 			"current bag (a bag is a set of all 7 randomly sorted basic pieces) "\
-			"is dealt out next. The game becomes quite "\
-			"difficult by this, so all score is doubled in the end.")
+			"is dealt out next. This option only works for single player. "\
+			"There is a 50% score bonus in the end.")
                        
 /*
 ====================================================================
