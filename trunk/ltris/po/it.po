@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ltris 1.0.14\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2009-12-25 10:55+0100\n"
+"POT-Creation-Date: 2011-03-03 11:13+0100\n"
 "PO-Revision-Date: 2010-04-12 00:10+0100\n"
 "Last-Translator: Desty Nova <anggasp@infinito.it>\n"
 "Language-Team: Italian\n"
@@ -273,26 +273,12 @@ msgstr ""
 "blocchi ma al costo di errori grafici minori."
 
 #: src/manager.c:107
+#, c-format
 msgid ""
-"In expert mode the propabilities for the next blocks are uneven to give a "
-"block that is most likely difficult to fit anywhere. The game becomes really "
-"hard by this so all score is doubled in the end."
+"In expert mode the most unsuitable piece of the current bag (a bag is a set "
+"of all 7 randomly sorted basic pieces) is dealt out next. This option only "
+"works for single player. There is a 50% score bonus in the end."
 msgstr ""
-"In modalita' esperto le probabilita' per i prossimi blocchi sono irregolari "
-"per dare un blocco che e' piu' difficile da inserire ovunque. Il gioco "
-"diventa davvero difficile e per questo tutto il punteggio e' raddoppiato "
-"alla fine."
-
-#: src/manager.c:110
-msgid ""
-"If ON all players will get exactly the same blocks. So there is no "
-"disadvantage to any player due to random blocks. This does not work in "
-"expert mode as the block selection depends on your actions there."
-msgstr ""
-"Se ACCESO tutti i giocatori otterranno esattamente gli stessi blocchi. Cosi' "
-"non c'e' svantaggio per nessun giocatore per via di blocchi casuali. Non "
-"funziona in modalita' esperto dato che la selezione del blocco dipende dalle "
-"tue azioni la'."
 
 #: src/manager.c:139 src/manager.c:140
 msgid "<CREATE SET>"
@@ -336,9 +322,8 @@ msgid "Kamikaze"
 msgstr "Kamikaze"
 
 #: src/manager.c:211 src/manager.c:322 src/manager.c:332 src/manager.c:352
-#: src/manager.c:354 src/manager.c:356 src/manager.c:363 src/manager.c:366
-#: src/manager.c:367 src/manager.c:368 src/manager.c:426 src/manager.c:430
-#: src/manager.c:435
+#: src/manager.c:354 src/manager.c:356 src/manager.c:365 src/manager.c:366
+#: src/manager.c:367 src/manager.c:425 src/manager.c:429 src/manager.c:434
 msgid "Off"
 msgstr "Off"
 
@@ -378,15 +363,15 @@ msgstr "Nuova Partita"
 msgid "Controls"
 msgstr "Controlli"
 
-#: src/manager.c:282 src/manager.c:375
+#: src/manager.c:282 src/manager.c:374
 msgid "Player1"
 msgstr "Giocatore1"
 
-#: src/manager.c:283 src/manager.c:376
+#: src/manager.c:283 src/manager.c:375
 msgid "Player2"
 msgstr "Giocatore2"
 
-#: src/manager.c:284 src/manager.c:377
+#: src/manager.c:284 src/manager.c:376
 msgid "Player3"
 msgstr "Giocatore3"
 
@@ -412,8 +397,8 @@ msgid "Quit"
 msgstr "Abbandona"
 
 #: src/manager.c:318 src/manager.c:329 src/manager.c:342 src/manager.c:361
-#: src/manager.c:373 src/manager.c:381 src/manager.c:414 src/manager.c:419
-#: src/manager.c:424 src/manager.c:438 src/menu.c:168
+#: src/manager.c:372 src/manager.c:380 src/manager.c:413 src/manager.c:418
+#: src/manager.c:423 src/manager.c:437 src/menu.c:168
 msgid "Back"
 msgstr "Indietro"
 
@@ -422,8 +407,8 @@ msgid "Sound:"
 msgstr "Suono:"
 
 #: src/manager.c:322 src/manager.c:332 src/manager.c:352 src/manager.c:354
-#: src/manager.c:356 src/manager.c:363 src/manager.c:366 src/manager.c:367
-#: src/manager.c:368 src/manager.c:426 src/manager.c:430 src/manager.c:435
+#: src/manager.c:356 src/manager.c:365 src/manager.c:366 src/manager.c:367
+#: src/manager.c:425 src/manager.c:429 src/manager.c:434
 msgid "On"
 msgstr "On"
 
@@ -447,7 +432,7 @@ msgstr "Pezzo Per Pezzo:"
 msgid "Smooth"
 msgstr "Liscio"
 
-#: src/manager.c:334 src/manager.c:388 src/manager.c:394 src/manager.c:400
+#: src/manager.c:334 src/manager.c:387 src/manager.c:393 src/manager.c:399
 msgid "Drop:"
 msgstr "Caduta:"
 
@@ -519,120 +504,116 @@ msgstr "Modalita' Esperto:"
 msgid "Slow:"
 msgstr "Lento:"
 
-#: src/manager.c:363
-msgid "Same Blocks For All:"
-msgstr "Stessi Blocchi A Tutti:"
-
-#: src/manager.c:365
+#: src/manager.c:364
 msgid "Holes:"
 msgstr "Buchi:"
 
-#: src/manager.c:366
+#: src/manager.c:365
 msgid "Random Holes:"
 msgstr "Buchi Casuali:"
 
-#: src/manager.c:367
+#: src/manager.c:366
 msgid "Send All Lines:"
 msgstr "Invia Tutte Le Linee:"
 
-#: src/manager.c:368
+#: src/manager.c:367
 msgid "Always Send Tetris:"
 msgstr "Invia Sempre Tetris:"
 
-#: src/manager.c:370
+#: src/manager.c:369
 msgid "CPU Style:"
 msgstr "Stile CPU:"
 
-#: src/manager.c:371
+#: src/manager.c:370
 msgid "CPU Drop Delay:"
 msgstr "Ritardo Drop CPU:"
 
-#: src/manager.c:379
+#: src/manager.c:378
 msgid "Horizontal Delay:"
 msgstr "Ritardo Orizzontale:"
 
-#: src/manager.c:383 src/manager.c:389 src/manager.c:395
+#: src/manager.c:382 src/manager.c:388 src/manager.c:394
 msgid "Left:"
 msgstr "Sinistra:"
 
-#: src/manager.c:384 src/manager.c:390 src/manager.c:396
+#: src/manager.c:383 src/manager.c:389 src/manager.c:395
 msgid "Right:"
 msgstr "Destra:"
 
-#: src/manager.c:385 src/manager.c:391 src/manager.c:397
+#: src/manager.c:384 src/manager.c:390 src/manager.c:396
 msgid "Rotate Left:"
 msgstr "Ruota a Sinistra:"
 
-#: src/manager.c:386 src/manager.c:392 src/manager.c:398
+#: src/manager.c:385 src/manager.c:391 src/manager.c:397
 msgid "Rotate Right:"
 msgstr "Ruota a Destra:"
 
-#: src/manager.c:387 src/manager.c:393 src/manager.c:399
+#: src/manager.c:386 src/manager.c:392 src/manager.c:398
 msgid "Down:"
 msgstr "Giu':"
 
-#: src/manager.c:426
+#: src/manager.c:425
 msgid "Quick Help:"
 msgstr "Aiuto Rapido:"
 
-#: src/manager.c:429
+#: src/manager.c:428
 msgid "Clear Keystate:"
 msgstr "Pulisci Keystate:"
 
-#: src/manager.c:430
+#: src/manager.c:429
 msgid "Center Preview:"
 msgstr "Anteprima Centro:"
 
-#: src/manager.c:431
+#: src/manager.c:430
 msgid "Collision Check:"
 msgstr "Check Collisione:"
 
-#: src/manager.c:431
+#: src/manager.c:430
 msgid "Sync"
 msgstr "Sync"
 
-#: src/manager.c:431
+#: src/manager.c:430
 msgid "Async"
 msgstr "Async"
 
-#: src/manager.c:434
+#: src/manager.c:433
 msgid "Test CPU Algorithm"
 msgstr "Test Algoritmo CPU"
 
-#: src/manager.c:435
+#: src/manager.c:434
 msgid "Visualization"
 msgstr "Visualizzazione"
 
-#: src/tetris.c:129
+#: src/tetris.c:126
 msgid "y"
 msgstr "s"
 
-#: src/tetris.c:130
+#: src/tetris.c:127
 msgid "n"
 msgstr "n"
 
-#: src/tetris.c:392
+#: src/tetris.c:385
 msgid "End Game? y/n"
 msgstr "Fine Gioco? s/n"
 
-#: src/bowl.c:523 src/bowl.c:524
+#: src/bowl.c:551 src/bowl.c:552
 msgid "Game Over"
 msgstr "Game Over"
 
-#: src/bowl.c:1233
+#: src/bowl.c:1262
 #, c-format
 msgid "%i Lvl: %i"
 msgstr "%i Lvl: %i"
 
-#: src/bowl.c:1479
+#: src/bowl.c:1508
 msgid "Player:"
 msgstr "Giocatore:"
 
-#: src/bowl.c:1483
+#: src/bowl.c:1512
 msgid "Score:"
 msgstr "Punti:"
 
-#: src/bowl.c:1485
+#: src/bowl.c:1514
 msgid "Lines:"
 msgstr "Linee:"
 
@@ -735,3 +716,26 @@ msgstr "PagGiù"
 #: src/value.c:55
 msgid "Home"
 msgstr "Home"
+
+#~ msgid ""
+#~ "In expert mode the propabilities for the next blocks are uneven to give a "
+#~ "block that is most likely difficult to fit anywhere. The game becomes "
+#~ "really hard by this so all score is doubled in the end."
+#~ msgstr ""
+#~ "In modalita' esperto le probabilita' per i prossimi blocchi sono "
+#~ "irregolari per dare un blocco che e' piu' difficile da inserire ovunque. "
+#~ "Il gioco diventa davvero difficile e per questo tutto il punteggio e' "
+#~ "raddoppiato alla fine."
+
+#~ msgid ""
+#~ "If ON all players will get exactly the same blocks. So there is no "
+#~ "disadvantage to any player due to random blocks. This does not work in "
+#~ "expert mode as the block selection depends on your actions there."
+#~ msgstr ""
+#~ "Se ACCESO tutti i giocatori otterranno esattamente gli stessi blocchi. "
+#~ "Cosi' non c'e' svantaggio per nessun giocatore per via di blocchi "
+#~ "casuali. Non funziona in modalita' esperto dato che la selezione del "
+#~ "blocco dipende dalle tue azioni la'."
+
+#~ msgid "Same Blocks For All:"
+#~ msgstr "Stessi Blocchi A Tutti:"
