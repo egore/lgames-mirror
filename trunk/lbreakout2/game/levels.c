@@ -111,7 +111,7 @@ home directory (fname begins with ~) or installation directory.
 addBonusLevels is also the seed if not 0.
 ====================================================================
 */
-LevelSet *levelset_load( char *fname, int addBonusLevels )
+LevelSet *levelset_load( const char *fname, int addBonusLevels )
 {
 	int version, update, i, j, num;
 	LevelSet *set;

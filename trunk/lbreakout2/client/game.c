@@ -939,7 +939,7 @@ void client_game_delete()
 /* create network/local game context and initiate game state:
  * network needs to receive the level data and a local game
  * has to load the next level */
-int client_game_init_local( char *setname )
+int client_game_init_local( const char *setname )
 {
         Set_Chart *chart;
 	int i, warp_limit;

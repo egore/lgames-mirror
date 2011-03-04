@@ -49,7 +49,7 @@ void client_game_delete();
 /* create network/local game context and initiate game state:
  * network needs to receive the level data and a local game
  * has to load the next level */
-int client_game_init_local( char *setname );
+int client_game_init_local( const char *setname );
 int client_game_init_network( char *opponent_name, int diff );
 
 /* create local game context and initiate game state
@@ -64,4 +64,3 @@ void client_game_run( void );
 
 /* test a level until all balls got lost */
 void client_game_test_level( Level *level );
-

@@ -37,6 +37,7 @@
 #include "theme.h"
 #include "client.h"
 #include "../gui/gui.h"
+#include "setselect.h"
 
 #define CHART_FILE_NAME "lbreakout2.hscr"
 
@@ -63,6 +64,7 @@ int main(int argc, char *argv[])
     int leave = 0;
     char *editor_file = 0;
     char path[512];
+    const char *set_name = NULL;
     SDL_Surface *loading;
 #ifdef __unix__
     gid_t realgid;
@@ -153,7 +155,8 @@ int main(int argc, char *argv[])
     client_create();
     exp_load();
     editor_create();
-	help_create();
+    help_create();
+    setselect_create();
     /* run game */
     manager_fade( STK_FADE_IN );
     while( !leave && !stk_quit_request ) {
@@ -176,11 +179,17 @@ int main(int argc, char *argv[])
                 manager_fade( STK_FADE_IN );
                 break;
             case ACTION_PLAY_CUSTOM:
+                /* run select dialog first */
+                if ((set_name = setselect_run()) == NULL) {
+			manager_show();
+			break;
+		}
+			
                 manager_fade( STK_FADE_OUT );
                 gameSeed = rand(); /* set random seed for next FREAKOUT/BonusLevels */
                 if (gameSeed==0) gameSeed=1; /* not allowed because.... A HACK!!! 0 means to have
                                                 no bonus levels to save a parameter */
-		if ( client_game_init_local( levelset_names_local[config.levelset_id_local] ) )
+		if ( client_game_init_local( set_name ) )
 			client_game_run();
                 client_game_finalize();
                 manager_fade( STK_FADE_IN );
@@ -220,9 +229,10 @@ int main(int argc, char *argv[])
     }
     manager_fade( STK_FADE_OUT );
     /* delete stuff */
+    setselect_delete();
     help_delete();
-	manager_delete();
-	chart_save();
+    manager_delete();
+    chart_save();
     chart_delete();
     editor_delete();
     exp_delete();
