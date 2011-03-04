@@ -61,8 +61,6 @@ void config_check_dir()
 void config_reset()
 {
     /* levels */
-    config.levelset_id_local = 0;
-    config.levelset_count_local = 0;
     config.levelset_id_home = 0;
     config.levelset_count_home = 0;
     /* player */
@@ -143,8 +141,6 @@ void config_load( )
         return;
     }
     /* assign */
-    parser_get_int( pd, "set_id_local", &config.levelset_id_local );
-    parser_get_int( pd, "set_count_local", &config.levelset_count_local );
     parser_get_int( pd, "set_id_home", &config.levelset_id_home );
     parser_get_int( pd, "set_count_home", &config.levelset_count_home );
     parser_get_int( pd, "player_count", &config.player_count );
@@ -218,8 +214,6 @@ void config_save( )
         fprintf( stderr, "Cannot access config file '%s' to save settings\n", file_name );
     else {
         fprintf( file, "@\n" );
-        fprintf( file, "set_id_local»%i\n", config.levelset_id_local );
-        fprintf( file, "set_count_local»%i\n", config.levelset_count_local );
         fprintf( file, "set_id_home»%i\n", config.levelset_id_home );
         fprintf( file, "set_count_home»%i\n", config.levelset_count_home );
         fprintf( file, "player_count»%i\n", config.player_count );

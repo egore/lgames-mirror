@@ -29,7 +29,7 @@ lbreakout2res.o: win32.ico
 bin_PROGRAMS = lbreakout2
 lbreakout2_SOURCES = credit.c shine.c extras.c balls.c shrapnells.c  \
 shots.c event.c paddle.c frame.c misc.c bricks.c player.c \
-file.c config.c \
+file.c config.c setselect.c \
 item.c menu.c manager.c value.c chart.c \
 editor.c help.c hint.c theme.c client.c client_recv.c \
 client_data.c client_handlers.c game.c comm.c slot.c \
@@ -39,7 +39,7 @@ lbreakout2_LDADD = @win32_deps@ ../common/libcommon.a ../gui/libGui.a ../game/li
 
 EXTRA_DIST = credit.h shine.h extras.h balls.h shrapnells.h  \
 shots.h event.h paddle.h frame.h misc.h bricks.h player.h \
-file.h config.h lbreakout.h \
+file.h config.h lbreakout.h setselect.h \
 item.h menu.h manager.h value.h chart.h \
 editor.h help.h hint.h theme.h client.h client_data.h \
 client_handlers.h game.h comm.h slot.h \

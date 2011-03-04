@@ -89,7 +89,7 @@ Query set chart by this name or if not found create a new one
 by this name.
 ====================================================================
 */
-Set_Chart* chart_set_query( char *name );
+Set_Chart* chart_set_query( const char *name );
 /*
 ====================================================================
 Query chart by id. If id is invalid return 0.

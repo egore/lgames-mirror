@@ -46,7 +46,7 @@ extern StkSound *wav_menu_click;
 extern StkSound *wav_menu_motion;
 #endif
 /* some items we need to know to assign name lists later */
-Item *item_levelset, *item_set, *item_theme, *item_resume_0;
+Item *item_set, *item_theme, *item_resume_0;
 extern List *charts;
 int chart_id = 0; /* current chart displayed */
 /* theme name list */
@@ -75,7 +75,7 @@ extern int theme_count;
                   "MEDIUM:#Lives: 5 (max. 7)#Paddle Size: 54 (max. 144)#Ball Speed: 270-430 pixels/sec##"\
                   "HARD:#Lives: 4 (max. 5)#Paddle Size: 54 (max. 108)#Ball Speed: 300-450 pixels/sec#Bonus: +30%")
 #define HINT_START_LBR _("Play the original LBreakout2 levelset.")
-#define HINT_START_CUSTOM _("Play the additional levelset selected below.")
+#define HINT_START_CUSTOM _("Play an additional levelset.")
 #define HINT_EDITOR_SET _("This is the list of the levelsets found in ~/.lgames/lbreakout2-levels which you may edit. If you "\
                         "choose <CREATE SET> and click on 'Edit Set' below you'll be asked to enter a levelsetname and the new levelset " \
                         "will be saved in a file by this name.")
@@ -316,10 +316,6 @@ void levelsets_load_names()
     for ( i = 0; i < default_set_count; i++ )
         levelset_names_local[i] = default_sets[i];
     /* adjust config */
-    if ( config.levelset_count_local != levelset_count_local ) {
-        config.levelset_id_local = 0;
-        config.levelset_count_local = levelset_count_local;
-    }
     if ( config.levelset_count_home != levelset_count_home ) {
         config.levelset_id_home = 0;
         config.levelset_count_home = levelset_count_home;
@@ -381,7 +377,6 @@ void cb_delete_set()
     remove( fname );
     levelsets_load_names(); /* reinit name lists and configs indices */
     /* reassign these name lists as position in memory has changed */
-    value_set_new_names( item_levelset->value, levelset_names_local, levelset_count_local );
     value_set_new_names( item_set->value, levelset_names_home, levelset_count_home );
 }
 /* adjust set list */
@@ -390,7 +385,6 @@ void cb_adjust_set_list()
     /* reinit name lists and configs indices */
     levelsets_load_names();
     /* reassign these name lists as position in memory has changed */
-    value_set_new_names( item_levelset->value, levelset_names_local, levelset_count_local );
     value_set_new_names( item_set->value, levelset_names_home, levelset_count_home );
 }
 /* set key speed from i_key_speed */
@@ -419,6 +413,7 @@ void cb_change_theme()
     stk_surface_blit( mbkgnd, 0,0,-1,-1, stk_display, 0,0 );
     stk_display_update( STK_UPDATE_ALL );
 }
+#ifdef OLDSTUFF
 /* update hint about selected levelset */
 void cb_update_levelset_hint()
 {
@@ -467,6 +462,7 @@ void cb_update_levelset_hint()
 
     select_chart( levelset_names_local[config.levelset_id_local], 1 );
 }
+#endif
 /* update hint of theme by feeding it with the ABOUT file */
 void cb_update_theme_hint()
 {
@@ -677,11 +673,7 @@ void manager_create()
     slot_update_hint( 0, item_resume_0->hint );
     menu_add( game, item_create_action( _("Start Original Set"), HINT_START_LBR, ACTION_PLAY_LBR ) );
     menu_add( game, item_create_action( _("Start AddOn"), HINT_START_CUSTOM, ACTION_PLAY_CUSTOM ) );
-    //menu_add( game, item_create_separator( "" ) );
-    item_levelset = item_create_switch_x( _("AddOn:"), "", &config.levelset_id_local, levelset_names_local, levelset_count_local );
-    item_levelset->callback = cb_update_levelset_hint;
-    cb_update_levelset_hint(); /* initiate first hint */
-    menu_add( game, item_levelset );
+    menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_switch_x( _("Difficulty:"), HINT_DIFF, &config.diff, str_diff, DIFF_COUNT ) );
     menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_range( _("Players:"), HINT_PLAYERS, &config.player_count, 1, 4, 1 ) );

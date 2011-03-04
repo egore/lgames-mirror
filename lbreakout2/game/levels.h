@@ -41,7 +41,7 @@ Load all levels from either
 home directory (fname begins with ~) or installation directory.
 ====================================================================
 */
-LevelSet *levelset_load( char *fname, int addBonusLevels );
+LevelSet *levelset_load( const char *fname, int addBonusLevels );
 /*
 ====================================================================
 Load all levelSETS listed in 'levelsets' (names) into one big
@@ -127,4 +127,3 @@ Get the name of the author of the first level.
 void levelset_get_first_author( FILE *file, char *author );
 
 #endif
-

@@ -25,9 +25,6 @@ typedef struct {
     /* directory to save config and saved games */
     char dir_name[512];
     /* levels */
-    int levelset_id_local;
-    int levelset_count_local; /* save number of local game levelsets 
-                                 for safety (to reset id if count changed) */
     int levelset_id_home;
     int levelset_count_home; /* save number of levelsets for safety 
                                 (to reset id if count changed) */

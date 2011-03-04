@@ -80,4 +80,10 @@ enum { ORIG_BACK_COUNT = 6 };
 extern char msgbuf[MAX_MSG_SIZE];
 extern int msglen;
 
+/* check if position is in given region */
+#define FOCUS( cx, cy, rx, ry, rw, rh ) \
+	( cx >= rx && cy >= ry && cx < rx + rw && cy < ry + rh )
+#define FOCUS_RECT( cx, cy, rect ) \
+	FOCUS( cx, cy, (rect).x, (rect).y, (rect).w, (rect).h )
+
 #endif
