@@ -339,6 +339,12 @@ void setselect_create()
 	/* thumbnail background and bricks */
 	ssd.thumbnail_background = create_thumbnail_background();
 	ssd.thumbnail_bricks = shrink_surface_half(brick_pic);
+	/* by default bricks have no color key but there may be an extra 
+	 * column at the end to specify one */
+	if (brick_pic->w & 1)
+		SDL_SetColorKey( ssd.thumbnail_bricks, SDL_SRCCOLORKEY,
+					stk_surface_get_pixel( brick_pic,
+						brick_pic->w - 1, 0 ) );
 
 	/* levelset infos */
 	ssd.num_set_infos = levelset_count_local;
