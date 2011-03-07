@@ -45,7 +45,7 @@
 #define SQUARE( x ) ((x)*(x))
 
 /* compares to strings and returns true if their first strlen(str1) chars are equal */
-int strequal( char *str1, char *str2 );
+int strequal( const char *str1, const char *str2 );
 
 /* delete lines */
 void delete_lines( char **lines, int line_number );

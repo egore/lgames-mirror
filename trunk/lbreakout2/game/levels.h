@@ -28,13 +28,13 @@
 Open a levelset file by name.
 ====================================================================
 */
-FILE *levelset_open( char *fname, char *mode );
+FILE *levelset_open( const char *fname, char *mode );
 /*
 ====================================================================
 Load all levels from file and add them to the list.
 ====================================================================
 */
-int levels_load( char *fname, List *levels, int *version, int *update );
+int levels_load( const char *fname, List *levels, int *version, int *update );
 /*
 ====================================================================
 Load all levels from either 
@@ -57,7 +57,7 @@ The levels are taken from the list so it must not have AUTO_DELETE
 enabled!
 ====================================================================
 */
-LevelSet *levelset_build_from_list( List *levels, char *name, int version, int update );
+LevelSet *levelset_build_from_list( List *levels, const char *name, int version, int update );
 /*
 ====================================================================
 Save levelset to home directory (regardsless of ~ in front of it).
