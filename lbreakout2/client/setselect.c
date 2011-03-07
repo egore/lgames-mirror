@@ -27,7 +27,10 @@
 /** Basic information about levelset and screenshot of first level */
 typedef struct {
 	char		*name;
-	char		*version;
+	struct {
+		int major;
+		int minor;
+	} 		version;
 	char		*author;
 	int		num_levels;
 	SDL_Surface	*thumbnail;
@@ -61,6 +64,8 @@ typedef struct {
 #define SETBUTTON_END_ID 19
 	select_button_t	select_buttons[NUMSELECTBUTTONS];
 	char		*selected_set; /* pointer to name in set_infos */
+	SDL_Surface	*thumbnail_background; /* bkgnd + frame + paddle */
+	SDL_Surface	*thumbnail_bricks; /* scaled down bricks */
 } setselect_dlg_t;
 setselect_dlg_t ssd;
 
@@ -71,15 +76,181 @@ extern SDL_Surface *extra_pic;
 extern SDL_Surface *brick_pic;
 extern int stk_quit_request;
 extern Config config;
+extern SDL_Surface *brick_pic;
+extern Brick_Conv brick_conv_table[BRICK_COUNT];
+extern SDL_Surface *frame_left, *frame_top, *frame_right;
+extern SDL_Surface **bkgnds, *paddle_pic, *ball_pic, *lamps;
+extern int paddle_cw, paddle_ch, ball_w, ball_h;
+extern int cw, ch;
+#ifdef AUDIO_ENABLED
+extern StkSound *wav_menu_click, *wav_menu_motion;
+#endif
+
+/** Return new surface half the width*height than @surf. */
+static SDL_Surface * shrink_surface_half(SDL_Surface *surf)
+{
+	int i, j, nw = surf->w / 2, nh = surf->h / 2;
+	SDL_Surface *newsurf = NULL;
+	
+	if ((newsurf = stk_surface_create(SDL_SWSURFACE,nw,nh)) == NULL) {
+		fprintf(stderr,_("Out of memory"));
+		return NULL;
+	}
+	
+        for ( j = 0; j < nh; j++ )
+		for ( i = 0; i < nw; i++ )
+			stk_surface_set_pixel(newsurf, i, j, 
+					stk_surface_get_pixel(surf,i<<1,j<<1));
+	return newsurf;
+}
+
+
+/** Create an empty level (with frame, paddle, etc) and scale to half size so
+ * it can be used for levelset previews. */
+static SDL_Surface* create_thumbnail_background()
+{
+	int i, px, py;
+	SDL_Surface *bkgnd = NULL, *thumb = NULL;
+	
+	/* wallpaper */
+	bkgnd = stk_surface_create(SDL_SWSURFACE,stk_display->w,stk_display->h);
+	bkgnd_draw(bkgnd,-1,0);
+	
+	/* frame */
+	stk_surface_blit(frame_left,0,0,-1,-1,bkgnd,0,0);
+	stk_surface_blit(frame_top,0,0,-1,-1,bkgnd,frame_left->w,0);
+	stk_surface_blit(frame_right,0,0,-1,-1,bkgnd,stk_display->w-frame_right->w,0);
+	
+	/* lifes */
+	for (i = 0; i < 5; i++)
+		stk_surface_blit(lamps,0,BRICK_HEIGHT,BRICK_WIDTH,BRICK_HEIGHT,
+					bkgnd, 0, bkgnd->h-(i+1)*BRICK_HEIGHT);
+	
+	/* paddle + ball */
+	px = (bkgnd->w - paddle_cw * 3) / 2;
+	py = bkgnd->h - 2 * BRICK_HEIGHT;
+	stk_surface_blit(paddle_pic,0,0,paddle_cw * 3, paddle_ch, bkgnd, px,py);
+	stk_surface_blit(ball_pic,0,0,ball_w,ball_h,bkgnd,
+				(bkgnd->w - ball_w) / 2, py - ball_h);
+	
+	thumb = shrink_surface_half(bkgnd);
+	SDL_FreeSurface(bkgnd);
+	SDL_SetColorKey(thumb, 0, 0);
+	return thumb;
+}
+
+/** Render an image of the first level. If @level is NULL render empty level. */
+static void render_level_thumbnail(set_info_t *si, const Level *level)
+{
+	int tw = ssd.thumbnail_background->w;
+	int th = ssd.thumbnail_background->h;
+	int bw = BRICK_WIDTH / 2, bh = BRICK_HEIGHT / 2;
+	int i, j, k, bx, by, xoff, yoff;
+	
+	if (si->thumbnail)
+		return;
+
+	/* set background */
+	if ((si->thumbnail = stk_surface_create(SDL_SWSURFACE,tw,th)) == NULL)
+		return;
+	SDL_SetColorKey(si->thumbnail, 0, 0);
+	stk_surface_blit(ssd.thumbnail_background, 0, 0, tw, th, 
+							si->thumbnail, 0, 0);
+	
+	if (level == NULL)
+		return;
+
+	/* add bricks */
+	xoff = bx = ((MAP_WIDTH - EDIT_WIDTH)/2) * bw;
+	yoff = by = bh;
+	for (j = 0; j < EDIT_HEIGHT; j++, by += bh) {
+		for (i = 0; i < EDIT_WIDTH; i++, bx += bw) {
+			for (k = 0; k < BRICK_COUNT; k++)
+				if (brick_conv_table[k].c == level->bricks[i][j])
+					break;
+			if (k == BRICK_COUNT)
+				continue; /* oops, unknown id? */
+			if (brick_conv_table[k].id != INVIS_BRICK_ID)
+				stk_surface_blit(ssd.thumbnail_bricks,
+						bw * brick_conv_table[k].id, 0,
+						bw, bh, si->thumbnail, bx, by);
+		}
+		bx = xoff;
+	}
+}
 
 /** Load basic information of levelset @sname (preceded by ~ for set in 
  * home directory) into struct @si. Also generate a small preview thumbnail
  * of first level. */
 static void load_set_info( set_info_t *si, const char *sname )
 {
-	/* FIXME for now just put in name */
-	memset( si, 0, sizeof( set_info_t ));
+	FILE *file = NULL;
+	char buf[32];
+	Level *level = NULL;
+	int num_levels = 0, i, is_def_set = 0;
+	char *default_sets[] = {
+		TOURNAMENT,
+		_("!JUMPING_JACK!"),
+		_("!OUTBREAK!"),
+		_("!BARRIER!"),
+		_("!SITTING_DUCKS!"),
+		_("!HUNTER!"),
+		_("!INVADERS!")
+	};
+	
+	memset(si, 0, sizeof( set_info_t ));
+	
+	/* set name */
 	si->name = strdup(sname);
+	
+	/* open file, if this fails the rest of the info can't be set */
+	/* TODO: what to do with lengthy description of special levelsets? */
+	for (i = 0; i < 7; i++)
+		if (strcmp(sname,default_sets[i]) == 0) {
+			is_def_set = 1;
+			break;
+		}
+	if (is_def_set || (file = levelset_open(sname, "rb")) == NULL) {
+		si->version.major = 1;
+		si->version.minor = 0;
+		si->author = strdup("???");
+		si->num_levels = 0;
+		render_level_thumbnail(si, NULL);
+		if (is_def_set) {
+			ssd.caption_font->align = STK_FONT_ALIGN_CENTER_X | 
+							STK_FONT_ALIGN_CENTER_Y;
+			stk_font_write(ssd.caption_font, si->thumbnail, 
+					si->thumbnail->w/2, si->thumbnail->h/2,
+					STK_OPAQUE, _("Special Game"));
+		}
+		return; /* error is printed by levelset_open() */
+	}
+
+	/* get version */
+	levelset_get_version(file, &si->version.major, &si->version.minor);
+	
+	/* get author name and thumbnail from first level */
+	if ((level = level_load(file)) == NULL) {
+		fprintf(stderr,"Could not load first level of set %s\n",sname);
+		si->author = strdup("???");
+		si->num_levels = 0;
+		render_level_thumbnail(si, NULL);
+		return;
+	}
+	num_levels = 1;
+	si->author = strdup(level->author);
+	render_level_thumbnail(si,level);
+	level_delete(level);
+	
+	/* count remaining levels 
+	 * FIXME: don't parse levels but just count number */
+	while ((level = level_load(file)) != NULL) {
+		num_levels++;
+		level_delete(level);
+	}
+	si->num_levels = num_levels;
+
+	fclose( file );	
 }
 
 /** Update set select buttons using set infos starting at index @set_id.
@@ -140,18 +311,20 @@ void setselect_create()
 		
 		sb->region.x = x;
 		sb->region.y = y;
-		sb->region.w = 120;
-		sb->region.h = ssd.standard_font->height;
+		sb->region.w = 180;
+		sb->region.h = ssd.standard_font->height + 5;
 		
 		if (i == 0) {
 			sb->id = SELECTID_PREV;
-			strcpy(sb->label,_("<previous>"));
+			strcpy(sb->label,_("...Previous Page..."));
 		} else if (i == NUMSELECTBUTTONS - 2) {
 			sb->id = SELECTID_NEXT;
-			strcpy(sb->label,_("<next>"));
+			strcpy(sb->label,_("...Next Page..."));
+			y += 10; /* some distance to back button */
 		} else if (i == NUMSELECTBUTTONS - 1) {
 			sb->id = SELECTID_EXIT;
-			strcpy(sb->label,_("<exit>"));
+			strcpy(sb->label,_("Back To Menu"));
+			
 		} else {
 			sb->id = SELECTID_UNUSED;
 			strcpy(sb->label,_("<not set>"));
@@ -163,6 +336,10 @@ void setselect_create()
 		y += ssd.standard_font->height + 5;
 	}
 	
+	/* thumbnail background and bricks */
+	ssd.thumbnail_background = create_thumbnail_background();
+	ssd.thumbnail_bricks = shrink_surface_half(brick_pic);
+
 	/* levelset infos */
 	ssd.num_set_infos = levelset_count_local;
 	ssd.set_infos = calloc( ssd.num_set_infos, sizeof(set_info_t) );
@@ -171,7 +348,7 @@ void setselect_create()
 		load_set_info( si, levelset_names_local[i] );
 	}
 	update_select_buttons(0);
-
+	
 	ssd.initialized = 1;
 }
 void setselect_delete()
@@ -193,14 +370,15 @@ void setselect_delete()
 				free(si->name);
 			if (si->author)
 				free(si->author);
-			if (si->version)
-				free(si->version);
 			if (si->thumbnail)
 				SDL_FreeSurface(si->thumbnail);
 		}
 		free(ssd.set_infos);
 		ssd.set_infos = NULL;
 	}
+	
+	stk_surface_free( &ssd.thumbnail_background );
+	stk_surface_free( &ssd.thumbnail_bricks );
 	
 	ssd.initialized = 0;
 }
@@ -216,6 +394,10 @@ static void set_background()
 	stk_surface_gray( stk_display, 0,0,-1,-1, 1 );
 	stk_surface_blit( stk_display, 0,0,-1,-1, ssd.background, 0,0 );
 	
+	ssd.caption_font->align = STK_FONT_ALIGN_CENTER_X | STK_FONT_ALIGN_TOP;
+	stk_font_write(ssd.caption_font,ssd.background,ssd.background->w/2,20,
+				STK_OPAQUE,_("Select Custom Levelset"));
+	
 	SDL_FreeSurface( buffer );
 	
 }
@@ -226,6 +408,7 @@ static void draw_buttons( int refresh )
 	int i;
 	StkFont *font = NULL;
 	
+	ssd.standard_font->align = STK_FONT_ALIGN_LEFT | STK_FONT_ALIGN_TOP;
 	for (i = 0; i < NUMSELECTBUTTONS; i++) {
 		select_button_t *btn = &ssd.select_buttons[i];
 		stk_surface_blit( ssd.background, btn->region.x, btn->region.y,
@@ -251,6 +434,48 @@ static void draw_buttons( int refresh )
 	}
 }
 
+/** Draw set info. If @si is NULL just clear region. */
+static void draw_set_info(set_info_t *si, int refresh)
+{
+	SDL_Rect ir = {270, 50, 320, 250+ch};
+	int x, y;
+	Set_Chart *chart = NULL;
+	char buf[64];
+	
+	/* clear background */
+	stk_surface_blit(ssd.background,ir.x,ir.y,ir.w,ir.h,
+							stk_display,ir.x,ir.y);
+	if (si == NULL) {
+		stk_display_store_rect( &ir );
+		stk_display_update( STK_UPDATE_RECTS );
+		return;
+	}
+	
+	/* thumbnail */
+	stk_surface_blit(si->thumbnail,0,0,si->thumbnail->w,si->thumbnail->h,
+				stk_display, ir.x, ir.y);
+
+	/* info */
+	x = ir.x + si->thumbnail->w / 2; y = ir.y + si->thumbnail->h + 2;
+	ssd.standard_font->align = STK_FONT_ALIGN_CENTER_X | STK_FONT_ALIGN_TOP;
+	snprintf(buf, 64, _("by %s, %d levels"), si->author, si->num_levels);
+	stk_font_write(ssd.standard_font, stk_display, x, y, STK_OPAQUE, buf);
+	x = ir.x + si->thumbnail->w / 2; y = ir.y + si->thumbnail->h - 40;
+	ssd.caption_font->align = STK_FONT_ALIGN_CENTER_X | STK_FONT_ALIGN_TOP;
+	snprintf(buf, 64, _("%s v%d.%02d"), si->name, si->version.major,
+							si->version.minor);
+	stk_font_write(ssd.caption_font, stk_display, x, y, STK_OPAQUE, buf);
+	
+	/* highscores */
+	chart_show_compact(chart_set_query(si->name), 
+					ir.x + (ir.w-cw)/2, ir.y + 260, cw, ch);
+	
+	if (refresh) {
+		stk_display_store_rect( &ir );
+		stk_display_update( STK_UPDATE_RECTS );
+	}
+}
+
 /** Draw everything. */
 static void draw_all()
 {
@@ -263,18 +488,32 @@ static void draw_all()
 static void handle_motion( int x, int y )
 {
 	int i;
+	select_button_t *focus_sb = NULL;
+	static select_button_t *old_focus_sb = NULL;
 	
 	/* check button focus */
 	for (i = 0; i < NUMSELECTBUTTONS; i++) {
 		select_button_t *sb = &ssd.select_buttons[i];
 		
-		if (FOCUS_RECT(x,y,sb->region))
+		if (FOCUS_RECT(x,y,sb->region)) {
 			sb->focus = 1;
-		else
+			focus_sb = sb;
+#ifdef AUDIO_ENABLED
+			if (focus_sb != old_focus_sb)
+				stk_sound_play(wav_menu_motion);
+#endif			
+		} else
 			sb->focus = 0;
 	}
 	/* redraw */
 	draw_buttons(1);
+	if (old_focus_sb != focus_sb) {
+		old_focus_sb = focus_sb;
+		if (focus_sb && focus_sb->id >= 0)
+			draw_set_info(&ssd.set_infos[focus_sb->id],1);
+		else 
+			draw_set_info(NULL,1);
+	}
 }
 
 /** Handle mouse button click on position @x,@y. Return 1 if either Quit
@@ -295,6 +534,10 @@ static int handle_click( int x, int y)
 	}
 	if (sb == NULL)
 		return 0; /* no button clicked */
+	
+#ifdef AUDIO_ENABLED
+	stk_sound_play(wav_menu_click);
+#endif		
 	
 	if (sb->id == SELECTID_EXIT)
 		return 1;
@@ -366,6 +609,10 @@ const char * setselect_run()
 			case SDL_MOUSEBUTTONUP:
 				if (handle_click( event.button.x,
 							event.button.y ))
+					leave = 1;
+				break;
+			case SDL_KEYUP:
+				if (event.key.keysym.sym == SDLK_ESCAPE)
 					leave = 1;
 				break;
 		}

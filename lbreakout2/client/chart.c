@@ -375,6 +375,52 @@ void chart_show( Set_Chart *chart, int x, int y, int w, int h )
 }
 /*
 ====================================================================
+Draw highscores centered in regio x,y,w,h but in a more compact way
+(no title). Also don't use chart_pos (except for x).
+====================================================================
+*/
+void chart_show_compact( Set_Chart *chart, int x, int y, int w, int h )
+{
+    int px = x + ( w - chart_pos.w ) / 2, py = y;
+    char number_buffer[24];
+    int entry_offset; /* y offset of entries */
+    StkFont *font;
+    int i;
+
+    /* caption */
+    ccfont->align = STK_FONT_ALIGN_LEFT | STK_FONT_ALIGN_TOP;
+    char *cheader = _("Name      Level Score");
+    stk_font_write( ccfont, stk_display, px, py, -1, cheader );
+	
+    /* get entry offset */
+    entry_offset = ( ccfont->height + 2) + py;
+	
+    /* entries */
+    for ( i = 0; i < CHART_ENTRY_COUNT; i++ ) {
+        font = cfont;
+        if ( chart->entries[i].new_entry ) font = chfont;
+        /* name */
+        font->align = STK_FONT_ALIGN_LEFT | STK_FONT_ALIGN_TOP;
+        stk_font_write( font, stk_display, 
+            px, entry_offset, -1, chart->entries[i].name );
+        /* level */
+        font->align = STK_FONT_ALIGN_CENTER_X | STK_FONT_ALIGN_TOP;
+        sprintf( number_buffer, "%i", chart->entries[i].level );
+        stk_font_write( font, stk_display, 
+            px + chart_level_offset, entry_offset, -1, number_buffer );
+        /* score */
+        font->align = STK_FONT_ALIGN_RIGHT | STK_FONT_ALIGN_TOP;
+        sprintf( number_buffer, "%i", chart->entries[i].score );
+        stk_font_write( font, stk_display, 
+            px + chart_pos.w, entry_offset, -1, number_buffer );
+        /* change offset */
+        entry_offset += font->height - 1;
+    }
+    { SDL_Rect region = { x, y, w, h };
+    stk_display_store_rect( &region ); }
+}
+/*
+====================================================================
 Clear all new_entry flags (done before new players are added
 to chart when game over).
 ====================================================================
