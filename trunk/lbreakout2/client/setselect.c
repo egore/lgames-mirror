@@ -397,7 +397,7 @@ static void set_background()
 	
 	stk_surface_blit( stk_display, 0,0,-1,-1, buffer, 0,0 );
 	SDL_SetColorKey(buffer, 0, 0);
-	stk_surface_gray( stk_display, 0,0,-1,-1, 1 );
+	stk_surface_gray( stk_display, 0,0,-1,-1, 2 );
 	stk_surface_blit( stk_display, 0,0,-1,-1, ssd.background, 0,0 );
 	
 	ssd.caption_font->align = STK_FONT_ALIGN_CENTER_X | STK_FONT_ALIGN_TOP;
@@ -474,7 +474,7 @@ static void draw_set_info(set_info_t *si, int refresh)
 	
 	/* highscores */
 	chart_show_compact(chart_set_query(si->name), 
-					ir.x + (ir.w-cw)/2, ir.y + 260, cw, ch);
+					ir.x + (ir.w-cw)/2, ir.y + 264, cw, ch);
 	
 	if (refresh) {
 		stk_display_store_rect( &ir );
