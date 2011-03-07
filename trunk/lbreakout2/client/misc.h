@@ -32,7 +32,7 @@ Load background according to id and draw background to offscreen.
 Return Value: loaded background surface
 ====================================================================
 */
-void bkgnd_draw( SDL_Surface *bkgnd, int id );
+void bkgnd_draw( SDL_Surface *bkgnd, int id, int to_offscreen );
 /*
 ====================================================================
 Confirm request. Darkens/gray screen a bit and display text.

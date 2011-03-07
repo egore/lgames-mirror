@@ -43,7 +43,7 @@ Load background according to id and draw background to offscreen.
 Return Value: loaded background surface
 ====================================================================
 */
-void bkgnd_draw( SDL_Surface *bkgnd, int id )
+void bkgnd_draw( SDL_Surface *bkgnd, int id, int to_offscreen )
 {
 	SDL_Surface *pic = 0;
 	int i, j;
@@ -61,7 +61,8 @@ void bkgnd_draw( SDL_Surface *bkgnd, int id )
 	}
 
 	/* draw to offscreen */
-	stk_surface_blit( bkgnd, 0,0,-1,-1, offscreen, 0,0 );
+	if (to_offscreen)
+		stk_surface_blit( bkgnd, 0,0,-1,-1, offscreen, 0,0 );
 }
 /*
 ====================================================================

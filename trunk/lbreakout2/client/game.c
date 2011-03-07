@@ -138,9 +138,9 @@ static int init_level( Player *player, int l_pos )
 
 	/* add&create background */
 	if ( game->game_type == GT_LOCAL )
-		bkgnd_draw( bkgnd, bkgnd_ids[player->level_id] );
+		bkgnd_draw( bkgnd, bkgnd_ids[player->level_id], 1 );
 	else
-		bkgnd_draw( bkgnd, -1 );
+		bkgnd_draw( bkgnd, -1, 1 );
 	/* add frame */
 	frame_draw();
 	/* add bricks */
