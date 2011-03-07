@@ -397,7 +397,7 @@ Level* level_load( FILE *file )
 	/* read entries */
 	/* level: */
 	if ( !next_line( file, buffer ) ) goto failure;
-	if ( !strequal( "Level:", buffer ) ) goto failure;
+	if ( strncmp( "Level:", buffer, 6 ) ) goto failure;
 	/* author */
 	if ( !next_line( file, buffer ) ) goto failure;
 	snprintf( level->author, 31, "%s", buffer );
@@ -406,7 +406,7 @@ Level* level_load( FILE *file )
 	snprintf( level->name, 31, "%s", buffer );
 	/* bricks: */
 	if ( !next_line( file, buffer ) ) goto failure;
-	if ( !strequal( "Bricks:", buffer ) ) goto failure;
+	if ( strncmp( "Bricks:", buffer, 7 ) ) goto failure;
 	/* load bricks */
 	for ( i = 0; i < EDIT_HEIGHT; i++ ) {
 		if ( !next_line( file, buffer ) ) goto failure;
@@ -416,7 +416,7 @@ Level* level_load( FILE *file )
 	}
 	/* extras: */
 	if ( !next_line( file, buffer ) ) goto failure;
-	if ( !strequal( "Bonus:", buffer ) ) goto failure;
+	if ( strncmp( "Bonus:", buffer, 6 ) ) goto failure;
 	/* load extras */
 	for ( i = 0; i < EDIT_HEIGHT; i++ ) {
 		if ( !next_line( file, buffer ) ) goto failure;
