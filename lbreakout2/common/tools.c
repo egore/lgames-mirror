@@ -22,7 +22,7 @@
 #include "tools.h"
 
 /* compares to strings and returns true if their first strlen(str1) chars are equal */
-int strequal( char *str1, char *str2 )
+int strequal( const char *str1, const char *str2 )
 {
     if ( strlen( str1 ) != strlen( str2 ) ) return 0;
     return ( !strncmp( str1, str2, strlen( str1 ) ) );

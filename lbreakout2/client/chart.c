@@ -64,7 +64,7 @@ void chart_reset( Set_Chart *chart )
 Create/delete set chart.
 ====================================================================
 */
-Set_Chart* chart_set_create( char *name )
+Set_Chart* chart_set_create( const char *name )
 {
 	Set_Chart *chart = calloc( 1, sizeof( Set_Chart ) );
 	chart->name = strdup( name );
