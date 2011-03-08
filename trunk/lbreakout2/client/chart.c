@@ -450,7 +450,7 @@ Set_Chart* chart_set_query( const char *name )
 		if ( strequal( name, chart->name ) )
 			return chart;
 	/* not found so create it */
-	fprintf( stderr, _("First chart query for '%s'. Creating this chart.\n"), name );
+	//fprintf( stderr, _("First chart query for '%s'. Creating this chart.\n"), name );
 	chart = chart_set_create( name );
 	list_add( charts, chart );
 	return chart;
