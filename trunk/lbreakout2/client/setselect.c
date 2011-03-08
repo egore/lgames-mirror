@@ -44,7 +44,7 @@ typedef struct {
 #define SELECTID_NEXT -2
 #define SELECTID_EXIT -1
 	int		id; /* special id or index in set_infos */
-#define MAXLABELLEN 20
+#define MAXLABELLEN 24
 	char		label[MAXLABELLEN];
 	int		focus;
 	uint32_t	last_focus_time; /* for animation; not used now */
@@ -314,18 +314,18 @@ void setselect_create()
 		
 		if (i == 0) {
 			sb->id = SELECTID_PREV;
-			strcpy(sb->label,_("...Previous Page..."));
+			snprintf(sb->label,MAXLABELLEN,_("...Previous Page..."));
 		} else if (i == NUMSELECTBUTTONS - 2) {
 			sb->id = SELECTID_NEXT;
-			strcpy(sb->label,_("...Next Page..."));
+			snprintf(sb->label,MAXLABELLEN,_("...Next Page..."));
 			y += 10; /* some distance to back button */
 		} else if (i == NUMSELECTBUTTONS - 1) {
 			sb->id = SELECTID_EXIT;
-			strcpy(sb->label,_("Back To Menu"));
+			snprintf(sb->label,MAXLABELLEN,_("Back To Menu"));
 			
 		} else {
 			sb->id = SELECTID_UNUSED;
-			strcpy(sb->label,_("<not set>"));
+			snprintf(sb->label,MAXLABELLEN,_("<not set>"));
 		}
 		
 		sb->focus = 0;
