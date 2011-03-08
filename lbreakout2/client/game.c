@@ -98,8 +98,6 @@ int gameSeed = 0; /* last used seed for freakout game */
 extern int current_player;
 extern Item *item_resume_0;
 
-extern void select_chart( char *name, int update );
-
 /*
 ====================================================================
 Locals
@@ -1205,7 +1203,6 @@ void client_game_run( void )
 			if ( button_clicked || key_pressed ) {
 				chart_load();
 				check_highscores();
-				select_chart( game_set->name, 0 );
                                 /* remove saved game */
                                 slot_delete( 0 );
                                 slot_update_hint( 0, item_resume_0->hint );
@@ -1445,7 +1442,6 @@ void client_game_run( void )
 						 * high scores ***
 						if ( game_set ) {
 							check_highscores();
-							select_chart( game_set->name, 0 );
 						}*/
                         /* save local game */
                         if ( game_set != 0 /*not testing a level*/ )

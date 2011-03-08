@@ -322,26 +322,6 @@ void levelsets_load_names()
     }
 }
 
-/* select levelset chart */
-void select_chart( char *name, int update )
-{
-	int i;
-	Set_Chart *chart;
-	/* select chart */
-	for ( i = 0; i < charts->count; i++ ) {
-		chart = chart_set_query_id( i );
-		if ( STRCMP( chart->name, name ) ) {
-			chart_id = i;
-			if ( update ) {
-				stk_surface_blit( 
-						mbkgnd, 0,0,-1,-1, stk_display, 0,0 );
-				chart_show( chart_set_query_id( chart_id ),
-						cx, cy, cw, ch );
-			}
-		}
-	}
-}
-
 /*
 ====================================================================
 Callbacks of menu items.
@@ -810,26 +790,6 @@ int manager_run()
 			stk_display_apply_fullscreen( config.fullscreen );
 			stk_surface_blit( mbkgnd, 0,0,-1,-1, stk_display, 0,0 );
 			stk_display_update( STK_UPDATE_ALL );
-		}
-		/* check if clicked on highscore */
-		if ( event.type == SDL_MOUSEBUTTONDOWN ) 
-		if ( event.button.x >= cx && event.button.y >= cy )
-		if ( event.button.x < cx + cw && event.button.y < cy + ch ) {
-#ifdef AUDIO_ENABLED
-			stk_sound_play( wav_menu_click );
-#endif
-			/* set chart id */
-			if ( event.button.button == STK_BUTTON_LEFT ) {
-				chart_id++;
-				if ( chart_id == charts->count ) chart_id = 0;
-			}
-			else {
-				chart_id--;
-				if ( chart_id == -1 ) chart_id = charts->count - 1;
-			}
-			/* redraw */
-			stk_surface_blit( mbkgnd, 0,0,-1,-1, stk_display, 0,0 );
-			chart_show( chart_set_query_id( chart_id ), cx, cy, cw, ch );
 		}
 		result = menu_handle_event( cur_menu, &event );
 	}
