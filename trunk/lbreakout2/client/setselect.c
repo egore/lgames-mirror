@@ -277,6 +277,40 @@ static void update_select_buttons( int set_id )
 	}
 }
 
+/** Return new id for select buttons. @dir is either -1 for scrolling up
+ * or 1 for scrolling down. */
+static int get_new_select_button_start_id( int dir )
+{
+	int id;
+	int num_setbuttons = SETBUTTON_END_ID - SETBUTTON_START_ID + 1;
+	
+	if (dir == -1) {
+		id = ssd.select_buttons[SETBUTTON_START_ID].id;
+		if (id == 0) {
+			/* go to end of list */
+			id = ssd.num_set_infos - num_setbuttons;
+		} else {
+			id -= num_setbuttons;
+			if (id < 0)
+				id = 0;
+		}
+		return id;
+	}
+	if (dir == 1) {
+		id = ssd.select_buttons[SETBUTTON_START_ID].id;
+		if (id == ssd.num_set_infos - num_setbuttons) {
+			/* go to begin of list */
+			id = 0;
+		} else {
+			id += num_setbuttons;
+			if (id > ssd.num_set_infos - num_setbuttons)
+				id = ssd.num_set_infos - num_setbuttons;
+		}
+		return id;
+	}
+	return 0;
+}
+
 /** Load/Free resources. */
 void setselect_create()
 {
@@ -487,8 +521,9 @@ static void draw_all()
 	stk_display_update( STK_UPDATE_ALL );
 }
 
-/** Handle mouse motion to position @x,@y. Redraw all buttons. */
-static void handle_motion( int x, int y )
+/** Handle mouse motion to position @x,@y. Redraw all buttons if either
+ * the focus has changed or @force_redraw is set. */
+static void handle_motion( int x, int y, int force_redraw )
 {
 	int i;
 	select_button_t *focus_sb = NULL;
@@ -509,8 +544,8 @@ static void handle_motion( int x, int y )
 			sb->focus = 0;
 	}
 	/* redraw */
-	draw_buttons(1);
-	if (old_focus_sb != focus_sb) {
+	if (force_redraw || old_focus_sb != focus_sb) {
+		draw_buttons(1);
 		old_focus_sb = focus_sb;
 		if (focus_sb && focus_sb->id >= 0)
 			draw_set_info(&ssd.set_infos[focus_sb->id],1);
@@ -522,10 +557,9 @@ static void handle_motion( int x, int y )
 /** Handle mouse button click on position @x,@y. Return 1 if either Quit
  * button or levelset has been clicked, 0 otherwise. If set has been 
  * selected store it in ssd::selected_set. */
-static int handle_click( int x, int y)
+static int handle_click(int x, int y)
 {
-	int i, id;
-	int num_setbuttons = SETBUTTON_END_ID - SETBUTTON_START_ID + 1;
+	int i;
 	select_button_t *sb = NULL;
 	
 	/* get clicked button */
@@ -544,37 +578,39 @@ static int handle_click( int x, int y)
 	
 	if (sb->id == SELECTID_EXIT)
 		return 1;
-	if (sb->id == SELECTID_PREV) {
-		/* scroll list up */
-		id = ssd.select_buttons[SETBUTTON_START_ID].id;
-		if (id == 0) {
-			/* go to end of list */
-			id = ssd.num_set_infos - num_setbuttons;
-		} else {
-			id -= num_setbuttons;
-			if (id < 0)
-				id = 0;
-		}
-		update_select_buttons(id);
-		draw_buttons(1);
-		return 0;
-	}
-	if (sb->id == SELECTID_NEXT) {
-		/* scroll list down */
-		id = ssd.select_buttons[SETBUTTON_START_ID].id;
-		if (id == ssd.num_set_infos - num_setbuttons) {
-			/* go to begin of list */
-			id = 0;
-		} else {
-			id += num_setbuttons;
-			if (id > ssd.num_set_infos - num_setbuttons)
-				id = ssd.num_set_infos - num_setbuttons;
-		}
+	if (sb->id == SELECTID_PREV || sb->id == SELECTID_NEXT) {
+		int id;
+		if (sb->id == SELECTID_PREV)
+			id = get_new_select_button_start_id(-1);
+		else
+			id = get_new_select_button_start_id(1);
 		update_select_buttons(id);
 		draw_buttons(1);
 		return 0;
 	}
 	ssd.selected_set = ssd.set_infos[sb->id].name;
+	return 1;
+}
+
+/** Check if button is a mouse wheel. If so fake up/down button click and
+ * return 1, otherwise 0. */
+static int handle_scrolling( const SDL_Event *ev )
+{
+	int id = -1;
+
+	if (ev->button.button == 4 /* up */)
+		id = get_new_select_button_start_id(-1);
+	else if (ev->button.button == 5 /* down */)
+		id = get_new_select_button_start_id(1);
+	if (id == -1)
+		return 0;
+	update_select_buttons(id);
+	
+#ifdef AUDIO_ENABLED
+	stk_sound_play(wav_menu_motion);
+#endif			
+	
+	handle_motion(ev->button.x, ev->button.y, 1);
 	return 1;
 }
 
@@ -596,7 +632,7 @@ const char * setselect_run()
 	
 	ssd.selected_set = NULL;
 	set_background();
-	handle_motion(0,0); /* clear old highlighting */
+	handle_motion(0,0,0); /* clear old highlighting */
 	draw_all();
 		
 	while ( !leave && !stk_quit_request ) {
@@ -607,11 +643,12 @@ const char * setselect_run()
 				break;
 			case SDL_MOUSEMOTION:
 				handle_motion( event.motion.x,
-							event.motion.y );
+							event.motion.y, 0 );
 				break;
 			case SDL_MOUSEBUTTONUP:
-				if (handle_click( event.button.x,
-							event.button.y ))
+				if (handle_scrolling(&event))
+					break;
+				if (handle_click(event.button.x,event.button.y))
 					leave = 1;
 				break;
 			case SDL_KEYUP:
