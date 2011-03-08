@@ -393,56 +393,6 @@ void cb_change_theme()
     stk_surface_blit( mbkgnd, 0,0,-1,-1, stk_display, 0,0 );
     stk_display_update( STK_UPDATE_ALL );
 }
-#ifdef OLDSTUFF
-/* update hint about selected levelset */
-void cb_update_levelset_hint()
-{
-    FILE *file;
-    int version, update;
-    char author[32];
-    if ( STRCMP( levelset_names_local[config.levelset_id_local], TOURNAMENT ) ) {
-        sprintf( hint_levelset, HINT_FREAKOUT );
-    }
-    else if ( STRCMP( levelset_names_local[config.levelset_id_local], "LBreakout1" ) ) {
-        sprintf( hint_levelset, HINT_LBREAKOUT1 );
-    }
-    else if ( STRCMP( levelset_names_local[config.levelset_id_local], _("!JUMPING_JACK!") ) ) {
-        sprintf( hint_levelset, HINT_JUMPING_JACK );
-    }
-    else if ( STRCMP( levelset_names_local[config.levelset_id_local], _("!OUTBREAK!") ) ) {
-        sprintf( hint_levelset, HINT_OUTBREAK );
-    }
-    else if ( STRCMP( levelset_names_local[config.levelset_id_local], _("!BARRIER!") ) ) {
-        sprintf( hint_levelset, HINT_BARRIER );
-    }
-    else if ( STRCMP( levelset_names_local[config.levelset_id_local], _("!SITTING_DUCKS!") ) ) {
-        sprintf( hint_levelset, HINT_SITTING_DUCKS );
-    }
-    else if ( STRCMP( levelset_names_local[config.levelset_id_local], _("!HUNTER!") ) ) {
-        sprintf( hint_levelset, HINT_HUNTER );
-    }
-    else if ( STRCMP( levelset_names_local[config.levelset_id_local], _("!INVADERS!") ) ) {
-        sprintf( hint_levelset, HINT_DEFENDER );
-    }
-    else
-        if ( ( file = levelset_open( levelset_names_local[config.levelset_id_local], "rb" ) ) ) {
-            levelset_get_version( file, &version, &update );
-            levelset_get_first_author( file, author );
-            sprintf( hint_levelset, _("%s v%i.%02i#Author: %s"), 
-                     levelset_names_local[config.levelset_id_local],
-                     version, update, author/*, HINT_LEVELSET_APPENDIX*/ );
-            fclose( file );
-        }
-        else
-        {
-            sprintf( hint_levelset, _("No info available.") );
-        }
-    hint_set_contents( item_levelset->hint, hint_levelset );
-    hint_set( item_levelset->hint ); /* redraw the hint */
-
-    select_chart( levelset_names_local[config.levelset_id_local], 1 );
-}
-#endif
 /* update hint of theme by feeding it with the ABOUT file */
 void cb_update_theme_hint()
 {
