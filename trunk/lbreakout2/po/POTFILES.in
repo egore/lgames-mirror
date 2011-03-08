@@ -13,6 +13,7 @@ client/manager.c
 client/theme.c
 client/value.c
 client/misc.c
+client/setselect.c
 common/net.c
 game/game.c
 game/levels.h
