@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2011-03-08 10:31+0100\n"
+"POT-Creation-Date: 2011-03-08 12:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1723,32 +1723,36 @@ msgstr ""
 msgid "Special Game"
 msgstr ""
 
-#: client/setselect.c:317
+#: client/setselect.c:351
+#, c-format
 msgid "...Previous Page..."
 msgstr ""
 
-#: client/setselect.c:320
+#: client/setselect.c:354
+#, c-format
 msgid "...Next Page..."
 msgstr ""
 
-#: client/setselect.c:324
+#: client/setselect.c:358
+#, c-format
 msgid "Back To Menu"
 msgstr ""
 
-#: client/setselect.c:328
+#: client/setselect.c:362
+#, c-format
 msgid "<not set>"
 msgstr ""
 
-#: client/setselect.c:403
+#: client/setselect.c:437
 msgid "Select Custom Levelset"
 msgstr ""
 
-#: client/setselect.c:464
+#: client/setselect.c:498
 #, c-format
 msgid "by %s, %d levels"
 msgstr ""
 
-#: client/setselect.c:468
+#: client/setselect.c:502
 #, c-format
 msgid "%s v%d.%02d"
 msgstr ""
