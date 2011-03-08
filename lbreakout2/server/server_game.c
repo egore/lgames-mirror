@@ -131,7 +131,7 @@ static void send_level( Level *level, ServerUser *user, int l_pos )
 	msgbuf[0] = MSG_LEVEL_DATA;
 	msgbuf[1] = l_pos;
 	msglen = 2;
-	comm_pack_level( level, msgbuf, &msglen );
+	comm_pack_level( level, (unsigned char*)msgbuf, &msglen );
 	socket_transmit( &user->socket, CODE_BLUE, msglen, msgbuf );
 }
 
@@ -476,7 +476,7 @@ void parse_packet_game( ServerGame *game, ServerUser *user )
 		switch ( type ) {
 			case MSG_PADDLE_STATE:
 				comm_unpack_paddle( game->game->paddles[user->player_id], 
-					net_buffer, &msg_read_pos );
+					(unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_PAUSE:
@@ -575,28 +575,28 @@ void update_games( int ms )
 		msglen = 0;
 
 		msgbuf[msglen++] = MSG_PADDLE_STATE;
-		comm_pack_paddle( game->game->paddles[1], msgbuf, &msglen );
+		comm_pack_paddle( game->game->paddles[1], (unsigned char*)msgbuf, &msglen );
 		
 		msgbuf[msglen++] = MSG_BALL_POSITIONS;
-		comm_pack_balls( msgbuf, &msglen );
+		comm_pack_balls( (unsigned char*)msgbuf, &msglen );
 		
 		if ( game->game->shots->count > 0 ) {
 			msgbuf[msglen++] = MSG_SHOT_POSITIONS;
-			comm_pack_shots( msgbuf, &msglen );
+			comm_pack_shots( (unsigned char*)msgbuf, &msglen );
 		}
 		
 		msgbuf[msglen++] = MSG_SCORES;
-		comm_pack_scores( msgbuf, &msglen );
+		comm_pack_scores( (unsigned char*)msgbuf, &msglen );
 		
 		if ( game->game->mod.brick_hit_count > 0 ) {
 			msgbuf[msglen++] = MSG_BRICK_HITS;
-			comm_pack_brick_hits( msgbuf, &msglen );
+			comm_pack_brick_hits( (unsigned char*)msgbuf, &msglen );
 		}
 
 		if ( game->game->mod.collected_extra_count[0] > 0 ||
 		     game->game->mod.collected_extra_count[1] > 0 ) {
 			msgbuf[msglen++] = MSG_NEW_EXTRAS;
-			comm_pack_collected_extras( msgbuf, &msglen );
+			comm_pack_collected_extras( (unsigned char*)msgbuf, &msglen );
 		}
 
 		/* send packet */
@@ -604,7 +604,7 @@ void update_games( int ms )
 		
 		/* replace paddle which has a constant size */
 		i = 1;
-		comm_pack_paddle( game->game->paddles[0], msgbuf, &i );
+		comm_pack_paddle( game->game->paddles[0], (unsigned char*)msgbuf, &i );
 		if ( !game->users[1]->bot )
 			socket_transmit( &game->users[1]->socket, CODE_BLUE, msglen, msgbuf );
 	
@@ -613,4 +613,3 @@ void update_games( int ms )
 }
 
 #endif
-

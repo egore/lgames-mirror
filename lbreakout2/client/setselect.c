@@ -185,7 +185,6 @@ static void render_level_thumbnail(set_info_t *si, const Level *level)
 static void load_set_info( set_info_t *si, const char *sname )
 {
 	FILE *file = NULL;
-	char buf[32];
 	Level *level = NULL;
 	int num_levels = 0, i, is_def_set = 0;
 	char *default_sets[] = {
@@ -282,7 +281,6 @@ static void update_select_buttons( int set_id )
 void setselect_create()
 {
 	int i, x, y;
-	char *ptr;
 	
 	if (ssd.initialized)
 		return; /* already done */
@@ -445,7 +443,6 @@ static void draw_set_info(set_info_t *si, int refresh)
 {
 	SDL_Rect ir = {270, 50, 320, 250+ch};
 	int x, y;
-	Set_Chart *chart = NULL;
 	char buf[64];
 	
 	/* clear background */

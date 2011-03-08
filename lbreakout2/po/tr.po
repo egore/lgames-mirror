@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lbreakout\n"
 "Report-Msgid-Bugs-To: http://lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2010-10-05 20:28+0200\n"
+"POT-Creation-Date: 2011-03-08 09:32+0100\n"
 "PO-Revision-Date: 2006-10-31 10:12+0200\n"
 "Last-Translator: Muhammet Kara <muhammet.k@gmail.com>\n"
 "Language-Team: Turkish <yerellestirme@kde.org.tr>\n"
@@ -53,7 +53,7 @@ msgstr ""
 msgid "Saving highscore chart in: %s\n"
 msgstr "Yüksek puanlar tablosunun kaydedildiği yer: %s\n"
 
-#: client/chart.c:216 client/chart.c:347
+#: client/chart.c:216 client/chart.c:347 client/chart.c:392
 msgid "Name      Level Score"
 msgstr "Ad      Seviye Puan"
 
@@ -71,12 +71,12 @@ msgid "??? Highscore chart loaded properly but cannot save? (%s)\n"
 msgstr ""
 "Yüksek puanlar tablosu düzgün olarak yüklendi ama kaydedilemiyor mu? (%s)\n"
 
-#: client/chart.c:407
+#: client/chart.c:453
 #, c-format
 msgid "First chart query for '%s'. Creating this chart.\n"
 msgstr "'%s' için ilk tablo sorgusu. Tablo oluşturuluyor.\n"
 
-#: client/chart.c:420
+#: client/chart.c:466
 #, c-format
 msgid "Chart index '%i' is out of range!\n"
 msgstr "Tablo dizini '%i' kapsamdışı!\n"
@@ -104,7 +104,7 @@ msgid "Connect"
 msgstr "Bağlan"
 
 #: client/client.c:281 client/client.c:301 client/client.c:395
-#: client/manager.c:767
+#: client/manager.c:759
 msgid "Cancel"
 msgstr "Vazgeç"
 
@@ -141,7 +141,7 @@ msgstr "C"
 msgid "Levelsets"
 msgstr "Düzey kümeleri"
 
-#: client/client.c:343 client/manager.c:685
+#: client/client.c:343 client/manager.c:677
 msgid "Difficulty:"
 msgstr "Zorluk:"
 
@@ -153,7 +153,7 @@ msgstr "Raundlar:"
 msgid "Frags:"
 msgstr "Ölümler:"
 
-#: client/client.c:358 client/manager.c:728
+#: client/client.c:358 client/manager.c:720
 msgid "Balls:"
 msgstr "Toplar:"
 
@@ -161,7 +161,7 @@ msgstr "Toplar:"
 msgid "Challenge"
 msgstr "Meydanokuma"
 
-#: client/client.c:373 client/manager.c:640
+#: client/client.c:373 client/manager.c:636
 msgid "Quit"
 msgstr "Çıkış"
 
@@ -491,19 +491,19 @@ msgstr "Uzaktaki oyuncu oyunu duraklattı."
 msgid "game: state %i: invalid message %x: skipping %i bytes\n"
 msgstr "oyun: durum %i: geçersiz mesaj %x: %i byte atlanıyor\n"
 
-#: client/config.c:71
+#: client/config.c:69
 msgid "Mr.X"
 msgstr "Bay.X"
 
-#: client/config.c:72
+#: client/config.c:70
 msgid "Mr.Y"
 msgstr "Bay.Y"
 
-#: client/config.c:73
+#: client/config.c:71
 msgid "Mr.Z"
 msgstr "Bay.Z"
 
-#: client/config.c:122
+#: client/config.c:120
 msgid "player"
 msgstr "oyuncu"
 
@@ -761,11 +761,11 @@ msgstr ""
 msgid "Game Over!"
 msgstr "Oyun Bitti!"
 
-#: client/game.c:1411 client/misc.c:149
+#: client/game.c:1411 client/misc.c:150
 msgid "y"
 msgstr "e"
 
-#: client/game.c:1411 client/misc.c:150
+#: client/game.c:1411 client/misc.c:151
 msgid "n"
 msgstr "h"
 
@@ -779,7 +779,7 @@ msgstr "sıçrama cezası: -%d\n"
 msgid "Time: %.2f, Frames: %i -> FPS: %.2f\n"
 msgstr "Zaman: %.2f, Çerçeveler: %i -> FPS: %.2f\n"
 
-#: client/help.c:48 client/manager.c:623
+#: client/help.c:48 client/manager.c:619
 msgid "Quick Help"
 msgstr "Hızlı Yardım"
 
@@ -1110,7 +1110,7 @@ msgstr "                         Oyunun tadını çıkarın!"
 msgid "                                                 Michael Speck"
 msgstr "                                                 Michael Speck"
 
-#: client/main.c:193
+#: client/main.c:202
 msgid "Set Name:"
 msgstr "Küme Adı:"
 
@@ -1235,7 +1235,8 @@ msgid "Play the original LBreakout2 levelset."
 msgstr "Özgün LBreakOut2 düzey kümesini oyna."
 
 #: client/manager.c:78
-msgid "Play the additional levelset selected below."
+#, fuzzy
+msgid "Play an additional levelset."
 msgstr "Aşağıda seçilen ek düzey kümesini oyna."
 
 #: client/manager.c:79
@@ -1615,337 +1616,333 @@ msgstr ""
 "VE FARENİZİN ORTA TUŞUNU YOĞUN OLARAK KULLANIN! Aksi halde, çok fazla "
 "yetenek gerektiren bu düzeylerde ayakta kalma şansınız olmaz!"
 
-#: client/manager.c:242 client/manager.c:434
+#: client/manager.c:242 client/manager.c:429
 msgid "!JUMPING_JACK!"
 msgstr "!ZIPLAYAN_KRİKO!"
 
-#: client/manager.c:243 client/manager.c:437
+#: client/manager.c:243 client/manager.c:432
 msgid "!OUTBREAK!"
 msgstr "!PATLAMA!"
 
-#: client/manager.c:244 client/manager.c:440
+#: client/manager.c:244 client/manager.c:435
 msgid "!BARRIER!"
 msgstr "!ENGEL!"
 
-#: client/manager.c:245 client/manager.c:443
+#: client/manager.c:245 client/manager.c:438
 msgid "!SITTING_DUCKS!"
 msgstr "!OTURAN_ÖRDEKLER!"
 
-#: client/manager.c:246 client/manager.c:446
+#: client/manager.c:246 client/manager.c:441
 msgid "!HUNTER!"
 msgstr "!AVCI!"
 
-#: client/manager.c:247 client/manager.c:449
+#: client/manager.c:247 client/manager.c:444
 msgid "!INVADERS!"
 msgstr "!İŞGALCİLER!"
 
-#: client/manager.c:376
+#: client/manager.c:372
 #, c-format
 msgid "You cannot delete '%s'!\n"
 msgstr "'%s'i silemezsiniz!\n"
 
-#: client/manager.c:456
+#: client/manager.c:451
 #, c-format
 msgid "%s v%i.%02i#Author: %s"
 msgstr "%s v%i.%02i#Yazar: %s"
 
-#: client/manager.c:463
+#: client/manager.c:458
 #, c-format
 msgid "No info available."
 msgstr "Bilgi yok."
 
-#: client/manager.c:506
+#: client/manager.c:502
 msgid "No Limit"
 msgstr "Sınırsız"
 
-#: client/manager.c:506
+#: client/manager.c:502
 msgid "100 FPS"
 msgstr "100 FPS"
 
-#: client/manager.c:507 client/manager.c:652 client/manager.c:655
-#: client/manager.c:664 client/manager.c:718 client/manager.c:722
-#: client/manager.c:731 client/manager.c:739
+#: client/manager.c:503 client/manager.c:648 client/manager.c:651
+#: client/manager.c:660 client/manager.c:710 client/manager.c:714
+#: client/manager.c:723 client/manager.c:731
 msgid "Off"
 msgstr "Kapalı"
 
-#: client/manager.c:507
+#: client/manager.c:503
 msgid "Low"
 msgstr "Düşük"
 
-#: client/manager.c:507 client/manager.c:508
+#: client/manager.c:503 client/manager.c:504
 msgid "Medium"
 msgstr "Orta"
 
-#: client/manager.c:507
+#: client/manager.c:503
 msgid "High"
 msgstr "Yüksek"
 
-#: client/manager.c:508
+#: client/manager.c:504
 msgid "Kids"
 msgstr "Çocuklar"
 
-#: client/manager.c:508
+#: client/manager.c:504
 msgid "Easy"
 msgstr "Kolay"
 
-#: client/manager.c:508
+#: client/manager.c:504
 msgid "Hard"
 msgstr "Zor"
 
-#: client/manager.c:603
+#: client/manager.c:599
 msgid "Menu"
 msgstr "Menü"
 
-#: client/manager.c:605 client/manager.c:627
+#: client/manager.c:601 client/manager.c:623
 msgid "Options"
 msgstr "Seçenekler"
 
-#: client/manager.c:607 client/manager.c:630 client/manager.c:644
+#: client/manager.c:603 client/manager.c:626 client/manager.c:640
 msgid "Graphics"
 msgstr "Çizgeleme"
 
-#: client/manager.c:608 client/manager.c:619
+#: client/manager.c:604 client/manager.c:615
 msgid "Local Game"
 msgstr "Yerel Oyun"
 
-#: client/manager.c:609 client/manager.c:629 client/manager.c:643
+#: client/manager.c:605 client/manager.c:625 client/manager.c:639
 msgid "Controls"
 msgstr "Kontroller"
 
-#: client/manager.c:610 client/manager.c:636
+#: client/manager.c:606 client/manager.c:632
 msgid "Advanced Options"
 msgstr "Gelişmiş Seçenekler"
 
-#: client/manager.c:612 client/manager.c:632 client/manager.c:634
-#: client/manager.c:645 client/manager.c:646
+#: client/manager.c:608 client/manager.c:628 client/manager.c:630
+#: client/manager.c:641 client/manager.c:642
 msgid "Audio"
 msgstr "Ses"
 
-#: client/manager.c:614 client/manager.c:638
+#: client/manager.c:610 client/manager.c:634
 msgid "Editor"
 msgstr "Düzenleyici"
 
-#: client/manager.c:615 client/manager.c:750
+#: client/manager.c:611 client/manager.c:742
 msgid "Delete Set"
 msgstr "Kümeyi Sil"
 
-#: client/manager.c:616 client/manager.c:671
+#: client/manager.c:612 client/manager.c:667
 msgid "Select Theme"
 msgstr "Tema Seç"
 
-#: client/manager.c:621
+#: client/manager.c:617
 msgid "Network Game"
 msgstr "Ağ Oyunu"
 
-#: client/manager.c:648 client/manager.c:660 client/manager.c:673
-#: client/manager.c:693 client/manager.c:720 client/manager.c:741
-#: client/manager.c:752
+#: client/manager.c:644 client/manager.c:656 client/manager.c:669
+#: client/manager.c:685 client/manager.c:712 client/manager.c:733
+#: client/manager.c:744
 msgid "Back"
 msgstr "Geri"
 
-#: client/manager.c:652
+#: client/manager.c:648
 msgid "Sound:"
 msgstr "Ses:"
 
-#: client/manager.c:652 client/manager.c:655 client/manager.c:664
-#: client/manager.c:718 client/manager.c:722 client/manager.c:731
-#: client/manager.c:739
+#: client/manager.c:648 client/manager.c:651 client/manager.c:660
+#: client/manager.c:710 client/manager.c:714 client/manager.c:723
+#: client/manager.c:731
 msgid "On"
 msgstr "Açık"
 
-#: client/manager.c:655
+#: client/manager.c:651
 msgid "Speech:"
 msgstr "Konuşma:"
 
-#: client/manager.c:656
+#: client/manager.c:652
 msgid "Volume:"
 msgstr "Şiddet:"
 
-#: client/manager.c:663
+#: client/manager.c:659
 msgid "Animations:"
 msgstr "Canlandırmalar:"
 
-#: client/manager.c:664
+#: client/manager.c:660
 msgid "Bonus Info:"
 msgstr "İkramiye Bilgisi:"
 
-#: client/manager.c:666
+#: client/manager.c:662
 msgid "Display:"
 msgstr "Görüntü:"
 
-#: client/manager.c:666
+#: client/manager.c:662
 msgid "Window"
 msgstr "Pencere"
 
-#: client/manager.c:666
+#: client/manager.c:662
 msgid "Fullscreen"
 msgstr "Tam Ekran"
 
-#: client/manager.c:669
+#: client/manager.c:665
 msgid "Frame Rate:"
 msgstr "Çerçeve Hızı:"
 
-#: client/manager.c:675
+#: client/manager.c:671
 msgid "Resume Last Game"
 msgstr "Son Oyuna Devam Et"
 
-#: client/manager.c:678
+#: client/manager.c:674
 msgid "Start Original Set"
 msgstr "Özgün Kümeyi Başlat"
 
-#: client/manager.c:679
+#: client/manager.c:675
 msgid "Start AddOn"
 msgstr "İlaveyi Başlat"
 
-#: client/manager.c:681
-msgid "AddOn:"
-msgstr "İlave:"
-
-#: client/manager.c:687
+#: client/manager.c:679
 msgid "Players:"
 msgstr "Oyuncular:"
 
-#: client/manager.c:688
+#: client/manager.c:680
 msgid "1st:"
 msgstr "1inci:"
 
-#: client/manager.c:689
+#: client/manager.c:681
 msgid "2nd:"
 msgstr "2nci:"
 
-#: client/manager.c:690
+#: client/manager.c:682
 msgid "3rd:"
 msgstr "3üncü:"
 
-#: client/manager.c:691
+#: client/manager.c:683
 msgid "4th:"
 msgstr "4üncü:"
 
-#: client/manager.c:695
+#: client/manager.c:687
 msgid "Left:"
 msgstr "Sol:"
 
-#: client/manager.c:696
+#: client/manager.c:688
 msgid "Right:"
 msgstr "Sağ:"
 
-#: client/manager.c:697
+#: client/manager.c:689
 msgid "Left Fire:"
 msgstr "Sol Ateş:"
 
-#: client/manager.c:698
+#: client/manager.c:690
 msgid "Right Fire:"
 msgstr "Sağ Ateş:"
 
-#: client/manager.c:699
+#: client/manager.c:691
 msgid "Paddle Turbo:"
 msgstr "Süper Raket:"
 
-#: client/manager.c:700
+#: client/manager.c:692
 msgid "Ball Turbo:"
 msgstr "Süper Top:"
 
-#: client/manager.c:701
+#: client/manager.c:693
 msgid "Return:"
 msgstr "Geri Dönüş:"
 
-#: client/manager.c:712
+#: client/manager.c:704
 msgid "Key Speed:"
 msgstr "Tuş Hızı:"
 
-#: client/manager.c:715
+#: client/manager.c:707
 msgid "Motion Modifier:"
 msgstr "Hareket Niteleyici:"
 
-#: client/manager.c:718
+#: client/manager.c:710
 msgid "Invert Motion:"
 msgstr "Tersine Hareket:"
 
-#: client/manager.c:722
+#: client/manager.c:714
 msgid "Convex Paddle:"
 msgstr "Dışbükey Raket:"
 
-#: client/manager.c:725
+#: client/manager.c:717
 msgid "Ball Fire Angle:"
 msgstr "Top Ateş Açısı:"
 
-#: client/manager.c:727
+#: client/manager.c:719
 msgid "Random"
 msgstr "Rastgele"
 
-#: client/manager.c:728
+#: client/manager.c:720
 msgid "Below Bonuses"
 msgstr "İkramiyelerin Altında"
 
-#: client/manager.c:728
+#: client/manager.c:720
 msgid "Above Bonuses"
 msgstr "İkramiyelerin Üstünde"
 
-#: client/manager.c:729
+#: client/manager.c:721
 msgid "Debris:"
 msgstr "Enkaz:"
 
-#: client/manager.c:729
+#: client/manager.c:721
 msgid "Below Balls"
 msgstr "Aşağı Toplar"
 
-#: client/manager.c:729
+#: client/manager.c:721
 msgid "Above Balls"
 msgstr "Yukarı Toplar"
 
-#: client/manager.c:730
+#: client/manager.c:722
 msgid "Return Balls:"
 msgstr "Topları Geri Döndür:"
 
-#: client/manager.c:730
+#: client/manager.c:722
 msgid "Auto"
 msgstr "Otomatik"
 
-#: client/manager.c:730
+#: client/manager.c:722
 msgid "By Click"
 msgstr "Tıklayarak"
 
-#: client/manager.c:731
+#: client/manager.c:723
 msgid "Use Hints:"
 msgstr "İpuçlarını Kullan:"
 
-#: client/manager.c:734
+#: client/manager.c:726
 msgid "Warp Limit:"
 msgstr "Sıçrama Limiti:"
 
-#: client/manager.c:735
+#: client/manager.c:727
 msgid "Local UDP Port:"
 msgstr "Local UDP Geçidi (Port):"
 
-#: client/manager.c:736
+#: client/manager.c:728
 msgid "Acc. Ball Speed:"
 msgstr "İvm. Top Hızı:"
 
-#: client/manager.c:739
+#: client/manager.c:731
 msgid "Add Bonus Levels:"
 msgstr "İkramiye Düzeyler Ekle:"
 
-#: client/manager.c:744
+#: client/manager.c:736
 msgid "Set:"
 msgstr "Küme:"
 
-#: client/manager.c:749
+#: client/manager.c:741
 msgid "Edit Set"
 msgstr "Kümeyi Düzenle"
 
-#: client/manager.c:754
+#: client/manager.c:746
 msgid "Yes"
 msgstr "Evet"
 
-#: client/manager.c:757
+#: client/manager.c:749
 msgid "No"
 msgstr "Hayır"
 
-#: client/manager.c:759
+#: client/manager.c:751
 msgid "Theme:"
 msgstr "Tema:"
 
-#: client/manager.c:764
+#: client/manager.c:756
 msgid "Apply"
 msgstr "Uygula"
 
@@ -2001,21 +1998,21 @@ msgstr "Sol Alt"
 msgid "BackSpace"
 msgstr "GeriAl"
 
-#: client/misc.c:212
+#: client/misc.c:213
 msgid "Waiting for remote answer..."
 msgstr "Uzaktan cevap bekleniyor..."
 
-#: client/misc.c:231
+#: client/misc.c:232
 #, no-c-format
 msgid "remote player cancelled the game\n"
 msgstr "uzaktaki oyunu iptal etti\n"
 
-#: client/misc.c:418
+#: client/misc.c:419
 #, c-format
 msgid "Plane Of Inner Stability entered (Score: %i)"
 msgstr "İç Kararlılık Düzlemine girildi (Skor: %i)"
 
-#: client/misc.c:436
+#: client/misc.c:437
 #, no-c-format
 msgid "Disintegrate Brick? (Costs 5% of your score.) y/n"
 msgstr "Tuğlayı Parçala? (Skorunuzun 5%'ine malolur.) e/h"
@@ -2543,6 +2540,9 @@ msgstr "Uzaktaki oyuncu oyunu terketti..."
 #, c-format
 msgid "game %i: %s: state %i: invalid message %x: skipping %i bytes\n"
 msgstr "oyun %i: %s: durum %i: geçersiz mesaj %x: %i bayt atlanıyor\n"
+
+#~ msgid "AddOn:"
+#~ msgstr "İlave:"
 
 #~ msgid "Maluses:"
 #~ msgstr "Zararlılar:"

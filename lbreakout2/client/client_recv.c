@@ -275,27 +275,27 @@ static void client_parse_packet()
 			 * message was sent because ADD_USER commands may be in the
 			 * package and these we should get. */
 			case MSG_PADDLE_STATE:
-				comm_unpack_paddle_dummy( net_buffer, &msg_read_pos );
+				comm_unpack_paddle_dummy( (unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_SHOT_POSITIONS:
-				comm_unpack_shots_dummy( net_buffer, &msg_read_pos );
+				comm_unpack_shots_dummy( (unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_BALL_POSITIONS:
-				comm_unpack_balls_dummy( net_buffer, &msg_read_pos );
+				comm_unpack_balls_dummy( (unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_SCORES:
-				comm_unpack_scores_dummy( net_buffer, &msg_read_pos );
+				comm_unpack_scores_dummy( (unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_BRICK_HITS:
-				comm_unpack_brick_hits_dummy( net_buffer, &msg_read_pos );
+				comm_unpack_brick_hits_dummy( (unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_NEW_EXTRAS:
-				comm_unpack_collected_extras_dummy( net_buffer, &msg_read_pos );
+				comm_unpack_collected_extras_dummy( (unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_ROUND_OVER:

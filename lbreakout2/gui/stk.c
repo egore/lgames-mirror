@@ -1130,10 +1130,10 @@ contains 'b' for black 'w' for white and ' ' for transparent.
 SDL_Cursor* stk_cursor_create(
     int width, int height, int hot_x, int hot_y, char *source )
 {
-    char *mask = 0, *data = 0;
+    unsigned char *mask = 0, *data = 0;
     SDL_Cursor *cursor = 0;
     int i, j, k;
-    char data_byte, mask_byte;
+    unsigned char data_byte, mask_byte;
     int pot;
     /* create mask&data */
     mask = calloc( width * height / 8, sizeof ( char ) );

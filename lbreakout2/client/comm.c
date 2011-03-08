@@ -236,7 +236,7 @@ static void comm_parse_packet()
 				cur_player->next_paddle_id = msg_read_int8(); /* top or bottom? */
 				msg_read( 536, msgbuf );
 				if ( !msg_read_failed() ) {
-					comm_unpack_level( &cur_player->snapshot, msgbuf, &msglen );
+					comm_unpack_level( &cur_player->snapshot, (unsigned char*)msgbuf, &msglen );
 					cur_player->next_level_received = 1;
 					handled = 1;
 				}
@@ -280,15 +280,15 @@ static void comm_parse_packet()
 		//if ( client_state == CS_PLAY ) 
 		switch ( type ) {
 			case MSG_PADDLE_STATE:
-				comm_unpack_paddle( r_paddle, net_buffer, &msg_read_pos );
+				comm_unpack_paddle( r_paddle, (unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_SHOT_POSITIONS:
-				comm_unpack_shots( net_buffer, &msg_read_pos );
+				comm_unpack_shots( (unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_BALL_POSITIONS:
-				comm_unpack_balls( net_buffer, &msg_read_pos );
+				comm_unpack_balls( (unsigned char*)net_buffer, &msg_read_pos );
 
 #ifdef AUDIO_ENABLED
 				/* play sounds for attached, reflected balls or fired shots */
@@ -308,11 +308,11 @@ static void comm_parse_packet()
 				handled = 1;
 				break;
 			case MSG_SCORES:
-				comm_unpack_scores( net_buffer, &msg_read_pos );
+				comm_unpack_scores( (unsigned char*)net_buffer, &msg_read_pos );
 				handled = 1;
 				break;
 			case MSG_BRICK_HITS:
-				comm_unpack_brick_hits( net_buffer, &msg_read_pos );
+				comm_unpack_brick_hits( (unsigned char*)net_buffer, &msg_read_pos );
 
 				/* handle brick hits and create new extras. the extras
 				 * are moved independently by the client and destroyed on
@@ -324,7 +324,7 @@ static void comm_parse_packet()
 				handled = 1;
 				break;
 			case MSG_NEW_EXTRAS:
-				comm_unpack_collected_extras( net_buffer, &msg_read_pos );
+				comm_unpack_collected_extras( (unsigned char*)net_buffer, &msg_read_pos );
 				
 				/* these collected extras take effect */
 				for ( i = 0; i < game->paddle_count; i++ ) {
@@ -402,7 +402,7 @@ void comm_send_paddle( Paddle *paddle )
 	}
 
 	msgbuf[0] = MSG_PADDLE_STATE; msglen = 1;
-	comm_pack_paddle( paddle, msgbuf, &msglen );
+	comm_pack_paddle( paddle, (unsigned char*)msgbuf, &msglen );
 	client_transmit( CODE_BLUE, msglen, msgbuf );
 }
 
