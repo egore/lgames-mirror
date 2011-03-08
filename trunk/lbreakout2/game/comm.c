@@ -503,7 +503,7 @@ void comm_unpack_collected_extras( unsigned char *msg, int *pos )
  */
 void comm_pack_level( Level *level, unsigned char *msg, int *pos )
 {
-	char *ptr = msg + *pos;
+	char *ptr = (char*)msg + *pos;
 	
 	snprintf( ptr, 16, "%s", level->name );  ptr[15] = 0; ptr += 16;
 	snprintf( ptr, 16, "%s", level->author); ptr[15] = 0; ptr += 16;
@@ -516,7 +516,7 @@ void comm_pack_level( Level *level, unsigned char *msg, int *pos )
 /* unpack leveldata */
 void comm_unpack_level( Level *level, unsigned char *msg, int *pos )
 {
-	char *ptr = msg + *pos;
+	char *ptr = (char*)msg + *pos;
 	
 	snprintf( level->name, 16, "%s", ptr ); ptr += 16;
 	snprintf( level->author, 16, "%s", ptr ); ptr += 16;

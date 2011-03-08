@@ -247,7 +247,7 @@ bool net_recv_packet( void )
     return 0;
 #else
     struct sockaddr	sa;
-    int		sa_len = sizeof(sa);
+    socklen_t		sa_len = sizeof(sa);
 
     ret = recvfrom( net_socket, 
             net_buffer, sizeof(net_buffer), 
@@ -447,20 +447,20 @@ void msg_begin_writing( char *buf, int *cur_size, int max_size )
 }
 void msg_write_int8  ( int c )
 {
-	unsigned char *ptr = msg_get_writeable_space( 1 );
+	char *ptr = msg_get_writeable_space( 1 );
 	ptr[0] = (char)c;
 	*msg_buf_cur_size += 1;
 }
 void msg_write_int16 ( int s )
 {
-	unsigned char *ptr = msg_get_writeable_space( 2 );
+	char *ptr = msg_get_writeable_space( 2 );
 	ptr[0] = s & 0xff;
 	ptr[1] = (s>>8) & 0xff;
 	*msg_buf_cur_size += 2;
 }
 void msg_write_int32 ( int i )
 {
-	unsigned char *ptr = msg_get_writeable_space( 4 );
+	char *ptr = msg_get_writeable_space( 4 );
 	ptr[0] = i & 0xff;
 	ptr[1] = (i>>8) & 0xff;
 	ptr[2] = (i>>16) & 0xff;
@@ -486,7 +486,7 @@ void msg_printf      ( char *format, ... )
 }
 void msg_write       ( int len, void *data )
 {
-	unsigned char *ptr = msg_get_writeable_space( len );
+	char *ptr = msg_get_writeable_space( len );
 	if ( len > msg_buf_max_size ) return; /* would cause segfault */
 	memcpy( ptr, data, len );
 	*msg_buf_cur_size += len;
@@ -529,19 +529,19 @@ void  msg_begin_connectionless_reading()
 }
 int   msg_read_int8 ( void )
 {
-	unsigned char *ptr = msg_get_readable_space( 1 );
+	unsigned char *ptr = (unsigned char*)msg_get_readable_space( 1 );
 	msg_read_pos += 1;
 	return ptr[0];
 }
 int   msg_read_int16( void )
 {
-	unsigned char *ptr = msg_get_readable_space( 2 );
+	unsigned char *ptr = (unsigned char*)msg_get_readable_space( 2 );
 	msg_read_pos += 2;
 	return ptr[0] + (ptr[1]<<8);
 }
 int   msg_read_int32( void )
 {
-	unsigned char *ptr = msg_get_readable_space( 4 );
+	unsigned char *ptr = (unsigned char*)msg_get_readable_space( 4 );
 	msg_read_pos += 4;
 	return ptr[0] + (ptr[1]<<8) + (ptr[2]<<16) + (ptr[3]<<24);
 }
@@ -563,7 +563,7 @@ char* msg_read_string( void )
 }
 void  msg_read( int len, char *buf )
 {
-	unsigned char *ptr = msg_get_readable_space( len );
+	char *ptr = msg_get_readable_space( len );
 	msg_read_pos += len;
 	memcpy( buf, ptr, len );
 }

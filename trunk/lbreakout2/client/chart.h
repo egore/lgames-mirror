@@ -78,6 +78,13 @@ Draw highscores centered in regio x,y,w,h
 void chart_show( Set_Chart *chart, int x, int y, int w, int h );
 /*
 ====================================================================
+Draw highscores centered in regio x,y,w,h but in a more compact way
+(no title). Also don't use chart_pos (except for x).
+====================================================================
+*/
+void chart_show_compact( Set_Chart *chart, int x, int y, int w, int h );
+/*
+====================================================================
 Clear all new_entry flags (done before new players are added
 to chart when game over).
 ====================================================================
