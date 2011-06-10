@@ -111,7 +111,14 @@ Yexter \
 Yoda \
 Zigies \
 Zooligan \
-Zufallswelt
+Zufallswelt \
+EastEurope \
+WestEurope \
+OldGames \
+PCGames \
+Horror \
+Lattices \
+Madness
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(inst_dir)/levels
