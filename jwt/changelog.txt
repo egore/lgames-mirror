@@ -1,3 +1,5 @@
+- fixed some typos in pali lessons
+
 1.01:
 - allow definition of multiple lessons within one file
 - organized pali example lessons into two files and fixed some typos
