@@ -54,6 +54,7 @@ function createEmptyLesson( caption )
 	var obj = new Object();
 	
 	obj["words"] = new Array();
+	obj["searchkeys"] = new Array(); /* words in search format */
 	obj["caption"] = caption;
 	obj["selected"] = 0;
 	
@@ -108,6 +109,7 @@ function addInputFile()
 		if (checkWordSyntax(jwtInputWords[i]) < 0)
 			continue;
 		lesson["words"].push(jwtInputWords[i]);
+		lesson["searchkeys"].push(toSearchFormat(jwtInputWords[i]));
 	}
 	if (lesson["words"].length > 0)
 		jwtInput[jwtInput.length] = lesson;
@@ -348,8 +350,8 @@ function showSearchDialogue()
 		"<table border=1 cellpadding=10 id=tabtest>" +
 		"<tr><td align=center><span id=spanSearchHeader></span></td></tr>" +
 		"<tr><td align=center><input type=text size=20 id=txtSearchExpr>" +
-		"&nbsp;<input type=button value=\"Search\" onClick=\"searchWords();\"><br>" +
-		"<font size=-1>(Expression has to be in input file word format.)</font></td></tr>" +
+		"&nbsp;<input type=button value=\"Search\" onClick=\"searchWords(0);\"><br>" +
+		"</td></tr>" +
 		"<tr><td align=center><span id=spanSearchResult>&nbsp;</span></td></tr>" +
 		"</table>";
 	
@@ -364,25 +366,33 @@ function showSearchDialogue()
 }
 
 /** Search in all input files for all words that contain expression from object 
- * txtSearchExpr and display all matches in object spanSearchResult. */
-function searchWords()
+ * txtSearchExpr and display all matches in object spanSearchResult. The 
+ * expression is converted to search format und matched against the search 
+ * keys in each lesson. On matching the actual word is shown however. 
+ * If @exact is true, do not use search key but word in input format. */
+function searchWords( exact )
 {
 	var expr = "";
 	var i, j;
 	var resultCode = "";
 	var firstMatchInFile;
 	var numMatches = 0;
+	var searchArrayName = "words";
 	
 	/* get expression from HTML object */
 	expr = document.getElementById("txtSearchExpr").value;
+	if (!exact) {
+		expr = toSearchFormat(expr);
+		searchArrayName = "searchkeys";
+	}
 	
 	/* search all files and add result to list */
 	resultCode = "<u>Results for '" + expr + 
 			"':</u><br><br><table width=100% border=1 cellpadding=4>"; 
 	for (i = 0; i < jwtInput.length; i++) {
 		firstMatchInFile = 1;
-		for (j = 0; j < jwtInput[i]["words"].length; j++)
-			if (jwtInput[i]["words"][j].indexOf(expr) != -1) {
+		for (j = 0; j < jwtInput[i][searchArrayName].length; j++)
+			if (jwtInput[i][searchArrayName][j].indexOf(expr) != -1) {
 				numMatches++;
 				if ( firstMatchInFile ) {
 					firstMatchInFile = 0;
@@ -450,4 +460,12 @@ function onPageLoad()
 	/* set handler for key press events */
 	document.onkeypress = handleKeyCommand;
 }
-   
+
+/** Return a copy of string @str in a representation that is used to match any
+ * search expression (which has also been converted to this format) when
+ * searching the lessons for words.
+ * This is a dummy function for any real implementation in lang.js. */
+function toSearchFormat( str )
+{
+	return str; 
+}
