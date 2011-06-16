@@ -1,4 +1,5 @@
-- fixed some typos in pali lessons
+- allow simplified word format for searching (2011/06/16 MS)
+- fixed some typos in pali lessons and extended them (2011/06/16 MS)
 
 1.01:
 - allow definition of multiple lessons within one file

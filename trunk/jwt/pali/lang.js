@@ -48,3 +48,37 @@ function encodeWordToHTML( word, lang )
 	return str;
 }
 
+/** To simplify searching return a copy of string @str which is all lower case
+ * and where all special characters have been replaced with a simple latin 
+ * character, e.g., aa as a or ~n as n.
+ * See also comment of generic dummy function in jwt.js. */
+function toSearchFormat( str )
+{
+	str = str.toLowerCase();
+
+	/* Velthius to simple latin */
+	str = str.replace(/aa/g,"a"); 
+	str = str.replace(/ii/g,"i"); 
+	str = str.replace(/uu/g,"u"); 
+	str = str.replace(/~n/g,"n");
+	str = str.replace(/"n/g,"n");
+	str = str.replace(/\.t/g,"t");
+	str = str.replace(/\.d/g,"d");
+	str = str.replace(/\.n/g,"n");
+	str = str.replace(/\.m/g,"m");
+	str = str.replace(/\.l/g,"l");
+	
+	/* UTF-8 characters to simple latin */
+	str = str.replace(/ā/g,"a"); 
+	str = str.replace(/ī/g,"i"); 
+	str = str.replace(/ū/g,"u"); 
+	str = str.replace(/ñ/g,"n");
+	str = str.replace(/ṅ/g,"n");
+	str = str.replace(/ṭ/g,"t");
+	str = str.replace(/ḍ/g,"d");
+	str = str.replace(/ṇ/g,"n");
+	str = str.replace(/ṃ/g,"m");
+	str = str.replace(/ḷ/g,"l");
+	
+	return str; 
+}

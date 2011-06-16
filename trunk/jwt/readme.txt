@@ -244,6 +244,18 @@ have to be escaped by a backslash as it has to be in the word input files (see
 section 3). To complete the encoding for German language all umlauts would 
 require a similar replacement command.
 
+Another important helper in lang.js is the function toSearchFormat(). To make 
+searching words easier (e.g., on mobile devices where it is difficult to enter
+any non-ASCII letters) this function can be used to generate a 'plain' version
+of the words (e.g., for Pali all special Velthius and UTF-8 characters are
+converted to their basic character: aa to a, ~n to n, ...). All words read from
+input files are passed to this function as well as any search expressions. When
+the simplified copies match the respective word is shown as a search result.
+
+For our German example you would remove all the str.replace() calls from the 
+Pali example and add analogous calls to replace the umlauts with their basic 
+character: "u to u, ü to u, "a to a and so forth.
+
 After completing lang.js and defining words in input files accordingly (e.g.,
 german/lesson01.js) these files have to be included to the HTML file (e.g.,
 german.htm). Therefore, open this file, search for
