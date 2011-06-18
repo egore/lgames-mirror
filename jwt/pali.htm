@@ -1,117 +1,30 @@
-<!-- Copyright 2010 Michael Speck, Published under GNU GPL v3 -->
-
+<!-- Copyright 2011 Michael Speck, Published under GNU GPL v3 -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>JWordTrainer</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<!-- Load word trainer programme logic. -->  
+<!-- program logic and interface -->  
+<script src="dialog.js" type="text/javascript"></script>
 <script src="jwt.js" type="text/javascript"></script>
 
 <!-- LANGUAGE DEPENDENT SECTION BEGIN -->
-<!-- Load pali language files. -->
 <script src="pali/lang.js" type="text/javascript"></script>
 <script src="pali/gair.js" type="text/javascript"></script><script type="text/javascript">addInputFile();</script>
 <script src="pali/miscellaneous.js" type="text/javascript"></script><script type="text/javascript">addInputFile();</script>
 <script src="pali/pali2010.js" type="text/javascript"></script><script type="text/javascript">addInputFile();</script>
 <!-- LANGUAGE DEPENDENT SECTION END -->
 
-<body style="font-family: Arial Unicode MS" onLoad="onPageLoad();">
-
-<!-- main frame -->
-<table width=100% height=100%><tr><td align=center valign=center id=tdMainFrame>
-<table border=1 cellpadding=5>
-
-	<!-- lessons selection menu -->
-	<tr><td rowspan=4 valign=top align=center width=150>
-	<table width=100%>
-	
-	<tr><td align=center>
-		<b>Lessons</b><br>
-		<font size=-2>
-		(Use CTRL to select multiple entries.) 
-		[&nbsp;<a href=# onClick="showSearchDialogue();">Search</a>&nbsp;]
-		</font><br>
-	</td></tr>
-	
-	<tr><td align=center>	
-		<select id="selInput" multiple size=8 onChange="updateInputSelection();"></select><br>
-		<input type=button onClick="selectAllInput(1);" value=All>
-		&nbsp;&nbsp;&nbsp;
-		<input type=button onClick="selectAllInput(0);" value=None>
-	</td></tr>
-	
-	<tr><td align=center>
-		<table>
-			<tr>
-			<td>Words:</td>
-			<td><select id=selNumWords>
-				<option value=10>10</option>
-				<option selected value=20>20</option>
-				<option value=30>30</option>
-				<option value=50>50</option>
-				<option value=80>80</option>
-				<option value=100>100</option>
-				<option value=150>150</option>
-				<option value=200>200</option>
-				<option value=-1>All</option>
-			</select></td>
-			</tr><tr>
-			<td>Language:</td>
-			<td><select id=selQuestionMode>
-				<option selected value=0></option>
-				<option value=1></option>
-			</select></td>
-			</tr>
-		</table>
-	</td></tr>
-	
-	<tr><td align=center>	
-		<input type=button id=butStart value=Start onClick="restartTrainer();">
-	</td></tr>
-		
-	</table>
-	</td>
-	<!-- lessons selection menu end -->
-	
-	<!-- word trainer -->
-	<td align=center>
-		<span id="spanWordHeader"></span>
-	</td>
-	
-	</tr><!-- lessons menu spans rows, first row of table ends here -->
-	
-	<tr><td align=center>
-		&nbsp;<br><span id="spanWord"></span><br>&nbsp;
-	</td></tr>
-	
-	<tr><td align=center>
-		&nbsp;<br><span style="color: #0000aa" id="spanWordSolution"></span><br>&nbsp;
-	</td></tr>
-	
-	<tr><td>
-		<div align=center>
-		<table cellpadding=2 cellspacing=0>
-		<tr><td align=center>
-			<input type="Button" id="butPushBackWord" value="Keep" onClick="pushBackCurrentWord();">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="Button" id="butShowWord" value="Show" onClick="showCurrentWordSolution();">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			<input type="Button" id="butNextWord" value="Next" onClick="removeCurrentWord();">
-		</td></tr><tr><td align=center>
-			<font size=-2>Key Commands: SPACE = Show / Next, ESC = Keep</font>
-		</td></tr></table>
-		</div>
-	</td></tr>
-	<!-- word trainer end -->
-
+<body onLoad="onPageLoad()">
+<table border=0 width=100% cellpadding=4 cellspacing=0>
+<tr><td align="center" class="title" id="spanTitle"></td></tr>
+<tr><td id="tdMain" align="center">
+	<!-- dynamically loaded content -->
+</td></tr>
 </table>
-</td></tr></table>
-<!-- main frame end -->	
-
 </body>
 
 </html>

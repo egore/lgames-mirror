@@ -1,3 +1,5 @@
+- interface redesigned for better use with mobile devices and separation
+  of interface code from program logic (2011/06/18 MS)
 - allow simplified word format for searching (2011/06/16 MS)
 - fixed some typos in pali lessons and extended them (2011/06/16 MS)
 
