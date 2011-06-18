@@ -1,9 +1,10 @@
-/* Copyright 2010 Michael Speck, Published under GNU GPL v3 */
+/* Copyright 2011 Michael Speck, Published under GNU GPL v3 */
 
 /** Variables and functions for JWordTrainer. */
 
 var jwtInput = []; /* array of all input lessons */
 var jwtLanguageNames = [ "Lang1", "Lang2" ]; /* overwritten by input */
+var jwtNumWantedWords = 30; /* number of words to ask */
 var jwtQuestionMode = 0; /* 0 = first language, 1 = second */
 var jwtWords = []; /* all (remaining) words to be asked */
 var jwtNumWords = 0; /* number of unsolved entries */
@@ -11,30 +12,25 @@ var jwtCurrentWordIdx = -1; /* currently asked word */
 var jwtLastWordIdx = -1; /* index of last asked word */
 var jwtSolutionIsShown = 0; /* whether solution is visible */
 var jwtQuizStarted = 0; /* whether any action occured (show/keep/next) */
-var jwtDialogueId = "main"; /* id of currently displayed window */
+var jwtDialogId = "main"; /* id of currently displayed window */
 
 /** Use language settings from lang.js (loaded as hardcoded file
  * in HTML before calling this on loading page---ugly!!!). */  
 function useInputLanguageSettings()
 {
-	var obj = document.getElementById("selQuestionMode");
-	 
 	jwtLanguageNames = jwtInputLanguageNames;
-	obj.options[0].text = jwtLanguageNames[0];
-	obj.options[1].text = jwtLanguageNames[1];
 }
 
-/** Update list of input files (is called on page load). */
-function updateInputList()
+/** Show program name and languages in span spanTitle. */
+function updateTitle()
 {
-	var i, obj = document.getElementById("selInput");
-	
-	obj.options.length = 0;
-	for (i = 0; i < jwtInput.length; i++) {
-		selected = jwtInput[i]["selected"];
-		opt = new Option(jwtInput[i]["caption"],i,0,selected);
-		obj.options[obj.options.length] = opt;
-	}
+	var title;
+	var obj = document.getElementById("spanTitle");
+
+	title = "JWordTrainer - (" + jwtLanguageNames[0] + " / " + 
+						jwtLanguageNames[1] + ")";
+	if (obj) 
+		obj.innerHTML = title;
 }
 
 /** Select/Unselect all input files. @selected is 0 or 1. */
@@ -86,6 +82,12 @@ function checkWordSyntax( word )
 	return 0;
 }
 
+/** A helper function to trim a string. Javascript does not provide this. */
+function trimString( str )
+{
+	return str.replace (/^\s+/, '').replace (/\s+$/, '');
+}
+
 /** Add input to jwtInput (loaded as hardcoded file in HTML before calling
  * this---ugly!!!). jwtInputWords is list of all words, jwtInputCaption is
  * caption of file.
@@ -108,7 +110,9 @@ function addInputFile()
 		}
 		if (checkWordSyntax(jwtInputWords[i]) < 0)
 			continue;
-		lesson["words"].push(jwtInputWords[i]);
+		/* remove all whitespaces before separator # before pushing to
+		 * word list */
+		lesson["words"].push(jwtInputWords[i].replace(/\s*#/, '#'));
 		lesson["searchkeys"].push(toSearchFormat(jwtInputWords[i]));
 	}
 	if (lesson["words"].length > 0)
@@ -189,13 +193,14 @@ function encodeWordToHTML( word, lang )
 function updateWordHeader( askedLang )
 {
 	var title;
+	var obj = document.getElementById("spanWordHeader");
 	
 	if ( askedLang == 0 )
 		title = jwtLanguageNames[0] + " - " + jwtLanguageNames[1];
 	else 
 		title = jwtLanguageNames[1] + " - " + jwtLanguageNames[0];
-	document.getElementById("spanWordHeader").innerHTML = 
-				"<b>" + title + "</b><br><font size=-1>(" + 
+	if (obj)
+		obj.innerHTML = "<b>" + title + "</b><br><font size=-1>(" + 
 				jwtNumWords + " words remaining)" + 
 				"</font>";
 }
@@ -227,10 +232,11 @@ function askNewWord()
 	}  					
 	
 	/* Show word */
-	obj = document.getElementById("spanWord");
-	obj.innerHTML = encodeWordToHTML( jwtWords[jwtCurrentWordIdx], jwtQuestionMode );
-	obj = document.getElementById("spanWordSolution");
-	obj.innerHTML = "???";
+	if ((obj = document.getElementById("spanWord")))
+		obj.innerHTML = encodeWordToHTML( jwtWords[jwtCurrentWordIdx], 
+							jwtQuestionMode );
+	if ((obj = document.getElementById("spanWordSolution")))
+		obj.innerHTML = "???";
 	jwtSolutionIsShown = 0;
 }
 
@@ -250,6 +256,7 @@ function showCurrentWordSolution()
 	
 	/* unfocus, otherwise focus on click will interfere with key handler */
 	document.getElementById("butShowWord").blur();	
+	document.getElementById("butRestartQuiz").blur();	
 }
 
 /** Show "no more words" message. */
@@ -257,7 +264,7 @@ function showEndMessage()
 {
 	document.getElementById("spanWord").innerHTML = "No more words!";	
 	document.getElementById("spanWordSolution").innerHTML = 
-						"Press Start for more.";
+						"Press Restart for more.";
 	updateWordHeader( jwtQuestionMode );
 }
 
@@ -303,19 +310,10 @@ function removeCurrentWord()
 	document.getElementById("butNextWord").blur();	
 }
 
-/** Set jwtNumWantedWords and jwtQuestionMode according to selected
- * values. Select words and start questioning. */   
+/** Select words and start questioning. */   
 function restartTrainer()
 {
-	var numWantedWords;
-	
-	/* unfocus, otherwise focus on click will interfere with key handler */
-	document.getElementById("butStart").blur();
-		
-	numWantedWords = document.getElementById("selNumWords").value;
-	jwtQuestionMode = document.getElementById("selQuestionMode").value;
-	
-	if (selectWords(numWantedWords) == false)
+	if (selectWords(jwtNumWantedWords) == false)
 		return false;
 
 	askNewWord();
@@ -333,42 +331,27 @@ function updateInputSelection()
 		jwtInput[i]["selected"] = obj.options[i].selected;
 }
 
-/** Show search dialogue (replace contents of main frame). If quiz has started,
- * ask for confirmation first, since this will end the current quiz. */  
-function showSearchDialogue()
+/** Helper function to render a match result. If @lesson is not null, a new
+ * lesson has been entered and this is its caption. @match is the word in 
+ * input file format with both languages separated by a hash symbol. 
+ * Return the rendered string. */
+function renderMatch( lesson, match )
 {
-	if ( jwtQuizStarted && jwtNumWords > 0 )
-		if ( !confirm("Navigating to search page will cancel " +
-						"current quiz. Continue?") )
-			return;
+	var renderStr = "";
 
-	/* set new dialogue id */			
-	jwtDialogueId = "search";
-	
-	/* replace HTML code of main frame */
-	document.getElementById("tdMainFrame").innerHTML =
-		"<table border=1 cellpadding=10 id=tabtest>" +
-		"<tr><td align=center><span id=spanSearchHeader></span></td></tr>" +
-		"<tr><td align=center><input type=text size=20 id=txtSearchExpr>" +
-		"&nbsp;<input type=button value=\"Search\" onClick=\"searchWords(0);\"><br>" +
-		"</td></tr>" +
-		"<tr><td align=center><span id=spanSearchResult>&nbsp;</span></td></tr>" +
-		"</table>";
-	
-	/* set title */
-	document.getElementById("spanSearchHeader").innerHTML = 
-		"<b>Word Search (" + jwtLanguageNames[0] + " / " + 
-		jwtLanguageNames[1] + ")</b><br>" +
-		"<font size=-1>[ <a href='#' onClick='location.reload();'>Back to Word Trainer</a> ]</font>";
-
-	/* focus input */
-	document.getElementById("txtSearchExpr").focus();			
+	if (lesson)
+		renderStr += "<tr><td class=matchTitle>"+ lesson +"</td></tr>";
+	if (match) 
+		renderStr += "<tr><td><b>" + 
+				encodeWordToHTML(match, 0) + ": </b>" +
+				encodeWordToHTML(match, 1) + "</td></tr>";
+	return renderStr;
 }
 
 /** Search in all input files for all words that contain expression from object 
  * txtSearchExpr and display all matches in object spanSearchResult. The 
  * expression is converted to search format und matched against the search 
- * keys in each lesson. On matching the actual word is shown however. 
+ * keys in each lesson. On matching the actual word is shown. 
  * If @exact is true, do not use search key but word in input format. */
 function searchWords( exact )
 {
@@ -387,28 +370,24 @@ function searchWords( exact )
 	}
 	
 	/* search all files and add result to list */
-	resultCode = "<u>Results for '" + expr + 
-			"':</u><br><br><table width=100% border=1 cellpadding=4>"; 
+	resultCode = "<table border=0 cellpadding=2>"; 
 	for (i = 0; i < jwtInput.length; i++) {
 		firstMatchInFile = 1;
 		for (j = 0; j < jwtInput[i][searchArrayName].length; j++)
 			if (jwtInput[i][searchArrayName][j].indexOf(expr) != -1) {
 				numMatches++;
-				if ( firstMatchInFile ) {
+				if (firstMatchInFile) {
 					firstMatchInFile = 0;
-					resultCode += "<tr><td colspan=2 align=center><b>" + 
-							jwtInput[i]["caption"] + 
-							"</b></td></tr>";
-				}
-				resultCode += "<tr><td width=50%>" + 
-						encodeWordToHTML(jwtInput[i]["words"][j],0) + 
-						"</td><td width=50%>" +
-						encodeWordToHTML(jwtInput[i]["words"][j],1) + 
-						"</td>";
+					resultCode += renderMatch(
+							jwtInput[i]["caption"], 
+							jwtInput[i]["words"][j]);
+				} else 
+					resultCode += renderMatch(null, 
+							jwtInput[i]["words"][j]);
 			}
 	}
 	if ( numMatches == 0 )
-		resultCode += "<tr><td>No matches</td></tr>";		
+		resultCode += "<tr><td align=center>No match.</td></tr>";		
 	resultCode += "</table>"; 
 
 	document.getElementById("spanSearchResult").innerHTML = resultCode;		
@@ -419,6 +398,10 @@ function searchWords( exact )
 function handleKeyCommand( ev )
 {
 	var keyCode;
+
+	/* do nothing in main dialog */
+	if (jwtDialogId == "main")
+		return;
 
 	/* some browsers don't pass event as argument properly */	
 	if (ev == null)
@@ -431,7 +414,7 @@ function handleKeyCommand( ev )
 		keyCode = ev.keyCode;
 
 	/* start search? */
-	if (jwtDialogueId == "search") {
+	if (jwtDialogId == "search") {
 		if (keyCode == 13)
 			searchWords();
 		return;
@@ -447,15 +430,14 @@ function handleKeyCommand( ev )
 		pushBackCurrentWord();
 }
 
-/** Called on page load. Apply language settings from lang.js (e.g.,
- * set names in language select), update list of input files, start
- * questioning with a default number of words. */
+/** Called on page load. Apply language settings and show main dialog. */
 function onPageLoad()
 {
 	useInputLanguageSettings();
-	updateInputList();
+	
+	updateTitle();
+	showMainDlg();
 	selectAllInput(1);
-	restartTrainer();
 	
 	/* set handler for key press events */
 	document.onkeypress = handleKeyCommand;

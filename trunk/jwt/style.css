@@ -1,0 +1,31 @@
+body, font,p,div,td,input,textarea,form,select {
+	font-family: Arial; 
+	font-size: 12px; 
+	color: #333340;
+}
+
+body {
+	margin: 0;
+}
+
+.title {
+	font-weight: bold; 
+	color: #ffffff;
+	background-color: #6bb8ff;
+}
+
+.matchTitle {
+	font-style: italic;
+	text-decoration: underline;
+	text-align: center;
+}
+
+.word {
+	font-family: Arial Unicode MS;
+	font-weight: bold;
+}
+
+.solution {
+	font-family: Arial Unicode MS;
+	color: #0000aa;
+}
