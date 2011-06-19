@@ -103,10 +103,7 @@ var quizDlgContent =
 "		<input type=\"Button\" id=\"butPushBackWord\" value=\"Keep\" onClick=\"pushBackCurrentWord();\">" +
 "	</td><td>" +
 "		&nbsp;&nbsp;&nbsp;" +
-"		<input type=\"Button\" id=\"butShowWord\" value=\"Show\" onClick=\"showCurrentWordSolution();\">" +
-"		&nbsp;&nbsp;&nbsp;" +
-"	</td><td>" +
-"		<input type=\"Button\" id=\"butNextWord\" value=\"Next\" onClick=\"removeCurrentWord();\">" +
+"		<input type=\"Button\" id=\"butShowWord\" value=\"Show / Next\" onClick=\"showCurrentWordSolution();\">" +
 "	</td></tr>" +
 "	</table>" +
 "</td></tr>" +
