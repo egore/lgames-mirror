@@ -149,6 +149,12 @@ var searchDlgContent =
 /** Show the search dialog in the main frame. */ 
 function showSearchDlg()
 {
+	/* store settings in global vars before navigating away */
+	if (jwtDialogId == "main") {
+		jwtNumWantedWords = document.getElementById("selNumWords").value;
+		jwtQuestionMode = document.getElementById("selQuestionMode").value;
+	}
+
 	showDlg("search", searchDlgContent);
 	document.getElementById("txtSearchExpr").focus(); /* focus input */
 }
