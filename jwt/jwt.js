@@ -444,3 +444,16 @@ function toSearchFormat( str )
 {
 	return str; 
 }
+
+/** Clear content of element and focus it. */
+function clearAndFocusElement( name )
+{
+	var obj = document.getElementById(name);
+	
+	if (obj == null)
+		return false;
+
+	obj.value = "";
+	obj.focus();
+	return true;
+}
