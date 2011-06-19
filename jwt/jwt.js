@@ -200,9 +200,8 @@ function updateWordHeader( askedLang )
 	else 
 		title = jwtLanguageNames[1] + " - " + jwtLanguageNames[0];
 	if (obj)
-		obj.innerHTML = "<b>" + title + "</b><br><font size=-1>(" + 
-				jwtNumWords + " words remaining)" + 
-				"</font>";
+		obj.innerHTML = "<b>" + title + "</b><br>(" + 
+				jwtNumWords + " words remaining)";
 }
 
 /** Select one unsolved word randomly, show it in object spanWord 
