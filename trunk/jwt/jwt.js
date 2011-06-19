@@ -241,22 +241,35 @@ function askNewWord()
 }
 
 /** Show solution of word (if any currently selected) in object
- * spanWordSolution. */
+ * spanWordSolution or (if already shown) remove it from quiz and
+ * show new word. */
 function showCurrentWordSolution()
 {
 	if (jwtNumWords == 0 || jwtCurrentWordIdx == -1)
 		return;
 		
 	jwtQuizStarted = 1;
+	
+	if ( jwtSolutionIsShown ) {
+		/* XXX Ops, I don't know how to delete from array so 
+		 * let's just copy last word to same slot and decrease
+		 * word count (now you know why there is numWords instead
+		 * of array length :-) since order doesn't matter to us. */
+		jwtWords[jwtCurrentWordIdx] = jwtWords[jwtNumWords-1];
+		jwtNumWords--;
 		
-	document.getElementById("spanWordSolution").innerHTML = 
+		jwtLastWordIdx = jwtCurrentWordIdx;
+		jwtCurrentWordIdx = -1;
+		askNewWord();
+	} else {
+		document.getElementById("spanWordSolution").innerHTML = 
 				encodeWordToHTML( jwtWords[jwtCurrentWordIdx], 
 						jwtQuestionMode==1?0:1 );
-	jwtSolutionIsShown = 1;
+		jwtSolutionIsShown = 1;
+	}
 	
 	/* unfocus, otherwise focus on click will interfere with key handler */
 	document.getElementById("butShowWord").blur();	
-	document.getElementById("butRestartQuiz").blur();	
 }
 
 /** Show "no more words" message. */
@@ -286,38 +299,21 @@ function pushBackCurrentWord()
 	document.getElementById("butPushBackWord").blur();	
 }
 
-/** Consider current word to be solved, remove it and ask for
- * a new one (if any remains). */
-function removeCurrentWord()
-{
-	if (jwtNumWords == 0 || jwtCurrentWordIdx == -1)
-		return;
-		
-	jwtQuizStarted = 1;
-
-	/* XXX Ops, I don't know how to delete from array so 
-	 * let's just copy last word to same slot and decrease
-	 * word count (now you know why there is numWords instead
-	 * of array length :-) since order doesn't matter to us. */
-	jwtWords[jwtCurrentWordIdx] = jwtWords[jwtNumWords-1];
-	jwtNumWords--;
-	
-	jwtLastWordIdx = jwtCurrentWordIdx;
-	jwtCurrentWordIdx = -1;
-	askNewWord();
-	
-	/* unfocus, otherwise focus on click will interfere with key handler */
-	document.getElementById("butNextWord").blur();	
-}
-
 /** Select words and start questioning. */   
 function restartTrainer()
 {
+	var obj;
+	
 	if (selectWords(jwtNumWantedWords) == false)
 		return false;
 
 	askNewWord();
 	jwtQuizStarted = 0;
+	
+	/* if restart button was used focus would interfere with key command */
+	if ((obj = document.getElementById("butRestartQuiz")))
+		obj.blur();
+
 	return true; 	 
 }
 
@@ -421,12 +417,9 @@ function handleKeyCommand( ev )
 	}
 	
 	/* handle key command */
-	if (keyCode == 32) {
-		if ( jwtSolutionIsShown )
-			removeCurrentWord();
-		else
-			showCurrentWordSolution();
-	} else if (keyCode == 27 || keyCode == 97 || keyCode == 107)
+	if (keyCode == 32)
+		showCurrentWordSolution();
+	else if (keyCode == 27 || keyCode == 97 || keyCode == 107)
 		pushBackCurrentWord();
 }
 
