@@ -133,7 +133,9 @@ function showQuizDlg()
 var searchDlgContent = 
 "<table border=0 cellspacing=4 cellpadding=2>" + 
 "<tr><td align=center><b>Enter Word (or a Part):</b></td></tr>" + 
-"<tr><td align=center><input type=text size=20 id=txtSearchExpr></td></tr>" +
+"<tr><td align=center>" +
+"	<input type=text size=20 id=txtSearchExpr><input type=button value=X onclick=\"clearAndFocusElement('txtSearchExpr');\">" +
+"</td></tr>" +
 "<tr><td align=center>" + 
 "	<input type=button value=\"Go Back\" onclick=\"showMainDlg();\">" + 
 "	&nbsp;&nbsp;&nbsp;" +
