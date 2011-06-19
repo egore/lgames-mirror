@@ -365,7 +365,7 @@ function searchWords( exact )
 	}
 	
 	/* search all files and add result to list */
-	resultCode = "<table border=0 cellpadding=2>"; 
+	resultCode = "<table width=320 border=0 cellpadding=2>"; 
 	for (i = 0; i < jwtInput.length; i++) {
 		firstMatchInFile = 1;
 		for (j = 0; j < jwtInput[i][searchArrayName].length; j++)
