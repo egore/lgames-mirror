@@ -25,7 +25,7 @@ HTML/Javascript web application it will run in any browser on any OS
 
 When a language pair and vocabulary have been defined (read section 3 and 4 to 
 learn more) this tool works as follows: You specify how many words from which 
-input lessons you want to be asked and the programme will randomly choose that 
+input lessons you want to be asked and the program will randomly choose that 
 many. The first word is displayed, you think about it and then click a button
 to show the translation. After that you may decide whether to keep the word in 
 the quiz (e.g., because you were wrong, it will be asked again later) or not. 
@@ -51,40 +51,36 @@ words quickly by...
 -------------
 
 This application was developed during my stay in Dhammagiri, Igatpuri, India 
-for the Pali Programme 2010. Therefore, the example language pair included is 
-Pali-English. How to use the programme is explained referring to this.
+for the Pali Program 2010. Therefore, the example language pair included is 
+Pali-English. How to use the program is explained referring to this.
 
-Basically, each language pair has one HTML-file (e.g., pali.htm) which defines 
-the layout of the programme and has to be run in a browser (e.g. by 
-double-clicking the file in the Explorer or entering the file path as URL in 
-the browser). This will start the word trainer with the settings and vocabulary
-of this language pair.
+For each language pair there exists one HTML file (e.g., pali.htm) which looks
+exactly the same except for the language specific include commands. It has to
+be run in a web browser (e.g., by double-clicking the file).
 
-On the left-hand side you can now choose the lessons from which you want words
-to be asked (Note, that you can use CTRL to select multiple entries from the
-list and SHIFT to select a range of entries just like in the Explorer.), the 
-number of words and in which language you want to be asked. After having made
-your choice hit the "Start" button.
+It will display the settings dialog: Here you can choose from which lessons you
+want to be asked how many words in which language. Note, that you can use CTRL
+to select multiple entries from the list and SHIFT to select a range. Click
+"Start Quiz" to start the quiz.
 
-On the right-hand side the word is now displayed in the selected language. The
-"???" below marks the position where the translation will be shown. You may 
-either use the three buttons
-    "Show" - show translation of the asked word
-    "Next" - remove word from quiz and ask next word
+The word is now shown with a triple question mark below it. The solution will
+be written there. You may either use the two buttons
+    "Show/Next" - show translation of asked word or (if already shown)
+                  remove word from the quiz and ask next word
     "Keep" - keep word in quiz (ask again later) and ask next word
 or the key commands
-    SPACE           - show translation *if not shown* OR remove word from quiz 
-                      and ask next word *if translation is shown*
+    SPACE           - show translation (if not shown) or remove word from quiz 
+                      and ask next word (if translation is shown)
     ESC, "a" or "k" - keep word in quiz (ask again later) and ask next word.
 Thus, as long as you know the words you can comfortably use SPACE (first to 
 show translation, then to proceed to next word) as single key.
 
-A simple search functionality is also provided. Click on the "Search" link 
-below the "Lessons" heading on the left-hand side to access it. Note, that 
-navigating to Search will cancel the current quiz. The search expression has
-to be in the input file word format (e.g., Pali Velthius format). All files
-will be searched and all words that contain the given expression as a 
-substring will be displayed. 
+A simple search functionality is also provided. Click on the "Search Words" 
+button at the bottom of the main dialog. All files will be searched and all 
+words that contain the given expression as a substring will be displayed.
+Note: Depending on the definition of the search format (see below) a simplified 
+pattern may be allowed. E.g., for Pali the search expression may contain 
+"plain" equivalents of special letters (e.g., "pano" will match "paa.no").
 
 3. How to Add Words to an Existing Language
 -------------------------------------------
