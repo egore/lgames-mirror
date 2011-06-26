@@ -1,3 +1,4 @@
+- fixed out of bounds error in menu (Michael Speck 2011/06/26)
 - fixed build failure with GCC 4.5 (Paul Wise 2011/06/26)
 - fixed use of sprintf (Paul Wise 2011/06/26)
 - fixed getopt portability issue (Paul Wise 2011/06/26)

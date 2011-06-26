@@ -16,7 +16,7 @@
 #define MENU_H
 
 typedef struct {
-	char 	name[20]; 	/* name */
+	char 	name[24]; 	/* name */
 	int  	x, w, h; 	/* size and x position; y depends on the position
 				   in the menu and is computed dynamically */
 	int	id;		/* unique id */
