@@ -14,7 +14,7 @@ barrage_SOURCES = \
 	SFont.c
 
 barrage_LDFLAGS = 
-barrage_LDADD = @audio_lib@
+barrage_LDADD = @audio_lib@ -lm
 
 EXTRA_DIST = \
 	defs.h particle.h shots.h units.h\
