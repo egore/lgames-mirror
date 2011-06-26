@@ -1,3 +1,4 @@
+- fix getopt portability issue (Paul Wise 2011/06/26)
 - start when no sound is available (Paul Wise 2011/06/26)
 
 1.0.3:
