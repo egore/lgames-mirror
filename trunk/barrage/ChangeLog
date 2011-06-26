@@ -1,3 +1,5 @@
+- start when no sound is available (Paul Wise 2011/06/26)
+
 1.0.3:
 - added XDG desktop support (10/12/24 MS)
 - cannot fire gun in tree strip (10/12/24 MS)
