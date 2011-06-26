@@ -51,6 +51,8 @@ int ammo_w = 0, ammo_h = 0; /* size of an ammo tile */
 int cursor_w = 0, cursor_x_offset = 0;
 int gun_w = 0, gun_h = 0;
 
+extern int audio_on;
+
 extern SDL_Surface *screen; /* display */
 
 #define SET_ALPHA( surf, alpha ) SDL_SetAlpha( surf, SDL_SRCALPHA | SDL_RLEACCEL, alpha )
@@ -234,6 +236,7 @@ void data_load()
 	ft_menu = ft_chart; ft_menu_highlight = ft_chart_highlight;
 	
 #ifdef AUDIO_ENABLED
+    if ( audio_on != -1 ) {
 	wav_expl1 = data_load_sound( "expl1.wav" );
 	wav_expl2 = data_load_sound( "expl2.wav" );
 	wav_expl3 = data_load_sound( "expl3.wav" );
@@ -241,6 +244,7 @@ void data_load()
 	wav_cannon2 = data_load_sound( "gunfire.wav" );
 	wav_click = data_load_sound( "click.wav" );
 	wav_highlight = data_load_sound( "highlight.wav" );
+    }
 #endif
 
 	cr_empty = data_create_cursor( 16, 16, 8, 8,
@@ -288,6 +292,7 @@ void data_delete()
 	printf( "%i fonts deleted\n", ft_count );
 	
 #ifdef AUDIO_ENABLED
+    if ( audio_on != -1 ) {
 	data_free_sound( &wav_expl1 );
 	data_free_sound( &wav_expl2 );
 	data_free_sound( &wav_expl3 );
@@ -295,6 +300,7 @@ void data_delete()
 	data_free_sound( &wav_click );
 	data_free_sound( &wav_highlight );
 	printf( "%i sounds deleted\n", wav_count );
+    }
 #endif
 
 	data_free_cursor( &cr_empty );

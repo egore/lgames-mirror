@@ -19,7 +19,7 @@
 #ifdef AUDIO_ENABLED
 	#include <SDL_mixer.h>
 	typedef Mix_Chunk SDL_Sound;
-	#define SDL_PlaySound( chunk ) if(audio_on) Mix_PlayChannelTimed(-1,chunk,0,-1)
+	#define SDL_PlaySound( chunk ) if(audio_on==1) Mix_PlayChannelTimed(-1,chunk,0,-1)
 #else
 	typedef void SDL_Sound;
 	#define SDL_PlaySound( chunk ) 

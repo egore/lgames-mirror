@@ -536,7 +536,7 @@ static void main_loop()
 			input_delay = INPUT_DELAY;
 		}
 		/* enabe/disable sound anywhere */
-		if ( keystate[SDLK_s] ) {
+		if ( keystate[SDLK_s] && audio_on != -1 ) {
 			audio_on = !audio_on;
 			input_delay = INPUT_DELAY;
 		}
@@ -558,7 +558,7 @@ int main( int argc, char **argv )
   char c;
   
   printf( "BARRAGE v%s\n", VERSION );
-  printf( "Copyright 2003-2010 Michael Speck (http://lgames.sf.net)\n" );
+  printf( "Copyright 2003-2011 Michael Speck (http://lgames.sf.net)\n" );
   printf( "Released under Gnu GPL\n---\n" );
 
   while ( ( c = getopt( argc, argv, "d:ws" ) ) != -1 )
@@ -576,9 +576,14 @@ int main( int argc, char **argv )
 
   set_player_name_from_env();
 	
-  if ( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO ) < 0 ) {
+  if ( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER ) < 0 ) {
     printf( "%s\n", SDL_GetError() );
     exit(1);
+  }
+  else if ( SDL_InitSubSystem( SDL_INIT_AUDIO ) < 0 ) {
+    printf( "%s\n", SDL_GetError() );
+    printf( "Disabling sound and continuing...\n" );
+    audio_on = -1;
   }
   if ( SDL_SetVideoMode( 640, 480, BITDEPTH, 
 			 (fullscreen?SDL_FULLSCREEN:0) | SDL_HWSURFACE | SDL_DOUBLEBUF ) < 0 ) {
@@ -592,7 +597,8 @@ int main( int argc, char **argv )
 #ifdef AUDIO_ENABLED	
   if ( Mix_OpenAudio( audio_freq, audio_format, audio_channels, 1024 ) < 0 ) {
     printf( "%s\n", SDL_GetError() );
-    exit(1);
+    printf("Disabling sound and continuing\n");
+    audio_on = -1;
   }
   audio_mix_channel_count = Mix_AllocateChannels( 16 );
 #endif
