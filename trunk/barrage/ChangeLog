@@ -1,3 +1,4 @@
+- fix use of sprintf (Paul Wise 2011/06/26)
 - fix getopt portability issue (Paul Wise 2011/06/26)
 - start when no sound is available (Paul Wise 2011/06/26)
 
