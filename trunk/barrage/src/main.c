@@ -248,7 +248,7 @@ static void draw_logo_centered( SDL_Surface *dest, int y )
 
 	SDL_BlitSurface( img_logo, 0, dest, &drect );
 
-	SDL_WriteText( ft_copyright, dest, 4, 454, "(C) 2003-2010 Michael Speck" );
+	SDL_WriteText( ft_copyright, dest, 4, 454, "(C) 2003-2011 Michael Speck" );
 	SDL_WriteTextRight( ft_copyright, dest, 636, 454, "http://lgames.sf.net" );
 }
 
