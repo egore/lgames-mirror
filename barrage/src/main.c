@@ -555,7 +555,7 @@ static void main_loop()
 
 int main( int argc, char **argv )
 {
-  char c;
+  int c;
   
   printf( "BARRAGE v%s\n", VERSION );
   printf( "Copyright 2003-2011 Michael Speck (http://lgames.sf.net)\n" );
