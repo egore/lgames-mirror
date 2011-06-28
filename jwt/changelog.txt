@@ -1,3 +1,5 @@
+- have version not in title but hidden it html (2011/06/28 MS)
+
 1.1:
 - interface redesigned for better use with mobile devices (2011/06/18 MS)
 - separation of interface code and program logic (2011/06/18 MS)

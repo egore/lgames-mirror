@@ -1,6 +1,6 @@
 
 
-                            JWordTrainer v1.01
+                            JWordTrainer #VERSION#
 
                         Released under GNU GPL v3
 
