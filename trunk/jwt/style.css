@@ -27,3 +27,8 @@ body {
 .solution {
 	color: #0000aa;
 }
+
+A:link,A:active,A:visited,A:hover {
+	text-decoration: underline;
+	color: #666666;
+}

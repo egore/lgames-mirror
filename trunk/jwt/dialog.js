@@ -21,7 +21,7 @@ function showDlg( id, content )
 
 var mainDlgContent = 
 "<table border=0 cellspacing=4 cellpadding=2>" + 
-"<tr><td align=center><b>Lessons:</b></td></tr>" + 
+"<tr><td align=center><b>Lessons:</b> [ <a href=#search onclick=\"showSearchDlg();\">Search</a> ]</td></tr>" + 
 "<tr><td align=center>" + 
 "	<select id=\"selInput\" multiple size=8 onChange=\"updateInputSelection();\"></select>" + 
 "</td></tr>" + 
@@ -34,10 +34,6 @@ var mainDlgContent =
 "<tr><td align=center><select id=selQuestionMode></select></td></tr>" + 
 "<tr><td align=center>" + 
 "	<input type=button id=butStart value=\"Start Quiz\" onClick=\"showQuizDlg();\">" + 
-"</td></tr>" + 
-"<tr><td align=center><hr></td></tr>" + 
-"<tr><td align=center>" + 
-"	<input type=button id=butStart value=\"Search Words\" onClick=\"showSearchDlg();\">" + 
 "</td></tr>" + 
 "</table>"; 
 
