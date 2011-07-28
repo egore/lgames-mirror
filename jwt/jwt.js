@@ -410,8 +410,10 @@ function handleKeyCommand( ev )
 
 	/* start search? */
 	if (jwtDialogId == "search") {
-		if (keyCode == 13)
+		if (keyCode == 13) {
+			document.getElementById('txtSearchExpr').blur();
 			searchWords();
+		}
 		return;
 	}
 	
