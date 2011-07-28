@@ -67,10 +67,9 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(desktopdir)" "$(DESTDIR)$(icondir)"
+am__installdirs = "$(DESTDIR)$(desktopdir)"
 desktopDATA_INSTALL = $(INSTALL_DATA)
-iconDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(desktop_DATA) $(icon_DATA)
+DATA = $(desktop_DATA)
 ETAGS = etags
 CTAGS = ctags
 DIST_SUBDIRS = $(SUBDIRS)
@@ -188,11 +187,9 @@ AUTOMAKE_OPTIONS = foreign
 RPMBUILD = rpmbuild
 desktopdir = $(datadir)/applications
 desktop_DATA = barrage.desktop
-icondir = $(datadir)/icons/hicolor/48x48/apps
-icon_DATA = barrage.png 
 EXTRA_DIST = BUGS README COPYING AUTHORS ChangeLog INSTALL NEWS TODO \
 	$(PACKAGE).spec $(PACKAGE).spec.in barrage.desktop \
-	barrage.png
+	barrage16.png barrage32.png barrage48.png
 
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
@@ -267,23 +264,6 @@ uninstall-desktopDATA:
 	  f=$(am__strip_dir) \
 	  echo " rm -f '$(DESTDIR)$(desktopdir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(desktopdir)/$$f"; \
-	done
-install-iconDATA: $(icon_DATA)
-	@$(NORMAL_INSTALL)
-	test -z "$(icondir)" || $(mkdir_p) "$(DESTDIR)$(icondir)"
-	@list='$(icon_DATA)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  f=$(am__strip_dir) \
-	  echo " $(iconDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(icondir)/$$f'"; \
-	  $(iconDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(icondir)/$$f"; \
-	done
-
-uninstall-iconDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(icon_DATA)'; for p in $$list; do \
-	  f=$(am__strip_dir) \
-	  echo " rm -f '$(DESTDIR)$(icondir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(icondir)/$$f"; \
 	done
 
 # This directory's subdirectories are mostly independent; you can cd
@@ -565,7 +545,7 @@ check: check-recursive
 all-am: Makefile $(DATA) config.h
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(desktopdir)" "$(DESTDIR)$(icondir)"; do \
+	for dir in "$(DESTDIR)$(desktopdir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: install-recursive
@@ -611,7 +591,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-desktopDATA install-iconDATA
+install-data-am: install-data-local install-desktopDATA
 
 install-exec-am:
 
@@ -639,8 +619,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-desktopDATA uninstall-iconDATA \
-	uninstall-info-am
+uninstall-am: uninstall-desktopDATA uninstall-info-am uninstall-local
 
 uninstall-info: uninstall-info-recursive
 
@@ -651,17 +630,30 @@ uninstall-info: uninstall-info-recursive
 	distclean-hdr distclean-recursive distclean-tags \
 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-desktopDATA install-exec \
-	install-exec-am install-iconDATA install-info install-info-am \
+	install-data-am install-data-local install-desktopDATA \
+	install-exec install-exec-am install-info install-info-am \
 	install-man install-strip installcheck installcheck-am \
 	installdirs installdirs-am maintainer-clean \
 	maintainer-clean-generic maintainer-clean-recursive \
 	mostlyclean mostlyclean-generic mostlyclean-recursive pdf \
 	pdf-am ps ps-am tags tags-recursive uninstall uninstall-am \
-	uninstall-desktopDATA uninstall-iconDATA uninstall-info-am
+	uninstall-desktopDATA uninstall-info-am uninstall-local
 
 rpm: dist
 	$(RPMBUILD) -ta $(distdir).tar.gz
+
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(datadir)/icons/hicolor/16x16/apps
+	$(mkinstalldirs) $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps
+	$(mkinstalldirs) $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps
+	$(INSTALL_DATA) barrage16.png $(DESTDIR)$(datadir)/icons/hicolor/16x16/apps/barrage.png
+	$(INSTALL_DATA) barrage32.png $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/barrage.png
+	$(INSTALL_DATA) barrage48.png $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/barrage.png
+
+uninstall-local:
+	rm -f $(DESTDIR)$(datadir)/icons/hicolor/16x16/apps/barrage.png
+	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/barrage.png
+	rm -f $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/barrage.png
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
