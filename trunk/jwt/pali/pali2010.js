@@ -859,7 +859,7 @@ var jwtInputWords = new Array(
 "passati (pass)#sees",
 "patati (pat)#falls",
 "pa.ticchaadeti (pa.ti+chad)#cover over, conceals",
-"pa.tijaanaati (pa.ti+~naa) # consents, aggrees, promises",
+"pa.tijaanaati (pa.ti+~naa) # consents, agrees, promises",
 "pattharati (pa+thar)#spreads, extends",
 "pattheti (pa+atth)#aspires, desires",
 "pavassati (ppa+vass)#rains heavily",
