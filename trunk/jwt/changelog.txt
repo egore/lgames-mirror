@@ -1,5 +1,6 @@
-- unfocus search expression input field when pressing Return in search 
-  dialog for better usage on mobile devices (2011/07/28 MS)
+1.1.1:
+- show search dialog directly if requested in URL (2011/08/04 MS)
+- unfocus search input field when pressing Return (2011/07/28 MS)
 - have link for search dialog not button (2011/06/29 MS)
 - have version not in title but hidden it html (2011/06/28 MS)
 
