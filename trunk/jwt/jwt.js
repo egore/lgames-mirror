@@ -432,6 +432,10 @@ function onPageLoad()
 	updateTitle();
 	showMainDlg();
 	selectAllInput(1);
+	/** Show search dialog if requested; show main dialog first anyway
+	 * as certain variables have to be set for 'Go Back' to work. */
+	if (document.location.hash == '#search')
+		showSearchDlg();
 	
 	/* set handler for key press events */
 	document.onkeypress = handleKeyCommand;
