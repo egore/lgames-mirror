@@ -82,6 +82,7 @@ void config_reset()
     config.cpu_rot_delay = 100;
     /* controls */
     config.hori_delay = 3;
+    config.pause_key = SDLK_p;
     config.player1.controls.left = SDLK_LEFT;
     config.player1.controls.right = SDLK_RIGHT;
     config.player1.controls.rot_left = SDLK_UP;
@@ -190,6 +191,7 @@ void config_load( )
     parser_get_int( pd, "static_background", &config.keep_bkgnd );
     parser_get_int( pd, "smooth_hori", &config.smooth_hori );
     parser_get_int( pd, "hori_delay", &config.hori_delay );
+    parser_get_int( pd, "pause_key", &config.pause_key );
     parser_get_int( pd, "block_by_block", &config.block_by_block );
     parser_get_int( pd, "motion_mod", &config.motion_mod );
     parser_get_int( pd, "relative_motion", &config.rel_motion );
@@ -232,7 +234,7 @@ void config_save( )
         fprintf( file, "expert»%i\n", config.expert );
         fprintf( file, "center_preview»%i\n", config.center_preview );
         fprintf( file, "holes»%i\n", config.holes );
-	fprintf( file, "rand_holes»%i\n", config.rand_holes );
+        fprintf( file, "rand_holes»%i\n", config.rand_holes );
         fprintf( file, "send_all»%i\n", config.send_all );
         fprintf( file, "send_tetris»%i\n", config.send_tetris );
         print_player( file, 1, &config.player1 );
@@ -253,6 +255,7 @@ void config_save( )
         fprintf( file, "static_background»%i\n", config.keep_bkgnd );
         fprintf( file, "smooth_hori»%i\n", config.smooth_hori );
         fprintf( file, "hori_delay»%i\n", config.hori_delay );
+        fprintf( file, "pause_key»%i\n", config.pause_key );
         fprintf( file, "block_by_block»%i\n", config.block_by_block );
         fprintf( file, "motion_mod»%i\n", config.motion_mod );
         fprintf( file, "relative_motion»%i\n", config.rel_motion );

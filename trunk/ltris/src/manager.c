@@ -74,7 +74,8 @@ Hint strings for the menu.
 #define HINT_SMOOTHHORI _("Horizontally move block either tile-by-tile or smooth. This is just eye-candy and doesn't effect the moving speed at all.")
 #define HINT_SMOOTHVERT _("Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you to move a block below a tile multiple times you'll only be able to do so one time when choosing 'smooth'!#See 'Advanced Options/Collision Check' to improve this.")
 #define HINT_HORIDEL _("The less delay you take the faster the block will horizontally move and the more sensitive the input is handled.")
-#define HINT_CONTROLS _("Each control value needs a unique key for handling.##Left/Right: horizontal movement#Rotate Left/Right: block rotation#Down: faster Dropping#Drop: INSTANT drop")
+#define HINT_CONTROLS _("Left/Right: horizontal movement#Rotate Left/Right: block rotation#Down: faster Dropping#Drop: INSTANT drop")
+#define HINT_PAUSEKEY _("Key used to pause and unpause a game.")
 #define HINT_START _("Let's get it on!!!!")
 #define HINT_NAME _("Human player names. If you play against CPU it will be named as CPU-x.")
 #define HINT_STARTLEVEL _("This is your starting level which will be ignored for game 'Figures' (you'll always start at level 0 there).##Each starting level up adds you 1.5% score in the end!")
@@ -202,7 +203,8 @@ Load/delete background and create and link all menus
 */
 void manager_create()
 {
-    Item *keys[3][6];
+    Item *keys[3][6]; /* player control keys */
+    Item *pause_key; /* pause key */
     Item *item;
     int filter[SDLK_LAST]; /* key filter */
     /* constant contence of switches */
@@ -269,7 +271,6 @@ void manager_create()
     filter[SDLK_ESCAPE] = 0;
     filter[SDLK_RETURN] = 0;
     filter[SDLK_q] = 0;
-    filter[SDLK_p] = 0;
     filter[SDLK_f] = 0;
     
     /* menus are added to this list for deleting later */
@@ -370,15 +371,8 @@ void manager_create()
     menu_add( twoplayer, item_create_range( _("CPU Drop Delay:"), HINT_CPUDROP, &config.cpu_delay, 0, 2000, 100 ) );
     menu_add( twoplayer, item_create_separator( "" ) );
     menu_add( twoplayer, item_create_link( _("Back"), HINT_, game ) );
-    /* controls */
-    menu_add( cont, item_create_link( _("Player1"), HINT_CONTROLS, cont_player1 ) );
-    menu_add( cont, item_create_link( _("Player2"), HINT_CONTROLS, cont_player2 ) );
-    menu_add( cont, item_create_link( _("Player3"), HINT_CONTROLS, cont_player3 ) );
-    menu_add( cont, item_create_separator( "" ) );
-    menu_add( cont, item_create_range( _("Horizontal Delay:"),  HINT_HORIDEL,&config.hori_delay, 0, 9, 1 ) );
-    menu_add( cont, item_create_separator( "" ) );
-    menu_add( cont, item_create_link( _("Back"), HINT_, _main ) );
     /* all keys used */
+    pause_key = item_create_key( _("Pause Key:"), HINT_PAUSEKEY, &config.pause_key, filter );
     keys[0][0] = item_create_key( _("Left:"), HINT_CONTROLS, &config.player1.controls.left, filter );
     keys[0][1] = item_create_key( _("Right:"), HINT_CONTROLS, &config.player1.controls.right, filter );
     keys[0][2] = item_create_key( _("Rotate Left:"), HINT_CONTROLS, &config.player1.controls.rot_left, filter );
@@ -405,7 +399,22 @@ void manager_create()
                 for ( j = 0; j < 6; j++ ) 
                     if ( k != i || l != j )
                         value_add_other_key( keys[k][l]->value, keys[i][j]->value );
+            /* restrict pause key */
+            value_add_other_key( keys[k][l]->value, pause_key->value);
         }
+    /* restrict controls for pause key */
+    for ( i = 0; i < 3; i++ )
+        for ( j = 0; j < 6; j++ ) 
+            value_add_other_key( pause_key->value, keys[i][j]->value );
+    /* controls */
+    menu_add( cont, item_create_link( _("Player1"), HINT_CONTROLS, cont_player1 ) );
+    menu_add( cont, item_create_link( _("Player2"), HINT_CONTROLS, cont_player2 ) );
+    menu_add( cont, item_create_link( _("Player3"), HINT_CONTROLS, cont_player3 ) );
+    menu_add( cont, item_create_separator( "" ) );
+    menu_add( cont, item_create_range( _("Horizontal Delay:"),  HINT_HORIDEL,&config.hori_delay, 0, 9, 1 ) );
+    menu_add( cont, pause_key );
+    menu_add( cont, item_create_separator( "" ) );
+    menu_add( cont, item_create_link( _("Back"), HINT_, _main ) );
     /* controls player 1 */
     for ( k = 0; k < 6; k++ )
         menu_add( cont_player1, keys[0][k] );
