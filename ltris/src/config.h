@@ -69,7 +69,8 @@ typedef struct {
     int cpu_delay; /* delay in ms that CPU waits before moving down fast */
     int cpu_rot_delay; /* delay between rotative steps */
     /* controls */
-	int	hori_delay;
+    int	hori_delay;
+    int pause_key;
     /* sound */
     int sound;
     int volume; /* 1 - 8 */

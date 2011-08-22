@@ -1,3 +1,6 @@
+1.0.17:
+- made pause key configurable (2011/08/22 MS)
+
 1.0.16:
 - improved random number generator (2011/03/02 MS)
 - generate pieces according to official Tetris guidelines (2011/03/02 Andrey

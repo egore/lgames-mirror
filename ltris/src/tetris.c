@@ -103,7 +103,7 @@ int confirm( Font *font, char *str, int type )
                 }
                 else
                 if ( type == CONFIRM_PAUSE ) {
-                    if ( event.key.keysym.sym == SDLK_p ) {
+                    if ( event.key.keysym.sym == config.pause_key ) {
                         ret = 1; go_on = 0;
                         break;
                     }
@@ -374,8 +374,10 @@ void tetris_run()
                         if ( bowls[i] ) 
                             bowl_store_key( bowls[i], event.key.keysym.sym );
                     break;
-                case SDL_KEYUP:    
-                    switch ( event.key.keysym.sym ) {
+                case SDL_KEYUP:
+                    if (event.key.keysym.sym == config.pause_key)
+                        request_pause = 1;
+                    else switch ( event.key.keysym.sym ) {
                         case SDLK_ESCAPE: 
                             if ( game_over ) {
                                 leave = 1;
@@ -387,9 +389,6 @@ void tetris_run()
                                     if ( bowls[i] && !bowls[i]->game_over )
                                         bowl_finish_game( bowls[i] );
                             break;
-                         case SDLK_p:
-                             request_pause = 1;
-                             break;
                          case SDLK_f:
                              /* switch fullscreen */
                             config.fullscreen = !config.fullscreen;
