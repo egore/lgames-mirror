@@ -366,8 +366,16 @@ NOTE: py is a pixel value and x is a bowl map value.
 The tolerance value moves the checked corners into the middle
 of the brick opening a small 'window' to move though it's blocked.
 Useful when config::block_by_block is disabled.
+If position is valid, 0 is returned. Other return values:
+  POSINVAL_LEFT (out of left boundary)
+  POSINVAL_RIGHT (out of right boundary)
+  POSINVAL invalid for other reasons
 ====================================================================
 */
+#define POSVALID 0
+#define POSINVAL -1
+#define POSINVAL_LEFT -2
+#define POSINVAL_RIGHT -3
 int bowl_validate_block_pos( Bowl *bowl, int x, int py, int rot, int tol )
 {
     int i, j;
@@ -375,22 +383,30 @@ int bowl_validate_block_pos( Bowl *bowl, int x, int py, int rot, int tol )
     for ( j = 0; j < 4; j++ ) {
         for ( i = 0; i < 4; i++ ) {
             if ( block_masks[bowl->block.id].mask[rot][i][j] ) {
-                if ( x + i < 0 ) return 0;
-                if ( x + i >= bowl->w ) return 0;
-                if ( py + tile_y >= bowl->sh ) return 0;
+                if ( x + i < 0 )
+                    return POSINVAL_LEFT;
+                if ( x + i >= bowl->w ) 
+                    return POSINVAL_RIGHT;
+                if ( py + tile_y >= bowl->sh )
+                    return POSINVAL;
                 /* if it doesn't fit the screen from above it's okay */
-                if ( py + tile_y < 0 ) continue;
+                if ( py + tile_y < 0 )
+                    continue;
                 /* bowl pixel contents */
-                if ( bowl->pixel_contents[i + x][py + tile_y + tol]!= -1 ) return 0;
-                if ( bowl->pixel_contents[i + x][py + tile_y + bowl->block_size - 1 - tol] != -1 ) return 0;
+                if ( bowl->pixel_contents[i + x][py + tile_y + tol]!= -1 )
+                    return POSINVAL;
+                if ( bowl->pixel_contents[i + x][py + tile_y + bowl->block_size - 1 - tol] != -1 )
+                    return POSINVAL;
                 /* if the bowl bottom is hit it is a collision as well */
-                if ( py + tile_y + tol >= bowl->sh ) return 0;
-                if ( py + tile_y + bowl->block_size - 1 - tol >= bowl->sh ) return 0;
+                if ( py + tile_y + tol >= bowl->sh )
+                    return POSINVAL;
+                if ( py + tile_y + bowl->block_size - 1 - tol >= bowl->sh )
+                    return POSINVAL;
             }
         }
         tile_y += bowl->block_size;
     }
-    return 1;
+    return POSVALID;
 }
 
 /*
@@ -446,7 +462,7 @@ void bowl_add_tile( Bowl *bowl )
             j++;
         /* add tile and test if this hits the block if so remove and try another one */
         bowl_set_tile( bowl, i, j, 9 );
-        if ( !bowl_validate_block_pos( bowl, bowl->block.x, bowl->block.check_y, bowl->block.rot_id, 0 ) ) {
+        if ( bowl_validate_block_pos( bowl, bowl->block.x, bowl->block.check_y, bowl->block.rot_id, 0 ) < 0) {
             bowl_set_tile( bowl, i, j, -1 );
             continue;
         }
@@ -506,7 +522,7 @@ int bowl_add_line( Bowl * bowl, int wanted_holes, int *holes_pos)
         }
     }
     /* check if block position became invalid */
-    if ( !bowl_validate_block_pos( bowl, bowl->block.x, bowl->block.check_y, bowl->block.rot_id, 0 ) ) {
+    if ( bowl_validate_block_pos( bowl, bowl->block.x, bowl->block.check_y, bowl->block.rot_id, 0 ) < 0 ) {
         bowl->block.y = bowl->block.check_y / bowl->block_size - 1;
         bowl->block.check_y = bowl->block.y * bowl->block_size;
         bowl->block.cur_y = bowl->block.check_y;
@@ -591,7 +607,7 @@ void bowl_insert_block( Bowl *bowl )
   int *hole_pos = 0;
   /* move block y up so it gets to the first free place */
   py = bowl->block.y * bowl->block_size;
-  while ( !bowl_validate_block_pos( bowl, bowl->block.x, py, bowl->block.rot_id, 0 ) )
+  while ( bowl_validate_block_pos( bowl, bowl->block.x, py, bowl->block.rot_id, 0 ) < 0 )
     py -= bowl->block_size;
   bowl->block.y = py / bowl->block_size;
   /* insert and check if block is out of screen */
@@ -1268,7 +1284,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
     int old_bottom_y = ( (int)bowl->block.cur_y + bowl->block_size - 1 ) / bowl->block_size;
     int target_x; /* target screen position within bowl */
     int hori_movement = 0;
-    int new_rot;
+    int new_rot, hori_mod, ret;
     /* SCORE */
     counter_update( &bowl->score, ms );
     if ( game_over ) return;
@@ -1293,17 +1309,38 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                 delay_force_time_out( &bowl->block_hori_delay );
                 break;
             case KEY_ROT_LEFT:
-                new_rot = bowl->block.rot_id - 1;
-                if ( new_rot < 0 ) new_rot = 3;
-                if ( bowl_validate_block_pos( bowl, bowl->block.x, bowl->block.check_y, new_rot, 0 ) )
-                    bowl->block.rot_id = new_rot;
-                bowl_compute_help_pos( bowl );
-                break;
             case KEY_ROT_RIGHT:
-                new_rot = bowl->block.rot_id + 1;
-                if ( new_rot == 4 ) new_rot = 0;
-                if ( bowl_validate_block_pos( bowl, bowl->block.x, bowl->block.check_y, new_rot, 0 ) )
-                    bowl->block.rot_id = new_rot;
+                if (bowl->stored_key == KEY_ROT_LEFT) {
+                    new_rot = bowl->block.rot_id - 1;
+                    if ( new_rot < 0 )
+                        new_rot = 3;
+                } else {
+                    new_rot = bowl->block.rot_id + 1;
+                    if ( new_rot == 4 )
+                        new_rot = 0;
+                }
+                hori_mod = 0;
+                do {
+                    ret = bowl_validate_block_pos(bowl,bowl->block.x + hori_mod, 
+                                            bowl->block.check_y, new_rot, 0 );
+                    if (ret == POSINVAL_LEFT)
+                        hori_mod++;
+                    else if (ret == POSINVAL_RIGHT)
+                        hori_mod--;
+                    else {
+                        if (ret == 0)
+                            bowl->block.rot_id = new_rot;
+                        break;
+                    }
+                } while (abs(hori_mod) < 3);
+                if (ret == 0 && hori_mod) {
+                    bowl->block.x += hori_mod;
+                    hori_movement = 1;
+                    if ( config.smooth_hori ) {
+                        bowl->block.cur_x = bowl->block.x * bowl->block_size;
+                        bowl->block.sx = (int)bowl->block.cur_x + bowl->sx;
+                    }
+                }
                 bowl_compute_help_pos( bowl );
                 break;
             case KEY_DROP:
@@ -1313,12 +1350,12 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         /* update horizontal bowl position */
         if ( delay_timed_out( &bowl->block_hori_delay, ms ) ) {
             if ( ( bowl->controls && keystate[bowl->controls->left] ) || ( !bowl->controls && bowl->cpu_dest_x < bowl->block.x ) ) 
-                if ( bowl_validate_block_pos( bowl, bowl->block.x - 1, bowl->block.check_y, bowl->block.rot_id, 2 ) ) {
+                if ( bowl_validate_block_pos( bowl, bowl->block.x - 1, bowl->block.check_y, bowl->block.rot_id, 2 ) == 0 ) {
                     bowl->block.x--;
                     hori_movement = 1;
                 }
             if ( ( bowl->controls && keystate[bowl->controls->right] ) || ( !bowl->controls && bowl->cpu_dest_x > bowl->block.x ) ) 
-                if ( bowl_validate_block_pos( bowl, bowl->block.x + 1, bowl->block.check_y, bowl->block.rot_id , 2) ) {
+                if ( bowl_validate_block_pos( bowl, bowl->block.x + 1, bowl->block.check_y, bowl->block.rot_id , 2) == 0 ) {
                     bowl->block.x++;
                     hori_movement = 1;
                 }
@@ -1374,7 +1411,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
             /* to allow horizontal movement after the block touched
                the ground we allow moving into the next block. this shouldn't be
                seen, of course */
-            if ( !config.async_col_check || bowl_validate_block_pos( bowl, bowl->block.x, (int)bowl->block.cur_y, bowl->block.rot_id, 0) )
+            if ( !config.async_col_check || bowl_validate_block_pos( bowl, bowl->block.x, (int)bowl->block.cur_y, bowl->block.rot_id, 0) == 0 )
                 bowl->block.sy = (int)bowl->block.cur_y + bowl->sy;
             else
                 bowl->block.sy = bowl->block.y * bowl->block_size + bowl->sy;
