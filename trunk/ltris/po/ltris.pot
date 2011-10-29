@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2011-08-22 15:41+0200\n"
+"POT-Creation-Date: 2011-10-29 12:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,24 +74,28 @@ msgid ""
 msgstr ""
 
 #: src/manager.c:77
+msgid "Delay for vertical movement when using Down key."
+msgstr ""
+
+#: src/manager.c:78
 msgid ""
 "Left/Right: horizontal movement#Rotate Left/Right: block rotation#Down: "
 "faster Dropping#Drop: INSTANT drop"
 msgstr ""
 
-#: src/manager.c:78
+#: src/manager.c:79
 msgid "Key used to pause and unpause a game."
 msgstr ""
 
-#: src/manager.c:79
+#: src/manager.c:80
 msgid "Let's get it on!!!!"
 msgstr ""
 
-#: src/manager.c:80
+#: src/manager.c:81
 msgid "Human player names. If you play against CPU it will be named as CPU-x."
 msgstr ""
 
-#: src/manager.c:81
+#: src/manager.c:82
 #, c-format
 msgid ""
 "This is your starting level which will be ignored for game 'Figures' (you'll "
@@ -99,30 +103,30 @@ msgid ""
 "in the end!"
 msgstr ""
 
-#: src/manager.c:82
+#: src/manager.c:83
 #, c-format
 msgid ""
 "Enable/Disable block preview.##If disabled you'll gain 15% score in the end!"
 msgstr ""
 
-#: src/manager.c:83
+#: src/manager.c:84
 msgid ""
 "Shows guiding lines or a shadow of the currently dropping block so you see "
 "where it'll hit the ground.##This option has no penalty/bonus."
 msgstr ""
 
-#: src/manager.c:84
+#: src/manager.c:85
 msgid "Some multiplayer and CPU settings."
 msgstr ""
 
-#: src/manager.c:85
+#: src/manager.c:86
 msgid ""
 "A line send to your opponent's bowl will have this number of holes in it. "
 "The more holes the harder it will be to remove this line so you should "
 "choose a low value (e.g. 1 or 2) for long multiplayer games."
 msgstr ""
 
-#: src/manager.c:86
+#: src/manager.c:87
 msgid ""
 "This option controls how the holes in the lines are created when more than "
 "one line is sent. If the option is on, the holes will appear randomly for "
@@ -130,7 +134,7 @@ msgid ""
 "have the holes in the same spot."
 msgstr ""
 
-#: src/manager.c:87
+#: src/manager.c:88
 msgid ""
 "You'll have to complete more than one line to send any lines to your "
 "opponent. If this option is enabled all lines will be send else one will be "
@@ -138,41 +142,41 @@ msgid ""
 "lines send -> 3 lines received"
 msgstr ""
 
-#: src/manager.c:88
+#: src/manager.c:89
 msgid ""
 "If this option is enabled your opponent will receive all four lines of your "
 "tetris ignoring the 'Send All' setting."
 msgstr ""
 
-#: src/manager.c:89
+#: src/manager.c:90
 msgid ""
 "This is the delay in milliseconds the CPU waits before dropping a block."
 msgstr ""
 
-#: src/manager.c:90
+#: src/manager.c:91
 msgid ""
 "The more aggressive the style is the more priority is put on completing "
 "multiple lines at the expense of a balanced bowl contents."
 msgstr ""
 
-#: src/manager.c:91
+#: src/manager.c:92
 msgid "Some advanced options."
 msgstr ""
 
-#: src/manager.c:92
+#: src/manager.c:93
 msgid ""
 "Test the CPU analyze algorithm in cpu.c and give an average score for a "
 "number of games."
 msgstr ""
 
-#: src/manager.c:93
+#: src/manager.c:94
 msgid ""
 "If you turn visualization off the results will be computed faster. If you "
 "turn them on you can see a general game behaviour and judge the algorithm by "
 "this behaviour."
 msgstr ""
 
-#: src/manager.c:94
+#: src/manager.c:95
 msgid ""
 "There are basically three different game types:##CLASSIC:#The classic tetris "
 "game. Starts with an empty bowl and goes as long as you make it.#FIGURES:"
@@ -185,25 +189,25 @@ msgid ""
 "work. So relax! ;-)"
 msgstr ""
 
-#: src/manager.c:100
+#: src/manager.c:101
 msgid ""
 "If you turn this on the background will change every level else it's always "
 "the same."
 msgstr ""
 
-#: src/manager.c:101
+#: src/manager.c:102
 msgid ""
 "If you enable this option the keystate of either the 'Down' key or all the "
 "keys are cleared so you can't accidently move the next block."
 msgstr ""
 
-#: src/manager.c:102
+#: src/manager.c:103
 msgid ""
 "If this is enabled the preview in Two-Player is centered in the middle of "
 "the screen instead that one is drawn at the bottom and one at the top."
 msgstr ""
 
-#: src/manager.c:103
+#: src/manager.c:104
 msgid ""
 "This option is only useful when 'Graphics/Drop' is 'Smooth'#(In opposite to "
 "'Tile-By-Tile' the block is inserted as soon as it hits the ground giving no "
@@ -212,7 +216,7 @@ msgid ""
 "graphical errors."
 msgstr ""
 
-#: src/manager.c:108
+#: src/manager.c:109
 #, c-format
 msgid ""
 "In expert mode the most unsuitable piece of the current bag (a bag is a set "
@@ -220,311 +224,315 @@ msgid ""
 "works for single player. There is a 50% score bonus in the end."
 msgstr ""
 
-#: src/manager.c:140 src/manager.c:141
+#: src/manager.c:141 src/manager.c:142
 msgid "<CREATE SET>"
 msgstr ""
 
-#: src/manager.c:141
+#: src/manager.c:142
 #, c-format
 msgid "You cannot delete '%s'!\n"
 msgstr ""
 
-#: src/manager.c:211
+#: src/manager.c:212
 msgid "No Limit"
 msgstr ""
 
-#: src/manager.c:211
+#: src/manager.c:212
 msgid "50 FPS"
 msgstr ""
 
-#: src/manager.c:211
+#: src/manager.c:212
 msgid "100 FPS"
 msgstr ""
 
-#: src/manager.c:211
+#: src/manager.c:212
 msgid "200 FPS"
 msgstr ""
 
-#: src/manager.c:212
+#: src/manager.c:213
 msgid "Defensive"
 msgstr ""
 
-#: src/manager.c:212
+#: src/manager.c:213
 msgid "Normal"
 msgstr ""
 
-#: src/manager.c:212
+#: src/manager.c:213
 msgid "Aggressive"
 msgstr ""
 
-#: src/manager.c:212
+#: src/manager.c:213
 msgid "Kamikaze"
 msgstr ""
 
-#: src/manager.c:213 src/manager.c:323 src/manager.c:333 src/manager.c:353
-#: src/manager.c:355 src/manager.c:357 src/manager.c:366 src/manager.c:367
-#: src/manager.c:368 src/manager.c:434 src/manager.c:438 src/manager.c:443
+#: src/manager.c:214 src/manager.c:324 src/manager.c:334 src/manager.c:354
+#: src/manager.c:356 src/manager.c:358 src/manager.c:367 src/manager.c:368
+#: src/manager.c:369 src/manager.c:436 src/manager.c:440 src/manager.c:445
 msgid "Off"
 msgstr ""
 
-#: src/manager.c:213
+#: src/manager.c:214
 msgid "Shadow"
 msgstr ""
 
-#: src/manager.c:213
+#: src/manager.c:214
 msgid "Lines"
 msgstr ""
 
-#: src/manager.c:214
+#: src/manager.c:215
 msgid "None"
 msgstr ""
 
-#: src/manager.c:214 src/value.c:44
+#: src/manager.c:215 src/value.c:44
 msgid "Down"
 msgstr ""
 
-#: src/manager.c:214
+#: src/manager.c:215
 msgid "All"
 msgstr ""
 
-#: src/manager.c:279
+#: src/manager.c:280
 msgid "Menu"
 msgstr ""
 
-#: src/manager.c:280 src/manager.c:302 src/manager.c:315
+#: src/manager.c:281 src/manager.c:303 src/manager.c:316
 msgid "Graphics"
 msgstr ""
 
-#: src/manager.c:281 src/manager.c:296
+#: src/manager.c:282 src/manager.c:297
 msgid "New Game"
 msgstr ""
 
-#: src/manager.c:282 src/manager.c:301 src/manager.c:314
+#: src/manager.c:283 src/manager.c:302 src/manager.c:315
 msgid "Controls"
 msgstr ""
 
-#: src/manager.c:283 src/manager.c:410
+#: src/manager.c:284 src/manager.c:411
 msgid "Player1"
 msgstr ""
 
-#: src/manager.c:284 src/manager.c:411
+#: src/manager.c:285 src/manager.c:412
 msgid "Player2"
 msgstr ""
 
-#: src/manager.c:285 src/manager.c:412
+#: src/manager.c:286 src/manager.c:413
 msgid "Player3"
 msgstr ""
 
-#: src/manager.c:286 src/manager.c:360
+#: src/manager.c:287 src/manager.c:361
 msgid "Multiplayer Options"
 msgstr ""
 
-#: src/manager.c:287 src/manager.c:309
+#: src/manager.c:288 src/manager.c:310
 msgid "Advanced Options"
 msgstr ""
 
-#: src/manager.c:289 src/manager.c:299
+#: src/manager.c:290 src/manager.c:300
 msgid "Options"
 msgstr ""
 
-#: src/manager.c:292 src/manager.c:304 src/manager.c:306 src/manager.c:316
-#: src/manager.c:317
+#: src/manager.c:293 src/manager.c:305 src/manager.c:307 src/manager.c:317
+#: src/manager.c:318
 msgid "Audio"
 msgstr ""
 
-#: src/manager.c:311 src/menu.c:171
+#: src/manager.c:312 src/menu.c:171
 msgid "Quit"
 msgstr ""
 
-#: src/manager.c:319 src/manager.c:330 src/manager.c:343 src/manager.c:362
-#: src/manager.c:373 src/manager.c:417 src/manager.c:422 src/manager.c:427
-#: src/manager.c:432 src/manager.c:446 src/menu.c:168
+#: src/manager.c:320 src/manager.c:331 src/manager.c:344 src/manager.c:363
+#: src/manager.c:374 src/manager.c:419 src/manager.c:424 src/manager.c:429
+#: src/manager.c:434 src/manager.c:448 src/menu.c:168
 msgid "Back"
 msgstr ""
 
-#: src/manager.c:323
+#: src/manager.c:324
 msgid "Sound:"
 msgstr ""
 
-#: src/manager.c:323 src/manager.c:333 src/manager.c:353 src/manager.c:355
-#: src/manager.c:357 src/manager.c:366 src/manager.c:367 src/manager.c:368
-#: src/manager.c:434 src/manager.c:438 src/manager.c:443
+#: src/manager.c:324 src/manager.c:334 src/manager.c:354 src/manager.c:356
+#: src/manager.c:358 src/manager.c:367 src/manager.c:368 src/manager.c:369
+#: src/manager.c:436 src/manager.c:440 src/manager.c:445
 msgid "On"
 msgstr ""
 
-#: src/manager.c:326
+#: src/manager.c:327
 msgid "Volume:"
 msgstr ""
 
-#: src/manager.c:333
+#: src/manager.c:334
 msgid "Animations:"
 msgstr ""
 
-#: src/manager.c:334
+#: src/manager.c:335
 msgid "Move:"
 msgstr ""
 
-#: src/manager.c:334 src/manager.c:335
+#: src/manager.c:335 src/manager.c:336
 msgid "Tile By Tile"
 msgstr ""
 
-#: src/manager.c:334 src/manager.c:335
+#: src/manager.c:335 src/manager.c:336
 msgid "Smooth"
 msgstr ""
 
-#: src/manager.c:335 src/manager.c:381 src/manager.c:387 src/manager.c:393
+#: src/manager.c:336 src/manager.c:382 src/manager.c:388 src/manager.c:394
 msgid "Drop:"
 msgstr ""
 
-#: src/manager.c:336
+#: src/manager.c:337
 msgid "Change Background:"
 msgstr ""
 
-#: src/manager.c:336
+#: src/manager.c:337
 msgid "Yes"
 msgstr ""
 
-#: src/manager.c:336
+#: src/manager.c:337
 msgid "No"
 msgstr ""
 
-#: src/manager.c:338
+#: src/manager.c:339
 msgid "Display:"
 msgstr ""
 
-#: src/manager.c:338
+#: src/manager.c:339
 msgid "Window"
 msgstr ""
 
-#: src/manager.c:338
+#: src/manager.c:339
 msgid "Fullscreen"
 msgstr ""
 
-#: src/manager.c:341
+#: src/manager.c:342
 msgid "Frame Rate:"
 msgstr ""
 
-#: src/manager.c:345
+#: src/manager.c:346
 msgid "Start Game"
 msgstr ""
 
-#: src/manager.c:347
+#: src/manager.c:348
 msgid "1st Player:"
 msgstr ""
 
-#: src/manager.c:348
+#: src/manager.c:349
 msgid "2nd Player:"
 msgstr ""
 
-#: src/manager.c:349
+#: src/manager.c:350
 msgid "3rd Player:"
 msgstr ""
 
-#: src/manager.c:351
+#: src/manager.c:352
 msgid "Game:"
 msgstr ""
 
-#: src/manager.c:352
+#: src/manager.c:353
 msgid "Starting Level:"
 msgstr ""
 
-#: src/manager.c:353
+#: src/manager.c:354
 msgid "Preview:"
 msgstr ""
 
-#: src/manager.c:354
+#: src/manager.c:355
 msgid "Help:"
 msgstr ""
 
-#: src/manager.c:355
+#: src/manager.c:356
 msgid "Expert Mode:"
 msgstr ""
 
-#: src/manager.c:357
+#: src/manager.c:358
 msgid "Slow:"
 msgstr ""
 
-#: src/manager.c:365
+#: src/manager.c:366
 msgid "Holes:"
 msgstr ""
 
-#: src/manager.c:366
+#: src/manager.c:367
 msgid "Random Holes:"
 msgstr ""
 
-#: src/manager.c:367
+#: src/manager.c:368
 msgid "Send All Lines:"
 msgstr ""
 
-#: src/manager.c:368
+#: src/manager.c:369
 msgid "Always Send Tetris:"
 msgstr ""
 
-#: src/manager.c:370
+#: src/manager.c:371
 msgid "CPU Style:"
 msgstr ""
 
-#: src/manager.c:371
+#: src/manager.c:372
 msgid "CPU Drop Delay:"
 msgstr ""
 
-#: src/manager.c:375
+#: src/manager.c:376
 msgid "Pause Key:"
 msgstr ""
 
-#: src/manager.c:376 src/manager.c:382 src/manager.c:388
+#: src/manager.c:377 src/manager.c:383 src/manager.c:389
 msgid "Left:"
 msgstr ""
 
-#: src/manager.c:377 src/manager.c:383 src/manager.c:389
+#: src/manager.c:378 src/manager.c:384 src/manager.c:390
 msgid "Right:"
 msgstr ""
 
-#: src/manager.c:378 src/manager.c:384 src/manager.c:390
+#: src/manager.c:379 src/manager.c:385 src/manager.c:391
 msgid "Rotate Left:"
 msgstr ""
 
-#: src/manager.c:379 src/manager.c:385 src/manager.c:391
+#: src/manager.c:380 src/manager.c:386 src/manager.c:392
 msgid "Rotate Right:"
 msgstr ""
 
-#: src/manager.c:380 src/manager.c:386 src/manager.c:392
+#: src/manager.c:381 src/manager.c:387 src/manager.c:393
 msgid "Down:"
 msgstr ""
 
-#: src/manager.c:414
+#: src/manager.c:415
 msgid "Horizontal Delay:"
 msgstr ""
 
-#: src/manager.c:434
+#: src/manager.c:416
+msgid "Vertical Delay:"
+msgstr ""
+
+#: src/manager.c:436
 msgid "Quick Help:"
 msgstr ""
 
-#: src/manager.c:437
+#: src/manager.c:439
 msgid "Clear Keystate:"
 msgstr ""
 
-#: src/manager.c:438
+#: src/manager.c:440
 msgid "Center Preview:"
 msgstr ""
 
-#: src/manager.c:439
+#: src/manager.c:441
 msgid "Collision Check:"
 msgstr ""
 
-#: src/manager.c:439
+#: src/manager.c:441
 msgid "Sync"
 msgstr ""
 
-#: src/manager.c:439
+#: src/manager.c:441
 msgid "Async"
 msgstr ""
 
-#: src/manager.c:442
+#: src/manager.c:444
 msgid "Test CPU Algorithm"
 msgstr ""
 
-#: src/manager.c:443
+#: src/manager.c:445
 msgid "Visualization"
 msgstr ""
 
@@ -536,28 +544,28 @@ msgstr ""
 msgid "n"
 msgstr ""
 
-#: src/tetris.c:387
+#: src/tetris.c:385
 msgid "End Game? y/n"
 msgstr ""
 
-#: src/bowl.c:551 src/bowl.c:552
+#: src/bowl.c:567 src/bowl.c:568
 msgid "Game Over"
 msgstr ""
 
-#: src/bowl.c:1263
+#: src/bowl.c:1281
 #, c-format
 msgid "%i Lvl: %i"
 msgstr ""
 
-#: src/bowl.c:1509
+#: src/bowl.c:1548
 msgid "Player:"
 msgstr ""
 
-#: src/bowl.c:1513
+#: src/bowl.c:1552
 msgid "Score:"
 msgstr ""
 
-#: src/bowl.c:1515
+#: src/bowl.c:1554
 msgid "Lines:"
 msgstr ""
 

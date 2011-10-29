@@ -70,6 +70,7 @@ typedef struct {
     int cpu_rot_delay; /* delay between rotative steps */
     /* controls */
     int	hori_delay;
+    int vert_delay;
     int pause_key;
     /* sound */
     int sound;
