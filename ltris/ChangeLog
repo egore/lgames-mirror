@@ -1,3 +1,5 @@
+- added vertical delay option (2011/10/29 MS)
+
 1.0.17:
 - shift block if rotation would fail because of boundary (2011/08/25 MS)
 - allow leaving game over screen by any key not only ESC (2011/08/22 MS)

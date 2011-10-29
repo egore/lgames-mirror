@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 #endif
     
     /* ltris info */
-    printf( "LTris %s\nCopyright 2002-2010 Michael Speck\nPublished under GNU GPL\n---\n", VERSION );
+    printf( "LTris %s\nCopyright 2002-2011 Michael Speck\nPublished under GNU GPL\n---\n", VERSION );
     printf( "Looking up data in: %s\n", SRC_DIR );
 #ifndef SOUND
     printf( "Compiled without sound and music\n" );

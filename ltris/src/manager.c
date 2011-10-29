@@ -74,6 +74,7 @@ Hint strings for the menu.
 #define HINT_SMOOTHHORI _("Horizontally move block either tile-by-tile or smooth. This is just eye-candy and doesn't effect the moving speed at all.")
 #define HINT_SMOOTHVERT _("Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you to move a block below a tile multiple times you'll only be able to do so one time when choosing 'smooth'!#See 'Advanced Options/Collision Check' to improve this.")
 #define HINT_HORIDEL _("The less delay you take the faster the block will horizontally move and the more sensitive the input is handled.")
+#define HINT_VERTDEL _("Delay for vertical movement when using Down key.")
 #define HINT_CONTROLS _("Left/Right: horizontal movement#Rotate Left/Right: block rotation#Down: faster Dropping#Drop: INSTANT drop")
 #define HINT_PAUSEKEY _("Key used to pause and unpause a game.")
 #define HINT_START _("Let's get it on!!!!")
@@ -412,6 +413,7 @@ void manager_create()
     menu_add( cont, item_create_link( _("Player3"), HINT_CONTROLS, cont_player3 ) );
     menu_add( cont, item_create_separator( "" ) );
     menu_add( cont, item_create_range( _("Horizontal Delay:"),  HINT_HORIDEL,&config.hori_delay, 0, 9, 1 ) );
+    menu_add( cont, item_create_range( _("Vertical Delay:"),  HINT_VERTDEL,&config.vert_delay, 0, 9, 1 ) );
     menu_add( cont, pause_key );
     menu_add( cont, item_create_separator( "" ) );
     menu_add( cont, item_create_link( _("Back"), HINT_, _main ) );
