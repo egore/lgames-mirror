@@ -118,7 +118,13 @@ OldGames \
 PCGames \
 Horror \
 Lattices \
-Madness
+Madness \
+Asteroids \
+Memory \
+WestAsia \
+EastAsia \
+GreenBricks \
+NewBricks
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(inst_dir)/levels
