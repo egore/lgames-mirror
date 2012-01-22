@@ -124,7 +124,14 @@ Memory \
 WestAsia \
 EastAsia \
 GreenBricks \
-NewBricks
+NewBricks \
+AllWorld \
+NorthAfrica \
+Oceania	\
+SouthAmerica \
+MiddleAfrica \
+NorthAmerica \
+SouthAfrica 
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(inst_dir)/levels
