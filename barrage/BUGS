@@ -1,3 +1,0 @@
-SDL does not clear the return key properly when starting the game
-from a terminal. Simply press Return to update its state.
-
