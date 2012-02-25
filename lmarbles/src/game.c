@@ -1817,9 +1817,9 @@ void Tm_Shw()
     // draw "time"
     ft->algn = TA_X_L | TA_Y_T;
     if ( gm.c_l_st->limit_type == TIME )
-        SF_Wrt(ft, sdl.scr, gm.t_x + gm.b_x, gm.t_y, "Time:", 0);
+        SF_Wrt(ft, sdl.scr, gm.t_x + gm.b_x, gm.t_y, _("Time:"), 0);
     else
-        SF_Wrt(ft, sdl.scr, gm.t_x + gm.b_x, gm.t_y, "Moves:", 0);
+        SF_Wrt(ft, sdl.scr, gm.t_x + gm.b_x, gm.t_y, _("Moves:"), 0);
 
     // compute and draw time str
     if ( gm.c_l_st->limit_type == TIME ) {
@@ -2716,9 +2716,9 @@ void BS_Run(float b_lvl, float b_tm)
 
     // info
     gm.f_sml->algn = TA_X_L | TA_Y_T;
-    SF_Wrt(gm.f_sml, sdl.scr, coff, cy, "Level Bonus:", 0);
-    SF_Wrt(gm.f_sml, sdl.scr, toff, ty, "Move Bonus:", 0);
-    SF_Wrt(gm.f_sml, sdl.scr, soff, sy, "Total Score:", 0);
+    SF_Wrt(gm.f_sml, sdl.scr, coff, cy, _("Level Bonus:"), 0);
+    SF_Wrt(gm.f_sml, sdl.scr, toff, ty, _("Move Bonus:"), 0);
+    SF_Wrt(gm.f_sml, sdl.scr, soff, sy, _("Total Score:"), 0);
     Sdl_FUpd();
 
     // show bonus first time

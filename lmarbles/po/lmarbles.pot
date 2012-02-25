@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lmarbles 1.0.9\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2012-02-25 18:02+0100\n"
+"POT-Creation-Date: 2012-02-25 20:00+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,12 +16,153 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: src/main.c:150 src/main.c:306
+msgid "Best Profiles"
+msgstr ""
+
 #: src/main.c:245
 #, c-format
 msgid "WARNING: last profile cannot be deleted\n"
 msgstr ""
 
-#: src/main.c:536
+#: src/main.c:273
+msgid "Easy"
+msgstr ""
+
+#: src/main.c:273
+msgid "Normal"
+msgstr ""
+
+#: src/main.c:273
+msgid "Hard"
+msgstr ""
+
+#: src/main.c:273
+msgid "Brainstorm"
+msgstr ""
+
+#: src/main.c:305
+msgid "New Game"
+msgstr ""
+
+#: src/main.c:307
+msgid "Options"
+msgstr ""
+
+#: src/main.c:308
+msgid "Quit"
+msgstr ""
+
+#: src/main.c:310
+msgid "Controls"
+msgstr ""
+
+#: src/main.c:311
+msgid "Graphics"
+msgstr ""
+
+#: src/main.c:313 src/main.c:315
+msgid "Audio"
+msgstr ""
+
+#: src/main.c:318 src/main.c:327 src/main.c:339 src/main.c:345 src/main.c:352
+#: src/main.c:363 src/main.c:374 src/main.c:386 src/main.c:394
+msgid "Back"
+msgstr ""
+
+#: src/main.c:320
+msgid "Sound: "
+msgstr ""
+
+#: src/main.c:320 src/main.c:381 src/main.c:383 src/main.c:384
+msgid "Off"
+msgstr ""
+
+#: src/main.c:320 src/main.c:381 src/main.c:383 src/main.c:384
+msgid "On"
+msgstr ""
+
+#: src/main.c:323
+msgid "Volume: "
+msgstr ""
+
+#: src/main.c:329
+msgid "Start"
+msgstr ""
+
+#: src/main.c:331
+msgid "Difficulty:"
+msgstr ""
+
+#: src/main.c:333
+msgid "Levelset:"
+msgstr ""
+
+#: src/main.c:334 src/main.c:359 src/main.c:370
+msgid "Profile:"
+msgstr ""
+
+#: src/main.c:337
+msgid "Edit Profiles"
+msgstr ""
+
+#: src/main.c:341 src/main.c:350
+msgid "Create Profile"
+msgstr ""
+
+#: src/main.c:342 src/main.c:361
+msgid "Clear Profile"
+msgstr ""
+
+#: src/main.c:343 src/main.c:372
+msgid "Delete Profile"
+msgstr ""
+
+#: src/main.c:349
+msgid "Profile Name"
+msgstr ""
+
+#: src/main.c:354 src/main.c:365 src/main.c:376
+msgid "Yes"
+msgstr ""
+
+#: src/main.c:357 src/main.c:368 src/main.c:379
+msgid "No"
+msgstr ""
+
+#: src/main.c:381
+msgid "Animations:"
+msgstr ""
+
+#: src/main.c:383
+msgid "Fullscreen:"
+msgstr ""
+
+#: src/main.c:384
+msgid "Dim Effect:"
+msgstr ""
+
+#: src/main.c:388
+msgid "Up"
+msgstr ""
+
+#: src/main.c:389
+msgid "Down"
+msgstr ""
+
+#: src/main.c:390
+msgid "Left"
+msgstr ""
+
+#: src/main.c:391
+msgid "Right"
+msgstr ""
+
+#: src/main.c:392
+msgid "Undo"
+msgstr ""
+
+#: src/main.c:543
 #, c-format
 msgid "Bye, bye!\n"
 msgstr ""
@@ -126,6 +267,14 @@ msgstr ""
 msgid "This level set has errors. Play anyway? (y/n)\n"
 msgstr ""
 
+#: src/game.c:1820
+msgid "Time:"
+msgstr ""
+
+#: src/game.c:1822
+msgid "Moves:"
+msgstr ""
+
 #: src/game.c:1896 src/game.c:1903
 #, c-format
 msgid "Tier %i, Puzzle %i"
@@ -139,6 +288,18 @@ msgstr ""
 #: src/game.c:2583
 #, c-format
 msgid "'%s' (Author: %s)"
+msgstr ""
+
+#: src/game.c:2719
+msgid "Level Bonus:"
+msgstr ""
+
+#: src/game.c:2720
+msgid "Move Bonus:"
+msgstr ""
+
+#: src/game.c:2721
+msgid "Total Score:"
 msgstr ""
 
 #: src/levels.c:71
@@ -171,6 +332,18 @@ msgstr ""
 #: src/levels.c:496
 #, c-format
 msgid "ERROR: no good gfx set found...\n"
+msgstr ""
+
+#: src/levels.c:551
+msgid "Player:"
+msgstr ""
+
+#: src/levels.c:555
+msgid "Score:"
+msgstr ""
+
+#: src/levels.c:560
+msgid "HighScore:"
 msgstr ""
 
 #: src/menu.c:229
