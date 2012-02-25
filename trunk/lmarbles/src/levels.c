@@ -548,16 +548,16 @@ void L_Ini(int c, int l)
     // add player info
     off = gm.f_sml->h + 2;
     gm.f_sml->algn = TA_X_L | TA_Y_T;
-    SF_Wrt(gm.f_sml, gm.s_bkgd, gm.i_x + gm.b_x, gm.i_y, "Player:", 0);
+    SF_Wrt(gm.f_sml, gm.s_bkgd, gm.i_x + gm.b_x, gm.i_y, _("Player:"), 0);
     gm.f_sml->algn = TA_X_R | TA_Y_T;
     SF_Wrt(gm.f_sml, gm.s_bkgd, gm.scr_w - gm.i_x, gm.i_y, gm.c_prf->nm, 0);
     gm.f_sml->algn = TA_X_L | TA_Y_T;
-    SF_Wrt(gm.f_sml, gm.s_bkgd, gm.i_x + gm.b_x, gm.i_y + off, "Score:", 0);
+    SF_Wrt(gm.f_sml, gm.s_bkgd, gm.i_x + gm.b_x, gm.i_y + off, _("Score:"), 0);
     gm.f_sml->algn = TA_X_R | TA_Y_T;
     sprintf(str, "%i", gm.c_prf->scr);
     SF_Wrt(gm.f_sml, gm.s_bkgd, gm.scr_w - gm.i_x, gm.i_y + off, str, 0);
     gm.f_sml->algn = TA_X_L | TA_Y_T;
-    SF_Wrt(gm.f_sml, gm.s_bkgd, gm.i_x + gm.b_x, gm.i_y + off*2 + 5, "HighScore:", 0);
+    SF_Wrt(gm.f_sml, gm.s_bkgd, gm.i_x + gm.b_x, gm.i_y + off*2 + 5, _("HighScore:"), 0);
     gm.f_sml->algn = TA_X_R | TA_Y_T;
     sprintf(str, "%i", gm.hi_scr);
     SF_Wrt(gm.f_sml, gm.s_bkgd, gm.scr_w - gm.i_x, gm.i_y + off*2 + 5, str, 0);

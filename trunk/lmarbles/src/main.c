@@ -147,7 +147,7 @@ void H_Shw()
 
     // write hiscores //
 	
-    SF_Wrt(mm.ft_nml, sdl.scr, sdl.scr->w / 2, 50, "Best Profiles", 0);
+    SF_Wrt(mm.ft_nml, sdl.scr, sdl.scr->w / 2, 50, _("Best Profiles"), 0);
     mm.ft_nml->algn = mm.ft_sel->algn = TA_X_L | TA_Y_T;
 
     for (i = 0; i < e_num; i++) {
@@ -270,7 +270,7 @@ void MM_CrtE()
     SFnt        *ft_y, *ft_w, *ft_t;
     Menu        *_main, *opts, *snd, *new, *edit, *del, *clr, *crt, *c_del, *c_clr, *c_crt, *gfx, *ctrl;
     MEnt        *e;
-    char        *str_diff[] = {"Easy", "Normal", "Hard", "Brainstorm"};
+    char        *str_diff[] = {_("Easy"), _("Normal"), _("Hard"), _("Brainstorm")};
 
     // load and assign gfx //
     ss_bk = SS_Ld("gfx/title.bmp", SDL_SWSURFACE);
@@ -282,7 +282,7 @@ void MM_CrtE()
     // add copyright //
     ft_t = SF_Ld("gfx/tiny.sdlfnt");
 	ft_t->algn = TA_X_R | TA_Y_B;
-	SF_Wrt(ft_t, ss_bk, ss_bk->w-3, ss_bk->h-1, "(C) 2000 Michael Speck", 0);
+	SF_Wrt(ft_t, ss_bk, ss_bk->w-3, ss_bk->h-1, "(C) 2000-2012 Michael Speck", 0);
 	ft_t->algn = TA_X_L | TA_Y_B;
 	SF_Wrt(ft_t, ss_bk, 0, ss_bk->h-1, "http://lgames.sourceforge.net", 0);
     SF_Fr(ft_t);
@@ -302,96 +302,96 @@ void MM_CrtE()
     gfx = M_Crt(); MM_Add(gfx);
     ctrl = M_Crt(); MM_Add(ctrl);
     // main //
-    M_Add(_main, ME_CrtSub("New Game", new));
-    M_Add(_main, ME_CrtAct("Best Profiles", MA_HSC));
-    M_Add(_main, ME_CrtSub("Options", opts));
-    M_Add(_main, ME_CrtAct("Quit", MA_QUT));
+    M_Add(_main, ME_CrtSub(_("New Game"), new));
+    M_Add(_main, ME_CrtAct(_("Best Profiles"), MA_HSC));
+    M_Add(_main, ME_CrtSub(_("Options"), opts));
+    M_Add(_main, ME_CrtAct(_("Quit"), MA_QUT));
     // options //
-    M_Add(opts, ME_CrtSub("Controls", ctrl));
-    M_Add(opts, ME_CrtSub("Graphics", gfx));
+    M_Add(opts, ME_CrtSub(_("Controls"), ctrl));
+    M_Add(opts, ME_CrtSub(_("Graphics"), gfx));
 #ifdef SOUND
-    M_Add(opts, ME_CrtSub("Audio", snd));
+    M_Add(opts, ME_CrtSub(_("Audio"), snd));
 #else
-    M_Add(opts, ME_CrtSep("Audio"));
+    M_Add(opts, ME_CrtSep(_("Audio")));
 #endif
     M_Add(opts, ME_CrtSep(""));
-    M_Add(opts, ME_CrtSub("Back", _main));
+    M_Add(opts, ME_CrtSub(_("Back"), _main));
     // sound //
-    e = ME_CrtSw2("Sound: ", &cfg.s_on, "Off", "On");
+    e = ME_CrtSw2(_("Sound: "), &cfg.s_on, _("Off"), _("On"));
     e->cb = CB_Snd;
     M_Add(snd, e);
-    e = ME_CrtRng("Volume: ", &cfg.s_vol, 1, 8, 1);
+    e = ME_CrtRng(_("Volume: "), &cfg.s_vol, 1, 8, 1);
     e->cb = CB_StV;
     M_Add(snd, e);
     M_Add(snd, ME_CrtSep(""));
-    M_Add(snd, ME_CrtSub("Back", opts));
+    M_Add(snd, ME_CrtSub(_("Back"), opts));
     // new game //
-    M_Add(new, ME_CrtAct("Start", MA_PLY));
+    M_Add(new, ME_CrtAct(_("Start"), MA_PLY));
     M_Add(new, ME_CrtSep(""));
-    M_Add(new, ME_CrtSwX("Difficulty:", &cfg.diff, str_diff, 4));
+    M_Add(new, ME_CrtSwX(_("Difficulty:"), &cfg.diff, str_diff, 4));
     if (cfg.ls >= ls_n) cfg.ls = 0; // maybe someone deleted some level sets //
-    M_Add(new, ME_CrtSwX("Levelset:", &cfg.ls, ls_lst, ls_n));
-    me_prf = ME_CrtSwX("Profile:", &cfg.prf, prf_lst, prf_n);
+    M_Add(new, ME_CrtSwX(_("Levelset:"), &cfg.ls, ls_lst, ls_n));
+    me_prf = ME_CrtSwX(_("Profile:"), &cfg.prf, prf_lst, prf_n);
     M_Add(new, me_prf);
     M_Add(new, ME_CrtSep(""));
-    M_Add(new, ME_CrtSub("Edit Profiles", edit));
+    M_Add(new, ME_CrtSub(_("Edit Profiles"), edit));
     M_Add(new, ME_CrtSep(""));
-    M_Add(new, ME_CrtSub("Back", _main));
+    M_Add(new, ME_CrtSub(_("Back"), _main));
     // edit //
-    M_Add(edit, ME_CrtSub("Create Profile", crt));
-    M_Add(edit, ME_CrtSub("Clear Profile", clr));
-    M_Add(edit, ME_CrtSub("Delete Profile", del));
+    M_Add(edit, ME_CrtSub(_("Create Profile"), crt));
+    M_Add(edit, ME_CrtSub(_("Clear Profile"), clr));
+    M_Add(edit, ME_CrtSub(_("Delete Profile"), del));
     M_Add(edit, ME_CrtSep(""));
-    e = ME_CrtSub("Back", new);
+    e = ME_CrtSub(_("Back"), new);
     e->cb = CB_SrtP;
     M_Add(edit, e);
     // create //
-    M_Add(crt, ME_CrtStr("Profile Name", cfg.prf_nm, 11));
-    M_Add(crt, ME_CrtSub("Create Profile", c_crt));
+    M_Add(crt, ME_CrtStr(_("Profile Name"), cfg.prf_nm, 11));
+    M_Add(crt, ME_CrtSub(_("Create Profile"), c_crt));
     M_Add(crt, ME_CrtSep(""));
-    M_Add(crt, ME_CrtSub("Back", edit));
+    M_Add(crt, ME_CrtSub(_("Back"), edit));
     // confirm create //
-    e = ME_CrtSub("Yes", crt);
+    e = ME_CrtSub(_("Yes"), crt);
     e->cb = CB_CrtP;
     M_Add(c_crt, e);
-    M_Add(c_crt, ME_CrtSub("No", crt));
+    M_Add(c_crt, ME_CrtSub(_("No"), crt));
     // clear //
-    me_clr = ME_CrtSwX("Profile:", &cfg.prf, prf_lst, prf_n);
+    me_clr = ME_CrtSwX(_("Profile:"), &cfg.prf, prf_lst, prf_n);
     M_Add(clr, me_clr);
-    M_Add(clr, ME_CrtSub("Clear Profile", c_clr));
+    M_Add(clr, ME_CrtSub(_("Clear Profile"), c_clr));
     M_Add(clr, ME_CrtSep(""));
-    M_Add(clr, ME_CrtSub("Back", edit));
+    M_Add(clr, ME_CrtSub(_("Back"), edit));
     // confirm clear //
-    e = ME_CrtSub("Yes", clr);
+    e = ME_CrtSub(_("Yes"), clr);
     e->cb = CB_ClrP;
     M_Add(c_clr, e);
-    M_Add(c_clr, ME_CrtSub("No", clr));
+    M_Add(c_clr, ME_CrtSub(_("No"), clr));
     // delete //
-    me_del = ME_CrtSwX("Profile:", &cfg.prf, prf_lst, prf_n);
+    me_del = ME_CrtSwX(_("Profile:"), &cfg.prf, prf_lst, prf_n);
     M_Add(del, me_del);
-    M_Add(del, ME_CrtSub("Delete Profile", c_del));
+    M_Add(del, ME_CrtSub(_("Delete Profile"), c_del));
     M_Add(del, ME_CrtSep(""));
-    M_Add(del, ME_CrtSub("Back", edit));
+    M_Add(del, ME_CrtSub(_("Back"), edit));
     // confirm clear //
-    e = ME_CrtSub("Yes", del);
+    e = ME_CrtSub(_("Yes"), del);
     e->cb = CB_DelP;
     M_Add(c_del, e);
-    M_Add(c_del, ME_CrtSub("No", del));
+    M_Add(c_del, ME_CrtSub(_("No"), del));
     // graphics //
-    M_Add(gfx, ME_CrtSw2("Animations:", &cfg.ani, "Off", "On"));
-//    M_Add(gfx, ME_CrtSw2("Transparency:", &cfg.trp, "Off", "On"));
-    M_Add(gfx, ME_CrtSw2("Fullscreen:", &cfg.fscr, "Off", "On"));
-    M_Add(gfx, ME_CrtSw2("Dim Effect:", &cfg.dim, "Off", "On"));
+    M_Add(gfx, ME_CrtSw2(_("Animations:"), &cfg.ani, _("Off"), _("On")));
+//    M_Add(gfx, ME_CrtSw2("Transparency:", &cfg.trp, _("Off"), _("On")));
+    M_Add(gfx, ME_CrtSw2(_("Fullscreen:"), &cfg.fscr, _("Off"), _("On")));
+    M_Add(gfx, ME_CrtSw2(_("Dim Effect:"), &cfg.dim, _("Off"), _("On")));
     M_Add(gfx, ME_CrtSep(""));
-    M_Add(gfx, ME_CrtSub("Back", opts));
+    M_Add(gfx, ME_CrtSub(_("Back"), opts));
     // controls
-    M_Add(ctrl, ME_CrtKey("Up", &cfg.k_up));
-    M_Add(ctrl, ME_CrtKey("Down", &cfg.k_down));
-    M_Add(ctrl, ME_CrtKey("Left", &cfg.k_left));
-    M_Add(ctrl, ME_CrtKey("Right", &cfg.k_right));
-    M_Add(ctrl, ME_CrtKey("Undo", &cfg.k_undo));
+    M_Add(ctrl, ME_CrtKey(_("Up"), &cfg.k_up));
+    M_Add(ctrl, ME_CrtKey(_("Down"), &cfg.k_down));
+    M_Add(ctrl, ME_CrtKey(_("Left"), &cfg.k_left));
+    M_Add(ctrl, ME_CrtKey(_("Right"), &cfg.k_right));
+    M_Add(ctrl, ME_CrtKey(_("Undo"), &cfg.k_undo));
     M_Add(ctrl, ME_CrtSep(""));
-    M_Add(ctrl, ME_CrtSub("Back", opts));
+    M_Add(ctrl, ME_CrtSub(_("Back"), opts));
 
     // default valid keys
     MM_DfVKys();
@@ -422,6 +422,13 @@ int main(int argc, char *argv[])
     _fmode = _O_BINARY;
 #endif
     
+    /* i18n */
+#ifdef ENABLE_NLS
+    setlocale (LC_ALL, "");
+    bindtextdomain (PACKAGE, LOCALEDIR);
+    textdomain (PACKAGE);
+#endif
+
     // just query version? //
     if ( argc > 1 && !strncmp( "--version", argv[1], 9 ) ) {
 

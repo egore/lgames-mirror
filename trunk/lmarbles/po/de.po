@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lmarbles 1.0.9\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2012-02-25 18:02+0100\n"
+"POT-Creation-Date: 2012-02-25 20:00+0100\n"
 "PO-Revision-Date: 2012-02-25 17:27+0100\n"
 "Last-Translator: michael <michael@lgames.sf.net>\n"
 "Language-Team: German\n"
@@ -17,12 +17,157 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: src/main.c:150 src/main.c:306
+msgid "Best Profiles"
+msgstr "Beste Profile"
+
 #: src/main.c:245
 #, c-format
 msgid "WARNING: last profile cannot be deleted\n"
 msgstr "Warnung: Letztes Profil kann nicht geloescht werden\n"
 
-#: src/main.c:536
+#: src/main.c:273
+msgid "Easy"
+msgstr "Leicht"
+
+#: src/main.c:273
+msgid "Normal"
+msgstr "Normal"
+
+#: src/main.c:273
+msgid "Hard"
+msgstr "Schwer"
+
+#: src/main.c:273
+msgid "Brainstorm"
+msgstr "Extrem schwer"
+
+#: src/main.c:305
+msgid "New Game"
+msgstr "Neues Spiel"
+
+#: src/main.c:307
+msgid "Options"
+msgstr "Optionen"
+
+#: src/main.c:308
+msgid "Quit"
+msgstr "Beenden"
+
+#: src/main.c:310
+msgid "Controls"
+msgstr "Kontrollen"
+
+#: src/main.c:311
+msgid "Graphics"
+msgstr "Grafik"
+
+#: src/main.c:313 src/main.c:315
+msgid "Audio"
+msgstr "Audio"
+
+#: src/main.c:318 src/main.c:327 src/main.c:339 src/main.c:345 src/main.c:352
+#: src/main.c:363 src/main.c:374 src/main.c:386 src/main.c:394
+msgid "Back"
+msgstr "Zurueck"
+
+#: src/main.c:320
+msgid "Sound: "
+msgstr "Geraeusche: "
+
+#: src/main.c:320 src/main.c:381 src/main.c:383 src/main.c:384
+msgid "Off"
+msgstr "Aus"
+
+#: src/main.c:320 src/main.c:381 src/main.c:383 src/main.c:384
+msgid "On"
+msgstr "An"
+
+#: src/main.c:323
+msgid "Volume: "
+msgstr "Lautstaerke: "
+
+#: src/main.c:329
+msgid "Start"
+msgstr "Start"
+
+#: src/main.c:331
+msgid "Difficulty:"
+msgstr "Schwierigkeit:"
+
+#: src/main.c:333
+msgid "Levelset:"
+msgstr "Puzzlesatz:"
+
+#: src/main.c:334 src/main.c:359 src/main.c:370
+msgid "Profile:"
+msgstr "Profil:"
+
+#: src/main.c:337
+#, fuzzy
+msgid "Edit Profiles"
+msgstr "Lade Profile... "
+
+#: src/main.c:341 src/main.c:350
+msgid "Create Profile"
+msgstr "Erzeuge Profil"
+
+#: src/main.c:342 src/main.c:361
+msgid "Clear Profile"
+msgstr "Profil zuruecksetzen"
+
+#: src/main.c:343 src/main.c:372
+msgid "Delete Profile"
+msgstr "Loesche Profil"
+
+#: src/main.c:349
+msgid "Profile Name"
+msgstr "Profilname"
+
+#: src/main.c:354 src/main.c:365 src/main.c:376
+msgid "Yes"
+msgstr "Ja"
+
+#: src/main.c:357 src/main.c:368 src/main.c:379
+msgid "No"
+msgstr "Nein"
+
+#: src/main.c:381
+msgid "Animations:"
+msgstr "Animationen:"
+
+#: src/main.c:383
+msgid "Fullscreen:"
+msgstr "Vollbild:"
+
+#: src/main.c:384
+msgid "Dim Effect:"
+msgstr "Blendeffekt:"
+
+#: src/main.c:388
+msgid "Up"
+msgstr "Hoch"
+
+#: src/main.c:389
+#, fuzzy
+msgid "Down"
+msgstr "Runter"
+
+#: src/main.c:390
+#, fuzzy
+msgid "Left"
+msgstr "Links"
+
+#: src/main.c:391
+#, fuzzy
+msgid "Right"
+msgstr "Rechts"
+
+#: src/main.c:392
+msgid "Undo"
+msgstr "Rueckgaengig machen"
+
+#: src/main.c:543
 #, c-format
 msgid "Bye, bye!\n"
 msgstr "Auf Wiedersehen!\n"
@@ -62,18 +207,19 @@ msgstr ""
 #: src/game.c:172
 #, c-format
 msgid "loading levelsets...\n"
-msgstr "Lade Levelsets...\n"
+msgstr "Lade Puzzlesaetze...\n"
 
 #: src/game.c:189
 #, c-format
 msgid "WARNING: levelset not found...\n"
-msgstr "Warnung: Levelset nicht gefunden...\n"
+msgstr "Warnung: Puzzlesatz nicht gefunden...\n"
 
 #: src/game.c:195
 #, c-format
 msgid "ERROR: no valid level set found; need at least one level set...\n"
 msgstr ""
-"Fehler: Kein gueltiges Levelset gefunden; brauche wenigstens ein Set...\n"
+"Fehler: Kein gueltiger Puzzlesatz gefunden; brauche wenigstens einen "
+"Satz...\n"
 
 #: src/game.c:714
 #, c-format
@@ -93,17 +239,17 @@ msgstr "Spiel angehalten"
 #: src/game.c:962
 #, c-format
 msgid "Your current position is level %i of chapter %i."
-msgstr "Die aktuelle Position ist Level %i von Kapitel %i."
+msgstr "Die aktuelle Position ist Puzzle %i von Kapitel %i."
 
 #: src/game.c:964
 #, c-format
 msgid "Do you really want to enter level %i of chapter %i?"
-msgstr "Wirklich Level %i von Kapitel %i betreten?"
+msgstr "Wirklich Puzzle %i von Kapitel %i betreten?"
 
 #: src/game.c:966
 #, c-format
 msgid "(All changes in the current level will be lost!)"
-msgstr "(Alle Aenderungen im aktuellen Level werden verloren gehen!)"
+msgstr "(Alle Aenderungen im aktuellen Puzzle werden verloren gehen!)"
 
 #: src/game.c:968
 #, c-format
@@ -123,12 +269,20 @@ msgstr "Wirklich neu starten? (y/n)"
 #: src/game.c:1252
 #, c-format
 msgid "This level set cannot be played.\n"
-msgstr "Dieses Levelset kann nicht gespielt werden.\n"
+msgstr "Dieser Puzzlesatz kann nicht gespielt werden.\n"
 
 #: src/game.c:1262
 #, c-format
 msgid "This level set has errors. Play anyway? (y/n)\n"
-msgstr "Dieses Levelset hat Fehler. Trotzdem spielen? (y/n)\n"
+msgstr "Dieser Puzzlesatz hat Fehler. Trotzdem spielen? (y/n)\n"
+
+#: src/game.c:1820
+msgid "Time:"
+msgstr "Zeit:"
+
+#: src/game.c:1822
+msgid "Moves:"
+msgstr "Zuege:"
 
 #: src/game.c:1896 src/game.c:1903
 #, c-format
@@ -145,10 +299,22 @@ msgstr "Zugriff verweigert"
 msgid "'%s' (Author: %s)"
 msgstr "'%s' (Autor: %s)"
 
+#: src/game.c:2719
+msgid "Level Bonus:"
+msgstr "Bonus fuer Puzzle:"
+
+#: src/game.c:2720
+msgid "Move Bonus:"
+msgstr "Bonus fuer Zuege:"
+
+#: src/game.c:2721
+msgid "Total Score:"
+msgstr "Bonus insgesamt:"
+
 #: src/levels.c:71
 #, c-format
 msgid "searching for level sets...\n"
-msgstr "Suche nach Levelsets...\n"
+msgstr "Suche nach Puzzlesaetzen...\n"
 
 #: src/levels.c:83
 #, c-format
@@ -178,6 +344,18 @@ msgstr "verwende stattdessen '%s'\n"
 #, c-format
 msgid "ERROR: no good gfx set found...\n"
 msgstr "Fehler: kein brauchbarer Grafiksatz gefunden...\n"
+
+#: src/levels.c:551
+msgid "Player:"
+msgstr "Spieler:"
+
+#: src/levels.c:555
+msgid "Score:"
+msgstr "Punkte:"
+
+#: src/levels.c:560
+msgid "HighScore:"
+msgstr "Rekord:"
 
 #: src/menu.c:229
 #, c-format
@@ -236,4 +414,4 @@ msgstr "Warnung: Profile '%s' existieren bereits\n"
 #: src/profile.c:398
 #, c-format
 msgid "level %i..."
-msgstr "Level %i..."
+msgstr "Puzzle %i..."
