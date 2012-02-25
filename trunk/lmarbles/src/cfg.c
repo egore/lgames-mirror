@@ -47,7 +47,7 @@ void C_StPth()
 #endif
     /* create .lgames directory if not found */
     if ( (dir = opendir( c_pth )) == 0 ) {
-        fprintf( stderr, "Config directory ~/.lgames not found. Creating it.\n" );
+        fprintf( stderr, _("Config directory ~/.lgames not found. Creating it.\n") );
         MKDIR( c_pth, S_IRWXU );
     }
     else
@@ -67,17 +67,17 @@ void C_Ld()
     FILE	*f;
     struct stat dir_stat;
 
-    printf("loading configuration...\n");
+    printf(_("loading configuration...\n"));
 
     // load init //
     if ((f = fopen(c_pth, "r")) == 0) {
-        printf("cfg file '%s' not found; using defaults\n", c_pth);
+        printf(_("cfg file '%s' not found; using defaults\n"), c_pth);
         C_Def();
 	}
     else {
         stat( c_pth, &dir_stat );
         if ( dir_stat.st_size != sizeof( Cfg ) ) {
-            fprintf( stderr, "config file '%s' corrupted... using defaults\n", c_pth );
+            fprintf( stderr, _("config file '%s' corrupted... using defaults\n"), c_pth );
             C_Def();
         }
         else
@@ -88,7 +88,7 @@ void C_Ld()
         F_GetE(f, str, F_VAL);
         if (strncmp(str,"ascii",5)) {
 
-            printf("cfg file '%s' not in ascii; using defaults\n", c_pth);
+            printf(_("cfg file '%s' not in ascii; using defaults\n"), c_pth);
             C_Def();
 
         }
@@ -115,7 +115,7 @@ void C_Ld()
         fread(str, 5, 1, f);
         if (!strncmp(str,"ascii",5)) {
 
-            printf("cfg file '%s' in ascii but raw binary data expected; using defaults\n", c_pth);
+            printf(_("cfg file '%s' in ascii but raw binary data expected; using defaults\n"), c_pth);
             C_Def();
 
         }

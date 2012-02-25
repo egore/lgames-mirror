@@ -1,6 +1,6 @@
-SUBDIRS = src
+SUBDIRS = po intl m4 src
 
-EXTRA_DIST = lmarbles.spec AUTHORS COPYING ChangeLog INSTALL README \
+EXTRA_DIST = config.rpath  lmarbles.spec AUTHORS COPYING ChangeLog INSTALL README \
 README-SDL.txt TODO LMarbles.prj lmarbles32.gif lmarbles48.gif \
 lmarbles.desktop.in
 
@@ -73,3 +73,5 @@ win32-installer: win32-installer-script
 	@-rm -rf win32text
 	@mv setup.exe $(PACKAGE)-$(VERSION)-win32.exe
 	@echo Self installer created: $(PACKAGE)-$(VERSION)-win32.exe
+
+ACLOCAL_AMFLAGS = -I m4

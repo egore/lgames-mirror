@@ -242,7 +242,7 @@ void CB_ClrP()
 void CB_DelP()
 {
     if (prfs.cntr < 2) {
-        printf("WARNING: last profile cannot be deleted\n");
+        printf(_("WARNING: last profile cannot be deleted\n"));
         return;
     }
     // delete from list //
@@ -533,7 +533,7 @@ int main(int argc, char *argv[])
     // free screen //
     Sdl_Qut();
 
-    printf("Bye, bye!\n");
+    printf(_("Bye, bye!\n"));
 
     return 0;
 }

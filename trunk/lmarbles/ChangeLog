@@ -1,3 +1,5 @@
+- added gettext support and german localization (12/02/25 MS)
+
 1.0.8:
 - added XDG desktop support (09/10/26 MS)
 - fixed configuration process (09/10/26 MS)

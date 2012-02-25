@@ -1,0 +1,239 @@
+# German translations for lmarbles package
+# German messages for lmarbles.
+# Copyright (C) 2012 Michael Speck
+# This file is distributed under the same license as the lmarbles package.
+# michael <michael@lgames.sf.net>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lmarbles 1.0.9\n"
+"Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
+"POT-Creation-Date: 2012-02-25 18:02+0100\n"
+"PO-Revision-Date: 2012-02-25 17:27+0100\n"
+"Last-Translator: michael <michael@lgames.sf.net>\n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/main.c:245
+#, c-format
+msgid "WARNING: last profile cannot be deleted\n"
+msgstr "Warnung: Letztes Profil kann nicht geloescht werden\n"
+
+#: src/main.c:536
+#, c-format
+msgid "Bye, bye!\n"
+msgstr "Auf Wiedersehen!\n"
+
+#: src/cfg.c:50
+#, c-format
+msgid "Config directory ~/.lgames not found. Creating it.\n"
+msgstr "Konfig-Verzeichnis ~/.lgames nicht gefunden. Wird erzeugt.\n"
+
+#: src/cfg.c:70
+#, c-format
+msgid "loading configuration...\n"
+msgstr "Lade Konfiguration...\n"
+
+#: src/cfg.c:74
+#, c-format
+msgid "cfg file '%s' not found; using defaults\n"
+msgstr "Konfigdatei '%s' nicht gefunden; Verwende Voreinstellungen\n"
+
+#: src/cfg.c:80
+#, c-format
+msgid "config file '%s' corrupted... using defaults\n"
+msgstr "Konfigdatei '%s' korrupt... Verwende Voreinstellungen\n"
+
+#: src/cfg.c:91
+#, c-format
+msgid "cfg file '%s' not in ascii; using defaults\n"
+msgstr "Konfigdatei '%s' nicht ASCII; Verwende Voreinstellungen\n"
+
+#: src/cfg.c:118
+#, c-format
+msgid "cfg file '%s' in ascii but raw binary data expected; using defaults\n"
+msgstr ""
+"Konfigdatei '%s' ist ASCII aber binaere Daten verwartet; Verwende "
+"Voreinstellungen\n"
+
+#: src/game.c:172
+#, c-format
+msgid "loading levelsets...\n"
+msgstr "Lade Levelsets...\n"
+
+#: src/game.c:189
+#, c-format
+msgid "WARNING: levelset not found...\n"
+msgstr "Warnung: Levelset nicht gefunden...\n"
+
+#: src/game.c:195
+#, c-format
+msgid "ERROR: no valid level set found; need at least one level set...\n"
+msgstr ""
+"Fehler: Kein gueltiges Levelset gefunden; brauche wenigstens ein Set...\n"
+
+#: src/game.c:714
+#, c-format
+msgid "loading graphics sets...\n"
+msgstr "Lade Grafiksatz...\n"
+
+#: src/game.c:721 src/levels.c:67
+#, c-format
+msgid "ERROR: can't find directory '%s'\n"
+msgstr "Fehler: Kann Verzeichnis '%s' nicht finden\n"
+
+#: src/game.c:858
+#, c-format
+msgid "Game paused"
+msgstr "Spiel angehalten"
+
+#: src/game.c:962
+#, c-format
+msgid "Your current position is level %i of chapter %i."
+msgstr "Die aktuelle Position ist Level %i von Kapitel %i."
+
+#: src/game.c:964
+#, c-format
+msgid "Do you really want to enter level %i of chapter %i?"
+msgstr "Wirklich Level %i von Kapitel %i betreten?"
+
+#: src/game.c:966
+#, c-format
+msgid "(All changes in the current level will be lost!)"
+msgstr "(Alle Aenderungen im aktuellen Level werden verloren gehen!)"
+
+#: src/game.c:968
+#, c-format
+msgid "(press y/n)"
+msgstr "(y/n druecken)"
+
+#: src/game.c:1070
+#, c-format
+msgid "Do you really want to quit? (y/n)"
+msgstr "Wirklich beenden? (y/n)"
+
+#: src/game.c:1169
+#, c-format
+msgid "Do you really want to restart? (y/n)"
+msgstr "Wirklich neu starten? (y/n)"
+
+#: src/game.c:1252
+#, c-format
+msgid "This level set cannot be played.\n"
+msgstr "Dieses Levelset kann nicht gespielt werden.\n"
+
+#: src/game.c:1262
+#, c-format
+msgid "This level set has errors. Play anyway? (y/n)\n"
+msgstr "Dieses Levelset hat Fehler. Trotzdem spielen? (y/n)\n"
+
+#: src/game.c:1896 src/game.c:1903
+#, c-format
+msgid "Tier %i, Puzzle %i"
+msgstr "Kapitel %i, Puzzle %i"
+
+#: src/game.c:1900
+#, c-format
+msgid "Access Denied"
+msgstr "Zugriff verweigert"
+
+#: src/game.c:2583
+#, c-format
+msgid "'%s' (Author: %s)"
+msgstr "'%s' (Autor: %s)"
+
+#: src/levels.c:71
+#, c-format
+msgid "searching for level sets...\n"
+msgstr "Suche nach Levelsets...\n"
+
+#: src/levels.c:83
+#, c-format
+msgid "ERROR: '%s' seems to be empty\n"
+msgstr "Fehler: '%s' scheint leer zu sein\n"
+
+#: src/levels.c:88
+#, c-format
+msgid "...total of %i\n"
+msgstr "... %i insgesamt\n"
+
+#: src/levels.c:483
+#, c-format
+msgid ""
+"WARNING: unknown or unuseable gfx set '%s';\n"
+"searching for a good one...\n"
+msgstr ""
+"Warnung: Unbekannter oder unbenutzbarer Grafiksatz'%s';\n"
+"Suche einen guten...\n"
+
+#: src/levels.c:489
+#, c-format
+msgid "'%s' used instead\n"
+msgstr "verwende stattdessen '%s'\n"
+
+#: src/levels.c:496
+#, c-format
+msgid "ERROR: no good gfx set found...\n"
+msgstr "Fehler: kein brauchbarer Grafiksatz gefunden...\n"
+
+#: src/menu.c:229
+#, c-format
+msgid "%s: Up"
+msgstr "%s: Hoch"
+
+#: src/menu.c:232
+#, c-format
+msgid "%s: Down"
+msgstr "%s: Runter"
+
+#: src/menu.c:235
+#, c-format
+msgid "%s: Left"
+msgstr "%s: Links"
+
+#: src/menu.c:238
+#, c-format
+msgid "%s: Right"
+msgstr "%s: Rechts"
+
+#: src/menu.c:241
+#, c-format
+msgid "%s: Space"
+msgstr "%s: Leertaste"
+
+#: src/menu.c:544
+#, c-format
+msgid "checking menu... "
+msgstr "Pruefe Menue... "
+
+#: src/profile.c:65
+#, c-format
+msgid "loading profiles... "
+msgstr "Lade Profile... "
+
+#: src/profile.c:69
+#, c-format
+msgid ""
+"\n"
+"WARNING: file %s does not exist; cannot read profiles\n"
+msgstr ""
+"\n"
+"Warnung: Datei %s existiert nicht; kann Profile nicht lesen\n"
+
+#: src/profile.c:185
+#, c-format
+msgid "saving profiles... "
+msgstr "Speichere Profile... "
+
+#: src/profile.c:277
+#, c-format
+msgid "WARNING: profile '%s' already exists\n"
+msgstr "Warnung: Profile '%s' existieren bereits\n"
+
+#: src/profile.c:398
+#, c-format
+msgid "level %i..."
+msgstr "Level %i..."

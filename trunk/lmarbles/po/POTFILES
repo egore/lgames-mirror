@@ -1,0 +1,6 @@
+     ../src/main.c \
+     ../src/cfg.c \
+     ../src/game.c \
+     ../src/levels.c \
+     ../src/menu.c \
+     ../src/profile.c
