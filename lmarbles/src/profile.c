@@ -62,11 +62,11 @@ int Prf_Ld()
     int     i;
 #endif
 
-    printf("loading profiles... ");
+    printf(_("loading profiles... "));
 
     // read access ? //
     if ((f = fopen(prf_pth, "r")) == 0) {
-        printf("\nWARNING: file %s does not exist; cannot read profiles\n", prf_pth);
+        printf(_("\nWARNING: file %s does not exist; cannot read profiles\n"), prf_pth);
         Prf_Crt("Michael");
         not_f = 1;
     }
@@ -182,7 +182,7 @@ void Prf_Sv()
     char str[256];
 #endif
 
-    printf("saving profiles... ");
+    printf(_("saving profiles... "));
     if ((f = fopen(prf_pth, "w")) == 0) {
         printf("WARNING: no write access to %s\n", prf_pth);
     }
@@ -274,7 +274,7 @@ void Prf_Crt(char *nm)
     // if the name already exists the profile is not created //
     while (e != &prfs.tl) {
         if (!strcmp(((Prf*)e->d)->nm, nm)) {
-            printf("WARNING: profile '%s' already exists\n", nm);
+            printf(_("WARNING: profile '%s' already exists\n"), nm);
             return;
         }
         e = e->n;
@@ -395,7 +395,7 @@ void Prf_Upd(Prf *p, SInf *inf, int l_id, float pct, int scr)
     float new_p;
 #ifdef DEBUG
     float old_p = p->pct;
-    printf("level %i...", l_id);
+    printf(_("level %i..."), l_id);
 #endif
     if (!inf->cmp[l_id]) {
         /* mark as completed */

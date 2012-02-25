@@ -1,4 +1,4 @@
-DEFS = @DEFS@ @arch_flag@ @inst_flag@ @prf_flag@ @sound_flag@ @ascii_flag@
+DEFS = @DEFS@ @arch_flag@ @inst_flag@ @prf_flag@ @sound_flag@ @ascii_flag@ @locdir_flag@
 
 marblesres.o: win32.ico 
 	@echo "1 VERSIONINFO" > $(PACKAGE).rc

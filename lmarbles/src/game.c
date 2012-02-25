@@ -169,7 +169,7 @@ void G_Ini()
     l_sts.flgs = DL_AUTODEL;
     l_sts.cb = L_DelSt;
     // load level sets
-    printf("loading levelsets...\n");
+    printf(_("loading levelsets...\n"));
     for (i = 0; i < ls_n; i++) {
         printf("%s... ", ls_lst[i]);
         sprintf(str, "%s/levels/%s", SRC_DIR, ls_lst[i]);
@@ -186,13 +186,13 @@ void G_Ini()
         }
         else {
             L_AddInvSt(ls_lst[i]);
-            printf("WARNING: levelset not found...\n");
+            printf(_("WARNING: levelset not found...\n"));
         }
     }
 
     // found something ? //
     if (!ok) {
-        printf("ERROR: no valid level set found; need at least one level set...\n");
+        printf(_("ERROR: no valid level set found; need at least one level set...\n"));
         exit(1);
     }
 
@@ -711,14 +711,14 @@ void G_LdGSts()
     struct stat     s;
     GSet    *g_st;
 
-    printf("loading graphics sets...\n");
+    printf(_("loading graphics sets...\n"));
 
     // create directory string //
     sprintf(d_nm, "%s/gfx", SRC_DIR);
 
     // find and open directory //
     if ((dir = opendir(d_nm)) == 0) {
-        fprintf(stderr, "ERROR: can't find directory '%s'\n", d_nm);
+        fprintf(stderr, _("ERROR: can't find directory '%s'\n"), d_nm);
         exit(1);
     }
 
@@ -855,7 +855,7 @@ void G_Ps()
 
     // write info
     ft->algn = TA_X_C | TA_Y_C;
-    sprintf(str, "Game paused");
+    sprintf(str, _("Game paused"));
     SF_Wrt(ft, sdl.scr, gm.scr_w / 2, gm.scr_h / 2, str, 0);
 
     Sdl_FUpd();
@@ -959,13 +959,13 @@ int G_CfmWrp()
 
     // write info
     ft->algn = TA_X_C | TA_Y_T;
-    sprintf(str, "Your current position is level %i of chapter %i.", gm.c_l_id + 1, gm.c_ch + 1);
+    sprintf(str, _("Your current position is level %i of chapter %i."), gm.c_l_id + 1, gm.c_ch + 1);
     SF_Wrt(ft, sdl.scr, gm.scr_w / 2, 200, str, 0);
-    sprintf(str, "Do you really want to enter level %i of chapter %i?", gm.w_l + 1, gm.w_c + 1);
+    sprintf(str, _("Do you really want to enter level %i of chapter %i?"), gm.w_l + 1, gm.w_c + 1);
     SF_Wrt(ft, sdl.scr, gm.scr_w / 2, 200 + 15, str, 0);
-    sprintf(str, "(All changes in the current level will be lost!)");
+    sprintf(str, _("(All changes in the current level will be lost!)"));
     SF_Wrt(ft, sdl.scr, gm.scr_w / 2, 200 + 30, str, 0);
-    sprintf(str, "(press y/n)");
+    sprintf(str, _("(press y/n)"));
     SF_Wrt(ft, sdl.scr, gm.scr_w / 2, 200 + 50, str, 0);
 
     Sdl_FUpd();
@@ -1067,7 +1067,7 @@ int G_CfmQut()
 
     // write info
     ft->algn = TA_X_C | TA_Y_C;
-    sprintf(str, "Do you really want to quit? (y/n)");
+    sprintf(str, _("Do you really want to quit? (y/n)"));
     SF_Wrt(ft, sdl.scr, gm.scr_w / 2, gm.scr_h / 2, str, 0);
 
     Sdl_FUpd();
@@ -1166,7 +1166,7 @@ int G_CfmRst()
 
     // write info
     ft->algn = TA_X_C | TA_Y_C;
-    sprintf(str, "Do you really want to restart? (y/n)");
+    sprintf(str, _("Do you really want to restart? (y/n)"));
     SF_Wrt(ft, sdl.scr, gm.scr_w / 2, gm.scr_h / 2, str, 0);
 
     Sdl_FUpd();
@@ -1249,7 +1249,7 @@ int G_CkLSt()
     if (gm.c_l_st->ch == 0) {
         D_FDST(sdl.scr);
         SS_Fill(0x0);
-        sprintf(str, "This level set cannot be played.\n");
+        sprintf(str, _("This level set cannot be played.\n"));
         ft->algn = TA_X_C | TA_Y_C;
         SF_Wrt(ft, sdl.scr, sdl.scr->w / 2, sdl.scr->h / 2, str, 0);
         Sdl_FUpd();
@@ -1259,7 +1259,7 @@ int G_CkLSt()
     if (!gm.c_l_st->ok) {
         D_FDST(sdl.scr);
         SS_Fill(0x0);
-        sprintf(str, "This level set has errors. Play anyway? (y/n)\n");
+        sprintf(str, _("This level set has errors. Play anyway? (y/n)\n"));
         ft->algn = TA_X_C | TA_Y_C;
         SF_Wrt(ft, sdl.scr, sdl.scr->w / 2, sdl.scr->h / 2, str, 0);
         Sdl_FUpd();
@@ -1893,14 +1893,14 @@ int Inf_Upd()
     y = (gm.o_my - gm.c_y) / L_SIZE;
 
     if (gm.o_mx < gm.c_x + gm.b_x || gm.o_my < gm.c_y  || x >= gm.c_l_st->l_num || y >= gm.c_l_st->c_num) {
-        sprintf(gm.inf_str, "Tier %i, Puzzle %i", gm.c_ch + 1, gm.c_l_id + 1);
+        sprintf(gm.inf_str, _("Tier %i, Puzzle %i"), gm.c_ch + 1, gm.c_l_id + 1);
         return 0;
     }
     if (!gm.c_s_inf->cmp[y * gm.c_s_inf->l_num + x] && !gm.c_s_inf->c_opn[y]) {
-        sprintf(gm.inf_str, "Access Denied");
+        sprintf(gm.inf_str, _("Access Denied"));
         return 0;
     }
-    sprintf(gm.inf_str, "Tier %i, Puzzle %i", y + 1, x + 1);
+    sprintf(gm.inf_str, _("Tier %i, Puzzle %i"), y + 1, x + 1);
     if (gm.bttn[1]) {
         gm.w_c = y;
         gm.w_l = x;
@@ -2580,7 +2580,7 @@ void Cr_Ini()
     gm.cr_st = 0;
     gm.cr_a = 255;
     gm.cr_c_tm = gm.cr_tm;
-    sprintf(gm.cr_str, "'%s' (Author: %s)", gm.c_l_st->ch[gm.c_ch].nm, gm.c_l_st->ch[gm.c_ch].authr);
+    sprintf(gm.cr_str, _("'%s' (Author: %s)"), gm.c_l_st->ch[gm.c_ch].nm, gm.c_l_st->ch[gm.c_ch].authr);
     gm.cr_w = SF_TxtW(gm.f_sml, gm.cr_str);
     gm.cr_h = gm.f_sml->h;
     gm.cr_x = (gm.scr_w - gm.brd_w - gm.cr_w) / 2;

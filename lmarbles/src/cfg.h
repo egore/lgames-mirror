@@ -53,4 +53,15 @@ void C_Ld();
 void C_Sv();
 void C_Def();
 
+/* i18n */
+#ifdef HAVE_CONFIG_H
+#include "../config.h"
+#endif
+#include "gettext.h"
+#if ENABLE_NLS
+#define _(str) gettext (str)
+#else
+#define _(str) (str)
+#endif
+
 #endif

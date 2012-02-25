@@ -64,11 +64,11 @@ void L_CrtLst()
 
     // find and open directory //
     if ((dir = opendir(d_nm)) == 0) {
-        fprintf(stderr, "ERROR: can't find directory '%s'\n", d_nm);
+        fprintf(stderr, _("ERROR: can't find directory '%s'\n"), d_nm);
         exit(1);
     }
 
-    printf("searching for level sets...\n");
+    printf(_("searching for level sets...\n"));
     // well, let's check the count the entries //
     while ((e = readdir(dir)) != 0) {
         sprintf(path, "%s/%s", d_nm, e->d_name);
@@ -80,12 +80,12 @@ void L_CrtLst()
     }
 
     if (ls_n == 0) {
-        fprintf(stderr, "ERROR: '%s' seems to be empty\n", d_nm);
+        fprintf(stderr, _("ERROR: '%s' seems to be empty\n"), d_nm);
         closedir(dir);
         exit(1);
     }
     else
-        printf("...total of %i\n", ls_n);
+        printf(_("...total of %i\n"), ls_n);
 
     // now we'll create the list //
     rewinddir(dir);
@@ -480,20 +480,20 @@ void L_Ini(int c, int l)
         e = e->n;
     }
     if (!gst_ok) {
-        printf("WARNING: unknown or unuseable gfx set '%s';\nsearching for a good one...\n", nm);
+        printf(_("WARNING: unknown or unuseable gfx set '%s';\nsearching for a good one...\n"), nm);
         // find first useable set
         e = gm.g_sts.hd.n;
         while (e != &gm.g_sts.tl) {
             if (((GSet*)e->d)->ok) {
                 gm.c_g_st = (GSet*)e->d;
-                printf("'%s' used instead\n", gm.c_g_st->nm);
+                printf(_("'%s' used instead\n"), gm.c_g_st->nm);
                 gst_ok = 1;
                 break;
             }
             e = e->n;
         }
         if (!gst_ok) {
-            printf("ERROR: no good gfx set found...\n");
+            printf(_("ERROR: no good gfx set found...\n"));
             exit(1);
         }
     }

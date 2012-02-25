@@ -226,19 +226,19 @@ void ME_SUpd(MEnt* e)
 				else
 					switch (*e->p){
 						case SDLK_UP:
-							sprintf(e->str, "%s: Up", e->nm);
+							sprintf(e->str, _("%s: Up"), e->nm);
 							break;
 						case SDLK_DOWN:
-							sprintf(e->str, "%s: Down", e->nm);
+							sprintf(e->str, _("%s: Down"), e->nm);
 							break;
 						case SDLK_LEFT:
-							sprintf(e->str, "%s: Left", e->nm);
+							sprintf(e->str, _("%s: Left"), e->nm);
 							break;
 						case SDLK_RIGHT:
-							sprintf(e->str, "%s: Right", e->nm);
+							sprintf(e->str, _("%s: Right"), e->nm);
 							break;
 						case SDLK_SPACE:
-							sprintf(e->str, "%s: Space", e->nm);
+							sprintf(e->str, _("%s: Space"), e->nm);
 							break;
 						default:
 							sprintf(e->str, "%s: %i", e->nm, c);
@@ -541,7 +541,7 @@ void MM_Ck()
     DL_E    *e = mm.mn.hd.n;
     Menu    *m;
 
-    printf("checking menu... ");
+    printf(_("checking menu... "));
 
     // no menu at all? //
     if (mm.mn.cntr == 0) {
