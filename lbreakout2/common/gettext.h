@@ -25,6 +25,11 @@
 /* Get declarations of GNU message catalog functions.  */
 # include <libintl.h>
 
+/* We need locale.h too, otherwise setlocale() bails out; cf. #643471 */
+#if HAVE_LOCALE_H
+# include <locale.h>
+#endif
+
 #else
 
 /* Solaris /usr/include/locale.h includes /usr/include/libintl.h, which
