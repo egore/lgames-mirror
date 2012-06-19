@@ -1,3 +1,5 @@
+2.6.4:
+- fixed crash caused by long config path (2012/06/19 Kees Cook)
 - fixed gettext related compile error (2012/06/19 Colin Tuckley)
 - added another bunch of levelsets from Olaf Friedrich (2012/01/22 MS)
 - added bunch of new levelsets (2011/06/10 MS)

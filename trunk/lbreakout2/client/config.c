@@ -50,10 +50,10 @@ void config_check_dir()
             fprintf( stderr, "ok\n" );
     }
     /* create levels directory */
-    sprintf( level_dir, "%s/lbreakout2-levels", config.dir_name );
+    snprintf( level_dir, 512, "%s/lbreakout2-levels", config.dir_name );
     MKDIR( level_dir, S_IRWXU );
     /* create themes directory */
-    sprintf( level_dir, "%s/lbreakout2-themes", config.dir_name );
+    snprintf( level_dir, 512, "%s/lbreakout2-themes", config.dir_name );
     MKDIR( level_dir, S_IRWXU );
 }
 
