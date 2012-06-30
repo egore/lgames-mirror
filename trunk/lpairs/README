@@ -1,0 +1,33 @@
+
+				    LPairs
+			    
+			a classic memory game for Linux
+				by Michael Speck
+
+------
+1. Requirements
+2. Installation
+3. Graphics
+------
+
+Requirements:
+    X11, SDL(1.0 or better)
+
+Installation:
+    1.	type './configure'
+	options:
+	    --disable-sound (no sound)
+	    --disable-install (no installation; play from source directory)
+        --disable-nls (no internationalization by gettext)
+	(e.g. './configure --disable-sound --disable-install')
+    2.	type 'make'
+    3.	become root
+    4.  type 'make install' (only if 'install' is not disabled)
+    5.  type 'lpairs' to play
+
+Graphics:
+All images (except the fonts) are based upon icons of the Tango Desktop 
+Project (http://tango.freedesktop.org) and are therefore licensed under
+"Creative Commons Attribution-Share Alike". They have been modified and
+submitted by Kenneth Granerud.
+
