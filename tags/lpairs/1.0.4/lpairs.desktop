@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=LPairs
+GenericName=Memory Game
+Comment=Classic memory game using SDL
+Exec=lpairs
+Icon=lpairs.png
+Type=Application
+Categories=Application;Game;LogicGame;
