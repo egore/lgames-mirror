@@ -1,0 +1,19 @@
+1.0.4:
+- replaced graphics and removed logo (part of background now) (08/08/24 KG)
+
+1.0.3:
+- don't save cards to current working directory (07/11/25 MS)
+- fixed bad color key of logo (07/11/25 MS)
+- fixed distortion for non-square icons (07/11/27 MS)
+
+1.0.2:
+- added lpairs spec file for building RPMs (07/04/14 AZ)
+- i18n support (05/10/01 M.S.)
+
+1.0.1:
+- fixed security hole in config file (02/11/24 M.S.)
+- removed the 'phtread'-stuff from the configure file
+- restart key added
+
+1.0:
+-initial public release

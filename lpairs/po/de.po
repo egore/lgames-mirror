@@ -1,0 +1,113 @@
+# German translations for lpairs package
+# German messages for lpairs.
+# Copyright (C) 2005 Michael Speck
+# This file is distributed under the same license as the lpairs package.
+# Michael Speck <kulkanie@gmx.net>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lpairs 1.0.1\n"
+"Report-Msgid-Bugs-To: http://lgames.sf.net/contact.php\n"
+"POT-Creation-Date: 2008-08-30 20:57+0200\n"
+"PO-Revision-Date: 2005-09-26 14:49+0200\n"
+"Last-Translator: Michael Speck <kulkanie@gmx.net>\n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lpairs/main.c:82 lpairs/main.c:124 lpairs/main.c:125 lpairs/main.c:129
+msgid "Off"
+msgstr "Aus"
+
+#: lpairs/main.c:83
+msgid "For 5 Seconds"
+msgstr "5 Sekunden"
+
+#: lpairs/main.c:84
+msgid "Until Key Pressed"
+msgstr "Bis Taste gedrueckt"
+
+#: lpairs/main.c:110
+msgid "Start Game"
+msgstr "Starte Spiel"
+
+#: lpairs/main.c:112
+msgid "Cards:"
+msgstr "Karten:"
+
+#: lpairs/main.c:113
+msgid "Reveal Cards At Beginning:"
+msgstr "Zeige Karten zu Beginn:"
+
+#: lpairs/main.c:115
+msgid "Graphics"
+msgstr "Grafik"
+
+#: lpairs/main.c:117 lpairs/main.c:119
+msgid "Audio"
+msgstr "Audio"
+
+#: lpairs/main.c:122
+msgid "Quit"
+msgstr "Beenden"
+
+#: lpairs/main.c:124
+msgid "Fullscreen:"
+msgstr "Vollbild:"
+
+#: lpairs/main.c:124 lpairs/main.c:125 lpairs/main.c:129
+msgid "On"
+msgstr "An"
+
+#: lpairs/main.c:125
+msgid "Dim Effect:"
+msgstr "Abblendeffekt:"
+
+#: lpairs/main.c:127 lpairs/main.c:136
+msgid "Back"
+msgstr "Zurueck"
+
+#: lpairs/main.c:129
+msgid "Sound:"
+msgstr "Sound:"
+
+#: lpairs/main.c:132
+msgid "Volume:"
+msgstr "Lautstaerke"
+
+#: lpairs/pairs.c:427
+#, c-format
+msgid "Congratulations! You have resolved this puzzle!"
+msgstr "Glueckwunsch! Sie haben dieses Puzzle geloest!"
+
+#: lpairs/pairs.c:429
+#, c-format
+msgid "It now will restart with the same settings."
+msgstr "Es wird jetzt mit den gleichen Einstellungen neu gestartet."
+
+#: lpairs/pairs.c:431
+#, c-format
+msgid "If you want to change these press <Escape> after restart."
+msgstr "Wenn Sie diese aendern moechten, druecken Sie ESC nach dem Neuteilen."
+
+#: lpairs/pairs.c:433
+#, c-format
+msgid "(Press any key to continue...)"
+msgstr "(Beliebige Taste um fortzufahren...)"
+
+#: lpairs/pairs.c:578
+#, c-format
+msgid "Pairs left: %i"
+msgstr "Verbliebene Paare: %i"
+
+#: lpairs/pairs.c:583
+#, c-format
+msgid "Tries: %i"
+msgstr "Versuche: %i"
+
+#: lpairs/pairs.c:586
+#, c-format
+msgid "Time: %s"
+msgstr "Zeit: %s"
