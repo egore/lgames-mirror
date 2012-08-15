@@ -47,7 +47,7 @@ AC_SUBST(audio_flag)
 AC_SUBST(mixer_flag)
 
 dnl documentation path
-doc_dir="/usr/doc"
+doc_dir=$docdir
 dnl check if manually overwriting doc path
 AC_ARG_WITH( docdir,
 [  --with-docdir=DPATH       Directory where documentation is saved.],
