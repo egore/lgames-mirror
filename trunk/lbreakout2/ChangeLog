@@ -1,3 +1,5 @@
+- added a bunch of new levelsets, removed OldGames (2012/08/15 MS)
+
 2.6.4:
 - fixed crash caused by long config path (2012/06/19 Kees Cook)
 - fixed gettext related compile error (2012/06/19 Colin Tuckley)
