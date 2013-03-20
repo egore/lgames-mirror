@@ -8,15 +8,14 @@ AllNighter \
 AllWorld \
 Arcade \
 Arkanoid \
-Asteroids \
 Astra \
+Belief \
 BeOS-4ever \
 Bertrand \
 BigBang \
 Biolab428 \
 Blues \
 Bombs \
-BrownBricks \
 CalendarFun \
 Celine \
 Chaos \
@@ -40,10 +39,10 @@ Flower \
 Fly \
 Football \
 Freek \
+Frozen \
 FunCity \
 Gatinha \
 Germany \
-GreenBricks \
 GreenWall \
 GreenWall2 \
 GreenWall3 \
@@ -77,7 +76,6 @@ Maze \
 Megadoomer \
 MegaMan2 \
 Memory \
-Memory2 \
 MiddleAfrica \
 MontyHall \
 N_Arenas \
@@ -123,6 +121,7 @@ TrickShot \
 Tricky \
 Twilight \
 Vader \
+WallBricks \
 Weirdness \
 WestAsia \
 WestEurope \
