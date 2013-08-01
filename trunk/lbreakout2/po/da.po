@@ -6,10 +6,10 @@
 # Joe Hansen <joedalton2@yahoo.dk>, 2013
 msgid ""
 msgstr ""
-"Project-Id-Version: DoudouLinux\n"
+"Project-Id-Version: lbreakout2\n"
 "Report-Msgid-Bugs-To: http://lgames.sf.net/contact.php\n"
 "POT-Creation-Date: 2013-07-29 20:02+0200\n"
-"PO-Revision-Date: 2013-07-25 14:43+0000\n"
+"PO-Revision-Date: 2013-07-30 14:43+0000\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <doudoulinux-lang@gna.org>\n"
 "Language: da\n"
@@ -1231,9 +1231,8 @@ msgid "Play the original LBreakout2 levelset."
 msgstr "Spil det originale LBreakout2-banesæt."
 
 #: client/manager.c:78
-#, fuzzy
 msgid "Play an additional levelset."
-msgstr "Spil de yderligere banesæt valgt nedenfor."
+msgstr "Spil et ekstra banesæt."
 
 #: client/manager.c:79
 msgid ""
@@ -2003,46 +2002,45 @@ msgstr "Opløs mursten? (Koster 5% af dine point). j/n"
 #: client/setselect.c:96
 #, c-format
 msgid "Out of memory"
-msgstr ""
+msgstr "Ikke nok hukommelse"
 
 #: client/setselect.c:223
-#, fuzzy
 msgid "Special Game"
-msgstr "Lokalt spil"
+msgstr "Speciel spil"
 
 #: client/setselect.c:351
 #, c-format
 msgid "...Previous Page..."
-msgstr ""
+msgstr "...Forrige side..."
 
 #: client/setselect.c:354
 #, c-format
 msgid "...Next Page..."
-msgstr ""
+msgstr "...Næste side..."
 
 #: client/setselect.c:358
 #, c-format
 msgid "Back To Menu"
-msgstr ""
+msgstr "Tilbage til menu"
 
 #: client/setselect.c:362
 #, c-format
 msgid "<not set>"
-msgstr ""
+msgstr "<ikke sat>"
 
 #: client/setselect.c:437
 msgid "Select Custom Levelset"
-msgstr ""
+msgstr "Vælg tilpasset banesæt"
 
 #: client/setselect.c:498
 #, c-format
 msgid "by %s, %d levels"
-msgstr ""
+msgstr "af %s, %d baner"
 
 #: client/setselect.c:502
 #, c-format
 msgid "%s v%d.%02d"
-msgstr ""
+msgstr "%s v%d.%02d"
 
 #: common/net.c:68
 #, c-format
@@ -2568,14 +2566,4 @@ msgstr "Ekstern spiller har forladt spillet ..."
 msgid "game %i: %s: state %i: invalid message %x: skipping %i bytes\n"
 msgstr "spil %i: %s: tilstand %i: ugyldig besked %x: udelader %i byte\n"
 
-#~ msgid "First chart query for '%s'. Creating this chart.\n"
-#~ msgstr "Første diagramforespørgsel for »%s«. Opretter dette diagram.\n"
 
-#~ msgid "%s v%i.%02i#Author: %s"
-#~ msgstr "%s v%i.%02i#Forfatter: %s"
-
-#~ msgid "No info available."
-#~ msgstr "Ingen information tilgængelig."
-
-#~ msgid "AddOn:"
-#~ msgstr "Udvidelse:"
