@@ -1577,6 +1577,7 @@ void bowl_toggle_pause( Bowl *bowl )
         bowl->hide_block = 0;
         bowl_draw_contents( bowl );
         bowl->paused = 0;
+		bowl->stored_key = -1;
     }
     else {
         /* pause */

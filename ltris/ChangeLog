@@ -1,3 +1,5 @@
+- reset key states when unpausing to prevent unwanted movement (2013/10/29 MS)
+
 1.0.18:
 - added vertical delay option (2011/10/29 MS)
 
