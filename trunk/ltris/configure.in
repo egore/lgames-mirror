@@ -14,9 +14,6 @@ AC_PROG_RANLIB
 
 CFLAGS="$CFLAGS -Wall"
 
-dnl Checks for libraries.
-AC_CHECK_LIB(m, main,, AC_MSG_ERROR(lib math is needed))
-
 dnl Check Zarus install
 AC_ARG_ENABLE( zaurus,
 [  --enable-zaurus         Compile for Zaurus], CFLAGS="$CFLAGS -DZAURUS")
