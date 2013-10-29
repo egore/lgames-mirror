@@ -499,6 +499,7 @@ Font* load_font(char *fname)
     FILE    *file = 0;
     char    path[512];
     int     i;
+	int		num;
 
     get_full_font_path( path, fname );
 
@@ -520,17 +521,29 @@ Font* load_font(char *fname)
     /* table */
     file = fopen(path, "r");
     fseek(file, -1, SEEK_END);
-    fread(&fnt->offset, 1, 1, file);
+    if ((num = fread(&fnt->offset, 1, 1, file)) < 1) {
+		fprintf(stderr, "load_font: could not read from file\n");
+		fclose(file);
+        exit(1);
+    }
 #ifdef SDL_DEBUG
     printf("offset: %i\n", fnt->offset);
 #endif
     fseek(file, -2, SEEK_END);
-    fread(&fnt->length, 1, 1, file);
+    if ((num = fread(&fnt->length, 1, 1, file)) < 1) {
+		fprintf(stderr, "load_font: could not read from file\n");
+		fclose(file);
+        exit(1);
+	}
 #ifdef SDL_DEBUG
     printf("number: %i\n", fnt->length);
 #endif
     fseek(file, -2 - fnt->length, SEEK_END);
-    fread(fnt->char_width, 1, fnt->length, file);
+    if ((num = fread(fnt->char_width, 1, fnt->length, file)) < fnt->length) {
+		fprintf(stderr, "load_font: could not read from file\n");
+		fclose(file);
+        exit(1);
+	}
 #ifdef SDL_DEBUG
     printf("letter width: %i\n", fnt->length);
     for (i = 0; i < fnt->length; i++)
