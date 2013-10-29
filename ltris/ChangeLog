@@ -1,3 +1,5 @@
+- fixed various warnings when reading data from files (2013/10/29 MS)
+- removed link to lib math as not needed (2013/10/29 MS)
 - reset key states when unpausing to prevent unwanted movement (2013/10/29 MS)
 
 1.0.18:
