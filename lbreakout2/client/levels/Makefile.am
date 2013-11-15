@@ -135,7 +135,8 @@ Yexter \
 Yoda \
 Zigies \
 Zooligan \
-Zufallswelt
+Zufallswelt \
+HartzIV
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(inst_dir)/levels
