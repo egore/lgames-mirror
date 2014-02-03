@@ -677,9 +677,12 @@ static void handle_command( ServerUser *user, ServerChannel *channel, char *cmd_
         }
         else
         if ( !strcmp( name, _("fps") ) ) {
-            server_fps = val;
-            server_frame_delay = 1000/val;
-            sprintf( buf, _("fps: set to %i"), server_fps );
+            if (val > 0) {
+                server_fps = val;
+                server_frame_delay = 1000/val;
+            
+                sprintf( buf, _("fps: set to %i"), server_fps );
+            }
 
             msg_begin_writing( msgbuf, &msglen, MAX_MSG_SIZE );
             msg_write_int8( MSG_SET_COMM_DELAY );
@@ -1016,7 +1019,7 @@ static void display_help()
 /* Parse the command line. */
 static void parse_args( int argc, char **argv )
 {
-    int i, len;
+    int i, len, isf;
     FILE *file;
     
     for ( i = 0; i < argc; i++ ) {
@@ -1028,8 +1031,11 @@ static void parse_args( int argc, char **argv )
                 user_limit = atoi( argv[i + 1] );
         if ( !strcmp( "-f", argv[i] ) )
             if ( argv[i + 1] ) {
-                server_fps = atoi(argv[i + 1]);
-                server_frame_delay = 1000/server_fps;
+                isf = atoi(argv[i + 1]);
+                if (isf > 0) {
+                    server_fps = isf;
+                    server_frame_delay = 1000/server_fps;
+                }
             }
         if ( !strcmp( "-D", argv[i] ) )
             if ( argv[i + 1] )
