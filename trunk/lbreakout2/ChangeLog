@@ -1,3 +1,4 @@
+- division by zero crash fixed in server (2014/02/03 Colin Tuckley)
 - added danish translation (2013/07/29 Joe Dalton)
 - updated a number of levelsets from OFT (2013/03/20 MS)
 - use $docdir for document path in configure (2012/08/15 MS)
