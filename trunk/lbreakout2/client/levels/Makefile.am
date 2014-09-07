@@ -136,7 +136,9 @@ Yoda \
 Zigies \
 Zooligan \
 Zufallswelt \
-HartzIV
+HartzIV \
+Astro \
+Hieroglyphs
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(inst_dir)/levels
