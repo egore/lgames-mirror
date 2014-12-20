@@ -2,13 +2,17 @@
 EXTRA_DIST = 1010011010 \
 Abc \
 Afl \
+Africa \
 Alex \
 Alexandre \
 AllNighter \
 AllWorld \
+America \
 Arcade \
 Arkanoid \
+Asia \
 Astra \
+Astro \
 Belief \
 BeOS-4ever \
 Bertrand \
@@ -29,8 +33,7 @@ Crossing \
 D2K \
 Daves \
 Demons \
-EastAsia \
-EastEurope \
+Europe \
 Family \
 Fantaisie \
 FatalDoomsday \
@@ -48,8 +51,10 @@ GreenWall2 \
 GreenWall3 \
 GreenWall4 \
 Hans \
+HartzIV \
 HereWeGo \
 Heroes \
+Hieroglyphs \
 HighBall \
 Holidays \
 Hommage \
@@ -77,7 +82,6 @@ Maze \
 Megadoomer \
 MegaMan2 \
 Memory \
-MiddleAfrica \
 MontyHall \
 N_Arenas \
 Nations \
@@ -85,8 +89,6 @@ Negundoid \
 NES \
 NewBricks \
 NewOERG1 \
-NorthAfrica \
-NorthAmerica \
 N_Snapshots \
 ObiWan \
 Oceania \
@@ -109,8 +111,6 @@ Silly \
 SkillShot \
 Smilies \
 SnyMaxx \
-SouthAfrica \
-SouthAmerica \
 StarWars \
 Symmetry \
 Symmetry-MKII \
@@ -124,8 +124,6 @@ Twilight \
 Vader \
 WallBricks \
 Weirdness \
-WestAsia \
-WestEurope \
 Wizi \
 Wolvie \
 WonderWalls \
@@ -135,10 +133,7 @@ Yexter \
 Yoda \
 Zigies \
 Zooligan \
-Zufallswelt \
-HartzIV \
-Astro \
-Hieroglyphs
+Zufallswelt
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(inst_dir)/levels
