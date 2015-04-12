@@ -13,6 +13,7 @@ AC_PROG_CC
 AC_PROG_RANLIB
 
 dnl Checks for libraries.
+AC_CHECK_LIB(m, main,, AC_MSG_ERROR(lib math is needed))
 
 dnl check SDL version
 AM_PATH_SDL(1.0.0,, AC_MSG_ERROR(lib SDL is needed))
