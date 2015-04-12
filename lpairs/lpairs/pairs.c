@@ -151,6 +151,8 @@ int open_game( Pairs *pairs, int width, int height )
 {
     int i, dummy, pos1, pos2;
     int map_size = width * height;
+    int pair_num = map_size / 2;
+    int pair_ids[ICON_NUMBER]; /* all ids, first will be selected */
     int leave = 0;
     SDL_Event event;
     int reveal_time = 0;
@@ -173,16 +175,25 @@ int open_game( Pairs *pairs, int width, int height )
     /* pairs to go */
     pairs->pairs_left = map_size / 2;
 
+	/* randomly choose pairnum pairs */
+	for (i = 0; i < ICON_NUMBER; i++)
+		pair_ids[i] = i;
+	for (i = 0; i < ICON_NUMBER*20; i++) {
+		pos1 = rand() % ICON_NUMBER;
+		pos2 = rand() % ICON_NUMBER;
+		dummy = pair_ids[pos1];
+		pair_ids[pos1] = pair_ids[pos2];
+		pair_ids[pos2] = dummy;
+	}
+
     /* recreate map */
     pairs->map = calloc( map_size, sizeof( int ) );
     /* add sorted pairs */
     i = 0;
-    while ( i < map_size / 2 ) {
-
-        pairs->map[i] = i;
-        pairs->map[i + map_size / 2] = i;
+    while ( i < pair_num ) {
+        pairs->map[i] = pair_ids[i];
+        pairs->map[i + map_size / 2] = pair_ids[i];
         i++;
-
     }
     /* unsort these pairs */
     for ( i = 0; i < map_size * 20; i++ ) {
