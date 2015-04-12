@@ -83,7 +83,7 @@ void load_res( Pairs *pairs )
     } */
     
     /* font */
-    pairs->font = load_fixed_font( "stan_font.bmp" , 32, 96, 8);
+    pairs->font = load_fixed_font( "f_standard.bmp" , 32, 96, 10);
 
     /* sounds */
 #ifdef SOUND
