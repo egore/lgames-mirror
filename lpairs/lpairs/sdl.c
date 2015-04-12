@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/timeb.h>
+#include <math.h>
 #include "sdl.h"
 
 extern int  term_game;
@@ -726,4 +727,78 @@ int get_time()
 void reset_timer()
 {
     last_time = SDL_GetTicks();
+}
+
+
+/* Simple Animation */
+
+SDL_Surface *sa_background = 0; /* copy of screen contents */
+
+void sa_get_background()
+{
+	if (sa_background == 0)
+		sa_background = create_surf(sdl.screen->w, sdl.screen->h, SDL_SWSURFACE);
+	FULL_DEST(sa_background);
+    FULL_SOURCE(sdl.screen);
+    blit_surf();
+}
+void sa_free_background()
+{
+	if (sa_background)
+		SDL_FreeSurface(sa_background);
+	sa_background = 0;
+}
+void sa_draw_background()
+{
+	FULL_DEST(sdl.screen);
+    FULL_SOURCE(sa_background);
+    blit_surf();
+}
+
+void sa_init(SimpleAnimation *anim, SDL_Surface *img, 
+			int sx, int sy, int sa, int dx, int dy, int da, int time)
+{
+	double len, v;
+	
+	anim->image = img;
+	anim->px = sx;
+	anim->py = sy;
+	anim->pa = sa;
+	
+	/* compute speed vector */
+	anim->vx = dx - sx;
+	anim->vy = dy - sy;
+	len = sqrt(anim->vx * anim->vx + anim->vy * anim->vy);
+	v = len / time;	/* time is in milliseconds */
+	anim->vx = anim->vx / len * v;
+	anim->vy = anim->vy / len * v;
+	
+	/* compute alpha vector */
+	anim->va = (double)(da - sa) / time;
+	
+	anim->runtime = time;
+}
+void sa_finalize(SimpleAnimation *anim)
+{
+	SDL_FreeSurface(anim->image);
+	anim->image = 0;
+	anim->runtime = 0;
+}
+int sa_update(SimpleAnimation *anim, int ms)
+{
+	if (anim->runtime > 0) {
+		anim->px += anim->vx * ms;
+		anim->py += anim->vy * ms;
+		anim->pa += anim->va * ms;
+		anim->runtime -= ms;
+	}
+	return (anim->runtime <= 0);
+}
+void sa_draw(SimpleAnimation *anim)
+{
+	if (anim->image) {
+		DEST( sdl.screen, anim->px, anim->py, anim->image->w, anim->image->h );
+		SOURCE( anim->image, 0, 0 );
+		alpha_blit_surf(anim->pa);
+	}
 }

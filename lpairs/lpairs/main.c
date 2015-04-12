@@ -248,6 +248,7 @@ int main(int argc, char *argv[])
 
     /* free resources */
     delete_res( &pairs );
+    sa_free_background();
 
     /* save config */
     C_Sv();

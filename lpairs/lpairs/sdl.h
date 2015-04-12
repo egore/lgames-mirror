@@ -135,6 +135,23 @@ SDL_Cursor* create_cursor( int width, int height, int hot_x, int hot_y, char *so
 int get_time();
 void reset_timer();
 
+/* Simple Animation: linear movement of image in front of "frozen" screen */
+typedef struct {
+	SDL_Surface *image; /* surface (is deleted after animation) */
+	double px,py,pa; /* current position/alpha */
+	double vx,vy,va; /* change per millisecond */
+	double runtime; /* remaining runtime of animation in milliseconds */
+} SimpleAnimation;
+
+void sa_get_background();
+void sa_free_background();
+void sa_draw_background();
+
+void sa_init(SimpleAnimation *anim, SDL_Surface *img, int sx, int sy, int sa, int dx, int dy, int da, int time);
+void sa_finalize(SimpleAnimation *anim);
+int sa_update(SimpleAnimation *anim, int ms);
+void sa_draw(SimpleAnimation *anim);
+
 #ifdef __cplusplus
 };
 #endif

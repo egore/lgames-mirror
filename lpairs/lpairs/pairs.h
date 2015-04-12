@@ -32,7 +32,7 @@ enum {
     BUTTON_WIDTH = 64,
     BUTTON_HEIGHT = 64,
     BORDER = 16, /* distance between buttons */
-    DELAY = 1000
+    DELAY = 3000
 };
 
 /* draw map tile open or closed? */
@@ -47,10 +47,11 @@ typedef struct {
 
 /* game stats */
 enum {
-    NO_SEL = 0,
-    ONE_SEL,
-    BOTH_SEL,
-    CLOSE_SEL,
+    NO_SEL = 0,		/* no card selected */
+    ONE_SEL,		/* one card selected */
+    BOTH_SEL,		/* two cards selected */
+    CLOSE_SEL,		/* close non-matching cards or start animation */
+    REMOVE_CARDS,		/* small animation on removing matching cards */
     DONE
 };
 
@@ -64,6 +65,7 @@ typedef struct {
     SDL_Surface **icons; /* icons displayed on buttons */
     int icon_number;
     Font *font;
+    SimpleAnimation anim1, anim2; /* for removing cards */
 #ifdef SOUND
     Wv *click_sound;
     Wv *remove_sound;

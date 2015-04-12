@@ -274,6 +274,30 @@ void close_game( Pairs *pairs )
         set_video_mode( 640, 480, 16, SDL_SWSURFACE );
 }
 
+/* init card removal animation */
+void init_card_animation(Pairs *pairs, int mx1, int my1, int mx2, int my2)
+{
+	int sx1 = pairs->x_offset + mx1 * ( BUTTON_WIDTH + BORDER );
+	int sy1 = pairs->y_offset + my1 * ( BUTTON_HEIGHT + BORDER );
+	int sx2 = pairs->x_offset + mx2 * ( BUTTON_WIDTH + BORDER );
+	int sy2 = pairs->y_offset + my2 * ( BUTTON_HEIGHT + BORDER );
+	int dx = (sx1 + sx2)/2, dy = (sy1 + sy2)/2;
+	int sa = 0, da = 192;
+	SDL_Surface *img = 0;
+	
+	img = create_surf(BUTTON_WIDTH, BUTTON_HEIGHT, SDL_SWSURFACE);
+	DEST(img,0,0,img->w,img->h);
+	SOURCE(sdl.screen,sx1,sy1)
+	blit_surf();
+	sa_init(&pairs->anim1,img,sx1,sy1,sa,dx,dy,da,300);
+	
+	img = create_surf(BUTTON_WIDTH, BUTTON_HEIGHT, SDL_SWSURFACE);
+	DEST(img,0,0,img->w,img->h);
+	SOURCE(sdl.screen,sx2,sy2)
+	blit_surf();
+	sa_init(&pairs->anim2,img,sx2,sy2,sa,dx,dy,da,300);
+}
+
 /* run game */
 void run_game( Pairs *pairs )
 {
@@ -282,7 +306,6 @@ void run_game( Pairs *pairs )
     int x, y;
     int ms;
     char str[128];
-    int removed = 0;
     int restart = 0;
 
     reset_timer();
@@ -299,7 +322,9 @@ void run_game( Pairs *pairs )
                     break;
 
                 case SDL_MOUSEBUTTONUP:
-                    if ( event.button.button == LEFT_BUTTON && pairs->status != BOTH_SEL )
+                    if ( event.button.button == LEFT_BUTTON && 
+										pairs->status != BOTH_SEL && 
+										pairs->status != REMOVE_CARDS )
                         if ( get_map_pos( pairs, event.button.x, event.button.y, &x, &y ) ) {
 
                             /* same tile? */
@@ -347,11 +372,32 @@ void run_game( Pairs *pairs )
 
         }
 
-        /* get millisceonds */
+        /* get milliseconds */
         ms = get_time();
 
         /* add time */
-        pairs->time += ms;
+        if (pairs->status != REMOVE_CARDS)
+			pairs->time += ms;
+		else {
+			if (sa_update(&pairs->anim1,ms) || sa_update(&pairs->anim2,ms)) {
+				/* both reach destination at the same time */
+				pairs->pairs_left--;
+                if ( pairs->pairs_left <= 0 )
+                    pairs->status = DONE;
+                else
+					pairs->status = NO_SEL;
+
+				sa_finalize(&pairs->anim1);
+				sa_finalize(&pairs->anim2);
+				sa_draw_background();
+				sdl.rect_count = RECT_LIMIT; /* XXX fake full update */
+			} else {
+				sa_draw_background();
+				sa_draw(&pairs->anim1);
+				sa_draw(&pairs->anim2);
+				sdl.rect_count = RECT_LIMIT; /* XXX fake full update */
+			}
+		}
 
         /* check if buttons must be closed */
         if ( pairs->status == BOTH_SEL ) {
@@ -369,30 +415,28 @@ void run_game( Pairs *pairs )
         /* close buttons? */
         if ( pairs->status == CLOSE_SEL ) {
 
-            removed = 0;
+            /* remove cards? */
+            if (get_map_cont(pairs, pairs->first_sel.x, pairs->first_sel.y) ==
+                get_map_cont(pairs, pairs->sec_sel.x, pairs->sec_sel.y )) {
 
-            /* remove buttons? */
-            if ( get_map_cont( pairs, pairs->first_sel.x, pairs->first_sel.y ) ==
-                 get_map_cont( pairs, pairs->sec_sel.x, pairs->sec_sel.y ) ) {
-
-                removed = 1;
-
+				pairs->status = REMOVE_CARDS;
+                init_card_animation(pairs, 
+								pairs->first_sel.x, pairs->first_sel.y,
+								pairs->sec_sel.x, pairs->sec_sel.y);
+                
                 set_map_cont( pairs, pairs->first_sel.x, pairs->first_sel.y, -1 );
                 set_map_cont( pairs, pairs->sec_sel.x, pairs->sec_sel.y, -1 );
-                pairs->pairs_left--;
-
-                if ( pairs->pairs_left <= 0 )
-                    pairs->status = DONE;
-
             }
 
             draw_button( pairs, pairs->first_sel.x, pairs->first_sel.y, CLOSED );
             draw_button( pairs, pairs->sec_sel.x, pairs->sec_sel.y, CLOSED );
-            if ( pairs->status != DONE )
-                pairs->status = NO_SEL;
+            if (pairs->status != REMOVE_CARDS)
+				pairs->status = NO_SEL;
+			else
+				sa_get_background();
 
 #ifdef SOUND
-            if ( removed )
+            if ( pairs->status == REMOVE_CARDS )
                 SSrv_Ply(pairs->remove_sound, 0);
             else
                 SSrv_Ply(pairs->fail_sound, 0);
@@ -401,7 +445,7 @@ void run_game( Pairs *pairs )
             pairs->tries++;
 
         }
-
+        
         draw_info( pairs );
 
         refresh_rects();
