@@ -15,7 +15,7 @@ gfx/6.bmp gfx/7.bmp gfx/8.bmp gfx/9.bmp gfx/10.bmp gfx/11.bmp \
 gfx/12.bmp gfx/13.bmp gfx/14.bmp gfx/15.bmp gfx/16.bmp gfx/17.bmp \
 gfx/18.bmp gfx/19.bmp \
 gfx/button.bmp gfx/back.bmp gfx/title.bmp \
-gfx/f_white.bmp gfx/f_yellow.bmp gfx/f_standard.bmp \
+gfx/f_small_white.bmp gfx/f_white.bmp gfx/f_yellow.bmp gfx/f_standard.bmp \
 \
 sound/click.wav sound/remove.wav sound/fail.wav
 

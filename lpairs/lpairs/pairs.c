@@ -479,14 +479,12 @@ void run_game( Pairs *pairs )
                 pairs->font->align = ALIGN_X_CENTER | ALIGN_Y_TOP;
                 y = ( sdl.screen->h >> 1 ) - 50;
 
-                sprintf( str, _("Congratulations! You have resolved this puzzle!") );
+                sprintf( str, _("Congratulations!") );
                 write_text( pairs->font, sdl.screen, sdl.screen->w >> 1, y, str, OPAQUE );
-                sprintf( str, _("It now will restart with the same settings.") );
+                sprintf( str, _("Press ESC to exit or") );
                 write_text( pairs->font, sdl.screen, sdl.screen->w >> 1, y + 20, str, OPAQUE );
-                sprintf( str, _("If you want to change these press <Escape> after restart.") );
+                sprintf( str, _("any other key to restart.") );
                 write_text( pairs->font, sdl.screen, sdl.screen->w >> 1, y + 40, str, OPAQUE );
-                sprintf( str, _("(Press any key to continue...)") );
-                write_text( pairs->font, sdl.screen, sdl.screen->w >> 1, y + 60, str, OPAQUE );
 
                 refresh_screen( 0, 0, 0, 0 );
 
