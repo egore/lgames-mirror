@@ -92,7 +92,7 @@ void setup_menu()
     MM_Ini(back->w / 2, back->h - 100, 50, back, NULL, font_y, font_w);
 
     /* add copyright and homepage */
-    small_font = load_fixed_font( "stan_font.bmp" , 32, 96, 8);
+    small_font = load_fixed_font( "f_small_white.bmp" , 32, 96, 8);
     small_font->align = ALIGN_X_LEFT | ALIGN_Y_BOTTOM;
     sprintf( str, "http://lgames.sourceforge.net" );
     write_text( small_font, back, 2, back->h - 2, str, OPAQUE );
