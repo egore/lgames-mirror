@@ -333,7 +333,7 @@ void bowl_select_next_block( Bowl *bowl )
 Set a tile contents and pixel contents.
 ====================================================================
 */
-inline void bowl_set_tile( Bowl *bowl, int x, int y, int tile_id )
+void bowl_set_tile( Bowl *bowl, int x, int y, int tile_id )
 {
     int i, j = y * bowl->block_size;
     bowl->contents[x][y] = tile_id;

@@ -1,3 +1,5 @@
+- removed all inline keywords to work with GCC 5 (2015/05/16 MS)
+
 1.0.19:
 - removed link to lib math as not needed (2013/10/29 MS)
 - reset key states when unpausing to prevent unwanted movement (2013/10/29 MS)
