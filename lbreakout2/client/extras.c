@@ -70,6 +70,8 @@ Public
 void client_handle_collected_extra( Paddle *paddle, int extra_type )
 {
 	int i, j;
+	int tm = game->diff->time_mod; /* time modifier */
+	
 #ifdef AUDIO_ENABLED
         int px = paddle->x+(paddle->w>>1);
 #endif
@@ -97,7 +99,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 #endif
 			break;
 		case EX_GOLDSHOWER:
-			paddle->extra_time[EX_GOLDSHOWER] += TIME_GOLDSHOWER;
+			paddle->extra_time[EX_GOLDSHOWER] += TIME_GOLDSHOWER * tm;
 			paddle->extra_active[EX_GOLDSHOWER] = 1;
 #ifdef AUDIO_ENABLED
 			stk_sound_play_x( px, wav_goldshower );
@@ -129,7 +131,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 #endif
 			break;
 		case EX_WALL:
-			paddle->extra_time[EX_WALL] += TIME_WALL;
+			paddle->extra_time[EX_WALL] += TIME_WALL * tm;
 			if ( paddle->extra_active[EX_WALL] ) {
 #ifdef AUDIO_ENABLED
 				stk_sound_play_x( px, wav_std );
@@ -143,7 +145,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 #endif
 			break;
 		case EX_METAL:
-			game->extra_time[EX_METAL] += TIME_METAL;
+			game->extra_time[EX_METAL] += TIME_METAL * tm;
 			game->extra_active[extra_type] = 1;
 			ball_pic_x_offset = ball_w;
 #ifdef AUDIO_ENABLED
@@ -160,7 +162,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 			}
 			break;
 		case EX_FROZEN:
-			paddle->extra_time[EX_FROZEN] = TIME_FROZEN;
+			paddle->extra_time[EX_FROZEN] = TIME_FROZEN * tm;
 			paddle->extra_active[extra_type] = 1;
 			paddle->pic_y_offset = paddle_ch*2;
 			paddle->frozen = 1; /* the server sided paddle is blocked
@@ -170,7 +172,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 #endif
 			break;
 		case EX_WEAPON:
-			paddle->extra_time[EX_WEAPON] += TIME_WEAPON;
+			paddle->extra_time[EX_WEAPON] += TIME_WEAPON * tm;
 			paddle->extra_active[extra_type] = 1;
 			weapon_install( paddle, 1 );
 #ifdef AUDIO_ENABLED
@@ -178,7 +180,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 #endif
 			break;
 		case EX_SLIME:
-			paddle->extra_time[EX_SLIME] += TIME_SLIME;
+			paddle->extra_time[EX_SLIME] += TIME_SLIME * tm;
 			paddle->extra_active[extra_type] = 1;
 			if ( !paddle->frozen )
 				paddle->pic_y_offset = paddle_ch;
@@ -194,7 +196,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 				game->extra_time[EX_SLOW] = 0;
 				game->extra_active[EX_SLOW] = 0;
 			}
-			game->extra_time[EX_FAST] += TIME_FAST;
+			game->extra_time[EX_FAST] += TIME_FAST * tm;
 			game->extra_active[extra_type] = 1;
 			break;
 		case EX_SLOW:
@@ -205,21 +207,21 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 				game->extra_time[EX_FAST] = 0;
 				game->extra_active[EX_FAST] = 0;
 			}
-			game->extra_time[EX_SLOW] += TIME_SLOW;
+			game->extra_time[EX_SLOW] += TIME_SLOW * tm;
 			game->extra_active[extra_type] = 1;
 			break;
 		case EX_CHAOS:
 #ifdef AUDIO_ENABLED
 			stk_sound_play_x( px, wav_chaos );
 #endif
-			game->extra_time[EX_CHAOS] += TIME_CHAOS;
+			game->extra_time[EX_CHAOS] += TIME_CHAOS * tm;
 			game->extra_active[extra_type] = 1;
 			break;
 		case EX_DARKNESS:
 #ifdef AUDIO_ENABLED
 			stk_sound_play_x( px, wav_darkness );
 #endif
-			game->extra_time[EX_DARKNESS] += TIME_DARKNESS;
+			game->extra_time[EX_DARKNESS] += TIME_DARKNESS * tm;
 			if ( game->extra_active[EX_DARKNESS] ) break;
 			/* backup offscreen and turn it black */
 			stk_surface_fill( offscreen, 0,0,-1,-1, 0x0 );
@@ -240,7 +242,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 #ifdef AUDIO_ENABLED
 			stk_sound_play_x( px, wav_ghost );
 #endif
-			paddle->extra_time[EX_GHOST_PADDLE] += TIME_GHOST_PADDLE;
+			paddle->extra_time[EX_GHOST_PADDLE] += TIME_GHOST_PADDLE * tm;
 			paddle->extra_active[extra_type] = 1;
 			paddle_set_invis( paddle, 1 );
 			break;
@@ -250,11 +252,11 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 #endif
 			for ( i = 0; i < EX_NUMBER; i++ )
 				if ( game->extra_time[i] )
-					game->extra_time[i] += 7000;
+					game->extra_time[i] += 7000 * tm;
 			for ( i = 0; i < EX_NUMBER; i++ ) {
 				for ( j = 0; j < game->paddle_count; j++ )
 					if ( game->paddles[j]->extra_time[i] )
-						game->paddles[j]->extra_time[i] += 7000;
+						game->paddles[j]->extra_time[i] += 7000 * tm;
 			}
 			break;
 		case EX_EXPL_BALL:
@@ -262,7 +264,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 			stk_sound_play_x( px, wav_expl_ball );
 #endif
 			ball_pic_x_offset = ball_w*2;
-			game->extra_time[EX_EXPL_BALL] += TIME_EXPL_BALL;
+			game->extra_time[EX_EXPL_BALL] += TIME_EXPL_BALL * tm;
 			game->extra_active[extra_type] = 1;
 			/* other ball extras are disabled */
 			if ( game->extra_active[EX_METAL] ) {
@@ -279,7 +281,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 			stk_sound_play_x( px, wav_weak_ball );
 #endif
 			ball_pic_x_offset = ball_w*3;
-			game->extra_time[EX_WEAK_BALL] += TIME_WEAK_BALL;
+			game->extra_time[EX_WEAK_BALL] += TIME_WEAK_BALL * tm;
 			game->extra_active[extra_type] = 1;
 			/* other ball extras are disabled */
 			if ( game->extra_active[EX_METAL] ) {
@@ -296,7 +298,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 			stk_sound_play_x( px, wav_bonus_magnet );
 #endif
 			paddle_set_attract( paddle, ATTRACT_BONUS );
-			paddle->extra_time[EX_BONUS_MAGNET] += TIME_BONUS_MAGNET;
+			paddle->extra_time[EX_BONUS_MAGNET] += TIME_BONUS_MAGNET * tm;
 			paddle->extra_active[extra_type] = 1;
 			if ( paddle->extra_active[EX_MALUS_MAGNET] ) {
 				paddle->extra_active[EX_MALUS_MAGNET] = 0;
@@ -308,7 +310,7 @@ void client_handle_collected_extra( Paddle *paddle, int extra_type )
 			stk_sound_play_x( px, wav_malus_magnet );
 #endif
 			paddle_set_attract( paddle, ATTRACT_MALUS );
-			paddle->extra_time[EX_MALUS_MAGNET] += TIME_MALUS_MAGNET;
+			paddle->extra_time[EX_MALUS_MAGNET] += TIME_MALUS_MAGNET * tm;
 			paddle->extra_active[extra_type] = 1;
 			if ( paddle->extra_active[EX_BONUS_MAGNET] ) {
 				paddle->extra_active[EX_BONUS_MAGNET] = 0;

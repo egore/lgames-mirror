@@ -1,3 +1,5 @@
+- in kids mode brick regeneration is four times slower (2015/10/17 MS)
+- in kids mode bonuses last four times longer (2015/10/17 MS)
 - division by zero crash fixed in server (2014/02/03 Colin Tuckley)
 - added danish translation (2013/07/29 Joe Dalton)
 - updated a number of levelsets from OFT (2013/03/20 MS)
