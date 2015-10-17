@@ -400,6 +400,7 @@ typedef struct {
 	float	v_max; /* velocity for this difficulty */
 	int	v_delay; /* delay between speedups */
 	int	allow_maluses; /* boolean */
+	int	time_mod; /* multiplier for bonus/regeneration time */
 } GameDiff;
 
 typedef struct {

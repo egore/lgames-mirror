@@ -782,7 +782,7 @@ void bricks_init( Game *game, int game_type, Level *level, int score_mod, int re
 	if ( game->bricks[i][j].dur < 3 ) {
 	  game->bricks[i][j].mx = i;
 	  game->bricks[i][j].my = j;
-	  game->bricks[i][j].heal_time = BRICK_HEAL_TIME;
+	  game->bricks[i][j].heal_time = BRICK_HEAL_TIME * cur_game->diff-> time_mod;
 	  list_add( game->heal_bricks, &game->bricks[i][j] );
 	}
 }
@@ -1015,11 +1015,11 @@ void brick_loose_dur( int mx, int my, int points )
 			/* if this brick is already healing just reset the time
 			   but don't add to the list again */
 			if ( cur_game->bricks[mx][my].heal_time != -1 )
-				cur_game->bricks[mx][my].heal_time = BRICK_HEAL_TIME;
+				cur_game->bricks[mx][my].heal_time = BRICK_HEAL_TIME * cur_game->diff->time_mod;
 			else {
 				cur_game->bricks[mx][my].mx = mx;
 				cur_game->bricks[mx][my].my = my;
-				cur_game->bricks[mx][my].heal_time = BRICK_HEAL_TIME;
+				cur_game->bricks[mx][my].heal_time = BRICK_HEAL_TIME * cur_game->diff-> time_mod;
 				list_add( cur_game->heal_bricks, &cur_game->bricks[mx][my] );
 			}
 		}

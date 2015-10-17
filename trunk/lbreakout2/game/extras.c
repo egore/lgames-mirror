@@ -63,6 +63,9 @@ void extra_use( Paddle *paddle, int extra_type )
 {
 	Ball 	*b;
 	int 	i, j;
+	int 	tm = cur_game->diff->time_mod; /* time modifier */
+
+	printf("%d\n",tm);
 
 	if ( cur_game->diff->allow_maluses ) {
 		while( extra_type == EX_RANDOM )
@@ -100,7 +103,7 @@ void extra_use( Paddle *paddle, int extra_type )
 			paddle->score += cur_game->diff->score_mod * 10000 / 10;
 			break;
 		case EX_GOLDSHOWER:
-			paddle->extra_time[EX_GOLDSHOWER] += TIME_GOLDSHOWER;
+			paddle->extra_time[EX_GOLDSHOWER] += TIME_GOLDSHOWER * tm;
 			paddle->extra_active[EX_GOLDSHOWER] = 1;
 			break;
 		case EX_LIFE:
@@ -122,7 +125,7 @@ void extra_use( Paddle *paddle, int extra_type )
 			list_add( cur_game->balls, b );
 			break;
 		case EX_WALL:
-			paddle->extra_time[EX_WALL] += TIME_WALL;
+			paddle->extra_time[EX_WALL] += TIME_WALL * tm;
 			if ( paddle->extra_active[EX_WALL] ) break;
 			paddle->extra_active[extra_type] = 1;
 			if ( paddle->wall_y == 0 ) {
@@ -140,7 +143,7 @@ void extra_use( Paddle *paddle, int extra_type )
 			balls_check_targets( -1, 0 );
 			break;
 		case EX_METAL:
-			cur_game->extra_time[EX_METAL] += TIME_METAL;
+			cur_game->extra_time[EX_METAL] += TIME_METAL * tm;
 			cur_game->extra_active[extra_type] = 1;
 			balls_set_type( BALL_METAL );
 			/* other ball extras are disabled */
@@ -154,17 +157,17 @@ void extra_use( Paddle *paddle, int extra_type )
 			}
 			break;
 		case EX_FROZEN:
-			paddle->extra_time[EX_FROZEN] = TIME_FROZEN;
+			paddle->extra_time[EX_FROZEN] = TIME_FROZEN * tm;
 			paddle->extra_active[extra_type] = 1;
 			paddle_freeze( paddle, 1 );
 			break;
 		case EX_WEAPON:
-			paddle->extra_time[EX_WEAPON] += TIME_WEAPON;
+			paddle->extra_time[EX_WEAPON] += TIME_WEAPON * tm;
 			paddle->extra_active[extra_type] = 1;
 			weapon_install( paddle, 1 );
 			break;
 		case EX_SLIME:
-			paddle->extra_time[EX_SLIME] += TIME_SLIME;
+			paddle->extra_time[EX_SLIME] += TIME_SLIME * tm;
 			paddle->extra_active[extra_type] = 1;
 			paddle_set_slime( paddle, 1 );
 			break;
@@ -173,7 +176,7 @@ void extra_use( Paddle *paddle, int extra_type )
 				cur_game->extra_time[EX_SLOW] = 0;
 				cur_game->extra_active[EX_SLOW] = 0;
 			}
-			cur_game->extra_time[EX_FAST] += TIME_FAST;
+			cur_game->extra_time[EX_FAST] += TIME_FAST * tm;
 			cur_game->extra_active[extra_type] = 1;
                         cur_game->ball_v = cur_game->ball_v_max;
                         balls_set_velocity( cur_game->balls, cur_game->ball_v );
@@ -183,38 +186,38 @@ void extra_use( Paddle *paddle, int extra_type )
 				cur_game->extra_time[EX_FAST] = 0;
 				cur_game->extra_active[EX_FAST] = 0;
 			}
-			cur_game->extra_time[EX_SLOW] += TIME_SLOW;
+			cur_game->extra_time[EX_SLOW] += TIME_SLOW * tm;
 			cur_game->extra_active[extra_type] = 1;
 			cur_game->ball_v = cur_game->ball_v_min;
                         balls_set_velocity( cur_game->balls, cur_game->ball_v );
 			break;
 		case EX_CHAOS:
-			cur_game->extra_time[EX_CHAOS] += TIME_CHAOS;
+			cur_game->extra_time[EX_CHAOS] += TIME_CHAOS * tm;
 			cur_game->extra_active[extra_type] = 1;
 			balls_set_chaos( 1 );
 			break;
 		case EX_DARKNESS:
-			cur_game->extra_time[EX_DARKNESS] += TIME_DARKNESS;
+			cur_game->extra_time[EX_DARKNESS] += TIME_DARKNESS * tm;
 			cur_game->extra_active[extra_type] = 1;
 			break;
 		case EX_GHOST_PADDLE:
-			paddle->extra_time[EX_GHOST_PADDLE] += TIME_GHOST_PADDLE;
+			paddle->extra_time[EX_GHOST_PADDLE] += TIME_GHOST_PADDLE * tm;
 			paddle->extra_active[extra_type] = 1;
 			paddle_set_invis( paddle, 1 );
 			break;
 		case EX_TIME_ADD:
 			for ( i = 0; i < EX_NUMBER; i++ )
 				if ( cur_game->extra_time[i] )
-					cur_game->extra_time[i] += 7000;
+					cur_game->extra_time[i] += 7000 * tm;
 			for ( i = 0; i < EX_NUMBER; i++ ) {
 				for ( j = 0; j < cur_game->paddle_count; j++ )
 					if ( cur_game->paddles[j]->extra_time[i] )
-						cur_game->paddles[j]->extra_time[i] += 7000;
+						cur_game->paddles[j]->extra_time[i] += 7000 * tm;
 			}
 			break;
 		case EX_EXPL_BALL:
 			balls_set_type( BALL_EXPL );
-			cur_game->extra_time[EX_EXPL_BALL] += TIME_EXPL_BALL;
+			cur_game->extra_time[EX_EXPL_BALL] += TIME_EXPL_BALL * tm;
 			cur_game->extra_active[extra_type] = 1;
 			/* other ball extras are disabled */
 			if ( cur_game->extra_active[EX_METAL] ) {
@@ -228,7 +231,7 @@ void extra_use( Paddle *paddle, int extra_type )
 			break;
 		case EX_WEAK_BALL:
 			balls_set_type( BALL_WEAK );
-			cur_game->extra_time[EX_WEAK_BALL] += TIME_WEAK_BALL;
+			cur_game->extra_time[EX_WEAK_BALL] += TIME_WEAK_BALL * tm;
 			cur_game->extra_active[extra_type] = 1;
 			/* other ball extras are disabled */
 			if ( cur_game->extra_active[EX_METAL] ) {
@@ -242,7 +245,7 @@ void extra_use( Paddle *paddle, int extra_type )
 			break;
 		case EX_BONUS_MAGNET:
 			paddle_set_attract( paddle, ATTRACT_BONUS );
-			paddle->extra_time[EX_BONUS_MAGNET] += TIME_BONUS_MAGNET;
+			paddle->extra_time[EX_BONUS_MAGNET] += TIME_BONUS_MAGNET * tm;
 			paddle->extra_active[extra_type] = 1;
 			if ( paddle->extra_active[EX_MALUS_MAGNET] ) {
 				paddle->extra_active[EX_MALUS_MAGNET] = 0;
@@ -251,7 +254,7 @@ void extra_use( Paddle *paddle, int extra_type )
 			break;
 		case EX_MALUS_MAGNET:
 			paddle_set_attract( paddle, ATTRACT_MALUS );
-			paddle->extra_time[EX_MALUS_MAGNET] += TIME_MALUS_MAGNET;
+			paddle->extra_time[EX_MALUS_MAGNET] += TIME_MALUS_MAGNET * tm;
 			paddle->extra_active[extra_type] = 1;
 			if ( paddle->extra_active[EX_BONUS_MAGNET] ) {
 				paddle->extra_active[EX_BONUS_MAGNET] = 0;
