@@ -1,3 +1,5 @@
+- updated desktop file with german comment and keywords (2014/12/01 Markus Koschany)
+
 1.0.4:
 - install menu icon to proper location (Michael Speck 2011/06/26)
 - fixed out of bounds error in menu (Michael Speck 2011/06/26)
