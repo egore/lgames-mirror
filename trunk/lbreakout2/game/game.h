@@ -58,14 +58,14 @@ void game_set_ball_ammo( int ammo );
 /* set the number of points required to win a PINGPONG level */
 void game_set_frag_limit( int limit );
 
-/* set wether to use convex paddle */
+/* set whether to use convex paddle */
 void game_set_convex_paddle( int convex );
 
-/* set wether balls are returned to a paddle by pressing fire.
+/* set whether balls are returned to a paddle by pressing fire.
  * the alternative is that they automatically return. */
 void game_set_ball_auto_return( int auto_return );
 
-/* set wether balls are fired at random angle or wether the
+/* set whether balls are fired at random angle or whether the
  * left/right fire keys are used */
 void game_set_ball_random_angle( int random );
 
@@ -77,7 +77,7 @@ void game_set_ball_accelerated_speed( float speed );
 void game_set_paddle_state( int id, int x, int y, int left_fire, int right_fire, int return_key );
 
 /* move objects, modify game data, store brick hits and collected extras.
- * return wether level has been finished and the id of the winning paddle
+ * return whether level has been finished and the id of the winning paddle
  * in network games. -1 is a draw. level_over and winner is saved in the
  * game struct. */
 void game_update( int ms );

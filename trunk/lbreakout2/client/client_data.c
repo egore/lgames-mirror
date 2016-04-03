@@ -212,7 +212,7 @@ void client_data_create( void )
     "Use the right and left mouse button to fire the balls "
     "while moving the paddle. Your opponent "
     "will have trouble to reflect all balls if you do it right. "
-    "If you are not sure wether you got balls left click anyway. "
+    "If you are not sure whether you got balls left click anyway. "
     "Keep the button pressed for a while! The fire rate is restricted "
     "to one ball every 500 milliseconds.##" 
     "NORMAL:#"

@@ -77,7 +77,7 @@ int game_round; /* id of current round in network game */
 int game_stats[2][7]; /* network game stats */
 int stats_received = 0;
 int game_over = 0; /* network game is over */
-int allow_disintegrate = 1; /* wether Plane of Inner Stability may be entered */
+int allow_disintegrate = 1; /* whether Plane of Inner Stability may be entered */
 char best_name[32];
 int  best_score; /* result of first place in chart of local set */
 int  showing_best = 0; /* if true best score is shown, thus display should not be updated */
@@ -760,7 +760,7 @@ static void play_speech( void )
 #endif
 }
 
-/* check players of local game wether they entered a highscore */
+/* check players of local game whether they entered a highscore */
 static void check_highscores( void )
 {
 	int i;
@@ -1147,7 +1147,7 @@ void client_game_run( void )
 	stats_received = 0;
 	stk_timer_reset(); ms = 1;
 	while ( !abort && !stk_quit_request ) {
-		/* check wether an event occured */
+		/* check whether an event occured */
 		button_clicked = key_pressed = 0;
 		if ( SDL_PollEvent( &event ) ) {
 			if ( client_state == CS_PAUSE && game->game_type == GT_NETWORK )
@@ -1278,7 +1278,7 @@ void client_game_run( void )
 		case CS_PAUSE:
 			if ( game->game_type == GT_LOCAL ) break;
 
-			/* check wether pause chatroom has been closed
+			/* check whether pause chatroom has been closed
 			 * either by client or remote */
 			comm_recv();
 			break;

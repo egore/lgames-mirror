@@ -186,7 +186,7 @@ enum {
 	 * string	extras
 	 *
 	 * leveldata 32+252*2 bytes except the first two byte. 
-	 * first tells wether the client plays at top or bottom
+	 * first tells whether the client plays at top or bottom
 	 * and second tells the comm delay of the server */
 	
 	/* 19 */
