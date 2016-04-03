@@ -708,7 +708,7 @@ bool socket_process_header( NetSocket *sock )
 	msg_begin_reading();
 	id = msg_read_int32(); /* new incoming id, the difference to sock->incoming_id is 
 				  the number of dropped packets */
-	is_code_red = id >> 31; /* highest bit tells wether code red packet */
+	is_code_red = id >> 31; /* highest bit tells whether code red packet */
 	id &= ~(1<<31);
 	last_ack_code_red = msg_read_int32(); /* last code red packet remote received */
 
@@ -733,7 +733,7 @@ bool socket_process_header( NetSocket *sock )
 	}
 	sock->good_packet_count++;
 
-	sock->incoming_id = id; /* last incoming packet (no matter wether red or blue) */
+	sock->incoming_id = id; /* last incoming packet (no matter whether red or blue) */
 	if ( is_code_red )
 		sock->incoming_code_red = id; /* last code red packet socket received */
 		

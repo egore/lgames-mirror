@@ -56,7 +56,7 @@ typedef struct {
 	NetSocket  socket;	/* transmission socket */
 	int	   hidden;	/* True if chatroom user is not visible
 				   (e.g. looking at game statistics or playing) */
-	int	   admin;	/* wether user logged in with admit rights */
+	int	   admin;	/* whether user logged in with admit rights */
 	void	   *game;	/* FIXME: I'M A BAD HACK: points to the current ServerGame
 	                           if this user is playing */
 	int	   player_id;	/* 0 - challenger in game or 1 - challenged */
@@ -107,7 +107,7 @@ typedef struct {
 					   is cur_round / rounds */
 	int		cur_level;	/* id of current level */
 	
-	int		ready[2];	/* wether user has sent READY */
+	int		ready[2];	/* whether user has sent READY */
 	Game		*game;		/* the actual game data used by server */
 	GameStats	stats[2];	/* game stats: 
 					   0 - challenger

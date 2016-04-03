@@ -74,7 +74,7 @@ Client
 #ifdef NETWORK_ENABLED
 NetSocket client; /* client socket to the game server */
 #endif
-int client_is_connected; /* wether 'client' is a valid uplink */
+int client_is_connected; /* whether 'client' is a valid uplink */
 char client_error[128]; /* error message */
 int client_id; /* id assigned by server */
 char client_name[16]; /* our local username */

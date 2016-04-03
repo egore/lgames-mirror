@@ -412,7 +412,7 @@ static ServerUser* find_user_by_id( int id )
 /* ServerUser *find_user_by_addr
  * IN    NetAddr        *addr
  *
- * Search wether a user already uses this net address.
+ * Search whether a user already uses this net address.
  */
 static ServerUser* find_user_by_addr( NetAddr *addr )
 {
@@ -433,7 +433,7 @@ static ServerUser* find_user_by_addr( NetAddr *addr )
 /* void handle_connectionless_packet
  *
  * By now only connection attempts can be found in this category.
- * So check wether the packet contains a valid request (or send
+ * So check whether the packet contains a valid request (or send
  * error messages if it doesn't) and add a new user to channel
  * MAIN.
  */
@@ -461,7 +461,7 @@ static void handle_connectionless_packet( void )
             goto failure;
         }
     
-    /* check wether this user already exists. if so the LOGIN_OKAY
+    /* check whether this user already exists. if so the LOGIN_OKAY
      * message was dropped. */
     if ( (user = find_user_by_addr( &net_sender_addr )) )
         if ( strcmp( user->name, name ) )
@@ -925,7 +925,7 @@ static void remove_zombies( void )
 /* void handle
  * IN    int    ms    milliseconds passed since last call
  *
- * Receive all packets at the single UDP socket and check wether it is
+ * Receive all packets at the single UDP socket and check whether it is
  * connectionless (connection requests) or belongs to a connection (socket).
  * Find the user and parse all messages in the packet.
  *

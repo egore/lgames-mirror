@@ -86,7 +86,7 @@ void msg_write_string( char *str );
 void msg_printf      ( char *format, ... );
 void msg_write       ( int len, void *data );
 int  msg_get_max_size();
-bool msg_write_failed(); /* check wether overflow occured */
+bool msg_write_failed(); /* check whether overflow occured */
 
 bool  msg_is_connectionless(); 
 void  msg_begin_reading(); /* of net_packet, starts at header */
@@ -96,7 +96,7 @@ int   msg_read_int16( void );
 int   msg_read_int32( void );
 char* msg_read_string( void );
 void  msg_read( int len, char *buf );
-bool  msg_read_failed(); /* check wether data couldn't be extracted */
+bool  msg_read_failed(); /* check whether data couldn't be extracted */
 
 void socket_init( NetSocket *sock, NetAddr *addr );
 void socket_reinit( NetSocket *socket ); /* with same address */
