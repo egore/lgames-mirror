@@ -18,6 +18,7 @@
 /***** INCLUDES ************************************************************/
 
 #include <dirent.h>
+#include <locale.h>
 #include "server.h"
 #include "server_game.h"
 

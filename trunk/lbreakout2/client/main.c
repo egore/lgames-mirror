@@ -20,6 +20,7 @@
 #endif
 
 #ifdef __unix__
+#include <locale.h>
 #include <unistd.h>
 #endif
 
