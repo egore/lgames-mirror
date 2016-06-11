@@ -1,4 +1,4 @@
-<? /* Lost password page */
+<?php /* Lost password page */
 include 'io.php';
 include 'render.php';
 

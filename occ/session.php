@@ -1,4 +1,4 @@
-<? /* Start PHP session. */ 
+<?php /* Start PHP session. */ 
 /* If your server uses load balancing or anything that causes session variables to 
  * be mixed up you can provide a fixed location (physical directory) here. Must 
  * have full execute/read/write access! */ 

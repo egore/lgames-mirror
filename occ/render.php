@@ -1,6 +1,6 @@
 <?php
 /* General render functions */
-$version = '1.3.4';
+$version = '1.3.5';
 
 /* Render beginning of page (HTML+logo+link bar+title). $class is CSS 
  * class of main table (empty= no class). $title may be null. $pagetitle
@@ -52,7 +52,7 @@ function renderPageEnd($credits)
 	echo '<TABLE width=100% border=0><TR><TD class="tiny" valign="top">';
 	echo 'Online Chess Club v'.$version.'<BR>Published under GNU GPL</TD>';
 	echo '<TD valign="top" align="right" class="tiny">';
-	echo '&copy; 2003-2010 Michael Speck<BR><A class="tiny" href="http://lgames.sf.net">http://lgames.sf.net</A>';
+	echo '&copy; 2003-2016 Michael Speck<BR><A class="tiny" href="http://lgames.sf.net">http://lgames.sf.net</A>';
 	echo '</TD></TR></TABLE>';
 	if (!empty($credits))
 		echo '<P class="tiny">'.$credits.'</P>';

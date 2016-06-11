@@ -1,4 +1,4 @@
-<? /* Search page */
+<?php /* Search page */
 include 'verifysession.php';
 include 'render.php';
 include 'io.php';

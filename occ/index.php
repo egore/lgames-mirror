@@ -1,4 +1,4 @@
-<? /* Login/main page */
+<?php /* Login/main page */
 include 'session.php';
 include 'render.php';
 include 'io.php';

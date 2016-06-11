@@ -1,4 +1,4 @@
-<? /* ***** PASSWORDS ***** */
+<?php /* ***** PASSWORDS ***** */
 $passwords = array ( 
   "guest" => "guest",
   "guest2" => "guest",

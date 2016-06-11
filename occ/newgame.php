@@ -1,4 +1,4 @@
-<? /* Start game page. */
+<?php /* Start game page. */
 include 'verifysession.php';
 include 'io.php';
 include 'render.php';
@@ -55,7 +55,7 @@ renderPageBegin('OCC - New Game',null,array(
 </TD></TR>
 <TR><TD>Opponent:</TD><TD align=right>
 <SELECT name="opponent">
-<?
+<?php
 $users=ioLoadUserList();
 foreach($users as $usr)
 	if ($usr!=$uid)
@@ -72,6 +72,6 @@ foreach($users as $usr)
 </TABLE>
 </FORM>
 
-<?
+<?php
 renderPageEnd(null);
 ?>
