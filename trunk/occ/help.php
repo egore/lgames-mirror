@@ -41,7 +41,7 @@ renderPageBegin('OCC - Help',helpPageTable,$links,'Help Page');
 </UL>
 </P>
 
-<?anchor("overview","Overview");?>
+<?phpanchor("overview","Overview");?>
 <P>After successful login your are at the overview. Here you can find
 a list of either your open games or search 
 results. Each game has a red or green mark at the left-hand side that 
@@ -50,15 +50,15 @@ last move (most recent games come first) and if your open games are displayed
 all games with a green mark are put to the beginning. To view a 
 game use the <I>View</I> link on the right-hand side.</P>
 
-<?anchor("mygames","My Games");?>
+<?phpanchor("mygames","My Games");?>
 <P>Display your open games at the overview.</P>
 
-<?anchor("search","Search");?>
+<?phpanchor("search","Search");?>
 <P>Here you can either search in open or archived games. Possible criteria are
 player, player color and opponent. Search results are displayed at the 
 overview. To see your open games again you must click on <I>My Games</I>.</P>
 
-<?anchor("rankings","Rankings");?>
+<?phpanchor("rankings","Rankings");?>
 <P>This page shows the user rankings. It is possible to sort either by number
 of games, wins/draws/losses (wins give one, draws half a point), 
 rating, provisional rating or activity. The
@@ -86,18 +86,18 @@ is no need to improve the rating system to reflect any offical rules
 better. So please don't ask for it.
 </P>
 
-<?anchor("logout","Logout");?>
+<?phpanchor("logout","Logout");?>
 <P>This option is always present at the right-hand side of the navigation bar.
 It logs you out from OCC and displays the login screen.</P>
 
-<?anchor("chessboard","Chessboard");?>
+<?phpanchor("chessboard","Chessboard");?>
 <P>The chessboard itself is displayed on the left-hand side. On the right-hand
 side you can find who is playing, the move input field, the move history,
 the imbalance of chessmen and the private notes dialogue. Below the chessboard
 you can find the chat messages. Details about various components are explained 
 below.</P>
 
-<?anchor("move","How to Move");?>
+<?phpanchor("move","How to Move");?>
 <P>
 Click on the chessman you want to move. It will be highlighted then. Next, click 
 on the destination which is highlighted, too. Now either press the move button on
@@ -114,7 +114,7 @@ In case of any errors an error message will be displayed and the
 move command will not be executed.
 </P>
 
-<?anchor("special","Special Moves and Commands");?>
+<?phpanchor("special","Special Moves and Commands");?>
 <P>Castling is done by selecting the king first and then as destination the 
 second-next tile to its left or right <B>NOT</B> by selecting the rook.
 If you try this you will <U>only</U> move the rook.</P>
@@ -132,7 +132,7 @@ confirmed before execution.</P>
 of your opponent you may abort the game. It is <B>not</B> counted as win or
 finished but is simply deleted.</P>
 
-<?anchor("undo","How to Undo a Move");?>
+<?phpanchor("undo","How to Undo a Move");?>
 <P>You may undo a successfully submitted and applied move for 20 minutes. The 
 button is displayed behind the move result. A confirmation is nescessary before
 undoing a move. If you opponent did move already in the meantime the undo will
@@ -141,7 +141,7 @@ have no effect. After 20 minutes it is no longer possible to undo your move.</P>
 prevent anyone from tampering with the statistics by winning over and over 
 again.</P>
 
-<?anchor("notes","Private Notes");?>
+<?phpanchor("notes","Private Notes");?>
 <P>The memo box on the lower right-hand side of the chessboard allows you to 
 keep some private notes about the game (to remember possible dangers and such 
 when logging in again later). These notes are encrypted and only you can read 
@@ -152,14 +152,14 @@ too.</P>
 play multiple games against the same user the same notes will be displayed
 in all games.</P>
 
-<?anchor("browser","Browsing Mode");?>
+<?phpanchor("browser","Browsing Mode");?>
 <P>In browsing mode you may browse through the move history. In this case
 not only the last few moves but all are displayed and this time as links to
 directly go to any move in the game. Private notes and chatter is not 
 displayed at all. You may also rotate the board to get the other player's
 view.</P>
 
-<?anchor("pgn","PGN Format");?>
+<?phpanchor("pgn","PGN Format");?>
 <P>This displays the current game in the wide-spread PGN
 format. You can copy and paste the text into a file with
 the extension .pgn and view it with any chess software, e.g.
@@ -170,6 +170,6 @@ the quality of certain moves.</P>
 
 <P>[ <A href="#toc">Top</A> ]</P>
 
-<?
+<?php
 renderPageEnd(null);
 ?>

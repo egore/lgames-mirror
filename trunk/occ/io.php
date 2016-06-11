@@ -1,4 +1,4 @@
-<?
+<?php
 /* Input/output functions to access backend data. */
 
 /* XXX Abstraction is not too good right now. E.g., the p_* variables are
@@ -689,7 +689,7 @@ function ioSavePrivateNotes($uid,$oid,$note)
 			$user_notes[$oid]=_encrypt($note,$_SESSION['noteskey']);
 	}
 	$hfile=fopen($res_users.'/notes/'.$uid.'.php','w');
-	fwrite($hfile,'<? $user_notes=array('."\n");
+	fwrite($hfile,'<?php $user_notes=array('."\n");
 	$n=count($user_notes); 
 	$i=0;
 	foreach($user_notes as $opp=>$note) {

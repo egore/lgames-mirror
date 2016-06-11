@@ -1,4 +1,4 @@
-<? /* PGN format page */
+<?php /* PGN format page */
 
 /* Verify session */
 include 'verifysession.php';

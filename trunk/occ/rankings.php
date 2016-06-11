@@ -1,4 +1,4 @@
-<? /* Ranking table page */
+<?php /* Ranking table page */
 include 'verifysession.php';
 include 'rating.php';
 include 'render.php';

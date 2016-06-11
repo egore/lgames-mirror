@@ -1,4 +1,4 @@
-<? /* A bunch of helper functions needed in various scripts. */
+<?php /* A bunch of helper functions needed in various scripts. */
 
 /* Convert board coordinate [a-h][1-8] to 1dim index [0..63] */
 function bc2i($coord)
