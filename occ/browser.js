@@ -1,4 +1,4 @@
-<? 
+<?php
 /* Javascript functions for browsing history. Board and history is converted
  * from PHP to JS for this (thus JS function to build history/board is created
  * via PHP. */
@@ -269,7 +269,7 @@ function renderBoard()
 }
 </script>
 
-<?
+<?php
 /* Perform a full notation move without any checks. The provided move history 
  * must be completely valid. Return encoded integer of killed chessman or 0
  * if none killed. $src,$dest could be parsed from move but they are required
