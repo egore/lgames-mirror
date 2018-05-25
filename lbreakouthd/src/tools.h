@@ -1,0 +1,127 @@
+/*
+ * tools.h
+ * (C) 2018 by Michael Speck
+ */
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 3 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#ifndef SRC_TOOLS_H_
+#define SRC_TOOLS_H_
+
+using namespace std;
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <list>
+#include <string>
+#include <vector>
+#include <memory>
+#include <iostream>
+#include <fstream>
+#include "config.h"
+
+/* i18n */
+#ifdef HAVE_CONFIG_H
+#include "../config.h"
+#endif
+#include "../gettext.h"
+#if ENABLE_NLS
+#define _(str) gettext (str)
+#else
+#define _(str) (str)
+#endif
+
+enum {
+	/* general stuff - must match ../libgame/gamedefs.h settings */
+	MAPWIDTH = 16,
+	MAPHEIGHT = 24,
+	EDITWIDTH = 14,
+	EDITHEIGHT = 18,
+	MAXLEVELS = 40
+};
+
+#define DEBUGLEVEL 1
+#define _logerr(...) do { \
+		fprintf(stderr,"ERROR: %s:%d: %s(): ", __FILE__, __LINE__, __FUNCTION__); \
+		fprintf (stderr, __VA_ARGS__); \
+	} while (0)
+#define _loginfo(...) fprintf (stdout, __VA_ARGS__)
+#define _logdebug(level,...) \
+	if (level <= DEBUGLEVEL) \
+		fprintf (stderr, __VA_ARGS__);
+
+class Timeout {
+	int cur, max;
+public:
+	Timeout() : cur(0), max(0) {}
+	Timeout(int ms) : cur(ms), max(ms) {}
+	void set(int ms) { cur = max = ms; }
+	void add(int ms) { cur += ms; max += ms; }
+	void clear() { set(0); }
+	void reset() { cur = max; }
+	int getMax() { return max; }
+	int getCur() { return cur; }
+	int running() { return max > 0 && cur > 0; }
+	int expired() { return max > 0 && cur == 0; }
+	int isSet() { return max > 0; }
+	int update(int ms) {
+		cur -= ms;
+		if (cur < 0)
+			cur = 0;
+		return cur == 0;
+	}
+};
+
+typedef struct {
+	string key;
+	string value;
+} ParserEntry;
+
+class FileParser {
+	list<ParserEntry> entries;
+	string prefix;
+public:
+	FileParser(const string&  fname);
+	int get(const string&  k, string &v);
+	int get(const string&  k, int &v);
+	int get(const string&  k, uint &v);
+	int get(const string&  k, uint8_t &v);
+	int get(const string&  k, double &v);
+};
+
+bool dirExists(const string& name);
+bool makeDir(const string &name);
+bool fileExists(const string& name);
+
+class FrameCounter {
+	Timeout tm;
+	uint min, cur, max;
+public:
+	void init(uint _min, uint _max, uint delay) {
+		tm.set(delay);
+		min = cur = _min;
+		max = _max;
+	}
+	int update(int ms) {
+		if (tm.update(ms)) {
+			tm.reset();
+			cur++;
+			if (cur >= max)
+				cur = 0;
+			return 1;
+		}
+		return 0;
+	}
+	int get() { return cur; }
+};
+
+void strprintf(string& str, const char *fmt, ... );
+
+#endif /* SRC_TOOLS_H_ */

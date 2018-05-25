@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Michael Speck
+# This file is distributed under the same license as the lbreakouthd package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: lbreakouthd 0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-05-25 13:12+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: libgame/game.c:62
+#, c-format
+msgid "Jumping Jack"
+msgstr "Hampelmann"
+
+#: libgame/game.c:63 libgame/game.c:67 libgame/game.c:71 libgame/game.c:75
+#: libgame/game.c:79 libgame/game.c:83
+#, c-format
+msgid "Bonus Level"
+msgstr "Bonusebene"
+
+#: libgame/game.c:66
+#, c-format
+msgid "Outbreak"
+msgstr "Ausbruch"
+
+#: libgame/game.c:70
+#, c-format
+msgid "Barrier"
+msgstr "Sperre"
+
+#: libgame/game.c:74
+#, c-format
+msgid "Sitting Ducks"
+msgstr "Entenjagd"
+
+#: libgame/game.c:78
+#, c-format
+msgid "Hunter"
+msgstr "Jger"
+
+#: libgame/game.c:82
+#, c-format
+msgid "Defender"
+msgstr "Verteidiger"
+
+#: libgame/game.c:86
+#, c-format
+msgid "Unknown Level Type"
+msgstr "Unbekannter Ebenentyp"
+
+#: libgame/levels.h:23
+msgid "<CREATE SET>"
+msgstr "<ERSTELLE SATZ>"
+
+#: libgame/levels.h:24
+msgid "!FREAKOUT!"
+msgstr ""
+
+#: libgame/levels.c:126
+msgid "!JUMPING_JACK!"
+msgstr "!HAMPELMANN!"
+
+#: libgame/levels.c:129
+msgid "!OUTBREAK!"
+msgstr "!AUSBRUCH!"
+
+#: libgame/levels.c:132
+msgid "!BARRIER!"
+msgstr "!SPERRE!"
+
+#: libgame/levels.c:135
+msgid "!SITTING_DUCKS!"
+msgstr "!ENTENJAGD!"
+
+#: libgame/levels.c:138
+msgid "!HUNTER!"
+msgstr "!JGER!"
+
+#: libgame/levels.c:141
+msgid "!INVADERS!"
+msgstr "!EINDRINGLINGE!"
+
+#: src/view.cpp:120
+msgid "Pause"
+msgstr ""
+
+#: src/view.cpp:332
+msgid "(Level "
+msgstr "(Ebene "
+
+#: src/view.cpp:345
+msgid "Active Extras"
+msgstr "Aktive Extras"
+
+#: src/view.cpp:368
+msgid "Hiscores"
+msgstr "Bestenliste"
+
+#: src/clientgame.cpp:159
+#, c-format
+msgid "Congratulations, %s, you cleared all levels!"
+msgstr "Glckwnsch, %s, du hast alle Ebenen gesubert!"
+
+#: src/clientgame.cpp:165
+#, c-format
+msgid "Game over, %s!"
+msgstr "Spiel vorbei, %s!"
