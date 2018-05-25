@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Michael Speck
+# This file is distributed under the same license as the lbreakouthd package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: lbreakouthd 0.5\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-05-25 13:12+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: libgame/game.c:62
+#, c-format
+msgid "Jumping Jack"
+msgstr ""
+
+#: libgame/game.c:63 libgame/game.c:67 libgame/game.c:71 libgame/game.c:75
+#: libgame/game.c:79 libgame/game.c:83
+#, c-format
+msgid "Bonus Level"
+msgstr ""
+
+#: libgame/game.c:66
+#, c-format
+msgid "Outbreak"
+msgstr ""
+
+#: libgame/game.c:70
+#, c-format
+msgid "Barrier"
+msgstr ""
+
+#: libgame/game.c:74
+#, c-format
+msgid "Sitting Ducks"
+msgstr ""
+
+#: libgame/game.c:78
+#, c-format
+msgid "Hunter"
+msgstr ""
+
+#: libgame/game.c:82
+#, c-format
+msgid "Defender"
+msgstr ""
+
+#: libgame/game.c:86
+#, c-format
+msgid "Unknown Level Type"
+msgstr ""
+
+#: libgame/levels.h:23
+msgid "<CREATE SET>"
+msgstr ""
+
+#: libgame/levels.h:24
+msgid "!FREAKOUT!"
+msgstr ""
+
+#: libgame/levels.c:126
+msgid "!JUMPING_JACK!"
+msgstr ""
+
+#: libgame/levels.c:129
+msgid "!OUTBREAK!"
+msgstr ""
+
+#: libgame/levels.c:132
+msgid "!BARRIER!"
+msgstr ""
+
+#: libgame/levels.c:135
+msgid "!SITTING_DUCKS!"
+msgstr ""
+
+#: libgame/levels.c:138
+msgid "!HUNTER!"
+msgstr ""
+
+#: libgame/levels.c:141
+msgid "!INVADERS!"
+msgstr ""
+
+#: src/view.cpp:120
+msgid "Pause"
+msgstr ""
+
+#: src/view.cpp:332
+msgid "(Level "
+msgstr ""
+
+#: src/view.cpp:345
+msgid "Active Extras"
+msgstr ""
+
+#: src/view.cpp:368
+msgid "Hiscores"
+msgstr ""
+
+#: src/clientgame.cpp:159
+#, c-format
+msgid "Congratulations, %s, you cleared all levels!"
+msgstr ""
+
+#: src/clientgame.cpp:165
+#, c-format
+msgid "Game over, %s!"
+msgstr ""
