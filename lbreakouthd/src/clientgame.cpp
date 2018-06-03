@@ -106,6 +106,9 @@ int ClientGame::update(uint ms, int px, PaddleInputState &pis)
 	int oldWallActive = game->paddles[0]->extra_active[EX_WALL];
 	int ret = 0;
 
+	/* reset old modifications (View needs current mods afterwards) */
+	game_reset_mods();
+
 	/* as long as any extra is active render active extras
 	 * FIXME: only a limited set of extras is relevant so this can
 	 * be checked way more sufficiently...
@@ -195,12 +198,11 @@ int ClientGame::update(uint ms, int px, PaddleInputState &pis)
 
 	/* handle other modifications */
 	if (game->mod.brick_hit_count > 0)
-		ret |= CGF_UPDATEBRICKS;
+		ret |= CGF_UPDATEBRICKS | CGF_NEWANIMATIONS;
 	if (game->paddles[0]->score != oldScore) {
 		players[curPlayer]->setScore(game->paddles[0]->score);
 		ret |= CGF_UPDATESCORE;
 	}
-	game_reset_mods();
 	return ret;
 }
 

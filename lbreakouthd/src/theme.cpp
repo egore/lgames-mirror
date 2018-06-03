@@ -48,6 +48,8 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	shotAnimDelay = 200;
 	weaponFrameNum = 4;
 	weaponAnimDelay = 200;
+	explFrameNum = 9;
+	explAnimDelay = 50;
 	fontSmallName = "fsmall.otf";
 	fontSmallSize = 70; /* percentage of brick height */
 	fontNormalName = "fnormal.otf";
@@ -76,6 +78,8 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		fp.get("shotAnim.delay",shotAnimDelay);
 		fp.get("weaponAnim.frames",weaponFrameNum);
 		fp.get("weaponAnim.delay",weaponAnimDelay);
+		fp.get("explAnim.frames",explFrameNum);
+		fp.get("explAnim.delay",explAnimDelay);
 	}
 
 	if (oldTheme) {
@@ -285,6 +289,15 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		(int)(brickScreenWidth - lw)/2, (int)(brickScreenHeight - lh)/2, lw, lh };
 	SDL_RenderCopy(mrc,paddles.getTex(),&srect,&drect);
 	SDL_SetRenderTarget(mrc,NULL);
+
+	/* explosions are square, scaled according to brick ratio */
+	if (fileExists(path + "/explosions.png")) {
+		uint sz = Image::getWidth(path + "/explosions.png") / explFrameNum;
+		explosions.load(path + "/explosions.png",sz,sz);
+		uint nw = explosions.getGridWidth() * brickScreenWidth / brickFileWidth;
+		uint nh = explosions.getGridHeight() * brickScreenHeight / brickFileHeight;
+		explosions.scale(nw,nh);
+	}
 
 	/* fonts; size is percent of brick height */
 	if (fileExists(path + "/" + fontSmallName))

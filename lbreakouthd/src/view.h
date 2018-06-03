@@ -15,6 +15,26 @@
 #ifndef VIEW_H_
 #define VIEW_H_
 
+class Animation {
+	GridImage& img;
+	uint id;
+	int x, y; /* position on screen */
+	FrameCounter fc;
+public:
+	Animation(GridImage &_img, uint _id, uint delay, int _x, int _y)
+				: img(_img), id(_id), x(_x), y(_y) {
+		fc.init(img.getGridSizeX(), delay);
+	}
+	int update(uint ms) {
+		if (fc.update(ms))
+			return 1; /* die */
+		return 0;
+	}
+	void render() {
+		img.copy(fc.get(), id, x, y);
+	}
+};
+
 enum {
 	/* virtual geometry */
 	VG_BRICKWIDTH = 40,
@@ -47,6 +67,7 @@ class View {
 	Uint32 imgExtrasX, imgExtrasY;
 	FrameCounter weaponFrameCounter;
 	FrameCounter shotFrameCounter;
+	list<unique_ptr<Animation>> sprites;
 	/* stats */
 	Uint32 fpsCycles, fpsStart;
 	double fps;
@@ -63,6 +84,7 @@ class View {
 	void renderActiveExtra(int id, int ms, int x, int y);
 	void dim();
 	void showInfo(const string& str);
+	void createSprites();
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
