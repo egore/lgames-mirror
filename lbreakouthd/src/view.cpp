@@ -56,8 +56,8 @@ View::View(Config &cfg, ClientGame &_cg)
 
 	/* load theme (scaled if necessary) */
 	theme.load("Standard", sw, sh, brickScreenWidth, brickScreenHeight);
-	weaponFrameCounter.init(0,theme.weaponFrameNum,theme.weaponAnimDelay);
-	shotFrameCounter.init(0,theme.shotFrameNum,theme.shotAnimDelay);
+	weaponFrameCounter.init(theme.weaponFrameNum, theme.weaponAnimDelay);
+	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
 
 	/* create render images and positions */
 	int boardX = MAPWIDTH * brickScreenWidth;

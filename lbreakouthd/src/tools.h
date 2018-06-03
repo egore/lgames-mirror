@@ -47,7 +47,7 @@ enum {
 	MAXLEVELS = 40
 };
 
-#define DEBUGLEVEL 1
+#define DEBUGLEVEL 0
 #define _logerr(...) do { \
 		fprintf(stderr,"ERROR: %s:%d: %s(): ", __FILE__, __LINE__, __FUNCTION__); \
 		fprintf (stderr, __VA_ARGS__); \
@@ -100,26 +100,65 @@ bool dirExists(const string& name);
 bool makeDir(const string &name);
 bool fileExists(const string& name);
 
-class FrameCounter {
-	Timeout tm;
-	uint min, cur, max;
+enum {
+	SCT_ONCE = 0,
+	SCT_REPEAT,
+	SCT_UPDOWN
+};
+class SmoothCounter {
+	int style;
+	double cpms; /* change per millisecond */
+	double cur, min, max;
 public:
-	void init(uint _min, uint _max, uint delay) {
-		tm.set(delay);
-		min = cur = _min;
-		max = _max;
+	void init(int s, double start, double end, double delay) {
+		style = s;
+		cpms = 1.0 / delay;
+		if (end > start) {
+			min = cur = start;
+			max = end;
+		} else {
+			max = cur = start;
+			min = end;
+			cpms *= -1;
+		}
 	}
 	int update(int ms) {
-		if (tm.update(ms)) {
-			tm.reset();
-			cur++;
-			if (cur >= max)
-				cur = 0;
-			return 1;
+		if (cpms == 0)
+			return 0;
+
+		int ret = 0;
+		cur += cpms * ms;
+		if (cpms > 0 && cur >= max) {
+			if (style == SCT_REPEAT)
+				cur = min;
+			else if (style == SCT_ONCE)
+				cpms = 0;
+			else if (style == SCT_UPDOWN) {
+				cur = max;
+				cpms *= -1;
+			}
+			ret = 1;
+		} else if (cpms < 0 && cur <= min) {
+			if (style == SCT_REPEAT)
+				cur = max;
+			else if (style == SCT_ONCE)
+				cpms = 0;
+			else if (style == SCT_UPDOWN) {
+				cur = min;
+				cpms *= -1;
+			}
+			ret = 1;
 		}
-		return 0;
+		return ret;
 	}
 	int get() { return cur; }
+};
+
+class FrameCounter : public SmoothCounter {
+public:
+	void init(uint max, uint delay) {
+		SmoothCounter::init(SCT_REPEAT, 0, -0.01 + max, delay);
+	}
 };
 
 void strprintf(string& str, const char *fmt, ... );
