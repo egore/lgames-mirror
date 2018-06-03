@@ -162,9 +162,15 @@ void View::run()
 			ms = 1;
 		tsLast = tsNow;
 
-		/* update */
+		/* update animations */
 		shotFrameCounter.update(ms);
 		weaponFrameCounter.update(ms);
+		for (auto it = begin(sprites); it != end(sprites); ++it) {
+			if ((*it).get()->update(ms))
+				it = sprites.erase(it);
+		}
+
+		/* update game context */
 		flags = cgame.update(ms, px, pis);
 		if (flags & CGF_PLAYERMESSAGE)
 			showInfo(cgame.getPlayerMessage());
@@ -184,6 +190,8 @@ void View::run()
 			renderExtrasImage();
 		if (flags & CGF_UPDATESCORE)
 			renderScoreImage();
+		if (flags & CGF_NEWANIMATIONS)
+			createSprites();
 
 		/* render */
 		render();
@@ -287,17 +295,21 @@ void View::render()
 		theme.balls.copy(bt,0,px,py);
 	}
 
-	/* extras */
-	Extra *extra = 0;
-	list_reset(game->extras);
-	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 )
-		theme.extras.copy(extra->type, 0, v2s(extra->x), v2s(extra->y));
-
 	/* shots */
 	Shot *shot = 0;
 	list_reset(game->shots);
 	while ( ( shot = (Shot*)list_next( game->shots) ) != 0 )
 		theme.shot.copy(shotFrameCounter.get(),0,v2s(shot->x),v2s(shot->y));
+
+	/* sprites */
+	for (auto& s : sprites)
+		s->render();
+
+	/* extras */
+	Extra *extra = 0;
+	list_reset(game->extras);
+	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 )
+		theme.extras.copy(extra->type, 0, v2s(extra->x), v2s(extra->y));
 
 	/* stats */
 	theme.fSmall.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
@@ -544,4 +556,19 @@ void View::showInfo(const string& str)
 		SDL_Delay(10);
 	}
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+}
+
+/* Create new explosions, particles, etc according to game mods */
+void View::createSprites()
+{
+	Game *game = cgame.getGameContext();
+	for (int i = 0; i < game->mod.brick_hit_count; i++)
+		if (game->mod.brick_hits[i].draw_explosion) {
+			int x = game->mod.brick_hits[i].x * brickScreenWidth + brickScreenWidth/2 - theme.explosions.getGridWidth()/2;
+			int y = game->mod.brick_hits[i].y * brickScreenHeight + brickScreenHeight/2 - theme.explosions.getGridHeight()/2;
+			sprites.push_back(unique_ptr<Animation>(
+				new Animation(theme.explosions,
+					rand() % theme.explosions.getGridSizeY(),
+					theme.explAnimDelay, x, y)));
+		}
 }

@@ -40,6 +40,8 @@ class Theme {
 	uint shotAnimDelay;
 	uint weaponFrameNum;
 	uint weaponAnimDelay;
+	uint explFrameNum;
+	uint explAnimDelay;
 
 	Image wallpapers[MAXWALLPAPERS];
 	uint numWallpapers;
@@ -50,6 +52,7 @@ class Theme {
 	GridImage extras;
 	GridImage shot;
 	GridImage weapon;
+	GridImage explosions;
 	Image life;
 	Font fSmall;
 	Font fNormal;
