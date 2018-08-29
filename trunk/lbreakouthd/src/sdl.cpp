@@ -92,7 +92,9 @@ int Image::createFromScreen()
 			0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
 	SDL_RenderReadPixels(mrc, NULL, SDL_PIXELFORMAT_ARGB8888,
 					sshot->pixels, sshot->pitch);
-	return load(sshot);
+	int ret = load(sshot);
+	SDL_FreeSurface(sshot);
+	return ret;
 }
 
 int Image::load(const string& fname)
