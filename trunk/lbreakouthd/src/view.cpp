@@ -219,6 +219,9 @@ void View::render()
 {
 	Game *game = cgame.getGameContext(); /* direct lib game context */
 	Paddle *paddle = game->paddles[0]; /* local paddle always at bottom */
+	Ball *ball = 0;
+	Extra *extra = 0;
+	Shot *shot = 0;
 
 	if (cgame.darknessActive()) {
 		SDL_SetRenderDrawColor(mrc,0,0,0,255);
@@ -240,6 +243,30 @@ void View::render()
 		theme.extras.clearAlpha();
 	}
 
+	/* balls - shadows */
+	list_reset(game->balls);
+	while ( ( ball = (Ball*)list_next( game->balls ) ) != 0 ) {
+		uint type;
+		int px, py;
+		getBallViewInfo(ball, &px, &py, &type);
+		theme.ballsShadow.copy(type, 0,
+							px + theme.shadowOffset, py + theme.shadowOffset);
+	}
+
+	/* extras - shadows */
+	list_reset(game->extras);
+	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 )
+		theme.extrasShadow.copy(extra->type, 0,
+								v2s(extra->x) + theme.shadowOffset,
+								v2s(extra->y) + theme.shadowOffset);
+
+	/* shots - shadows */
+	list_reset(game->shots);
+	while ( ( shot = (Shot*)list_next( game->shots) ) != 0 )
+		theme.shotShadow.copy(shotFrameCounter.get(),0,
+								v2s(shot->x) + theme.shadowOffset,
+								v2s(shot->y) + theme.shadowOffset);
+
 	/* paddle */
 	if (!paddle->invis || paddle->invis_delay > 0) {
 		int pid = 0;
@@ -257,11 +284,19 @@ void View::render()
 			theme.paddles.setAlpha(128);
 		else
 			theme.paddles.clearAlpha();
+		/* FIXME for paddle we do the shadow here as it's composed and
+		 * otherwise difficult and quite at the bottom so chance for
+		 * graphical errors is pretty low... yes I'm lazy... */
+		theme.paddlesShadow.copy(0,pid,px+theme.shadowOffset,py+theme.shadowOffset);
 		theme.paddles.copy(0,pid,px,py);
-		for (px += poff; px < pxr - poff; px += poff)
+		for (px += poff; px < pxr - poff; px += poff) {
+			theme.paddlesShadow.copy(1,pid,px+theme.shadowOffset,py+theme.shadowOffset);
 			theme.paddles.copy(1,pid,px,py);
+		}
 		/* copy last middle part, potentially shortened */
+		theme.paddlesShadow.copy(1,pid,0,0,pxr-px,ph,px+theme.shadowOffset,py+theme.shadowOffset);
 		theme.paddles.copy(1,pid,0,0,pxr-px,ph,px,py);
+		theme.paddlesShadow.copy(2,pid,pxr+theme.shadowOffset,py+theme.shadowOffset);
 		theme.paddles.copy(2,pid,pxr,py);
 	}
 	if (paddle->weapon_inst) {
@@ -272,31 +307,15 @@ void View::render()
 	}
 
 	/* balls */
-	Ball *ball = 0;
 	list_reset(game->balls);
 	while ( ( ball = (Ball*)list_next( game->balls ) ) != 0 ) {
-		int bt = 0;
-		double px = ball->cur.x;
-		double py = ball->cur.y;
-		if (ball->attached) {
-			px += paddle->x;
-			py += paddle->y;
-		}
-		px = v2s(px);
-		py = v2s(py);
-		if (game->extra_active[EX_METAL])
-			bt = 1;
-		else if (game->extra_active[EX_EXPL_BALL])
-			bt = 2;
-		else if (game->extra_active[EX_WEAK_BALL])
-			bt = 3;
-		else if (game->extra_active[EX_CHAOS])
-			bt = 4;
-		theme.balls.copy(bt,0,px,py);
+		uint type;
+		int px, py;
+		getBallViewInfo(ball, &px, &py, &type);
+		theme.balls.copy(type,0,px,py);
 	}
 
 	/* shots */
-	Shot *shot = 0;
 	list_reset(game->shots);
 	while ( ( shot = (Shot*)list_next( game->shots) ) != 0 )
 		theme.shot.copy(shotFrameCounter.get(),0,v2s(shot->x),v2s(shot->y));
@@ -306,7 +325,6 @@ void View::render()
 		s->render();
 
 	/* extras */
-	Extra *extra = 0;
 	list_reset(game->extras);
 	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 )
 		theme.extras.copy(extra->type, 0, v2s(extra->x), v2s(extra->y));
@@ -332,6 +350,7 @@ void View::renderBackgroundImage() {
 			wallpaper.copy(wx,wy);
 
 	/* frame */
+	theme.frameShadow.copy(theme.shadowOffset,theme.shadowOffset);
 	theme.frame.copy(0,0);
 
 	/* title + current level */
@@ -414,12 +433,21 @@ void View::renderBricksImage()
 
 	imgBricks.fill(0,0,0,0);
 	SDL_SetRenderTarget(mrc, imgBricks.getTex());
+
+	for (int i = 1; i < MAPWIDTH-1; i++)
+		for (int j = 1; j < MAPHEIGHT; j++) {
+			Brick *b = &game->bricks[i][j];
+			if (b->type != MAP_EMPTY && b->id != INVIS_BRICK_ID)
+				theme.bricksShadow.copy(b->id, 0, (i-1)*bw + theme.shadowOffset,
+												(j-1)*bh + theme.shadowOffset);
+		}
 	for (int i = 1; i < MAPWIDTH-1; i++)
 		for (int j = 1; j < MAPHEIGHT; j++) {
 			Brick *b = &game->bricks[i][j];
 			if (b->type != MAP_EMPTY && b->id != INVIS_BRICK_ID)
 				theme.bricks.copy(b->id, 0, (i-1)*bw, (j-1)*bh);
 		}
+
 	SDL_SetRenderTarget(mrc, NULL);
 }
 void View::renderScoreImage()
@@ -572,3 +600,32 @@ void View::createSprites()
 					theme.explAnimDelay, x, y)));
 		}
 }
+
+void View::getBallViewInfo(Ball *ball, int *x, int *y, uint *type)
+{
+	Game *game = cgame.getGameContext(); /* direct lib game context */
+	Paddle *paddle = game->paddles[0]; /* local paddle always at bottom */
+
+	uint bt = 0;
+	double px = ball->cur.x;
+	double py = ball->cur.y;
+	if (ball->attached) {
+		px += paddle->x;
+		py += paddle->y;
+	}
+	px = v2s(px);
+	py = v2s(py);
+	if (game->extra_active[EX_METAL])
+		bt = 1;
+	else if (game->extra_active[EX_EXPL_BALL])
+		bt = 2;
+	else if (game->extra_active[EX_WEAK_BALL])
+		bt = 3;
+	else if (game->extra_active[EX_CHAOS])
+		bt = 4;
+
+	*x = px;
+	*y = py;
+	*type = bt;
+}
+

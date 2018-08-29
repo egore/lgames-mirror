@@ -42,6 +42,7 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	version= "v?.??";
 	brickFileWidth = 40;
 	brickFileHeight = 20;
+	shadowOffset = 10;
 	fontColorNormal = {255,255,255,255};
 	fontColorHighlight = {255,220,0,255};
 	shotFrameNum = 4;
@@ -62,6 +63,7 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		fp.get("version",version);
 		fp.get("brickWidth",brickFileWidth);
 		fp.get("brickHeight",brickFileHeight);
+		fp.get("shadowOffset",shadowOffset);
 		fp.get("fontSmall.name",fontSmallName);
 		fp.get("fontSmall.size",fontSmallSize);
 		fp.get("fontNormal.name",fontNormalName);
@@ -89,6 +91,9 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		Image::setRenderScaleQuality(1);
 		Image::useColorKeyBlack = false;
 	}
+
+	/* adjust shadow offset to screen geometry */
+	shadowOffset = shadowOffset * brickScreenHeight / brickFileHeight;
 
 	/* bricks and extras have exactly brick size */
 	if (fileExists(path + "/bricks.png")) {
@@ -308,6 +313,14 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 					fontNormalSize*brickScreenHeight/100);
 	fNormal.setColor(fontColorNormal);
 	fSmall.setColor(fontColorNormal);
+
+	/* create shadow images */
+	frameShadow.createShadow(frame);
+	bricksShadow.createShadow(bricks);
+	paddlesShadow.createShadow(paddles);
+	ballsShadow.createShadow(balls);
+	extrasShadow.createShadow(extras);
+	shotShadow.createShadow(shot);
 }
 
 void Theme::addBox(Image &img, int x, int y, int w, int h)

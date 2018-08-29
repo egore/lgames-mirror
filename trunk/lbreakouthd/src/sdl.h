@@ -116,6 +116,7 @@ public:
 	}
 	void fill(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 	void scale(int nw, int nh);
+	int createShadow(Image &img);
 };
 
 class GridImage : public Image
@@ -133,6 +134,7 @@ public:
 	void copy(int gx, int gy, int dx, int dy, int dw, int dh);
 	void copy(int gx, int gy, int sx, int sy, int sw, int sh, int dx, int dy);
 	void scale(int ncw, int nch);
+	int createShadow(GridImage &img);
 };
 
 #define ALIGN_X_LEFT	1
