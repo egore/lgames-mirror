@@ -88,7 +88,7 @@ class View {
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
-	void loadAsset(const string &name) {
+	void loadTheme(const string &name) {
 		theme.load("Standard",mw->getWidth(),mw->getHeight(),
 				brickScreenWidth, brickScreenHeight);
 		theme.load(name,mw->getWidth(),mw->getHeight(),
