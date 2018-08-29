@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 	srand(time(NULL));
 	cgame.init(setname);
 	if (themename != "Standard")
-		view.loadAsset(themename);
+		view.loadTheme(themename);
 	view.run();
 
 	return 0;
