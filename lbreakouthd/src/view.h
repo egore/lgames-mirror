@@ -85,6 +85,7 @@ class View {
 	void dim();
 	void showInfo(const string& str);
 	void createSprites();
+	void getBallViewInfo(Ball *ball, int *x, int *y, uint *type);
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();

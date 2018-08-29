@@ -1,10 +1,14 @@
-show title/author on start of level
-shadows
-explosions
-animations
+important:
+particle effects
 menu
 sounds
+
+not so important:
+extras should come up smooth
+shadow of paddle in extra wall and right lower frame
+more colored explosions
+show title/author on start of level
 relative mouse movement
 show final hiscore after game
 convex paddle
-and lots more...
+...

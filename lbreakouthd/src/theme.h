@@ -30,6 +30,7 @@ class Theme {
 	string version;
 	uint brickFileWidth;
 	uint brickFileHeight;
+	int shadowOffset;
 	string fontSmallName;
 	uint fontSmallSize;
 	string fontNormalName;
@@ -45,12 +46,12 @@ class Theme {
 
 	Image wallpapers[MAXWALLPAPERS];
 	uint numWallpapers;
-	Image frame;
-	GridImage bricks;
-	GridImage paddles;
-	GridImage balls;
-	GridImage extras;
-	GridImage shot;
+	Image frame, frameShadow;
+	GridImage bricks, bricksShadow;
+	GridImage paddles, paddlesShadow;
+	GridImage balls, ballsShadow;
+	GridImage extras, extrasShadow;
+	GridImage shot, shotShadow;
 	GridImage weapon;
 	GridImage explosions;
 	Image life;

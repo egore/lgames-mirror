@@ -228,6 +228,37 @@ void Image::scale(int nw, int nh)
 	h = nh;
 }
 
+/** Create shadow image by clearing all r,g,b to 0 and cutting alpha in half. */
+int Image::createShadow(Image &img)
+{
+	/* duplicate first */
+	create(img.getWidth(),img.getHeight());
+	SDL_Texture *oldTarget = SDL_GetRenderTarget(mrc);
+	SDL_SetRenderTarget(mrc, tex);
+	img.copy(0,0);
+
+	/* change and apply */
+	Uint32 pixels[w*h];
+	int pitch = w*sizeof(Uint32);
+	Uint8 r,g,b,a;
+	Uint32 pft = 0;
+	SDL_QueryTexture(tex, &pft, 0, 0, 0);
+	SDL_PixelFormat* pf = SDL_AllocFormat(pft);
+	if (SDL_RenderReadPixels(mrc, NULL, pft, pixels, pitch) < 0) {
+		_logsdlerr();
+		return 0;
+	}
+	for (int i = 0; i < w * h; i++) {
+		SDL_GetRGBA(pixels[i],pf,&r,&g,&b,&a);
+		pixels[i] = SDL_MapRGBA(pf,0,0,0,a/2);
+	}
+	SDL_UpdateTexture(tex, NULL, pixels, pitch);
+	SDL_FreeFormat(pf);
+	SDL_SetRenderTarget(mrc, oldTarget);
+
+	return 1;
+}
+
 /** Grid image: large bitmap with same sized icons */
 
 int GridImage::load(const string& fname, int _gw, int _gh)
@@ -314,6 +345,13 @@ void GridImage::scale(int ncw, int nch)
 	h = nh;
 	gw = ncw;
 	gh = nch;
+}
+
+int GridImage::createShadow(GridImage &img)
+{
+	gw = img.getGridWidth();
+	gh = img.getGridHeight();
+	return Image::createShadow(img);
 }
 
 
