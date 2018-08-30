@@ -1045,6 +1045,7 @@ void bricks_add_mod( int x, int y, int mod, int dest_type, Vector imp, Paddle *p
 	}
 	
 	if ( mod == HT_REMOVE ) {
+		hit->brick_id = cur_game->bricks[x][y].id;
 		if ( paddle->extra_active[EX_GOLDSHOWER] )
 			if ( cur_game->bricks[x][y].extra == EX_NONE )
 				hit->gold_shower = 1;

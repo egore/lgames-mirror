@@ -18,7 +18,8 @@ using namespace std;
 #include "tools.h"
 #include "hiscores.h"
 #include "clientgame.h"
-#include <theme.h>
+#include "theme.h"
+#include "sprite.h"
 #include "view.h"
 
 /* for parsing arguments old-school because no easy way in C++11 */

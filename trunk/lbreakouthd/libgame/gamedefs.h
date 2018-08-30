@@ -396,8 +396,7 @@ typedef struct {
   int x,y;	/* position */
   int type;	/* destruction, hit, regeneration, growth */
   int dest_type;/* shot, normal, energy, explosion */
-  /* if brick will grow: */
-  int brick_id; /* brick id */
+  int brick_id; /* if removed id of brick, if brick will grow: new id */
   /* if brick was destroyed: */
   int paddle; 	/* 0 bottom, 1 top */
   int gold_shower;/* goldshower extra released? */
