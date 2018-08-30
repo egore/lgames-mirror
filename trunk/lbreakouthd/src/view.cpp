@@ -198,7 +198,7 @@ void View::run()
 		render();
 		SDL_RenderPresent(mrc);
 		if (config.fps)
-			SDL_Delay(10);
+			SDL_Delay(5);
 		SDL_FlushEvent(SDL_MOUSEMOTION); /* prevent event loop from dying */
 
 		/* stats */
@@ -665,6 +665,7 @@ void View::createSprites()
 		/* brick hit animation */
 		if (hit->type == HT_REMOVE)
 			createParticles(hit);
+
 		/* explosion */
 		if (hit->draw_explosion) {
 			int x = hit->x * brickScreenWidth + brickScreenWidth/2 -
