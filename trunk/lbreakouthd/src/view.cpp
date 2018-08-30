@@ -256,10 +256,15 @@ void View::render()
 
 	/* extras - shadows */
 	list_reset(game->extras);
-	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 )
+	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 ) {
+		if (extra->alpha < 255)
+			theme.extrasShadow.setAlpha(extra->alpha);
+		else
+			theme.extrasShadow.clearAlpha();
 		theme.extrasShadow.copy(extra->type, 0,
-					v2s(extra->x) + theme.shadowOffset,
-					v2s(extra->y) + theme.shadowOffset);
+				v2s(extra->x) + theme.shadowOffset,
+				v2s(extra->y) + theme.shadowOffset);
+	}
 
 	/* shots - shadows */
 	list_reset(game->shots);
@@ -327,8 +332,13 @@ void View::render()
 
 	/* extras */
 	list_reset(game->extras);
-	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 )
+	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 ) {
+		if (extra->alpha < 255)
+			theme.extras.setAlpha(extra->alpha);
+		else
+			theme.extras.clearAlpha();
 		theme.extras.copy(extra->type, 0, v2s(extra->x), v2s(extra->y));
+	}
 
 	/* stats */
 	theme.fSmall.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);

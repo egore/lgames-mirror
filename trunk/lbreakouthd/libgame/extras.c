@@ -353,6 +353,9 @@ void extras_update( int ms )
 	/* move extras and check if paddle was hit */
 	list_reset( cur_game->extras );
 	while ( ( ex = list_next( cur_game->extras ) ) ) {
+		/* if alpha below 255 come up */
+		if (ex->alpha < 255)
+			ex->alpha += ms * 0.25;
 		/* if only one paddle has a magnet active all extras will 
 		 * be attracted by this paddle else the extras 'dir' is used 
 		 */
