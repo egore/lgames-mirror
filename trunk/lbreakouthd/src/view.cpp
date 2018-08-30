@@ -590,14 +590,66 @@ void View::showInfo(const string& str)
 /* Create particles for brick hit of type HT_REMOVE (already checked). */
 void View::createParticles(BrickHit *hit)
 {
-	if (hit->dest_type == SHR_BY_NORMAL_BALL) {
-		double vx = cos( 6.28 * hit->degrees / 180);
-		double vy = sin( 6.28 * hit->degrees / 180 );
-		Particle *p = new Particle(theme.bricks, hit->brick_id, 0, 0, 0,
-					theme.bricks.getGridWidth(), theme.bricks.getGridHeight(),
-					hit->x*brickScreenWidth, hit->y*brickScreenHeight,
-					vx, vy, v2s(0.13), 1000);
+	double vx, vy;
+	Particle *p;
+	int pw, ph;
+	int bx = hit->x*brickScreenWidth, by = hit->y*brickScreenHeight;
+
+	switch (hit->dest_type) {
+	case SHR_BY_NORMAL_BALL:
+		vx = cos( 6.28 * hit->degrees / 180);
+		vy = sin( 6.28 * hit->degrees / 180 );
+		p = new Particle(theme.bricks, hit->brick_id, 0, 0, 0,
+					brickScreenWidth, brickScreenHeight,
+					bx, by, vx, vy, v2s(0.13), 500);
 		sprites.push_back(unique_ptr<Particle>(p));
+		break;
+	case SHR_BY_ENERGY_BALL:
+		pw = brickScreenWidth/2;
+		ph = brickScreenHeight/2;
+		for ( int i = 0, sx = 0; i < 2; i++, sx+=pw ) {
+			for ( int j = 0, sy = 0; j < 2; j++, sy+=ph ) {
+				vx = pw - (sx + pw/2);
+				vy = ph - (sy + ph/2);
+				p = new Particle(theme.bricks, hit->brick_id, 0,
+						sx, sy, pw, ph,
+						bx+sx, by+sy,
+						vx, vy, v2s(0.02), 500);
+				sprites.push_back(unique_ptr<Particle>(p));
+			}
+		}
+		break;
+	case SHR_BY_SHOT:
+		/* FIXME this will cause artifacts on 768p better start
+		 * creating from the middle moving outwards */
+		pw = brickScreenWidth / 10;
+		for ( int i = 0, sx = 0; i < 5; i++, sx += pw ) {
+			p = new Particle(theme.bricks, hit->brick_id, 0,
+						sx, 0, pw, brickScreenHeight,
+						bx+sx, by,
+						0, -1, v2s(0.006*i+0.002), 500);
+			sprites.push_back(unique_ptr<Particle>(p));
+			p = new Particle(theme.bricks, hit->brick_id, 0,
+						brickScreenWidth - sx - pw,
+						0, pw, brickScreenHeight,
+						bx+brickScreenWidth - sx - pw, by,
+						0, -1, v2s(0.006*i+0.002), 500);
+			sprites.push_back(unique_ptr<Particle>(p));
+		}
+		break;
+	case SHR_BY_EXPL:
+		pw = brickScreenWidth/10;
+		ph = brickScreenHeight/5;
+		for ( int i = 0, sx=0; i < 10; i++, sx += pw )
+			for ( int j = 0, sy=0; j < 5; j++, sy += ph ) {
+				vx = 0.5 - 0.01*(rand()%100);
+				vy = 0.5 - 0.01*(rand()%100);
+				p = new Particle(theme.bricks, hit->brick_id, 0,
+						sx, sy, pw, ph, bx+sx, by+sy,
+						vx, vy, 0.01*(rand()%10+5), 1000);
+				sprites.push_back(unique_ptr<Particle>(p));
+			}
+		break;
 	}
 }
 

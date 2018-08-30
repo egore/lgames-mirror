@@ -1069,7 +1069,8 @@ void bricks_add_mod( int x, int y, int mod, int dest_type, Vector imp, Paddle *p
 	hit->paddle = (cur_game->paddles[PADDLE_BOTTOM]==paddle)?PADDLE_BOTTOM:PADDLE_TOP;
 	
 	hit->degrees = 0;
-	if ( mod == HT_REMOVE && dest_type == SHR_BY_NORMAL_BALL ) {
+	if ( mod == HT_REMOVE && (dest_type == SHR_BY_NORMAL_BALL ||
+					dest_type == SHR_BY_ENERGY_BALL)) {
 		hit->degrees = vec2angle( &imp );
 	}
 	else
