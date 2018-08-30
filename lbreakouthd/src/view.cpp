@@ -251,22 +251,22 @@ void View::render()
 		int px, py;
 		getBallViewInfo(ball, &px, &py, &type);
 		theme.ballsShadow.copy(type, 0,
-							px + theme.shadowOffset, py + theme.shadowOffset);
+				px + theme.shadowOffset, py + theme.shadowOffset);
 	}
 
 	/* extras - shadows */
 	list_reset(game->extras);
 	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 )
 		theme.extrasShadow.copy(extra->type, 0,
-								v2s(extra->x) + theme.shadowOffset,
-								v2s(extra->y) + theme.shadowOffset);
+					v2s(extra->x) + theme.shadowOffset,
+					v2s(extra->y) + theme.shadowOffset);
 
 	/* shots - shadows */
 	list_reset(game->shots);
 	while ( ( shot = (Shot*)list_next( game->shots) ) != 0 )
 		theme.shotShadow.copy(shotFrameCounter.get(),0,
-								v2s(shot->x) + theme.shadowOffset,
-								v2s(shot->y) + theme.shadowOffset);
+					v2s(shot->x) + theme.shadowOffset,
+					v2s(shot->y) + theme.shadowOffset);
 
 	/* paddle */
 	if (!paddle->invis || paddle->invis_delay > 0) {
@@ -662,6 +662,9 @@ void View::createSprites()
 	for (int i = 0; i < game->mod.brick_hit_count; i++) {
 		hit = &game->mod.brick_hits[i];
 
+		/* brick hit animation */
+		if (hit->type == HT_REMOVE)
+			createParticles(hit);
 		/* explosion */
 		if (hit->draw_explosion) {
 			int x = hit->x * brickScreenWidth + brickScreenWidth/2 -
@@ -674,9 +677,6 @@ void View::createSprites()
 					theme.explAnimDelay, x, y)));
 		}
 
-		/* brick hit animation */
-		if (hit->type == HT_REMOVE)
-			createParticles(hit);
 	}
 }
 

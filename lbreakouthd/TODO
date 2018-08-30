@@ -1,7 +1,6 @@
 important:
-particle effects
-menu
 sounds
+menu
 
 not so important:
 extras should come up smooth
@@ -11,4 +10,6 @@ show title/author on start of level
 relative mouse movement
 show final hiscore after game
 convex paddle
+allow removing selected bricks
+warping
 ...
