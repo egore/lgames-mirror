@@ -16,6 +16,7 @@
 #include "sdl.h"
 #include "clientgame.h"
 #include "theme.h"
+#include "sprite.h"
 #include "view.h"
 
 extern SDL_Renderer *mrc;
@@ -162,7 +163,7 @@ void View::run()
 			ms = 1;
 		tsLast = tsNow;
 
-		/* update animations */
+		/* update animations and particles */
 		shotFrameCounter.update(ms);
 		weaponFrameCounter.update(ms);
 		for (auto it = begin(sprites); it != end(sprites); ++it) {
@@ -586,19 +587,45 @@ void View::showInfo(const string& str)
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
 }
 
+/* Create particles for brick hit of type HT_REMOVE (already checked). */
+void View::createParticles(BrickHit *hit)
+{
+	if (hit->dest_type == SHR_BY_NORMAL_BALL) {
+		double vx = cos( 6.28 * hit->degrees / 180);
+		double vy = sin( 6.28 * hit->degrees / 180 );
+		Particle *p = new Particle(theme.bricks, hit->brick_id, 0, 0, 0,
+					theme.bricks.getGridWidth(), theme.bricks.getGridHeight(),
+					hit->x*brickScreenWidth, hit->y*brickScreenHeight,
+					vx, vy, v2s(0.13), 1000);
+		sprites.push_back(unique_ptr<Particle>(p));
+	}
+}
+
 /* Create new explosions, particles, etc according to game mods */
 void View::createSprites()
 {
 	Game *game = cgame.getGameContext();
-	for (int i = 0; i < game->mod.brick_hit_count; i++)
-		if (game->mod.brick_hits[i].draw_explosion) {
-			int x = game->mod.brick_hits[i].x * brickScreenWidth + brickScreenWidth/2 - theme.explosions.getGridWidth()/2;
-			int y = game->mod.brick_hits[i].y * brickScreenHeight + brickScreenHeight/2 - theme.explosions.getGridHeight()/2;
+	BrickHit *hit;
+
+	for (int i = 0; i < game->mod.brick_hit_count; i++) {
+		hit = &game->mod.brick_hits[i];
+
+		/* explosion */
+		if (hit->draw_explosion) {
+			int x = hit->x * brickScreenWidth + brickScreenWidth/2 -
+										theme.explosions.getGridWidth()/2;
+			int y = hit->y * brickScreenHeight + brickScreenHeight/2 -
+										theme.explosions.getGridHeight()/2;
 			sprites.push_back(unique_ptr<Animation>(
 				new Animation(theme.explosions,
 					rand() % theme.explosions.getGridSizeY(),
 					theme.explAnimDelay, x, y)));
 		}
+
+		/* brick hit animation */
+		if (hit->type == HT_REMOVE)
+			createParticles(hit);
+	}
 }
 
 void View::getBallViewInfo(Ball *ball, int *x, int *y, uint *type)

@@ -19,6 +19,7 @@ using namespace std;
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <list>
 #include <string>
 #include <vector>
@@ -100,18 +101,20 @@ bool dirExists(const string& name);
 bool makeDir(const string &name);
 bool fileExists(const string& name);
 
+/** Count continuously from start to end. Delay is in milliseconds for
+ * changing counter by one (e.g. delay=1000 means it takes one second per step. */
 enum {
 	SCT_ONCE = 0,
 	SCT_REPEAT,
 	SCT_UPDOWN
 };
 class SmoothCounter {
-	int style;
+	int type;
 	double cpms; /* change per millisecond */
 	double cur, min, max;
 public:
-	void init(int s, double start, double end, double delay) {
-		style = s;
+	void init(int t, double start, double end, double delay) {
+		type = t;
 		cpms = 1.0 / delay;
 		if (end > start) {
 			min = cur = start;
@@ -129,21 +132,21 @@ public:
 		int ret = 0;
 		cur += cpms * ms;
 		if (cpms > 0 && cur >= max) {
-			if (style == SCT_REPEAT)
+			if (type == SCT_REPEAT)
 				cur = min;
-			else if (style == SCT_ONCE)
+			else if (type == SCT_ONCE)
 				cpms = 0;
-			else if (style == SCT_UPDOWN) {
+			else if (type == SCT_UPDOWN) {
 				cur = max;
 				cpms *= -1;
 			}
 			ret = 1;
 		} else if (cpms < 0 && cur <= min) {
-			if (style == SCT_REPEAT)
+			if (type == SCT_REPEAT)
 				cur = max;
-			else if (style == SCT_ONCE)
+			else if (type == SCT_ONCE)
 				cpms = 0;
-			else if (style == SCT_UPDOWN) {
+			else if (type == SCT_UPDOWN) {
 				cur = min;
 				cpms *= -1;
 			}
@@ -162,5 +165,31 @@ public:
 };
 
 void strprintf(string& str, const char *fmt, ... );
+
+/** Simple vector object. There is already struct Vector in libgame
+ * so we call it just Vec. */
+class Vec {
+	double x,y;
+public:
+	Vec(double _x, double _y) : x(_x), y(_y) {}
+	double getX() { return x; }
+	double getY() { return y; }
+	void normalize() {
+		if ( x == 0 && y == 0 )
+			return;
+		double l = sqrt(x*x+y*y);
+		x /= l;
+		y /= l;
+	}
+	void setLength(double l) {
+		normalize();
+		x *= l;
+		y *= l;
+	}
+	void add(double s, Vec &v) {
+		x += s * v.getX();
+		y += s * v.getY();
+	}
+};
 
 #endif /* SRC_TOOLS_H_ */
