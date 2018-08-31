@@ -59,6 +59,8 @@ class Theme {
 	Font fNormal;
 
 	Sound sReflectBrick, sReflectPaddle;
+	Sound sBrickHit, sExplosion, sEnergyHit;
+	Sound sShot, sAttach, sScore;
 
 	void addBox(Image &img, int x, int y, int w, int h);
 public:

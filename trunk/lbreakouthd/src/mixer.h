@@ -72,9 +72,9 @@ public:
 	void halt() { Mix_HaltChannel(-1); }
 	void pause() { Mix_Pause(-1); }
 	void resume() { Mix_Resume(-1); }
-	void play(Sound &snd) {
+	void play(Sound &snd, int c = -1) {
 		if (snd.chunk && opened)
-			Mix_PlayChannel(-1,snd.chunk,0);
+			Mix_PlayChannel(c,snd.chunk,0);
 	}
 };
 

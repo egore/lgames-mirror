@@ -326,6 +326,12 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	/* sounds */
 	sReflectBrick.load(path + "/reflectbrick.wav");
 	sReflectPaddle.load(path + "/reflectpaddle.wav");
+	sBrickHit.load(path + "/brickhit.wav");
+	sExplosion.load(path + "/explosion.wav");
+	sEnergyHit.load(path + "/energyhit.wav");
+	sShot.load(path + "/shot.wav");
+	sAttach.load(path + "/attach.wav");
+	sScore.load(path + "/score.wav");
 }
 
 void Theme::addBox(Image &img, int x, int y, int w, int h)
