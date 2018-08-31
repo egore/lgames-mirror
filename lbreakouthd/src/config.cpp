@@ -57,7 +57,8 @@ Config::Config()
 	volume = 8;
 	speech = 1;
 	badspeech = 0;
-	audio_buffer_size = 512;
+	audio_buffer_size = 1024;
+	channels = 16;
 	/* graphics */
 	anim = 2;
 	resolution = 480;
@@ -124,6 +125,7 @@ Config::Config()
 	fp.get( "speech", speech );
 	fp.get( "badspeech", badspeech );
 	fp.get( "audio_buffer_size", audio_buffer_size );
+	fp.get( "channels", channels );
 	fp.get( "anim", anim );
 	fp.get( "fullscreen", fullscreen );
 	fp.get( "fade", fade );
@@ -178,6 +180,7 @@ void Config::save()
 	ofs << "speech=" << speech << "\n";
 	ofs << "badspeech=" << badspeech << "\n";
 	ofs << "audio_buffer_size=" << audio_buffer_size << "\n";
+	ofs << "channels=" << channels << "\n";
 	ofs << "anim=" << anim << "\n";
 	ofs << "fullscreen=" << fullscreen << "\n";
 	ofs << "fade=" << fade << "\n";

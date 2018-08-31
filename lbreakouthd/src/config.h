@@ -72,6 +72,7 @@ public:
 	int speech; /* enable speech? */
 	int badspeech; /* if speech allowed, allow swearing? */
 	int audio_buffer_size;
+	int channels; /* number of mix channels */
 
 	/* graphics */
 	int anim;

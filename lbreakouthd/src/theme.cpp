@@ -14,6 +14,7 @@
 
 #include "tools.h"
 #include "sdl.h"
+#include "mixer.h"
 #include "theme.h"
 
 extern SDL_Renderer *mrc;
@@ -304,6 +305,14 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		explosions.scale(nw,nh);
 	}
 
+	/* create shadow images */
+	frameShadow.createShadow(frame);
+	bricksShadow.createShadow(bricks);
+	paddlesShadow.createShadow(paddles);
+	ballsShadow.createShadow(balls);
+	extrasShadow.createShadow(extras);
+	shotShadow.createShadow(shot);
+
 	/* fonts; size is percent of brick height */
 	if (fileExists(path + "/" + fontSmallName))
 		fSmall.load(path + "/" + fontSmallName,
@@ -314,13 +323,9 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	fNormal.setColor(fontColorNormal);
 	fSmall.setColor(fontColorNormal);
 
-	/* create shadow images */
-	frameShadow.createShadow(frame);
-	bricksShadow.createShadow(bricks);
-	paddlesShadow.createShadow(paddles);
-	ballsShadow.createShadow(balls);
-	extrasShadow.createShadow(extras);
-	shotShadow.createShadow(shot);
+	/* sounds */
+	sReflectBrick.load(path + "/reflectbrick.wav");
+	sReflectPaddle.load(path + "/reflectpaddle.wav");
 }
 
 void Theme::addBox(Image &img, int x, int y, int w, int h)
