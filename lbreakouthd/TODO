@@ -6,10 +6,14 @@ not so important:
 extras should come up smooth
 shadow of paddle in extra wall and right lower frame
 more colored explosions
+grap input
+wrap get home dir
 show title/author on start of level
+relative mouse movement
 relative mouse movement
 show final hiscore after game
 convex paddle
 allow removing selected bricks
 warping
 ...
+efficient check for active extras and draw only once per sec
