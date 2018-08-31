@@ -20,6 +20,7 @@ AC_CHECK_LIB(m, main,, AC_MSG_ERROR(lib math is needed))
 AC_CHECK_LIB(SDL2, main,, AC_MSG_ERROR(lib SDL2 is needed))
 AC_CHECK_LIB(SDL2_ttf, main,, AC_MSG_ERROR(lib SDL2 ttf is needed))
 AC_CHECK_LIB(SDL2_image, main,, AC_MSG_ERROR(lib SDL2 image is needed))
+AC_CHECK_LIB(SDL2_mixer, main,, AC_MSG_ERROR(lib SDL2 mixer is needed))
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdlib.h string.h])

@@ -58,6 +58,8 @@ class Theme {
 	Font fSmall;
 	Font fNormal;
 
+	Sound sReflectBrick, sReflectPaddle;
+
 	void addBox(Image &img, int x, int y, int w, int h);
 public:
 	void load(string name, uint screenWidth, uint screenHeight,

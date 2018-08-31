@@ -18,6 +18,7 @@ using namespace std;
 #include "tools.h"
 #include "hiscores.h"
 #include "clientgame.h"
+#include "mixer.h"
 #include "theme.h"
 #include "sprite.h"
 #include "view.h"

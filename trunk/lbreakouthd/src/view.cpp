@@ -15,6 +15,7 @@
 #include "tools.h"
 #include "sdl.h"
 #include "clientgame.h"
+#include "mixer.h"
 #include "theme.h"
 #include "sprite.h"
 #include "view.h"
@@ -30,6 +31,7 @@ View::View(Config &cfg, ClientGame &_cg)
 			SDL_Log("SDL_Init failed: %s\n", SDL_GetError());
 	if (TTF_Init() < 0)
 	 		SDL_Log("TTF_Init failed: %s\n", SDL_GetError());
+	mixer.open(cfg.channels, cfg.audio_buffer_size);
 
 	/* determine resolution and scale factor */
 	int sw, sh;
@@ -81,6 +83,7 @@ View::View(Config &cfg, ClientGame &_cg)
 View::~View()
 {
 	delete mw;
+	mixer.close();
 
 	/* XXX fonts need to be killed before SDL/TTF_Quit otherwise they
 	 * segfault but attribute's dtors are called after ~View is finished */
@@ -194,9 +197,14 @@ void View::run()
 		if (flags & CGF_NEWANIMATIONS)
 			createSprites();
 
+		/* handle sounds by accessing game->mod */
+		playSounds();
+
 		/* render */
 		render();
 		SDL_RenderPresent(mrc);
+
+		/* limit frame rate */
 		if (config.fps)
 			SDL_Delay(5);
 		SDL_FlushEvent(SDL_MOUSEMOTION); /* prevent event loop from dying */
@@ -719,3 +727,12 @@ void View::getBallViewInfo(Ball *ball, int *x, int *y, uint *type)
 	*type = bt;
 }
 
+void View::playSounds()
+{
+	Game *game = cgame.getGameContext();
+
+	if (game->mod.brick_reflected_ball_count > 0)
+		mixer.play(theme.sReflectBrick);
+	if (game->mod.paddle_reflected_ball_count > 0)
+		mixer.play(theme.sReflectPaddle);
+}

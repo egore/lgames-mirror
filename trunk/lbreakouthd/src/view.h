@@ -24,12 +24,17 @@ enum {
 	VG_PADDLETILESIZE = 18,
 	VG_PADDLEYPOS = VG_BRICKAREAHEIGHT - 2*VG_BRICKHEIGHT,
 	VG_BALLRADIUS = 6,
-	VG_BALLSIZE = 12
+	VG_BALLSIZE = 12,
+
+	/* mixer */
+	MIX_CHANNELNUM = 16,
+	MIX_CUNKSIZE = 2048
 };
 
 class View {
 	Config &config;
 	Theme theme;
+	Mixer mixer;
 	MainWindow *mw;
 	ClientGame &cgame;
 	Uint32 brickAreaWidth, brickAreaHeight;
@@ -67,6 +72,7 @@ class View {
 	void createParticles(BrickHit *hit);
 	void createSprites();
 	void getBallViewInfo(Ball *ball, int *x, int *y, uint *type);
+	void playSounds();
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
