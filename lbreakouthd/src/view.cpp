@@ -735,4 +735,44 @@ void View::playSounds()
 		mixer.play(theme.sReflectBrick);
 	if (game->mod.paddle_reflected_ball_count > 0)
 		mixer.play(theme.sReflectPaddle);
+	if (game->mod.fired_shot_count > 0)
+		mixer.play(theme.sShot);
+	if (game->mod.attached_ball_count > 0)
+		mixer.play(theme.sAttach);
+
+	/* by default brick hit and explosion are the same sound,
+	 * but playing it for an explosion twice makes it louder
+	 * so this does make sense... */
+	bool hitPlayed = false;
+	bool explPlayed = false;
+	bool energyPlayed = false;
+	for (int i = 0; i < game->mod.brick_hit_count; i++) {
+		if (game->mod.brick_hits[i].type != HT_REMOVE)
+			continue;
+		if (game->mod.brick_hits[i].dest_type == SHR_BY_ENERGY_BALL && !energyPlayed) {
+			mixer.play(theme.sEnergyHit);
+			energyPlayed = true;
+		}
+		if (game->mod.brick_hits[i].dest_type != SHR_BY_ENERGY_BALL && !hitPlayed) {
+			mixer.play(theme.sBrickHit);
+			hitPlayed = true;
+		}
+		if (game->mod.brick_hits[i].draw_explosion && !explPlayed) {
+			mixer.play(theme.sExplosion);
+			explPlayed = true;
+		}
+	}
+
+	for (int i = 0; i < game->mod.collected_extra_count[0]; i++) {
+		switch (game->mod.collected_extras[0][i]) {
+		case EX_SCORE200:
+		case EX_SCORE500:
+		case EX_SCORE1000:
+		case EX_SCORE2000:
+		case EX_SCORE5000:
+		case EX_SCORE10000:
+			mixer.play(theme.sScore);
+			break;
+		}
+	}
 }

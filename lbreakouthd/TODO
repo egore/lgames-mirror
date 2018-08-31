@@ -1,6 +1,8 @@
 important:
 sounds
 menu
+allow subdirs in theme via theme.ini
+fix darkness (no particles)
 
 not so important:
 extras should come up smooth
