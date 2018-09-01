@@ -77,6 +77,9 @@ public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
 	void loadTheme(const string &name) {
+		/* XXX load standard theme first for fallback, theme.testRc is
+		 * ok for sounds and fonts but gets too tricky with some
+		 * of the graphics so this is still the best way to do it ... */
 		theme.load("Standard",mw->getWidth(),mw->getHeight(),
 				brickScreenWidth, brickScreenHeight);
 		theme.load(name,mw->getWidth(),mw->getHeight(),
