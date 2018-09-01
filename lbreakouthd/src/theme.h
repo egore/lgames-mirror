@@ -58,9 +58,11 @@ class Theme {
 	Font fSmall;
 	Font fNormal;
 
-	Sound sReflectBrick, sReflectPaddle;
-	Sound sBrickHit, sExplosion, sEnergyHit;
-	Sound sShot, sAttach, sScore;
+	Sound sReflectBrick, sReflectPaddle, sAttach;
+	Sound sBrickHit, sExplosion, sEnergyHit, sShot;
+	Sound sDamn, sDammit, sExcellent, sVeryGood;
+	Sound sClick, sMenuClick, sMenuMotion;
+	Sound sLooseLife, sExtras[EX_NUMBER];
 
 	void addBox(Image &img, int x, int y, int w, int h);
 public:

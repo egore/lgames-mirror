@@ -180,10 +180,17 @@ void View::run()
 			showInfo(cgame.getPlayerMessage());
 		if (flags & CGF_GAMEOVER)
 			break;
+		if (flags & CGF_LIFELOST) {
+			mixer.play(theme.sLooseLife);
+			if (config.speech && config.badspeech && (rand()%2))
+				mixer.play((rand()%2)?theme.sDamn:theme.sDammit);
+		}
 		if (flags & CGF_NEWLEVEL) {
 			flags |= CGF_UPDATEBACKGROUND | CGF_UPDATEBRICKS |
 					CGF_UPDATESCORE | CGF_UPDATEEXTRAS;
 			curWallpaperId = rand() % theme.numWallpapers;
+			if (!(flags & CGF_LIFELOST) && config.speech && (rand()%2))
+				mixer.play((rand()%2)?theme.sVeryGood:theme.sExcellent);
 			dim();
 		}
 		if (flags & CGF_UPDATEBACKGROUND)
@@ -763,16 +770,6 @@ void View::playSounds()
 		}
 	}
 
-	for (int i = 0; i < game->mod.collected_extra_count[0]; i++) {
-		switch (game->mod.collected_extras[0][i]) {
-		case EX_SCORE200:
-		case EX_SCORE500:
-		case EX_SCORE1000:
-		case EX_SCORE2000:
-		case EX_SCORE5000:
-		case EX_SCORE10000:
-			mixer.play(theme.sScore);
-			break;
-		}
-	}
+	for (int i = 0; i < game->mod.collected_extra_count[0]; i++)
+		mixer.play(theme.sExtras[game->mod.collected_extras[0][i]]);
 }

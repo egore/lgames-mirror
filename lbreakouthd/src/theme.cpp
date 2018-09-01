@@ -15,6 +15,7 @@
 #include "tools.h"
 #include "sdl.h"
 #include "mixer.h"
+#include "clientgame.h"
 #include "theme.h"
 
 extern SDL_Renderer *mrc;
@@ -331,7 +332,43 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	sEnergyHit.load(path + "/energyhit.wav");
 	sShot.load(path + "/shot.wav");
 	sAttach.load(path + "/attach.wav");
-	sScore.load(path + "/score.wav");
+	sClick.load(path + "/click.wav");
+	sDamn.load(path + "/damn.wav");
+	sDammit.load(path + "/dammit.wav");
+	sExcellent.load(path + "/excellent.wav");
+	sVeryGood.load(path + "/verygood.wav");
+	sMenuClick.load(path + "/menuclick.wav");
+	sMenuMotion.load(path + "/menumotion.wav");
+	sExtras[EX_SCORE200].load(path + "/score.wav");
+	sExtras[EX_SCORE500].load(path + "/score.wav");
+	sExtras[EX_SCORE1000].load(path + "/score.wav");
+	sExtras[EX_SCORE2000].load(path + "/score.wav");
+	sExtras[EX_SCORE5000].load(path + "/score.wav");
+	sExtras[EX_SCORE10000].load(path + "/score.wav");
+	sExtras[EX_GOLDSHOWER].load(path + "/score.wav");
+	sExtras[EX_SHORTEN].load(path + "/expand.wav");
+	sExtras[EX_LENGTHEN].load(path + "/shrink.wav");
+	sExtras[EX_LIFE].load(path + "/gainlife.wav");
+	sExtras[EX_SLIME].load(path + "/attach.wav");
+	sExtras[EX_METAL].load(path + "/energyhit.wav");
+	sExtras[EX_BALL].load(path + "/extraball.wav");
+	sExtras[EX_WALL].load(path + "/wall.wav");
+	sExtras[EX_FROZEN].load(path + "/freeze.wav");
+	sExtras[EX_WEAPON].load(path + "/standard.wav");
+	sExtras[EX_RANDOM].load(path + "/standard.wav");
+	sExtras[EX_FAST].load(path + "/speedup.wav");
+	sExtras[EX_SLOW].load(path + "/speeddown.wav");
+	sExtras[EX_JOKER].load(path + "/joker.wav");
+	sExtras[EX_DARKNESS].load(path + "/darkness.wav");
+	sExtras[EX_CHAOS].load(path + "/chaos.wav");
+	sExtras[EX_GHOST_PADDLE].load(path + "/ghost.wav");
+	sExtras[EX_DISABLE].load(path + "/disable.wav");
+	sExtras[EX_TIME_ADD].load(path + "/timeadd.wav");
+	sExtras[EX_EXPL_BALL].load(path + "/explball.wav");
+	sExtras[EX_BONUS_MAGNET].load(path + "/bonusmagnet.wav");
+	sExtras[EX_MALUS_MAGNET].load(path + "/malusmagnet.wav");
+	sExtras[EX_WEAK_BALL].load(path + "/weakball.wav");
+	sLooseLife.load(path + "/looselife.wav");
 }
 
 void Theme::addBox(Image &img, int x, int y, int w, int h)
