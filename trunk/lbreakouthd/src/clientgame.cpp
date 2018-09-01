@@ -164,6 +164,7 @@ int ClientGame::update(uint ms, int px, PaddleInputState &pis)
 			}
 		} else {
 			p->setLevelSnapshot(NULL);
+			ret |= CGF_LIFELOST; /* just for sound */
 			if (p->looseLife() == 0) {
 				strprintf(msg,_("Game over, %s!"), p->getName().c_str());
 				ret |= CGF_PLAYERMESSAGE;

@@ -15,6 +15,7 @@
 #include "tools.h"
 #include "sdl.h"
 #include "mixer.h"
+#include "clientgame.h"
 #include "theme.h"
 #include "sprite.h"
 
