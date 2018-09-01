@@ -24,6 +24,8 @@ enum {
 class Theme {
 	friend View;
 
+	string stdPath; /* path to standard theme for fallbacks */
+
 	/* loaded from theme.ini */
 	string title;
 	string author;
@@ -65,7 +67,16 @@ class Theme {
 	Sound sLooseLife, sExtras[EX_NUMBER];
 
 	void addBox(Image &img, int x, int y, int w, int h);
+	string testRc(const string &path, const string &fname) {
+		if (fileExists(path + "/" + fname))
+			return path + "/" + fname;
+		else
+			return stdPath + "/" + fname;
+	}
 public:
+	Theme() {
+		stdPath = string(DATADIR) + "/themes/Standard";
+	}
 	void load(string name, uint screenWidth, uint screenHeight,
 				uint brickScreenWidth, uint brickScreenHeight);
 };

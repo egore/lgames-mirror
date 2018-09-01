@@ -1,10 +1,9 @@
 important:
-sounds
 menu
-allow subdirs in theme via theme.ini
 fix darkness (no particles)
 
 not so important:
+allow subdirs in theme via theme.ini
 extras should come up smooth
 shadow of paddle in extra wall and right lower frame
 more colored explosions

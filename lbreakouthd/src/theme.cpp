@@ -315,60 +315,56 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	shotShadow.createShadow(shot);
 
 	/* fonts; size is percent of brick height */
-	if (fileExists(path + "/" + fontSmallName))
-		fSmall.load(path + "/" + fontSmallName,
-					fontSmallSize*brickScreenHeight/100);
-	if (fileExists(path + "/" + fontNormalName))
-		fNormal.load(path + "/" + fontNormalName,
-					fontNormalSize*brickScreenHeight/100);
+	fSmall.load(testRc(path,fontSmallName),fontSmallSize*brickScreenHeight/100);
+	fNormal.load(testRc(path,fontNormalName),fontNormalSize*brickScreenHeight/100);
 	fNormal.setColor(fontColorNormal);
 	fSmall.setColor(fontColorNormal);
 
 	/* sounds */
-	sReflectBrick.load(path + "/reflectbrick.wav");
-	sReflectPaddle.load(path + "/reflectpaddle.wav");
-	sBrickHit.load(path + "/brickhit.wav");
-	sExplosion.load(path + "/explosion.wav");
-	sEnergyHit.load(path + "/energyhit.wav");
-	sShot.load(path + "/shot.wav");
-	sAttach.load(path + "/attach.wav");
-	sClick.load(path + "/click.wav");
-	sDamn.load(path + "/damn.wav");
-	sDammit.load(path + "/dammit.wav");
-	sExcellent.load(path + "/excellent.wav");
-	sVeryGood.load(path + "/verygood.wav");
-	sMenuClick.load(path + "/menuclick.wav");
-	sMenuMotion.load(path + "/menumotion.wav");
-	sExtras[EX_SCORE200].load(path + "/score.wav");
-	sExtras[EX_SCORE500].load(path + "/score.wav");
-	sExtras[EX_SCORE1000].load(path + "/score.wav");
-	sExtras[EX_SCORE2000].load(path + "/score.wav");
-	sExtras[EX_SCORE5000].load(path + "/score.wav");
-	sExtras[EX_SCORE10000].load(path + "/score.wav");
-	sExtras[EX_GOLDSHOWER].load(path + "/score.wav");
-	sExtras[EX_SHORTEN].load(path + "/expand.wav");
-	sExtras[EX_LENGTHEN].load(path + "/shrink.wav");
-	sExtras[EX_LIFE].load(path + "/gainlife.wav");
-	sExtras[EX_SLIME].load(path + "/attach.wav");
-	sExtras[EX_METAL].load(path + "/energyhit.wav");
-	sExtras[EX_BALL].load(path + "/extraball.wav");
-	sExtras[EX_WALL].load(path + "/wall.wav");
-	sExtras[EX_FROZEN].load(path + "/freeze.wav");
-	sExtras[EX_WEAPON].load(path + "/standard.wav");
-	sExtras[EX_RANDOM].load(path + "/standard.wav");
-	sExtras[EX_FAST].load(path + "/speedup.wav");
-	sExtras[EX_SLOW].load(path + "/speeddown.wav");
-	sExtras[EX_JOKER].load(path + "/joker.wav");
-	sExtras[EX_DARKNESS].load(path + "/darkness.wav");
-	sExtras[EX_CHAOS].load(path + "/chaos.wav");
-	sExtras[EX_GHOST_PADDLE].load(path + "/ghost.wav");
-	sExtras[EX_DISABLE].load(path + "/disable.wav");
-	sExtras[EX_TIME_ADD].load(path + "/timeadd.wav");
-	sExtras[EX_EXPL_BALL].load(path + "/explball.wav");
-	sExtras[EX_BONUS_MAGNET].load(path + "/bonusmagnet.wav");
-	sExtras[EX_MALUS_MAGNET].load(path + "/malusmagnet.wav");
-	sExtras[EX_WEAK_BALL].load(path + "/weakball.wav");
-	sLooseLife.load(path + "/looselife.wav");
+	sReflectBrick.load(testRc(path,"reflectbrick.wav"));
+	sReflectPaddle.load(testRc(path,"reflectpaddle.wav"));
+	sBrickHit.load(testRc(path,"brickhit.wav"));
+	sExplosion.load(testRc(path,"explosion.wav"));
+	sEnergyHit.load(testRc(path,"energyhit.wav"));
+	sShot.load(testRc(path,"shot.wav"));
+	sAttach.load(testRc(path,"attach.wav"));
+	sClick.load(testRc(path,"click.wav"));
+	sDamn.load(testRc(path,"damn.wav"));
+	sDammit.load(testRc(path,"dammit.wav"));
+	sExcellent.load(testRc(path,"excellent.wav"));
+	sVeryGood.load(testRc(path,"verygood.wav"));
+	sMenuClick.load(testRc(path,"menuclick.wav"));
+	sMenuMotion.load(testRc(path,"menumotion.wav"));
+	sExtras[EX_SCORE200].load(testRc(path,"score.wav"));
+	sExtras[EX_SCORE500].load(testRc(path,"score.wav"));
+	sExtras[EX_SCORE1000].load(testRc(path,"score.wav"));
+	sExtras[EX_SCORE2000].load(testRc(path,"score.wav"));
+	sExtras[EX_SCORE5000].load(testRc(path,"score.wav"));
+	sExtras[EX_SCORE10000].load(testRc(path,"score.wav"));
+	sExtras[EX_GOLDSHOWER].load(testRc(path,"score.wav"));
+	sExtras[EX_SHORTEN].load(testRc(path,"expand.wav"));
+	sExtras[EX_LENGTHEN].load(testRc(path,"shrink.wav"));
+	sExtras[EX_LIFE].load(testRc(path,"gainlife.wav"));
+	sExtras[EX_SLIME].load(testRc(path,"attach.wav"));
+	sExtras[EX_METAL].load(testRc(path,"energyhit.wav"));
+	sExtras[EX_BALL].load(testRc(path,"extraball.wav"));
+	sExtras[EX_WALL].load(testRc(path,"wall.wav"));
+	sExtras[EX_FROZEN].load(testRc(path,"freeze.wav"));
+	sExtras[EX_WEAPON].load(testRc(path,"standard.wav"));
+	sExtras[EX_RANDOM].load(testRc(path,"standard.wav"));
+	sExtras[EX_FAST].load(testRc(path,"speedup.wav"));
+	sExtras[EX_SLOW].load(testRc(path,"speeddown.wav"));
+	sExtras[EX_JOKER].load(testRc(path,"joker.wav"));
+	sExtras[EX_DARKNESS].load(testRc(path,"darkness.wav"));
+	sExtras[EX_CHAOS].load(testRc(path,"chaos.wav"));
+	sExtras[EX_GHOST_PADDLE].load(testRc(path,"ghost.wav"));
+	sExtras[EX_DISABLE].load(testRc(path,"disable.wav"));
+	sExtras[EX_TIME_ADD].load(testRc(path,"timeadd.wav"));
+	sExtras[EX_EXPL_BALL].load(testRc(path,"explball.wav"));
+	sExtras[EX_BONUS_MAGNET].load(testRc(path,"bonusmagnet.wav"));
+	sExtras[EX_MALUS_MAGNET].load(testRc(path,"malusmagnet.wav"));
+	sExtras[EX_WEAK_BALL].load(testRc(path,"weakball.wav"));
+	sLooseLife.load(testRc(path,"looselife.wav"));
 }
 
 void Theme::addBox(Image &img, int x, int y, int w, int h)
