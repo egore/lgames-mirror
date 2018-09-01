@@ -54,7 +54,7 @@ Config::Config()
 	maxballspeed_float = 0.7;
 	/* sounds */
 	sound = 1;
-	volume = 8;
+	volume = 50;
 	speech = 1;
 	badspeech = 0;
 	audio_buffer_size = 1024;

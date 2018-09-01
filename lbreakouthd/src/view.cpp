@@ -32,6 +32,7 @@ View::View(Config &cfg, ClientGame &_cg)
 	if (TTF_Init() < 0)
 	 		SDL_Log("TTF_Init failed: %s\n", SDL_GetError());
 	mixer.open(cfg.channels, cfg.audio_buffer_size);
+	mixer.setVolume(cfg.volume);
 
 	/* determine resolution and scale factor */
 	int sw, sh;
