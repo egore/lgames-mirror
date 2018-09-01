@@ -404,12 +404,8 @@ void View::renderBackgroundImage() {
 
 	/* lives */
 	ClientPlayer *cp = cgame.getCurrentPlayer();
-	theme.life.clearAlpha();
-	for (uint i = 0; i < cp->getMaxLives(); i++) {
-		if (i >= cp->getLives())
-			theme.life.setAlpha(128);
-		theme.life.copy(0, (MAPHEIGHT-i-1)*bh);
-	}
+	for (uint i = 0; i < cp->getMaxLives(); i++)
+		theme.life.copy(0, i < cp->getLives(), 0, (MAPHEIGHT-i-1)*bh);
 
 	SDL_SetRenderTarget(mrc,NULL);
 	SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_NONE);

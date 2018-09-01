@@ -56,7 +56,7 @@ class Theme {
 	GridImage shot, shotShadow;
 	GridImage weapon;
 	GridImage explosions;
-	Image life;
+	GridImage life;
 	Font fSmall;
 	Font fNormal;
 

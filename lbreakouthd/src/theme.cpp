@@ -286,8 +286,15 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		weapon.scale(9*brickScreenHeight/10,9*brickScreenHeight/10);
 	}
 
+	/* life symbol is brick size, vertically arranged,
+	 * first is off, second is on */
+	if (fileExists(path + "/life.png")) {
+		life.load(path + "/life.png",brickFileWidth,brickFileHeight);
+		life.scale(brickScreenWidth,brickScreenHeight);
+	}
+
 	/* create life symbol from paddle as 80% brick size */
-	/* XXX Image::scale does not work (it just crops) so use SDL directly */
+	/* XXX Image::scale does not work (it just crops) so use SDL directly
 	life.create(brickScreenWidth,brickScreenHeight);
 	int lw = 8*brickScreenWidth/10, lh = 6*brickScreenHeight/10;
 	SDL_SetRenderTarget(mrc,life.getTex());
@@ -295,7 +302,7 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	SDL_Rect drect = {
 		(int)(brickScreenWidth - lw)/2, (int)(brickScreenHeight - lh)/2, lw, lh };
 	SDL_RenderCopy(mrc,paddles.getTex(),&srect,&drect);
-	SDL_SetRenderTarget(mrc,NULL);
+	SDL_SetRenderTarget(mrc,NULL); */
 
 	/* explosions are square, scaled according to brick ratio */
 	if (fileExists(path + "/explosions.png")) {
