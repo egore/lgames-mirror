@@ -44,7 +44,8 @@ public:
 };
 
 class Particle : public Sprite {
-	Image img;
+	GridImage &img;
+	int gx, gy, sx, sy, sw, sh;
 	Vec pos, vel;
 	SmoothCounter sc;
 public:
@@ -52,11 +53,12 @@ public:
 			double px, double py, double vx, double vy, double vpms, uint lifetime);
 	int update(uint ms) {
 		pos.add(ms, vel);
-		img.setAlpha(sc.get());
 		return sc.update(ms);
 	}
 	void render() {
-		img.copy(pos.getX(), pos.getY());
+		img.setAlpha(sc.get());
+		img.copy(gx,gy,sx,sy,sw,sh, pos.getX(), pos.getY());
+		img.clearAlpha();
 	}
 };
 

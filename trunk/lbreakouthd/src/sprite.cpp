@@ -21,19 +21,13 @@
 
 extern SDL_Renderer *mrc;
 
-Particle::Particle(GridImage &simg, int gx, int gy,
-					int sx, int sy, int sw, int sh,
+Particle::Particle(GridImage &simg, int _gx, int _gy,
+					int _sx, int _sy, int _sw, int _sh,
 					double px, double py, double vx, double vy,
 					double vpms, uint lifetime)
-	: pos(px,py), vel(vx,vy)
+	: img(simg), gx(_gx), gy(_gy), sx(_sx), sy(_sy), sw(_sw), sh(_sh),
+	  pos(px,py), vel(vx,vy)
 {
-	/* create image */
-	img.create(sw,sh);
-	SDL_Texture *oldTarget = SDL_GetRenderTarget(mrc);
-	SDL_SetRenderTarget(mrc, img.getTex());
-	simg.copy(gx,gy,sx,sy,sw,sh,0,0);
-	SDL_SetRenderTarget(mrc, oldTarget);
-
 	/* adjust velocity vector */
 	vel.setLength(vpms);
 
