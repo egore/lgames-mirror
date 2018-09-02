@@ -2,18 +2,17 @@ important:
 menu
 
 not so important:
-allow subdirs in theme via theme.ini
-extras should come up smooth
-shadow of paddle in extra wall and right lower frame
-more colored explosions
+smooth floor
+fix darkness (no particles)
+smooth score counter
+redraw bricks/frame for proper ball/extra shadow
 grap input
 wrap get home dir
 show title/author on start of level
-relative mouse movement
 relative mouse movement
 show final hiscore after game
 convex paddle
 allow removing selected bricks
 warping
-...
 efficient check for active extras and draw only once per sec
+...
