@@ -343,8 +343,15 @@ void View::render()
 		theme.shot.copy(shotFrameCounter.get(),0,v2s(shot->x),v2s(shot->y));
 
 	/* sprites */
-	for (auto& s : sprites)
-		s->render();
+	if (cgame.darknessActive()) {
+		for (auto& s : sprites) {
+			Particle *p = dynamic_cast<Particle *>(s.get());
+			if (p == NULL) // skip particles
+				s->render();
+		}
+	} else
+		for (auto& s : sprites)
+			s->render();
 
 	/* extras */
 	list_reset(game->extras);
