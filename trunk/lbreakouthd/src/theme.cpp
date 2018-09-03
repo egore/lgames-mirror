@@ -57,6 +57,12 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	fontSmallSize = 70; /* percentage of brick height */
 	fontNormalName = "fnormal.otf";
 	fontNormalSize = 90;
+	menuX = 320; /* FIXME doesn't match old position */
+	menuY = 240;
+	menuItemWidth = 200;
+	menuItemHeight = 18;
+	menuFontColorNormal = {255,255,255,255};
+	menuFontColorFocus  = {255,220,0,255};
 	if (fileExists(path + "/theme.ini")) {
 		oldTheme = false;
 		FileParser fp(path + "/theme.ini");
@@ -84,6 +90,22 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		fp.get("weaponAnim.delay",weaponAnimDelay);
 		fp.get("explAnim.frames",explFrameNum);
 		fp.get("explAnim.delay",explAnimDelay);
+		fp.get("menu.centerX",menuX);
+		fp.get("menu.centerY",menuY);
+		fp.get("menu.itemWidth",menuItemWidth);
+		fp.get("menu.itemHeight",menuItemHeight);
+		fp.get("menu.fontNormal.name",menuFontNormalName);
+		fp.get("menu.fontNormal.size",menuFontNormalSize);
+		fp.get("menu.fontFocus.name",menuFontFocusName);
+		fp.get("menu.fontFocus.size",menuFontFocusSize);
+		fp.get("menu.fontNormal.color.r",menuFontColorNormal.r);
+		fp.get("menu.fontNormal.color.g",menuFontColorNormal.g);
+		fp.get("menu.fontNormal.color.b",menuFontColorNormal.b);
+		fp.get("menu.fontNormal.color.a",menuFontColorNormal.a);
+		fp.get("menu.fontFocus.color.r",menuFontColorFocus.r);
+		fp.get("menu.fontFocus.color.g",menuFontColorFocus.g);
+		fp.get("menu.fontFocus.color.b",menuFontColorFocus.b);
+		fp.get("menu.fontFocus.color.a",menuFontColorFocus.a);
 	}
 
 	if (oldTheme) {
@@ -293,17 +315,6 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		life.scale(brickScreenWidth,brickScreenHeight);
 	}
 
-	/* create life symbol from paddle as 80% brick size */
-	/* XXX Image::scale does not work (it just crops) so use SDL directly
-	life.create(brickScreenWidth,brickScreenHeight);
-	int lw = 8*brickScreenWidth/10, lh = 6*brickScreenHeight/10;
-	SDL_SetRenderTarget(mrc,life.getTex());
-	SDL_Rect srect = { 0, 0, paddles.getGridWidth()*3, paddles.getGridHeight() };
-	SDL_Rect drect = {
-		(int)(brickScreenWidth - lw)/2, (int)(brickScreenHeight - lh)/2, lw, lh };
-	SDL_RenderCopy(mrc,paddles.getTex(),&srect,&drect);
-	SDL_SetRenderTarget(mrc,NULL); */
-
 	/* explosions are square, scaled according to brick ratio */
 	if (fileExists(path + "/explosions.png")) {
 		uint sz = Image::getWidth(path + "/explosions.png") / explFrameNum;
@@ -321,11 +332,33 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	extrasShadow.createShadow(extras);
 	shotShadow.createShadow(shot);
 
-	/* fonts; size is percent of brick height */
-	fSmall.load(testRc(path,fontSmallName),fontSmallSize*brickScreenHeight/100);
-	fNormal.load(testRc(path,fontNormalName),fontNormalSize*brickScreenHeight/100);
+	/* fonts */
+	fSmall.load(testRc(path,fontSmallName),fontSmallSize * brickScreenHeight / brickFileHeight);
+	fNormal.load(testRc(path,fontNormalName),fontNormalSize * brickScreenHeight / brickFileHeight);
 	fNormal.setColor(fontColorNormal);
 	fSmall.setColor(fontColorNormal);
+
+	/* menu stuff */
+	bool menuBackLoaded = false;
+	menuX = menuX * brickScreenWidth / brickFileWidth;
+	menuY = menuY * brickScreenHeight / brickFileHeight;
+	menuItemWidth = menuItemWidth * brickScreenWidth / brickFileWidth;
+	menuItemHeight = menuItemHeight * brickScreenHeight / brickFileHeight;
+	if (fileExists(path + "/menuback.png")) {
+		menuBackground.load(path + "/menuback.png");
+		menuBackLoaded = true;
+	} else if (fileExists(path + "/menuback.jpg")) {
+		menuBackground.load(path + "/menuback.jpg");
+		menuBackLoaded = true;
+	}
+	if (menuBackLoaded && brickFileHeight != brickScreenHeight)
+		menuBackground.scale(
+				menuBackground.getWidth() * brickScreenWidth / brickFileWidth,
+				menuBackground.getHeight() * brickScreenHeight / brickFileHeight);
+	fMenuNormal.load(testRc(path,menuFontNormalName), menuFontNormalSize * brickScreenHeight / brickFileHeight);
+	fMenuFocus.load(testRc(path,menuFontFocusName), menuFontFocusSize * brickScreenHeight / brickFileHeight);
+	fMenuNormal.setColor(menuFontColorNormal);
+	fMenuFocus.setColor(menuFontColorFocus);
 
 	/* sounds */
 	sReflectBrick.load(testRc(path,"reflectbrick.wav"));

@@ -2,7 +2,7 @@ bin_PROGRAMS = lbreakouthd
 lbreakouthd_SOURCES = sdl.cpp sdl.h view.h view.cpp \
 	tools.h tools.cpp main.cpp clientgame.h clientgame.cpp \
 	config.cpp config.h hiscores.cpp hiscores.h theme.cpp theme.h \
-	sprite.cpp sprite.h mixer.h
+	sprite.cpp sprite.h mixer.h menu.cpp menu.h
 lbreakouthd_LDADD = ../libgame/libgame.a
 
 EXTRA_DIST = empty.hscr

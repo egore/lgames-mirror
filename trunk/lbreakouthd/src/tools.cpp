@@ -65,7 +65,7 @@ FileParser::FileParser(const string&  fname)
 		} else if ((pos = line.find('}')) != string::npos) {
 			/* subset done, reduce prefix */
 			prefix = prefix.substr(0,prefix.length()-1);
-			if ((pos = prefix.find('.')) == string::npos)
+			if ((pos = prefix.rfind('.')) == string::npos)
 				prefix = "";
 			else
 				prefix = prefix.substr(0,pos) + ".";
@@ -158,4 +158,34 @@ void strprintf(string& str, const char *fmt, ... )
 	va_end(args);
 	if (buf)
 		free(buf);
+}
+
+/** Read all file names from directory exluding .* and Makefile.*
+ * Return number of read items, -1 on error.
+ */
+int readDir(const string &dname, vector<string> &fnames)
+{
+	DIR *dir;
+	struct dirent *ent;
+	struct stat sbuf;
+
+	if ((dir = opendir (dname.c_str())) == NULL) {
+		_logerr("Could not open %s\n",dname.c_str());
+		return -1;
+	}
+
+	fnames.clear();
+	while ((ent = readdir(dir)) != NULL) {
+		string fname = dname + "/" + string(ent->d_name);
+		stat(fname.c_str(),&sbuf);
+		if (S_ISDIR(sbuf.st_mode))
+			continue;
+		if (strncmp(ent->d_name,"Makefile",8) == 0)
+			continue;
+		if (ent->d_name[0] == '.')
+			continue;
+		fnames.push_back(ent->d_name);
+	}
+	closedir (dir);
+	return fnames.size();
 }

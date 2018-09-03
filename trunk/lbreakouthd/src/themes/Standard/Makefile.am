@@ -1,6 +1,7 @@
 EXTRA_DIST = back0.jpg back1.jpg back2.jpg back3.jpg back4.jpg \
 CREDITS SIL-OFL.txt shot.png ball.png paddle.png weapon.png \
 bricks.png extras.png life.png fsmall.otf fnormal.otf theme.ini \
+menuback.jpg \
 attach.wav       energyhit.wav  goldshower.wav     shot.wav \
 bonusmagnet.wav  excellent.wav  joker.wav          shrink.wav \
 brickhit.wav     expand.wav     looselife.wav      speeddown.wav \

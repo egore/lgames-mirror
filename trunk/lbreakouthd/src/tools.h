@@ -20,6 +20,7 @@ using namespace std;
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <dirent.h>
 #include <list>
 #include <string>
 #include <vector>
@@ -48,7 +49,7 @@ enum {
 	MAXLEVELS = 40
 };
 
-#define DEBUGLEVEL 0
+#define DEBUGLEVEL 1
 #define _logerr(...) do { \
 		fprintf(stderr,"ERROR: %s:%d: %s(): ", __FILE__, __LINE__, __FUNCTION__); \
 		fprintf (stderr, __VA_ARGS__); \
@@ -191,5 +192,7 @@ public:
 		y += s * v.getY();
 	}
 };
+
+int readDir(const string &dname, vector<string> &fnames);
 
 #endif /* SRC_TOOLS_H_ */

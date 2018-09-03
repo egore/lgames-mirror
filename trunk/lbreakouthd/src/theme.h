@@ -16,6 +16,7 @@
 #define SRC_THEME_H_
 
 class View;
+class Menu;
 
 enum {
 	MAXWALLPAPERS= 10
@@ -23,6 +24,7 @@ enum {
 
 class Theme {
 	friend View;
+	friend Menu;
 
 	string stdPath; /* path to standard theme for fallbacks */
 
@@ -45,7 +47,12 @@ class Theme {
 	uint weaponAnimDelay;
 	uint explFrameNum;
 	uint explAnimDelay;
+	uint menuX, menuY, menuItemWidth, menuItemHeight;
+	string menuFontNormalName, menuFontFocusName;
+	uint menuFontNormalSize, menuFontFocusSize;
+	SDL_Color menuFontColorNormal, menuFontColorFocus;
 
+	Image menuBackground;
 	Image wallpapers[MAXWALLPAPERS];
 	uint numWallpapers;
 	Image frame, frameShadow;
@@ -57,8 +64,8 @@ class Theme {
 	GridImage weapon;
 	GridImage explosions;
 	GridImage life;
-	Font fSmall;
-	Font fNormal;
+	Font fSmall, fNormal;
+	Font fMenuNormal, fMenuFocus;
 
 	Sound sReflectBrick, sReflectPaddle, sAttach;
 	Sound sBrickHit, sExplosion, sEnergyHit, sShot;

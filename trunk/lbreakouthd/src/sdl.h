@@ -182,4 +182,19 @@ public:
 	fprintf(stderr,"ERROR: %s:%d: %s(): %s\n", \
 			__FILE__, __LINE__, __FUNCTION__, SDL_GetError())
 
+class Ticks {
+	Uint32 now, last;
+public:
+	Ticks() { now = last = SDL_GetTicks(); }
+	void reset() { now = last = SDL_GetTicks(); }
+	Uint32 get() {
+		now = SDL_GetTicks();
+		Uint32 ms = now - last;
+		if (ms < 1)
+			ms = 1;
+		last = now;
+		return ms;
+	}
+};
+
 #endif /* SDL_H_ */

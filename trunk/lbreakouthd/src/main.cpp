@@ -21,6 +21,7 @@ using namespace std;
 #include "mixer.h"
 #include "theme.h"
 #include "sprite.h"
+#include "menu.h"
 #include "view.h"
 
 /* for parsing arguments old-school because no easy way in C++11 */
@@ -89,12 +90,13 @@ int main(int argc, char **argv)
 
 	ClientGame cgame(config);
 	View view(config, cgame);
-
-	srand(time(NULL));
-	cgame.init(setname);
 	if (themename != "Standard")
 		view.loadTheme(themename);
-	view.run();
+
+	srand(time(NULL));
+	view.runMenu();
+	//cgame.init(setname);
+	//view.run();
 
 	return 0;
 }
