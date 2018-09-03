@@ -43,9 +43,9 @@ public:
 };
 
 class Mixer {
-	bool opened;
+	bool opened, mute;
 public:
-	Mixer() : opened(false) {}
+	Mixer() : opened(false), mute(false) {}
 	int open(int numChans, int bufSize) {
 		if (Mix_OpenAudio(22050,MIX_DEFAULT_FORMAT,2,bufSize) < 0) {
 			_logsdlerr();
@@ -69,11 +69,12 @@ public:
 		v = v * MIX_MAX_VOLUME / 100;
 		Mix_Volume(-1, v);
 	}
+	void setMute(int m) { mute = (m?true:false); }
 	void halt() { Mix_HaltChannel(-1); }
 	void pause() { Mix_Pause(-1); }
 	void resume() { Mix_Resume(-1); }
 	void play(Sound &snd, int c = -1) {
-		if (snd.chunk && opened)
+		if (snd.chunk && opened && !mute)
 			Mix_PlayChannel(c,snd.chunk,0);
 	}
 };

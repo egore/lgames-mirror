@@ -36,6 +36,10 @@ class View {
 	Theme theme;
 	Mixer mixer;
 	MainWindow *mw;
+	unique_ptr<Menu> rootMenu;
+	Menu *curMenu;
+	int customLevelsetId; /* XXX quick haxx, baby... */
+	vector<string> customLevelsetNames;
 	ClientGame &cgame;
 	Uint32 brickAreaWidth, brickAreaHeight;
 	Uint32 brickScreenWidth, brickScreenHeight;
@@ -73,6 +77,11 @@ class View {
 	void createSprites();
 	void getBallViewInfo(Ball *ball, int *x, int *y, uint *type);
 	void playSounds();
+	void createMenus();
+	void wait(uint ms) {
+		SDL_Delay(ms);
+		SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+	}
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
@@ -87,6 +96,8 @@ public:
 	}
 	void run();
 	void render();
+	void runMenu();
+	void renderMenu();
 };
 
 #endif /* VIEW_H_ */

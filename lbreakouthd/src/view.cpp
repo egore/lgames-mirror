@@ -18,12 +18,14 @@
 #include "mixer.h"
 #include "theme.h"
 #include "sprite.h"
+#include "menu.h"
 #include "view.h"
 
 extern SDL_Renderer *mrc;
 
 View::View(Config &cfg, ClientGame &_cg)
-	: config(cfg), cgame(_cg), quitReceived(false),
+	: config(cfg), curMenu(NULL), customLevelsetId(0),
+	  cgame(_cg), quitReceived(false),
 	  fpsCycles(0), fpsStart(0), fps(0)
 {
 	_loginfo("Initializing SDL\n");
@@ -63,6 +65,9 @@ View::View(Config &cfg, ClientGame &_cg)
 	weaponFrameCounter.init(theme.weaponFrameNum, theme.weaponAnimDelay);
 	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
 
+	/* create menu structure */
+	createMenus();
+
 	/* create render images and positions */
 	int boardX = MAPWIDTH * brickScreenWidth;
 	int boardWidth = sw - boardX - brickScreenWidth;
@@ -90,6 +95,8 @@ View::~View()
 	 * segfault but attribute's dtors are called after ~View is finished */
 	theme.fSmall.free();
 	theme.fNormal.free();
+	theme.fMenuNormal.free();
+	theme.fMenuFocus.free();
 
 	_loginfo("Finalizing SDL\n");
 	TTF_Quit();
@@ -103,10 +110,10 @@ void View::run()
 	int flags;
 	double px = 0;
 	PaddleInputState pis;
-	Uint32 ms, tsNow, tsLast;
+	Ticks ticks;
 	int oldmx = 0;
+	Uint32 ms;
 
-	tsNow = tsLast = SDL_GetTicks();
 	fpsStart = SDL_GetTicks();
 
 	renderBackgroundImage();
@@ -123,7 +130,7 @@ void View::run()
 				quitReceived = true;
 			if (ev.type == SDL_KEYUP && ev.key.keysym.scancode == SDL_SCANCODE_P) {
 				showInfo(_("Pause"));
-				tsNow = tsLast = SDL_GetTicks();
+				ticks.reset();
 			}
 		}
 
@@ -161,11 +168,7 @@ void View::run()
 			pis.turbo = 1;
 
 		/* get passed time */
-		tsNow = SDL_GetTicks();
-		ms = tsNow - tsLast;
-		if (ms < 1)
-			ms = 1;
-		tsLast = tsNow;
+		ms = ticks.get();
 
 		/* update animations and particles */
 		shotFrameCounter.update(ms);
@@ -776,4 +779,131 @@ void View::playSounds()
 
 	for (int i = 0; i < game->mod.collected_extra_count[0]; i++)
 		mixer.play(theme.sExtras[game->mod.collected_extras[0][i]]);
+}
+
+void View::createMenus()
+{
+	Menu *mNewGame, *mOptions, *mAudio;
+	const char *diffNames[] = {_("Kids"),_("Easy"),_("Medium"),_("Hard") } ;
+
+	rootMenu = unique_ptr<Menu>(new Menu(theme));
+	mNewGame = new Menu(theme);
+	mOptions = new Menu(theme);
+	mAudio = new Menu(theme);
+
+	mNewGame->add(new MenuItem(_("Start Original Levels"),AID_STARTORIGINAL));
+	mNewGame->add(new MenuItem(_("Start Custom Levels"),AID_STARTCUSTOM));
+	/* FIXME: get all from home dir as well and represent much better than this */
+	readDir(string(DATADIR)+"/levels", customLevelsetNames);
+	mNewGame->add(new MenuItemList(_("Custom Levelset"),AID_NONE,customLevelsetId,customLevelsetNames));
+	mNewGame->add(new MenuItemRange(_("Players"),AID_NONE,
+					config.player_count,1,MAX_PLAYERS,1));
+	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
+	mNewGame->add(new MenuItemBack(rootMenu.get()));
+	mNewGame->adjust();
+
+	mAudio->add(new MenuItemSwitch(_("Sound"),AID_SOUND,config.sound));
+	mAudio->add(new MenuItemRange(_("Volume"),AID_VOLUME,config.volume,0,100,10));
+	mAudio->add(new MenuItemBack(mOptions));
+	mAudio->adjust();
+
+	mOptions->add(new MenuItem(_("Controls")));
+	mOptions->add(new MenuItem(_("Graphics")));
+	mOptions->add(new MenuItemSub(_("Audio"),mAudio));
+	mOptions->add(new MenuItem(_("Advanced")));
+	mOptions->add(new MenuItemBack(rootMenu.get()));
+	mOptions->adjust();
+
+	rootMenu->add(new MenuItemSub(_("New Game"), mNewGame));
+	rootMenu->add(new MenuItem(_("Resume Game"), AID_RESUME));
+	rootMenu->add(new MenuItemSub(_("Options"), mOptions));
+	rootMenu->add(new MenuItem(_("Help"), AID_HELP));
+	rootMenu->add(new MenuItem(_("Quit"), AID_QUIT));
+	rootMenu->adjust();
+}
+
+void View::runMenu()
+{
+	SDL_Event ev;
+	Ticks ticks;
+	MenuItemSub *subItem;
+	MenuItemBack *backItem;
+
+	curMenu = rootMenu.get();
+	renderMenu();
+
+	while (!quitReceived) {
+		/* handle events */
+		if (SDL_PollEvent(&ev)) {
+			if (ev.type == SDL_QUIT)
+				quitReceived = true;
+		}
+
+		/* update current menu */
+		curMenu->update(ticks.get());
+
+		/* handle events */
+		if (int aid = curMenu->handleEvent(ev)) {
+			if (aid != AID_FOCUSCHANGED)
+				mixer.play(theme.sMenuClick);
+			switch (aid) {
+			case AID_FOCUSCHANGED:
+				mixer.play(theme.sMenuMotion);
+				break;
+			case AID_QUIT:
+				quitReceived = true;
+				break;
+			case AID_ENTERMENU:
+				subItem = dynamic_cast<MenuItemSub*>(curMenu->getCurItem());
+				if (subItem) { /* should never fail */
+					curMenu = subItem->getSubMenu();
+				} else
+					_logerr("Oops, submenu not found...\n");
+				break;
+			case AID_LEAVEMENU:
+				backItem = dynamic_cast<MenuItemBack*>(curMenu->getCurItem());
+				if (backItem) { /* should never fail */
+					curMenu = backItem->getLastMenu();
+				} else
+					_logerr("Oops, last menu not found...\n");
+				break;
+			case AID_SOUND:
+				mixer.setMute(!config.sound);
+				break;
+			case AID_VOLUME:
+				mixer.setVolume(config.volume);
+				break;
+			case AID_STARTORIGINAL:
+				cgame.init("LBreakout2");
+				wait(100);
+				run();
+				wait(100);
+				ticks.reset();
+				SDL_ShowCursor(1);
+				break;
+			case AID_STARTCUSTOM:
+				cgame.init(customLevelsetNames[customLevelsetId]);
+				wait(100);
+				run();
+				wait(100);
+				ticks.reset();
+				SDL_ShowCursor(1);
+				break;
+			}
+		}
+
+		/* render */
+		renderMenu();
+		SDL_RenderPresent(mrc);
+		if (config.fps)
+			SDL_Delay(10);
+		SDL_FlushEvent(SDL_MOUSEMOTION); /* prevent event loop from dying */
+	}
+}
+
+
+void View::renderMenu()
+{
+	theme.menuBackground.copy();
+	curMenu->render();
 }
