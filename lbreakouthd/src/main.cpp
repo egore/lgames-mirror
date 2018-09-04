@@ -52,11 +52,10 @@ int main(int argc, char **argv)
 	while ((opt = getopt(argc, argv, "fp:w:t:h")) != -1) {
 		switch (opt) {
 		case 'f':
-			config.fullscreen = 1;
+			config.mode = 0;
 			break;
 		case 'w':
-			config.fullscreen = 0;
-			config.resolution = atoi(optarg);
+			config.mode = atoi(optarg);
 			break;
 		case 'p':
 			str = optarg;
@@ -90,8 +89,6 @@ int main(int argc, char **argv)
 
 	ClientGame cgame(config);
 	View view(config, cgame);
-	if (themename != "Standard")
-		view.loadTheme(themename);
 
 	srand(time(NULL));
 	view.runMenu();

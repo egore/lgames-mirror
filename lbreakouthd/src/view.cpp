@@ -24,7 +24,7 @@
 extern SDL_Renderer *mrc;
 
 View::View(Config &cfg, ClientGame &_cg)
-	: config(cfg), curMenu(NULL), curLevelsetId(0),
+	: config(cfg), mw(NULL), curMenu(NULL), curLevelsetId(0),
 	  cgame(_cg), quitReceived(false),
 	  fpsCycles(0), fpsStart(0), fps(0)
 {
@@ -36,19 +36,42 @@ View::View(Config &cfg, ClientGame &_cg)
 	mixer.open(cfg.channels, cfg.audio_buffer_size);
 	mixer.setVolume(cfg.volume);
 
+	/* FIXME: get all from home dir as well and represent much better than this */
+	readDir(string(DATADIR)+"/levels", RD_FILES, levelsetNames);
+
+	/* FIXME: get all from home dir as well and represent much better than this */
+	readDir(string(DATADIR)+"/themes", RD_FOLDERS, themeNames);
+	if ((uint)config.theme_id >= themeNames.size())
+		config.theme_id = 0;
+	config.theme_count = themeNames.size();
+
+	MainWindow::getModeNames(modeNames);
+	if ((uint)config.mode >= modeNames.size())
+		config.mode = 0;
+
+	init(themeNames[config.theme_id], MainWindow::getModeResolution(config.mode));
+}
+
+/** (Re)Initialize window, theme and menu.
+ * t is theme name, r=0 means fullscreen, otherwise vertical resolution. */
+void View::init(string t, uint r)
+{
+	_loginfo("Initializing View (Theme=%s, Resolution=%d)\n",t.c_str(),r);
+
 	/* determine resolution and scale factor */
 	int sw, sh;
-	sh = config.resolution;
-	sw = sh * 16 / 9;
-	if (config.fullscreen) {
+	if (r == 0) {
 		/* use window height for resolution */
 		SDL_DisplayMode mode;
 		SDL_GetCurrentDisplayMode(0,&mode);
 		sh = mode.h;
 		sw = mode.w;
 		_loginfo("Using fullscreen resolution %dx%d\n",mode.w,mode.h);
-	} else
+	} else {
+		sh = r;
+		sw = sh * 16 / 9;
 		_loginfo("Using window resolution %dx%d\n",sw,sh);
+	}
 	brickAreaHeight = sh;
 	brickAreaWidth = sh * VG_BRICKAREAWIDTH / VG_BRICKAREAHEIGHT;
 	scaleFactor = brickAreaWidth * 100 / VG_BRICKAREAWIDTH;
@@ -57,11 +80,18 @@ View::View(Config &cfg, ClientGame &_cg)
 	_loginfo("Scale factor x100: %d\n",scaleFactor);
 	_loginfo("Brick screen size: %dx%d\n",brickScreenWidth,brickScreenHeight);
 
-	/* create main window */
-	mw = new MainWindow("LBreakoutHD", sw, sh, config.fullscreen);
+	/* (re)create main window */
+	if (mw)
+		delete mw;
+	mw = new MainWindow("LBreakoutHD", sw, sh, (r==0) );
 
 	/* load theme (scaled if necessary) */
-	theme.load("Standard", sw, sh, brickScreenWidth, brickScreenHeight);
+	/* XXX load standard theme first for fallback, theme.testRc is
+	 * ok for sounds and fonts but gets too tricky with some
+	 * of the graphics so this is still the best way to do it ... */
+	theme.load("Standard",sw, sh, brickScreenWidth, brickScreenHeight);
+	if (t != "Standard")
+		theme.load(t, sw, sh, brickScreenWidth, brickScreenHeight);
 	weaponFrameCounter.init(theme.weaponFrameNum, theme.weaponAnimDelay);
 	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
 
@@ -783,42 +813,48 @@ void View::playSounds()
 
 void View::createMenus()
 {
-	Menu *mNewGame, *mOptions, *mAudio;
+	Menu *mNewGame, *mOptions, *mAudio, *mGraphics;
 	const char *diffNames[] = {_("Kids"),_("Easy"),_("Medium"),_("Hard") } ;
 
-	rootMenu = unique_ptr<Menu>(new Menu(theme));
+	rootMenu.reset(); /* delete any old menu ... */
+
+	rootMenu = unique_ptr<Menu>(new Menu(theme)); /* .. or is assigning a new object doing it? */
 	mNewGame = new Menu(theme);
 	mOptions = new Menu(theme);
 	mAudio = new Menu(theme);
+	mGraphics = new Menu(theme);
+	graphicsMenu = mGraphics; /* needed to return after mode/theme change */
 
 	mNewGame->add(new MenuItem(_("Start Original Levels"),AID_STARTORIGINAL));
 	mNewGame->add(new MenuItem(_("Start Custom Levels"),AID_STARTCUSTOM));
-	/* FIXME: get all from home dir as well and represent much better than this */
-	readDir(string(DATADIR)+"/levels", levelsetNames);
 	mNewGame->add(new MenuItemList(_("Custom Levelset"),AID_NONE,curLevelsetId,levelsetNames));
 	mNewGame->add(new MenuItemRange(_("Players"),AID_NONE,
 					config.player_count,1,MAX_PLAYERS,1));
 	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
 	mNewGame->add(new MenuItemBack(rootMenu.get()));
-	mNewGame->adjust();
+
+	mGraphics->add(new MenuItemList(_("Theme"),AID_NONE,config.theme_id,themeNames));
+	mGraphics->add(new MenuItem(_("Apply Theme"),AID_APPLYTHEME));
+	mGraphics->add(new MenuItemList(_("Mode"),AID_NONE,config.mode,modeNames));
+	mGraphics->add(new MenuItem(_("Apply Mode"),AID_APPLYMODE));
+	mGraphics->add(new MenuItemBack(mOptions));
 
 	mAudio->add(new MenuItemSwitch(_("Sound"),AID_SOUND,config.sound));
 	mAudio->add(new MenuItemRange(_("Volume"),AID_VOLUME,config.volume,0,100,10));
 	mAudio->add(new MenuItemBack(mOptions));
-	mAudio->adjust();
 
 	mOptions->add(new MenuItem(_("Controls")));
-	mOptions->add(new MenuItem(_("Graphics")));
+	mOptions->add(new MenuItemSub(_("Graphics"),mGraphics));
 	mOptions->add(new MenuItemSub(_("Audio"),mAudio));
 	mOptions->add(new MenuItem(_("Advanced")));
 	mOptions->add(new MenuItemBack(rootMenu.get()));
-	mOptions->adjust();
 
 	rootMenu->add(new MenuItemSub(_("New Game"), mNewGame));
 	rootMenu->add(new MenuItem(_("Resume Game"), AID_RESUME));
 	rootMenu->add(new MenuItemSub(_("Options"), mOptions));
 	rootMenu->add(new MenuItem(_("Help"), AID_HELP));
 	rootMenu->add(new MenuItem(_("Quit"), AID_QUIT));
+
 	rootMenu->adjust();
 }
 
@@ -872,6 +908,12 @@ void View::runMenu()
 				break;
 			case AID_VOLUME:
 				mixer.setVolume(config.volume);
+				break;
+			case AID_APPLYTHEME:
+			case AID_APPLYMODE:
+				init(themeNames[config.theme_id],
+					MainWindow::getModeResolution(config.mode));
+				curMenu = graphicsMenu;
 				break;
 			case AID_STARTORIGINAL:
 				cgame.init("LBreakout2");

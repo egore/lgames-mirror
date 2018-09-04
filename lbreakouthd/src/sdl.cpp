@@ -15,7 +15,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include "tools.h"
 #include "sdl.h"
 
 int Geom::sw = 640; /* safe values before MainWindow is called */
@@ -42,6 +41,7 @@ MainWindow::MainWindow(const char *title, int _w, int _h, int _full)
 	h = _h;
 	Geom::sw = w;
 	Geom::sh = h;
+	_loginfo("Creating main window with %dx%d, fullscreen=%d\n",w,h,_full);
 	if( (mw = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,
 				SDL_WINDOWPOS_CENTERED, w, h, flags)) == NULL)
 		_logsdlerr();

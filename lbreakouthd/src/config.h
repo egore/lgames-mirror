@@ -76,8 +76,7 @@ public:
 
 	/* graphics */
 	int anim;
-	int resolution; /* window mode only: vertical pixels for 16:9 */
-	int fullscreen; /* use screen height for resolution */
+	int mode; /* id of mode, see MainWindow for modes */
 	int fade;
 	int bonus_info;
 	int fps; /* frames per second: 0 - no limit, 1 - 50, 2 - 100, 3 - 200 */

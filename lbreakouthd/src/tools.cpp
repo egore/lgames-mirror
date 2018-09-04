@@ -163,7 +163,7 @@ void strprintf(string& str, const char *fmt, ... )
 /** Read all file names from directory exluding .* and Makefile.*
  * Return number of read items, -1 on error.
  */
-int readDir(const string &dname, vector<string> &fnames)
+int readDir(const string &dname, int type, vector<string> &fnames)
 {
 	DIR *dir;
 	struct dirent *ent;
@@ -178,7 +178,10 @@ int readDir(const string &dname, vector<string> &fnames)
 	while ((ent = readdir(dir)) != NULL) {
 		string fname = dname + "/" + string(ent->d_name);
 		stat(fname.c_str(),&sbuf);
-		if (S_ISDIR(sbuf.st_mode))
+		if (type == RD_FOLDERS) {
+			if (!S_ISDIR(sbuf.st_mode))
+				continue;
+		} else if (S_ISDIR(sbuf.st_mode))
 			continue;
 		if (strncmp(ent->d_name,"Makefile",8) == 0)
 			continue;
