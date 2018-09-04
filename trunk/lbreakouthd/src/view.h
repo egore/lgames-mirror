@@ -32,14 +32,19 @@ enum {
 };
 
 class View {
+	/* general */
 	Config &config;
 	Theme theme;
 	Mixer mixer;
 	MainWindow *mw;
+
+	/* menu */
 	unique_ptr<Menu> rootMenu;
 	Menu *curMenu;
-	int customLevelsetId; /* XXX quick haxx, baby... */
-	vector<string> customLevelsetNames;
+	int curLevelsetId;
+	vector<string> levelsetNames;
+
+	/* game */
 	ClientGame &cgame;
 	Uint32 brickAreaWidth, brickAreaHeight;
 	Uint32 brickScreenWidth, brickScreenHeight;

@@ -24,7 +24,7 @@
 extern SDL_Renderer *mrc;
 
 View::View(Config &cfg, ClientGame &_cg)
-	: config(cfg), curMenu(NULL), customLevelsetId(0),
+	: config(cfg), curMenu(NULL), curLevelsetId(0),
 	  cgame(_cg), quitReceived(false),
 	  fpsCycles(0), fpsStart(0), fps(0)
 {
@@ -794,8 +794,8 @@ void View::createMenus()
 	mNewGame->add(new MenuItem(_("Start Original Levels"),AID_STARTORIGINAL));
 	mNewGame->add(new MenuItem(_("Start Custom Levels"),AID_STARTCUSTOM));
 	/* FIXME: get all from home dir as well and represent much better than this */
-	readDir(string(DATADIR)+"/levels", customLevelsetNames);
-	mNewGame->add(new MenuItemList(_("Custom Levelset"),AID_NONE,customLevelsetId,customLevelsetNames));
+	readDir(string(DATADIR)+"/levels", levelsetNames);
+	mNewGame->add(new MenuItemList(_("Custom Levelset"),AID_NONE,curLevelsetId,levelsetNames));
 	mNewGame->add(new MenuItemRange(_("Players"),AID_NONE,
 					config.player_count,1,MAX_PLAYERS,1));
 	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
@@ -882,7 +882,7 @@ void View::runMenu()
 				SDL_ShowCursor(1);
 				break;
 			case AID_STARTCUSTOM:
-				cgame.init(customLevelsetNames[customLevelsetId]);
+				cgame.init(levelsetNames[curLevelsetId]);
 				wait(100);
 				run();
 				wait(100);
