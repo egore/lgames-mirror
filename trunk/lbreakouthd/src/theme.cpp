@@ -343,23 +343,17 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	fSmall.setColor(fontColorNormal);
 
 	/* menu stuff */
-	bool menuBackLoaded = false;
-	menuX = menuX * brickScreenWidth / brickFileWidth;
-	menuY = menuY * brickScreenHeight / brickFileHeight;
-	menuItemWidth = menuItemWidth * brickScreenWidth / brickFileWidth;
-	menuItemHeight = menuItemHeight * brickScreenHeight / brickFileHeight;
-	if (fileExists(path + "/menuback.png")) {
+	Image::useColorKeyBlack = false; /* not for backgrounds */
+	if (fileExists(path + "/menuback.png"))
 		menuBackground.load(path + "/menuback.png");
-		menuBackLoaded = true;
-	} else if (fileExists(path + "/menuback.jpg")) {
+	else if (fileExists(path + "/menuback.jpg"))
 		menuBackground.load(path + "/menuback.jpg");
-		menuBackLoaded = true;
-	}
 	menuBackground.setBlendMode(0);
-	if (menuBackLoaded && brickFileHeight != brickScreenHeight)
-		menuBackground.scale(
-				menuBackground.getWidth() * brickScreenWidth / brickFileWidth,
-				menuBackground.getHeight() * brickScreenHeight / brickFileHeight);
+	menuX = menuX * screenWidth / menuBackground.getWidth();
+	menuY = menuY * screenHeight / menuBackground.getHeight();
+	menuItemWidth = menuItemWidth * screenWidth / menuBackground.getWidth();
+	menuItemHeight = menuItemHeight * screenHeight / menuBackground.getHeight();
+	menuBackground.scale(screenWidth, screenHeight);
 	fMenuNormal.load(testRc(path,menuFontNormalName), menuFontNormalSize * brickScreenHeight / brickFileHeight);
 	fMenuFocus.load(testRc(path,menuFontFocusName), menuFontFocusSize * brickScreenHeight / brickFileHeight);
 	fMenuNormal.setColor(menuFontColorNormal);
