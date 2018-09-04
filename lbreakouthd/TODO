@@ -2,6 +2,7 @@ important:
 menu
 
 not so important:
+setting theme.ini default screws values for loading menu/explosions...  
 crash on applying same 720p mode twice
 after mode change first click is not handled
 chaos not attracted by malus magnet
