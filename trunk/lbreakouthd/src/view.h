@@ -40,9 +40,11 @@ class View {
 
 	/* menu */
 	unique_ptr<Menu> rootMenu;
-	Menu *curMenu;
+	Menu *curMenu, *graphicsMenu;
 	int curLevelsetId;
 	vector<string> levelsetNames;
+	vector<string> themeNames;
+	vector<string> modeNames;
 
 	/* game */
 	ClientGame &cgame;
@@ -90,15 +92,7 @@ class View {
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
-	void loadTheme(const string &name) {
-		/* XXX load standard theme first for fallback, theme.testRc is
-		 * ok for sounds and fonts but gets too tricky with some
-		 * of the graphics so this is still the best way to do it ... */
-		theme.load("Standard",mw->getWidth(),mw->getHeight(),
-				brickScreenWidth, brickScreenHeight);
-		theme.load(name,mw->getWidth(),mw->getHeight(),
-				brickScreenWidth, brickScreenHeight);
-	}
+	void init(string t, uint r);
 	void run();
 	void render();
 	void runMenu();

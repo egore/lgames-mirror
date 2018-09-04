@@ -20,6 +20,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+#include "tools.h"
 
 class MainWindow {
 public:
@@ -32,6 +33,31 @@ public:
 	int getWidth() { return w; }
 	int getHeight() { return h; }
 	void refresh();
+
+	static int getModeNames(vector<string> &list) {
+		SDL_DisplayMode mode;
+		SDL_GetCurrentDisplayMode(0,&mode);
+		list.clear();
+		list.push_back(_("Fullscreen"));
+		list.push_back(_("853x480 Window"));
+		if (mode.h > 720)
+			list.push_back(_("1280x720 Window"));
+		if (mode.h > 768)
+			list.push_back(_("1366x768 Window"));
+		if (mode.h > 1080)
+			list.push_back(_("1920x1080 Window"));
+		return list.size();
+	}
+	static int getModeResolution(int mode) {
+		switch (mode) {
+		case 0: return 0;
+		case 1: return 480;
+		case 2: return 720;
+		case 3: return 768;
+		default: return 1080;
+		}
+		return 0;
+	}
 };
 
 class Geom {

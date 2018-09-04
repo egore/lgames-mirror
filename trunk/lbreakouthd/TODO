@@ -2,6 +2,8 @@ important:
 menu
 
 not so important:
+crash on applying same 720p mode twice
+after mode change first click is not handled
 chaos not attracted by malus magnet
 smaller brick layer image as lower rows can't be edited
 smooth extra floor wall

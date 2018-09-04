@@ -54,13 +54,17 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	explFrameNum = 9;
 	explAnimDelay = 50;
 	fontSmallName = "fsmall.otf";
-	fontSmallSize = 70; /* percentage of brick height */
+	fontSmallSize = 14;
 	fontNormalName = "fnormal.otf";
-	fontNormalSize = 90;
-	menuX = 320; /* FIXME doesn't match old position */
-	menuY = 240;
+	fontNormalSize = 18;
+	menuX = 180;
+	menuY = 350;
 	menuItemWidth = 200;
 	menuItemHeight = 18;
+	menuFontNormalName = "fsmall.otf";
+	menuFontNormalSize = 18;
+	menuFontFocusName = "fnormal.otf";
+	menuFontFocusSize = 21;
 	menuFontColorNormal = {255,255,255,255};
 	menuFontColorFocus  = {255,220,0,255};
 	if (fileExists(path + "/theme.ini")) {
@@ -351,6 +355,7 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		menuBackground.load(path + "/menuback.jpg");
 		menuBackLoaded = true;
 	}
+	menuBackground.setBlendMode(0);
 	if (menuBackLoaded && brickFileHeight != brickScreenHeight)
 		menuBackground.scale(
 				menuBackground.getWidth() * brickScreenWidth / brickFileWidth,

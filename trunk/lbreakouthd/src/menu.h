@@ -27,7 +27,9 @@ enum {
 	AID_HELP,
 	AID_RESUME,
 	AID_SOUND,
-	AID_VOLUME
+	AID_VOLUME,
+	AID_APPLYTHEME,
+	AID_APPLYMODE
 };
 
 class Menu;
@@ -167,9 +169,13 @@ public:
 		int w = theme.menuItemWidth;
 		int x = theme.menuX - w/2;
 		int y = theme.menuY - h/2;
-		for (uint i = 0; i < items.size(); i++)
+		for (uint i = 0; i < items.size(); i++) {
+			MenuItemSub *sub = dynamic_cast<MenuItemSub*>(items[i].get());
 			items[i]->setGeometry(x, y + i*theme.menuItemHeight,
 						w, theme.menuItemHeight);
+			if (sub)
+				sub->getSubMenu()->adjust();
+		}
 	}
 	void update(uint ms) {
 		for (auto& i : items)

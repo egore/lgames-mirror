@@ -61,8 +61,7 @@ Config::Config()
 	channels = 16;
 	/* graphics */
 	anim = 2;
-	resolution = 480;
-	fullscreen = 0;
+	mode = 0;
 	fade = 1;
 	bonus_info = 1;
 	fps = 1;
@@ -127,7 +126,7 @@ Config::Config()
 	fp.get( "audio_buffer_size", audio_buffer_size );
 	fp.get( "channels", channels );
 	fp.get( "anim", anim );
-	fp.get( "fullscreen", fullscreen );
+	fp.get( "mode", mode );
 	fp.get( "fade", fade );
 	fp.get( "bonus_info", bonus_info );
 	fp.get( "fps", fps );
@@ -182,7 +181,7 @@ void Config::save()
 	ofs << "audio_buffer_size=" << audio_buffer_size << "\n";
 	ofs << "channels=" << channels << "\n";
 	ofs << "anim=" << anim << "\n";
-	ofs << "fullscreen=" << fullscreen << "\n";
+	ofs << "mode=" << mode << "\n";
 	ofs << "fade=" << fade << "\n";
 	ofs << "bonus_info=" << bonus_info << "\n";
 	ofs << "fps=" << fps << "\n";

@@ -193,6 +193,10 @@ public:
 	}
 };
 
-int readDir(const string &dname, vector<string> &fnames);
+enum {
+	RD_FILES = 0,
+	RD_FOLDERS
+};
+int readDir(const string &dname, int type, vector<string> &fnames);
 
 #endif /* SRC_TOOLS_H_ */
