@@ -199,8 +199,8 @@ public:
 		TTF_SizeText(font,str,&w,&h);
 		return w;
 	}
-	void write(int x, int y, const string &str);
-	void writeText(int x, int y, const string &text, int width);
+	void write(int x, int y, const string &str, int alpha = 255);
+	void writeText(int x, int y, const string &text, int width, int alpha = 255);
 };
 
 /** easy log sdl error */

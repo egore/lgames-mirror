@@ -844,7 +844,7 @@ void View::playSounds()
 
 void View::createMenus()
 {
-	Menu *mNewGame, *mOptions, *mAudio, *mGraphics, *mControls;
+	Menu *mNewGame, *mOptions, *mAudio, *mGraphics, *mControls, *mAdv;
 	const char *diffNames[] = {_("Kids"),_("Easy"),_("Medium"),_("Hard") } ;
 	const int bufSizes[] = { 256, 512, 1024, 2048, 4096 };
 	const int channelNums[] = { 8, 16, 32 };
@@ -858,13 +858,16 @@ void View::createMenus()
 	mGraphics = new Menu(theme);
 	graphicsMenu = mGraphics; /* needed to return after mode/theme change */
 	mControls = new Menu(theme);
+	mAdv = new Menu(theme);
 
 	mNewGame->add(new MenuItem(_("Start Original Levels"),AID_STARTORIGINAL));
 	mNewGame->add(new MenuItem(_("Start Custom Levels"),AID_STARTCUSTOM));
-	mNewGame->add(new MenuItemList(_("Custom Levelset"),AID_NONE,curLevelsetId,levelsetNames));
+	mNewGame->add(new MenuItemList(_("Levelset"),AID_NONE,curLevelsetId,levelsetNames));
+	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemRange(_("Players"),AID_NONE,
 					config.player_count,1,MAX_PLAYERS,1));
 	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
+	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemBack(rootMenu.get()));
 
 	mControls->add(new MenuItemKey(_("Left"),config.k_left));
@@ -874,28 +877,39 @@ void View::createMenus()
 	mControls->add(new MenuItemKey(_("Paddle Turbo"),config.k_turbo));
 	mControls->add(new MenuItemKey(_("Ball Turbo"),config.k_maxballspeed));
 	mControls->add(new MenuItemKey(_("Idle Return"),config.k_return));
+	mControls->add(new MenuItemSep());
 	mControls->add(new MenuItemRange(_("Key Speed"),AID_NONE,config.i_key_speed,100,1000,50));
-	mControls->add(new MenuItemBack(rootMenu.get()));
+	mControls->add(new MenuItemSep());
+	mControls->add(new MenuItemBack(mOptions));
 
 	mGraphics->add(new MenuItemList(_("Theme"),AID_NONE,config.theme_id,themeNames));
 	mGraphics->add(new MenuItem(_("Apply Theme"),AID_APPLYTHEME));
+	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemList(_("Mode"),AID_NONE,config.mode,modeNames));
 	mGraphics->add(new MenuItem(_("Apply Mode"),AID_APPLYMODE));
+	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemBack(mOptions));
 
 	mAudio->add(new MenuItemSwitch(_("Sound"),AID_SOUND,config.sound));
 	mAudio->add(new MenuItemRange(_("Volume"),AID_VOLUME,config.volume,0,100,10));
 	mAudio->add(new MenuItemSwitch(_("Speech"),AID_NONE,config.speech));
+	mAudio->add(new MenuItemSep());
 	mAudio->add(new MenuItemIntList(_("Buffer Size"),config.audio_buffer_size,bufSizes,5));
 	mAudio->add(new MenuItemIntList(_("Channels"),config.channels,channelNums,3));
 	mAudio->add(new MenuItem(_("Apply Size&Channels"),AID_APPLYAUDIO));
+	mAudio->add(new MenuItemSep());
 	mAudio->add(new MenuItemBack(mOptions));
 
 	mOptions->add(new MenuItemSub(_("Controls"),mControls));
 	mOptions->add(new MenuItemSub(_("Graphics"),mGraphics));
 	mOptions->add(new MenuItemSub(_("Audio"),mAudio));
-	mOptions->add(new MenuItem(_("Advanced")));
+	mOptions->add(new MenuItemSub(_("Advanced"),mAdv));
 	mOptions->add(new MenuItemBack(rootMenu.get()));
+
+	mAdv->add(new MenuItemList(_("Ball Fire Angle"),AID_NONE,config.random_angle,"50",_("Random")));
+	mAdv->add(new MenuItemList(_("Return Balls"),AID_NONE,config.return_on_click,_("Auto"),_("On Click")));
+	mAdv->add(new MenuItemSep());
+	mAdv->add(new MenuItemBack(mOptions));
 
 	rootMenu->add(new MenuItemSub(_("New Game"), mNewGame));
 	rootMenu->add(new MenuItem(_("Resume Game"), AID_RESUME));

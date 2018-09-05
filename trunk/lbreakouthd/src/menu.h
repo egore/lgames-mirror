@@ -44,12 +44,13 @@ protected:
 	int x, y, w, h;
 	int focus;
 	int actionId;
+	double fadingAlpha;
 
-	Font *getCurFont();
+	void renderPart(const string &str, int align);
 public:
 	MenuItem(const string &c, int aid = AID_NONE) :
-		parent(NULL), caption(c), x(0), y(0), w(1), h(1),
-		focus(0), actionId(aid) {}
+			parent(NULL), caption(c), x(0), y(0), w(1), h(1),
+			focus(0), actionId(aid), fadingAlpha(0) {}
 	virtual ~MenuItem() {}
 	void setGeometry(int _x, int _y, int _w, int _h) {
 		x = _x;
@@ -64,14 +65,28 @@ public:
 	}
 	void setFocus(int on) {
 		focus = on;
+		if (focus)
+			fadingAlpha = 255;
+
 	}
-	virtual void update(uint ms) {}
+	virtual void update(uint ms) {
+		if (!focus && fadingAlpha > 0) {
+			fadingAlpha -= 0.5*ms;
+			if (fadingAlpha < 0)
+				fadingAlpha = 0;
+		}
+	}
 	virtual void render();
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN)
 			return actionId;
 		return 0;
 	}
+};
+
+class MenuItemSep : public MenuItem {
+public:
+	MenuItemSep() : MenuItem("") {}
 };
 
 /* Sub items manage destruction of submenus ... */

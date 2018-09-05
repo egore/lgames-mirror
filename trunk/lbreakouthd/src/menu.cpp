@@ -21,57 +21,57 @@
 
 bool Menu::inputLocked = false;
 
-Font *MenuItem::getCurFont() {
+/** Helper to render a part of the menu item. Position is determined
+ * by given alignment. */
+void MenuItem::renderPart(const string &str, int align)
+{
 	if (!parent)
-		return NULL;
+		return; /* should never happen */
+
+	int tx = x + w/2, ty = y + h/2;
+	if (align == ALIGN_X_LEFT)
+		tx = x;
+	else if (align == ALIGN_X_RIGHT)
+		tx = x + w;
+
+	Font *f = parent->getNormalFont();
 	if (focus)
-		return parent->getFocusFont();
-	else
-		return parent->getNormalFont();
+		f = parent->getFocusFont();
+
+	f->setAlign(align | ALIGN_Y_CENTER);
+	f->write(tx,ty,str,focus?255:(255-fadingAlpha));
+	if (!focus && fadingAlpha > 0) {
+		f = parent->getFocusFont();
+		f->setAlign(align | ALIGN_Y_CENTER);
+		f->write(tx,ty,str,fadingAlpha);
+	}
 }
 
 void MenuItem::render() {
-	if (Font *f = getCurFont()) {
-		f->setAlign(ALIGN_X_LEFT | ALIGN_Y_CENTER);
-		f->write(x,y+h/2,caption);
-	}
+	renderPart(caption, ALIGN_X_LEFT);
 }
 
 void MenuItemRange::render() {
-	MenuItem::render();
-	if (Font *f = getCurFont()) {
-		f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
-		f->write(x+w,y+h/2,to_string(val));
-	}
+	renderPart(caption, ALIGN_X_LEFT);
+	renderPart(to_string(val), ALIGN_X_RIGHT);
 }
 
 void MenuItemList::render() {
-	MenuItem::render();
-	if (val < 0 || (uint)val >= options.size())
-		return;
-	if (Font *f = getCurFont()) {
-		f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
-		f->write(x+w,y+h/2,options[val]);
-	}
+	renderPart(caption, ALIGN_X_LEFT);
+	renderPart(options[val], ALIGN_X_RIGHT);
 }
 
 void MenuItemIntList::render() {
-	MenuItem::render();
-	if (Font *f = getCurFont()) {
-		f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
-		f->write(x+w,y+h/2,to_string(val));
-	}
+	renderPart(caption, ALIGN_X_LEFT);
+	renderPart(to_string(val), ALIGN_X_RIGHT);
 }
 
 void MenuItemKey::render() {
-	MenuItem::render();
-	if (Font *f = getCurFont()) {
-		f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
-		if (waitForNewKey)
-			f->write(x+w,y+h/2,"???");
-		else
-			f->write(x+w,y+h/2,SDL_GetScancodeName((SDL_Scancode)sc));
-	}
+	renderPart(caption, ALIGN_X_LEFT);
+	if (waitForNewKey)
+		renderPart("???", ALIGN_X_RIGHT);
+	else
+		renderPart(SDL_GetScancodeName((SDL_Scancode)sc), ALIGN_X_RIGHT);
 }
 
 int Menu::handleEvent(const SDL_Event &ev)
