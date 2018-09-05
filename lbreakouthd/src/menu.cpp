@@ -29,21 +29,25 @@ void MenuItem::renderPart(const string &str, int align)
 		return; /* should never happen */
 
 	int tx = x + w/2, ty = y + h/2;
-	if (align == ALIGN_X_LEFT)
+	int txoff = 0;
+	if (align == ALIGN_X_LEFT) {
 		tx = x;
-	else if (align == ALIGN_X_RIGHT)
+		txoff = -parent->getFocusFont()->getSize()/5;
+	} else if (align == ALIGN_X_RIGHT) {
 		tx = x + w;
+		txoff = parent->getFocusFont()->getSize()/5;
+	}
 
 	Font *f = parent->getNormalFont();
 	if (focus)
 		f = parent->getFocusFont();
 
 	f->setAlign(align | ALIGN_Y_CENTER);
-	f->write(tx,ty,str,focus?255:(255-fadingAlpha));
+	f->write(tx+(focus?txoff:0),ty,str,focus?255:(255-fadingAlpha));
 	if (!focus && fadingAlpha > 0) {
 		f = parent->getFocusFont();
 		f->setAlign(align | ALIGN_Y_CENTER);
-		f->write(tx,ty,str,fadingAlpha);
+		f->write(tx+txoff,ty,str,fadingAlpha);
 	}
 }
 

@@ -71,7 +71,7 @@ public:
 	}
 	virtual void update(uint ms) {
 		if (!focus && fadingAlpha > 0) {
-			fadingAlpha -= 0.5*ms;
+			fadingAlpha -= 0.7*ms;
 			if (fadingAlpha < 0)
 				fadingAlpha = 0;
 		}
