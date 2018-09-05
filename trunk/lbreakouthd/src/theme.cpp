@@ -143,29 +143,6 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		extras.scale(brickScreenWidth,brickScreenHeight);
 	}
 
-	/* load and scale up to 10 wallpapers */
-	if (fileExists(path + "/back0.png") || fileExists(path + "/back0.jpg")) {
-		numWallpapers = 0;
-		for (int i = 0; i < MAXWALLPAPERS; i++) {
-			string wfname = path + "/back" + to_string(i);
-			if (fileExists(wfname + ".png"))
-				wfname += ".png";
-			else if (fileExists(wfname + ".jpg"))
-				wfname += ".jpg";
-			else
-				break;
-			wallpapers[i].load(wfname);
-			if (brickFileHeight != brickScreenHeight) {
-				int nw, nh;
-				nw = wallpapers[i].getWidth() * brickScreenWidth / brickFileWidth;
-				nh = wallpapers[i].getHeight() * brickScreenHeight / brickFileHeight;
-				wallpapers[i].scale(nw, nh);
-			}
-			wallpapers[i].setBlendMode(0);
-			numWallpapers++;
-		}
-	}
-
 	/* load frame or create for old themes */
 	if (fileExists(path + "/frame.png")) {
 		frame.load(path + "/frame.png");
@@ -328,6 +305,32 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		explosions.scale(nw,nh);
 	}
 
+	/* load backgrounds always without color key workaround */
+	Image::useColorKeyBlack = false;
+
+	/* load and scale up to 10 wallpapers */
+	if (fileExists(path + "/back0.png") || fileExists(path + "/back0.jpg")) {
+		numWallpapers = 0;
+		for (int i = 0; i < MAXWALLPAPERS; i++) {
+			string wfname = path + "/back" + to_string(i);
+			if (fileExists(wfname + ".png"))
+				wfname += ".png";
+			else if (fileExists(wfname + ".jpg"))
+				wfname += ".jpg";
+			else
+				break;
+			wallpapers[i].load(wfname);
+			if (brickFileHeight != brickScreenHeight) {
+				int nw, nh;
+				nw = wallpapers[i].getWidth() * brickScreenWidth / brickFileWidth;
+				nh = wallpapers[i].getHeight() * brickScreenHeight / brickFileHeight;
+				wallpapers[i].scale(nw, nh);
+			}
+			wallpapers[i].setBlendMode(0);
+			numWallpapers++;
+		}
+	}
+
 	/* create shadow images */
 	frameShadow.createShadow(frame);
 	bricksShadow.createShadow(bricks);
@@ -343,7 +346,6 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	fSmall.setColor(fontColorNormal);
 
 	/* menu stuff */
-	Image::useColorKeyBlack = false; /* not for backgrounds */
 	if (fileExists(path + "/menuback.png"))
 		menuBackground.load(path + "/menuback.png");
 	else if (fileExists(path + "/menuback.jpg"))

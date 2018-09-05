@@ -21,38 +21,49 @@
 
 bool Menu::inputLocked = false;
 
-void MenuItem::render() {
+Font *MenuItem::getCurFont() {
 	if (!parent)
-		return;
-	Font *f = parent->getNormalFont();
+		return NULL;
 	if (focus)
-		f = parent->getFocusFont();
-	f->setAlign(ALIGN_X_LEFT | ALIGN_Y_CENTER);
-	f->write(x,y+h/2,caption);
+		return parent->getFocusFont();
+	else
+		return parent->getNormalFont();
+}
+
+void MenuItem::render() {
+	if (Font *f = getCurFont()) {
+		f->setAlign(ALIGN_X_LEFT | ALIGN_Y_CENTER);
+		f->write(x,y+h/2,caption);
+	}
 }
 
 void MenuItemRange::render() {
 	MenuItem::render();
-	if (!parent)
-		return;
-	Font *f = parent->getNormalFont();
-	if (focus)
-		f = parent->getFocusFont();
-	f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
+	if (Font *f = getCurFont()) {
+		f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
 		f->write(x+w,y+h/2,to_string(val));
+	}
 }
 
 void MenuItemList::render() {
 	MenuItem::render();
-	if (!parent)
-		return;
 	if (val < 0 || (uint)val >= options.size())
 		return;
-	Font *f = parent->getNormalFont();
-	if (focus)
-		f = parent->getFocusFont();
-	f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
-	f->write(x+w,y+h/2,options[val]);
+	if (Font *f = getCurFont()) {
+		f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
+		f->write(x+w,y+h/2,options[val]);
+	}
+}
+
+void MenuItemKey::render() {
+	MenuItem::render();
+	if (Font *f = getCurFont()) {
+		f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
+		if (waitForNewKey)
+			f->write(x+w,y+h/2,"???");
+		else
+			f->write(x+w,y+h/2,SDL_GetScancodeName((SDL_Scancode)sc));
+	}
 }
 
 int Menu::handleEvent(const SDL_Event &ev)
