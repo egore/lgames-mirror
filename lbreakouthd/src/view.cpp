@@ -143,6 +143,7 @@ void View::run()
 	Ticks ticks;
 	int oldmx = 0;
 	Uint32 ms;
+	bool leave = false;
 
 	/* XXX menu changes i_key_speed but we need keyspeed */
 	config.key_speed = 0.001 * config.i_key_speed;
@@ -156,14 +157,27 @@ void View::run()
 
 	SDL_ShowCursor(0);
 
-	while (!quitReceived) {
+	while (!leave) {
 		/* handle events */
 		if (SDL_PollEvent(&ev)) {
-			if (ev.type == SDL_QUIT)
+			if (ev.type == SDL_QUIT) {
 				quitReceived = true;
-			if (ev.type == SDL_KEYUP && ev.key.keysym.scancode == SDL_SCANCODE_P) {
-				showInfo(_("Pause"));
-				ticks.reset();
+				leave = true;
+			}
+			if (ev.type == SDL_KEYUP) {
+				switch (ev.key.keysym.scancode) {
+				case SDL_SCANCODE_P:
+					showInfo(_("Pause"));
+					ticks.reset();
+					break;
+				case SDL_SCANCODE_ESCAPE:
+					if (showInfo(_("Quit Game? y/n"),true))
+						leave = true;
+					ticks.reset();
+					break;
+				default:
+					break;
+				}
 			}
 		}
 
@@ -620,12 +634,14 @@ void View::dim()
 }
 
 /* Darken current screen content and show info text.
- * Wait for any key/click. */
-void View::showInfo(const string& str)
+ * If confirm is false, wait for any key/click.
+ * If confirm is true, wait for key y/n and return true false. */
+bool View::showInfo(const string& text, bool confirm)
 {
 	SDL_Event ev;
 	Image img;
 	bool leave = false;
+	bool ret = true;
 
 	img.createFromScreen();
 	SDL_SetRenderDrawColor(mrc,0,0,0,255);
@@ -634,7 +650,7 @@ void View::showInfo(const string& str)
 	img.copy();
 
 	theme.fNormal.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
-	theme.fNormal.write(mw->getWidth()/2,mw->getHeight()/2,str);
+	theme.fNormal.writeText(mw->getWidth()/2,mw->getHeight()/2,text,mw->getWidth()/2);
 
 	SDL_RenderPresent(mrc);
 
@@ -644,12 +660,24 @@ void View::showInfo(const string& str)
 		if (SDL_PollEvent(&ev)) {
 			if (ev.type == SDL_QUIT)
 				quitReceived = leave = true;
-			if (ev.type == SDL_KEYUP || ev.type == SDL_MOUSEBUTTONUP)
+			if (!confirm && (ev.type == SDL_KEYUP ||
+						ev.type == SDL_MOUSEBUTTONUP))
 				leave = true;
+			if (confirm && ev.type == SDL_KEYUP) {
+				if (ev.key.keysym.scancode == SDL_SCANCODE_Y)
+					ret = leave = true;
+				if (ev.key.keysym.scancode == SDL_SCANCODE_N ||
+						ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+					ret = false;
+					leave = true;
+				}
+			}
 		}
 		SDL_Delay(10);
+		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+	return ret;
 }
 
 /* Create particles for brick hit of type HT_REMOVE (already checked). */
