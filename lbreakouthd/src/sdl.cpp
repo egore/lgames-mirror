@@ -393,7 +393,7 @@ void Font::setColor(SDL_Color c) {
 void Font::setAlign(int a) {
 	align = a;
 }
-void Font::write(int x, int y, const string& _str) {
+void Font::write(int x, int y, const string& _str, int alpha) {
 	if (font == 0)
 		return;
 
@@ -425,9 +425,13 @@ void Font::write(int x, int y, const string& _str) {
 		drect.y = y - surf->h/2;
 	drect.w = surf->w;
 	drect.h = surf->h;
+	if (alpha < 255)
+		SDL_SetTextureAlphaMod(tex, alpha);
 	SDL_RenderCopy(mrc, tex, NULL, &drect);
+	SDL_FreeSurface(surf);
+	SDL_DestroyTexture(tex);
 }
-void Font::writeText(int x, int y, const string& _text, int wrapwidth)
+void Font::writeText(int x, int y, const string& _text, int wrapwidth, int alpha)
 {
 	if (font == 0)
 		return;
@@ -450,6 +454,10 @@ void Font::writeText(int x, int y, const string& _text, int wrapwidth)
 	drect.y = y;
 	drect.w = surf->w;
 	drect.h = surf->h;
+	if (alpha < 255)
+		SDL_SetTextureAlphaMod(tex, alpha);
 	SDL_RenderCopy(mrc, tex, NULL, &drect);
+	SDL_FreeSurface(surf);
+	SDL_DestroyTexture(tex);
 }
 
