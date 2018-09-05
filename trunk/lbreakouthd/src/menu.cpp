@@ -55,6 +55,14 @@ void MenuItemList::render() {
 	}
 }
 
+void MenuItemIntList::render() {
+	MenuItem::render();
+	if (Font *f = getCurFont()) {
+		f->setAlign(ALIGN_X_RIGHT | ALIGN_Y_CENTER);
+		f->write(x+w,y+h/2,to_string(val));
+	}
+}
+
 void MenuItemKey::render() {
 	MenuItem::render();
 	if (Font *f = getCurFont()) {

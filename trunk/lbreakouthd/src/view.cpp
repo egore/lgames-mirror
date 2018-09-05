@@ -846,6 +846,8 @@ void View::createMenus()
 {
 	Menu *mNewGame, *mOptions, *mAudio, *mGraphics, *mControls;
 	const char *diffNames[] = {_("Kids"),_("Easy"),_("Medium"),_("Hard") } ;
+	const int bufSizes[] = { 256, 512, 1024, 2048, 4096 };
+	const int channelNums[] = { 8, 16, 32 };
 
 	rootMenu.reset(); /* delete any old menu ... */
 
@@ -883,6 +885,10 @@ void View::createMenus()
 
 	mAudio->add(new MenuItemSwitch(_("Sound"),AID_SOUND,config.sound));
 	mAudio->add(new MenuItemRange(_("Volume"),AID_VOLUME,config.volume,0,100,10));
+	mAudio->add(new MenuItemSwitch(_("Speech"),AID_NONE,config.speech));
+	mAudio->add(new MenuItemIntList(_("Buffer Size"),config.audio_buffer_size,bufSizes,5));
+	mAudio->add(new MenuItemIntList(_("Channels"),config.channels,channelNums,3));
+	mAudio->add(new MenuItem(_("Apply Size&Channels"),AID_APPLYAUDIO));
 	mAudio->add(new MenuItemBack(mOptions));
 
 	mOptions->add(new MenuItemSub(_("Controls"),mControls));
@@ -970,6 +976,10 @@ void View::runMenu()
 				break;
 			case AID_VOLUME:
 				mixer.setVolume(config.volume);
+				break;
+			case AID_APPLYAUDIO:
+				mixer.close();
+				mixer.open(config.channels, config.audio_buffer_size);
 				break;
 			case AID_APPLYTHEME:
 			case AID_APPLYMODE:
