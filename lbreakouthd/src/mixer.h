@@ -53,7 +53,7 @@ public:
 		}
 		opened = true;
 		Mix_AllocateChannels(numChans);
-		_loginfo("Mixer opened\n");
+		_loginfo("Mixer opened (%d channels, %d buf size)\n",numChans,bufSize);
 		return 1;
 	}
 	void close() {

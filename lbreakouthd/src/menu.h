@@ -29,6 +29,7 @@ enum {
 	AID_CHANGEKEY,
 	AID_SOUND,
 	AID_VOLUME,
+	AID_APPLYAUDIO,
 	AID_APPLYTHEME,
 	AID_APPLYMODE
 };
@@ -144,6 +145,30 @@ public:
 		val = _cur;
 	}
 	virtual void render();
+};
+
+/* Value contains real integer value not the index. */
+class MenuItemIntList : public MenuItemRange {
+	int idx;
+	int &val;
+	vector<int> options;
+public:
+	MenuItemIntList(const string &c, int &v, const int *opts, uint optNum)
+				: MenuItemRange(c,AID_NONE,idx,0,optNum-1,1), val(v) {
+		idx = 0;
+		for (uint i = 0; i < optNum; i++) {
+			if (opts[i] == val)
+				idx = i;
+			options.push_back(opts[i]);
+		}
+		val = options[idx]; /* if not found, fallback to first value */
+	}
+	virtual void render();
+	virtual int handleEvent(const SDL_Event &ev) {
+		MenuItemRange::handleEvent(ev);
+		val = options[idx];
+		return AID_NONE;
+	}
 };
 
 class MenuItemSwitch : public MenuItemList {
