@@ -79,7 +79,7 @@ class View {
 	void renderExtrasImage();
 	void renderActiveExtra(int id, int ms, int x, int y);
 	void dim();
-	void showInfo(const string& str);
+	bool showInfo(const string& str, bool confirm=false);
 	void createParticles(BrickHit *hit);
 	void createSprites();
 	void getBallViewInfo(Ball *ball, int *x, int *y, uint *type);
