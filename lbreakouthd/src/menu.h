@@ -19,13 +19,14 @@ enum {
 	/* menu action ids */
 	AID_NONE = 0,
 	AID_FOCUSCHANGED, /* XXX used to play sound */
-	AID_STARTORIGINAL,
-	AID_STARTCUSTOM,
-	AID_QUIT,
 	AID_ENTERMENU,
 	AID_LEAVEMENU,
-	AID_HELP,
 	AID_RESUME,
+	AID_HELP,
+	AID_QUIT,
+	AID_STARTORIGINAL,
+	AID_STARTCUSTOM,
+	AID_CHANGEKEY,
 	AID_SOUND,
 	AID_VOLUME,
 	AID_APPLYTHEME,
@@ -42,8 +43,10 @@ protected:
 	int x, y, w, h;
 	int focus;
 	int actionId;
+
+	Font *getCurFont();
 public:
-	MenuItem(const string &c, int aid = 0) :
+	MenuItem(const string &c, int aid = AID_NONE) :
 		parent(NULL), caption(c), x(0), y(0), w(1), h(1),
 		focus(0), actionId(aid) {}
 	virtual ~MenuItem() {}
@@ -147,6 +150,25 @@ class MenuItemSwitch : public MenuItemList {
 public:
 	MenuItemSwitch(const string &c, int aid, int &v)
 			: MenuItemList(c,aid,v,_("Off"),_("On")) {}
+};
+
+class MenuItemKey : public MenuItem {
+	int &sc;
+	bool waitForNewKey;
+public:
+	MenuItemKey(const string &c, int &_sc)
+		: MenuItem(c+":",AID_CHANGEKEY), sc(_sc), waitForNewKey(false) {}
+	virtual void render();
+	virtual int handleEvent(const SDL_Event &ev) {
+		if (ev.type == SDL_MOUSEBUTTONDOWN)
+			waitForNewKey = true;
+		return actionId;
+	}
+	void setKey(int nsc) {
+		sc = nsc;
+		waitForNewKey = false;
+	}
+	void cancelChange() { waitForNewKey = false; }
 };
 
 class Menu {

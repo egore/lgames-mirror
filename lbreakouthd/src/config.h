@@ -45,7 +45,7 @@ public:
 	int rel_warp_limit; /* percentage of bricks required to be destroyed
 	                           before player may proceed to next level */
 	int addBonusLevels; /* add some bonus levels */
-	/* controls */
+	/* controls (SDL scancodes) */
 	int k_left;
 	int k_right;
 	int k_lfire;

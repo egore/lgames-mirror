@@ -144,6 +144,9 @@ void View::run()
 	int oldmx = 0;
 	Uint32 ms;
 
+	/* XXX menu changes i_key_speed but we need keyspeed */
+	config.key_speed = 0.001 * config.i_key_speed;
+
 	fpsStart = SDL_GetTicks();
 
 	renderBackgroundImage();
@@ -813,7 +816,7 @@ void View::playSounds()
 
 void View::createMenus()
 {
-	Menu *mNewGame, *mOptions, *mAudio, *mGraphics;
+	Menu *mNewGame, *mOptions, *mAudio, *mGraphics, *mControls;
 	const char *diffNames[] = {_("Kids"),_("Easy"),_("Medium"),_("Hard") } ;
 
 	rootMenu.reset(); /* delete any old menu ... */
@@ -824,6 +827,7 @@ void View::createMenus()
 	mAudio = new Menu(theme);
 	mGraphics = new Menu(theme);
 	graphicsMenu = mGraphics; /* needed to return after mode/theme change */
+	mControls = new Menu(theme);
 
 	mNewGame->add(new MenuItem(_("Start Original Levels"),AID_STARTORIGINAL));
 	mNewGame->add(new MenuItem(_("Start Custom Levels"),AID_STARTCUSTOM));
@@ -832,6 +836,16 @@ void View::createMenus()
 					config.player_count,1,MAX_PLAYERS,1));
 	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
 	mNewGame->add(new MenuItemBack(rootMenu.get()));
+
+	mControls->add(new MenuItemKey(_("Left"),config.k_left));
+	mControls->add(new MenuItemKey(_("Right"),config.k_right));
+	mControls->add(new MenuItemKey(_("Left Fire"),config.k_lfire));
+	mControls->add(new MenuItemKey(_("Right Fire"),config.k_rfire));
+	mControls->add(new MenuItemKey(_("Paddle Turbo"),config.k_turbo));
+	mControls->add(new MenuItemKey(_("Ball Turbo"),config.k_maxballspeed));
+	mControls->add(new MenuItemKey(_("Idle Return"),config.k_return));
+	mControls->add(new MenuItemRange(_("Key Speed"),AID_NONE,config.i_key_speed,100,1000,50));
+	mControls->add(new MenuItemBack(rootMenu.get()));
 
 	mGraphics->add(new MenuItemList(_("Theme"),AID_NONE,config.theme_id,themeNames));
 	mGraphics->add(new MenuItem(_("Apply Theme"),AID_APPLYTHEME));
@@ -843,7 +857,7 @@ void View::createMenus()
 	mAudio->add(new MenuItemRange(_("Volume"),AID_VOLUME,config.volume,0,100,10));
 	mAudio->add(new MenuItemBack(mOptions));
 
-	mOptions->add(new MenuItem(_("Controls")));
+	mOptions->add(new MenuItemSub(_("Controls"),mControls));
 	mOptions->add(new MenuItemSub(_("Graphics"),mGraphics));
 	mOptions->add(new MenuItemSub(_("Audio"),mAudio));
 	mOptions->add(new MenuItem(_("Advanced")));
@@ -864,6 +878,8 @@ void View::runMenu()
 	Ticks ticks;
 	MenuItemSub *subItem;
 	MenuItemBack *backItem;
+	bool changingKey = false;
+	int aid = AID_NONE;
 
 	curMenu = rootMenu.get();
 	renderMenu();
@@ -873,13 +889,28 @@ void View::runMenu()
 		if (SDL_PollEvent(&ev)) {
 			if (ev.type == SDL_QUIT)
 				quitReceived = true;
+			if (changingKey && ev.type == SDL_KEYDOWN) {
+				MenuItemKey *keyItem = dynamic_cast<MenuItemKey*>
+							(curMenu->getCurItem());
+				switch (ev.key.keysym.scancode) {
+				case SDL_SCANCODE_P: break;
+				case SDL_SCANCODE_ESCAPE:
+					keyItem->cancelChange();
+					changingKey = false;
+					break;
+				default:
+					keyItem->setKey(ev.key.keysym.scancode);
+					changingKey = false;
+					break;
+				}
+			}
 		}
 
 		/* update current menu */
 		curMenu->update(ticks.get());
 
 		/* handle events */
-		if (int aid = curMenu->handleEvent(ev)) {
+		if (!changingKey && (aid = curMenu->handleEvent(ev))) {
 			if (aid != AID_FOCUSCHANGED)
 				mixer.play(theme.sMenuClick);
 			switch (aid) {
@@ -902,6 +933,9 @@ void View::runMenu()
 					curMenu = backItem->getLastMenu();
 				} else
 					_logerr("Oops, last menu not found...\n");
+				break;
+			case AID_CHANGEKEY:
+				changingKey = true;
 				break;
 			case AID_SOUND:
 				mixer.setMute(!config.sound);

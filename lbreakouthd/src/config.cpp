@@ -109,6 +109,7 @@ Config::Config()
 	fp.get( "fire_right", k_rfire );
 	fp.get( "return", k_return );
 	fp.get( "turbo", k_turbo );
+	fp.get( "ballturbo", k_maxballspeed );
 	fp.get( "rel_motion", rel_motion );
 	fp.get( "grab", grab );
 	fp.get( "motion_mod", i_motion_mod );
@@ -166,6 +167,7 @@ void Config::save()
 	ofs << "fire_right=" << k_rfire << "\n";
 	ofs << "return=" << k_return << "\n";
 	ofs << "turbo=" << k_turbo << "\n";
+	ofs << "ballturbo=" << k_maxballspeed << "\n";
 	ofs << "rel_motion=" << rel_motion << "\n";
 	ofs << "grab=" << grab << "\n";
 	ofs << "motion_mod=" << i_motion_mod << "\n";

@@ -21,4 +21,5 @@ warping
 efficient check for active extras and draw only once per sec
 merge background and brick layer to offset layer
 clear menu::inputlocked when returning from game
+stereo sound
 ...
