@@ -30,8 +30,7 @@ enum {
 	AID_SOUND,
 	AID_VOLUME,
 	AID_APPLYAUDIO,
-	AID_APPLYTHEME,
-	AID_APPLYMODE
+	AID_APPLYTHEMEMODE
 };
 
 class Menu;
@@ -76,7 +75,9 @@ public:
 				fadingAlpha = 0;
 		}
 	}
-	virtual void render();
+	virtual void render() {
+		renderPart(caption, ALIGN_X_LEFT);
+	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN)
 			return actionId;
@@ -117,7 +118,10 @@ public:
 				int _min, int _max, int _step)
 		: MenuItem(c+":",aid),
 		  min(_min), max(_max), step(_step), val(_val) {}
-	virtual void render();
+	virtual void render() {
+		renderPart(caption, ALIGN_X_LEFT);
+		renderPart(to_string(val), ALIGN_X_RIGHT);
+	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN) {
 			if (ev.button.button == SDL_BUTTON_LEFT) {
@@ -159,7 +163,10 @@ public:
 		max = opts.size() - 1;
 		val = _cur;
 	}
-	virtual void render();
+	virtual void render() {
+		renderPart(caption, ALIGN_X_LEFT);
+		renderPart(options[val], ALIGN_X_RIGHT);
+	}
 };
 
 /* Value contains real integer value not the index. */
@@ -178,7 +185,10 @@ public:
 		}
 		val = options[idx]; /* if not found, fallback to first value */
 	}
-	virtual void render();
+	virtual void render() {
+		renderPart(caption, ALIGN_X_LEFT);
+		renderPart(to_string(val), ALIGN_X_RIGHT);
+	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		MenuItemRange::handleEvent(ev);
 		val = options[idx];
@@ -198,7 +208,13 @@ class MenuItemKey : public MenuItem {
 public:
 	MenuItemKey(const string &c, int &_sc)
 		: MenuItem(c+":",AID_CHANGEKEY), sc(_sc), waitForNewKey(false) {}
-	virtual void render();
+	virtual void render() {
+		renderPart(caption, ALIGN_X_LEFT);
+		if (waitForNewKey)
+			renderPart("???", ALIGN_X_RIGHT);
+		else
+			renderPart(SDL_GetScancodeName((SDL_Scancode)sc), ALIGN_X_RIGHT);
+	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN)
 			waitForNewKey = true;
