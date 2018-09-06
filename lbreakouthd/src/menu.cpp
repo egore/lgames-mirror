@@ -19,6 +19,7 @@
 #include "theme.h"
 #include "menu.h"
 
+extern SDL_Renderer *mrc;
 bool Menu::inputLocked = false;
 
 /** Helper to render a part of the menu item. Position is determined
@@ -49,6 +50,67 @@ void MenuItem::renderPart(const string &str, int align)
 		f->setAlign(align | ALIGN_Y_CENTER);
 		f->write(tx+txoff,ty,str,fadingAlpha);
 	}
+}
+
+/** Run a dialog for editing a UTF8 string. ESC cancels editing (string
+ * is not changed), Enter confirms changes. Return 1 if string was changed,
+ * 0 if not changed. */
+int MenuItemEdit::runEditDialog(const string &caption, string &str)
+{
+	int ret = 0;
+	Font *f = parent->getNormalFont();
+	SDL_Event event;
+	string backup = str;
+	Image img;
+	img.createFromScreen();
+	img.setAlpha(64);
+	bool done = false;
+
+	f->setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
+
+	SDL_StartTextInput();
+	while (!done) {
+		if (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_QUIT:
+				done = true; // XXX should cancel everything...
+				break;
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.scancode) {
+				case SDL_SCANCODE_ESCAPE:
+					str = backup;
+					done = true;
+					break;
+				case SDL_SCANCODE_RETURN:
+					ret = 1;
+					done = true;
+					break;
+				case SDL_SCANCODE_BACKSPACE:
+					if (str.length()>0)
+						str = str.substr(0, str.length()-1);
+					break;
+				default: break;
+				}
+				break;
+			case SDL_TEXTINPUT:
+				str += event.text.text;
+				break;
+			}
+		}
+
+		/* redraw */
+		SDL_SetRenderDrawColor(mrc,0,0,0,255);
+		SDL_RenderClear(mrc);
+		img.copy();
+		string text(caption + ": " + str);
+		f->write(img.getWidth()/2,img.getHeight()/2,text);
+		SDL_RenderPresent(mrc);
+		SDL_Delay(10);
+		SDL_FlushEvent(SDL_MOUSEMOTION);
+	}
+	SDL_StopTextInput();
+
+	return ret;
 }
 
 int Menu::handleEvent(const SDL_Event &ev)

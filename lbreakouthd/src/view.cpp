@@ -863,10 +863,14 @@ void View::createMenus()
 	mNewGame->add(new MenuItem(_("Start Original Levels"),AID_STARTORIGINAL));
 	mNewGame->add(new MenuItem(_("Start Custom Levels"),AID_STARTCUSTOM));
 	mNewGame->add(new MenuItemList(_("Levelset"),AID_NONE,curLevelsetId,levelsetNames));
+	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemRange(_("Players"),AID_NONE,
 					config.player_count,1,MAX_PLAYERS,1));
-	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
+	mNewGame->add(new MenuItemEdit(_("1st"),config.player_names[0]));
+	mNewGame->add(new MenuItemEdit(_("2nd"),config.player_names[1]));
+	mNewGame->add(new MenuItemEdit(_("3rd"),config.player_names[2]));
+	mNewGame->add(new MenuItemEdit(_("4th"),config.player_names[3]));
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemBack(rootMenu.get()));
 
