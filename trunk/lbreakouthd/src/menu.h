@@ -227,6 +227,25 @@ public:
 	void cancelChange() { waitForNewKey = false; }
 };
 
+class MenuItemEdit : public MenuItem {
+	string &str;
+
+	int runEditDialog(const string &caption, string &str);
+public:
+	MenuItemEdit(const string &c, string &s, int aid = AID_NONE)
+			: MenuItem(c,AID_NONE), str(s) {}
+	virtual void render() {
+		renderPart(caption, ALIGN_X_LEFT);
+		renderPart(str, ALIGN_X_RIGHT);
+	}
+	virtual int handleEvent(const SDL_Event &ev) {
+		if (ev.type == SDL_MOUSEBUTTONDOWN)
+			if (runEditDialog(_("Enter Name"),str))
+				return actionId;
+		return AID_NONE;
+	}
+};
+
 class Menu {
 	Theme &theme;
 	vector<unique_ptr<MenuItem>> items;
