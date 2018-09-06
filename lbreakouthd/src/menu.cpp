@@ -141,7 +141,6 @@ int Menu::handleEvent(const SDL_Event &ev)
 	}
 
 	if (ev.type == SDL_MOUSEBUTTONDOWN) {
-		_loginfo("BUTTON %d,%d\n",ev.button.x,ev.button.y);
 		for (auto& i : items)
 			if (i->hasPointer(ev.button.x,ev.button.y))
 				return i->handleEvent(ev);

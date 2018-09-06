@@ -85,10 +85,6 @@ class View {
 	void getBallViewInfo(Ball *ball, int *x, int *y, uint *type);
 	void playSounds();
 	void createMenus();
-	void wait(uint ms) {
-		SDL_Delay(ms);
-		SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
-	}
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
