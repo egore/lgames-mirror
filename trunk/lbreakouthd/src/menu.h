@@ -250,7 +250,6 @@ class Menu {
 	Theme &theme;
 	vector<unique_ptr<MenuItem>> items;
 	MenuItem *curItem;
-	static bool inputLocked;
 public:
 	Menu(Theme &t) : theme(t), curItem(NULL) {}
 	~Menu() {}

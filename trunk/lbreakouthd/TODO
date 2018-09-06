@@ -1,21 +1,19 @@
+grap input + relative mouse movement
 complete advanced options
 setting theme.ini default screws values for loading menu/explosions...  
-after mode change first click is not handled
+after mode change, no left click event on first click
 chaos not attracted by malus magnet
 smaller brick layer image as lower rows can't be edited
 smooth extra floor wall
 shadow of paddle in extra wall and right lower frame
 more colored explosions
-grap input
 wrap get home dir
 show title/author on start of level
-relative mouse movement
 show final hiscore after game
 convex paddle
 allow removing selected bricks
 warping
 efficient check for active extras and draw only once per sec
 merge background and brick layer to offset layer
-clear menu::inputlocked when returning from game
 stereo sound
 ...

@@ -928,7 +928,7 @@ void View::runMenu()
 	Ticks ticks;
 	MenuItemSub *subItem;
 	MenuItemBack *backItem;
-	bool changingKey = false;
+	bool changingKey = false, newEvent = false;
 	int aid = AID_NONE;
 
 	curMenu = rootMenu.get();
@@ -936,7 +936,9 @@ void View::runMenu()
 
 	while (!quitReceived) {
 		/* handle events */
+		newEvent = false;
 		if (SDL_PollEvent(&ev)) {
+			newEvent = true;
 			if (ev.type == SDL_QUIT)
 				quitReceived = true;
 			if (changingKey && ev.type == SDL_KEYDOWN) {
@@ -959,8 +961,8 @@ void View::runMenu()
 		/* update current menu */
 		curMenu->update(ticks.get());
 
-		/* handle events */
-		if (!changingKey && (aid = curMenu->handleEvent(ev))) {
+		/* handle events in items */
+		if (newEvent && !changingKey && (aid = curMenu->handleEvent(ev))) {
 			if (aid != AID_FOCUSCHANGED)
 				mixer.play(theme.sMenuClick);
 			switch (aid) {

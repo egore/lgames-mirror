@@ -20,7 +20,6 @@
 #include "menu.h"
 
 extern SDL_Renderer *mrc;
-bool Menu::inputLocked = false;
 
 /** Helper to render a part of the menu item. Position is determined
  * by given alignment. */
@@ -141,15 +140,12 @@ int Menu::handleEvent(const SDL_Event &ev)
 		return ret;
 	}
 
-	if (ev.type == SDL_MOUSEBUTTONDOWN && !inputLocked) {
+	if (ev.type == SDL_MOUSEBUTTONDOWN) {
+		_loginfo("BUTTON %d,%d\n",ev.button.x,ev.button.y);
 		for (auto& i : items)
-			if (i->hasPointer(ev.button.x,ev.button.y)) {
-				inputLocked = true;
+			if (i->hasPointer(ev.button.x,ev.button.y))
 				return i->handleEvent(ev);
-			}
 	}
-	if (ev.type == SDL_MOUSEBUTTONUP)
-		inputLocked = false;
 
 	return ret;
 }
