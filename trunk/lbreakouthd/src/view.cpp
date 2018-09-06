@@ -883,10 +883,8 @@ void View::createMenus()
 	mControls->add(new MenuItemBack(mOptions));
 
 	mGraphics->add(new MenuItemList(_("Theme"),AID_NONE,config.theme_id,themeNames));
-	mGraphics->add(new MenuItem(_("Apply Theme"),AID_APPLYTHEME));
-	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemList(_("Mode"),AID_NONE,config.mode,modeNames));
-	mGraphics->add(new MenuItem(_("Apply Mode"),AID_APPLYMODE));
+	mGraphics->add(new MenuItem(_("Apply Theme&Mode"),AID_APPLYTHEMEMODE));
 	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemBack(mOptions));
 
@@ -995,8 +993,7 @@ void View::runMenu()
 				mixer.close();
 				mixer.open(config.channels, config.audio_buffer_size);
 				break;
-			case AID_APPLYTHEME:
-			case AID_APPLYMODE:
+			case AID_APPLYTHEMEMODE:
 				init(themeNames[config.theme_id],
 					MainWindow::getModeResolution(config.mode));
 				curMenu = graphicsMenu;

@@ -51,33 +51,6 @@ void MenuItem::renderPart(const string &str, int align)
 	}
 }
 
-void MenuItem::render() {
-	renderPart(caption, ALIGN_X_LEFT);
-}
-
-void MenuItemRange::render() {
-	renderPart(caption, ALIGN_X_LEFT);
-	renderPart(to_string(val), ALIGN_X_RIGHT);
-}
-
-void MenuItemList::render() {
-	renderPart(caption, ALIGN_X_LEFT);
-	renderPart(options[val], ALIGN_X_RIGHT);
-}
-
-void MenuItemIntList::render() {
-	renderPart(caption, ALIGN_X_LEFT);
-	renderPart(to_string(val), ALIGN_X_RIGHT);
-}
-
-void MenuItemKey::render() {
-	renderPart(caption, ALIGN_X_LEFT);
-	if (waitForNewKey)
-		renderPart("???", ALIGN_X_RIGHT);
-	else
-		renderPart(SDL_GetScancodeName((SDL_Scancode)sc), ALIGN_X_RIGHT);
-}
-
 int Menu::handleEvent(const SDL_Event &ev)
 {
 	int ret = 0;
