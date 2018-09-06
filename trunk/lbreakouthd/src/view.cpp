@@ -1006,17 +1006,15 @@ void View::runMenu()
 				break;
 			case AID_STARTORIGINAL:
 				cgame.init("LBreakout2");
-				wait(100);
+				SDL_Delay(250); /* wait until button released */
 				run();
-				wait(100);
 				ticks.reset();
 				SDL_ShowCursor(1);
 				break;
 			case AID_STARTCUSTOM:
 				cgame.init(levelsetNames[curLevelsetId]);
-				wait(100);
+				SDL_Delay(250); /* wait until button released */
 				run();
-				wait(100);
 				ticks.reset();
 				SDL_ShowCursor(1);
 				break;
@@ -1030,6 +1028,9 @@ void View::runMenu()
 			SDL_Delay(10);
 		SDL_FlushEvent(SDL_MOUSEMOTION); /* prevent event loop from dying */
 	}
+
+	/* clear events for menu loop */
+	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
 }
 
 
