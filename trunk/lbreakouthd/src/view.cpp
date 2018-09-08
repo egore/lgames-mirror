@@ -138,15 +138,11 @@ void View::run()
 {
 	SDL_Event ev;
 	int flags;
-	double px = 0;
 	PaddleInputState pis;
 	Ticks ticks;
-	int oldmx = 0;
 	Uint32 ms;
 	bool leave = false;
-
-	/* XXX menu changes i_key_speed but we need keyspeed */
-	config.key_speed = 0.001 * config.i_key_speed;
+	double rx = 0;
 
 	fpsStart = SDL_GetTicks();
 
@@ -155,7 +151,7 @@ void View::run()
 	renderScoreImage();
 	render();
 
-	SDL_ShowCursor(0);
+	grabInput(1);
 
 	while (!leave) {
 		/* handle events */
@@ -184,19 +180,21 @@ void View::run()
 		/* get paddle input state */
 		pis.reset();
 		/* mouse input */
-		int mx, my;
-		Uint32 buttons = SDL_GetMouseState(&mx,&my);
+		int mxoff;
+		Uint32 buttons = SDL_GetRelativeMouseState( &mxoff, NULL );
 		if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT))
 			pis.leftFire = 1;
 		if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT))
 			pis.rightFire = 1;
 		if (buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE))
 			pis.speedUp = 1;
-		if (mx != oldmx) {
-			px = s2v(mx);
-			oldmx = mx;
+		if (mxoff != 0) {
+			if (config.invert)
+				mxoff = -mxoff;
+			mxoff = mxoff * config.motion_mod / 100;
+			rx = s2v((double)mxoff);
 		} else
-			px = 0; /* no mouse position input */
+			rx = 0;
 		/* key input */
 		const Uint8 *keystate = SDL_GetKeyboardState(NULL);
 		if (keystate[config.k_maxballspeed])
@@ -226,7 +224,7 @@ void View::run()
 		}
 
 		/* update game context */
-		flags = cgame.update(ms, px, pis);
+		flags = cgame.update(ms, rx, pis);
 		if (flags & CGF_PLAYERMESSAGE)
 			showInfo(cgame.getPlayerMessage());
 		if (flags & CGF_GAMEOVER)
@@ -279,6 +277,8 @@ void View::run()
 	/* check hiscores */
 	cgame.updateHiscores();
 	/* TODO show final hiscore */
+
+	grabInput(0);
 }
 
 /** Render current game state. */
@@ -654,6 +654,7 @@ bool View::showInfo(const string& text, bool confirm)
 
 	SDL_RenderPresent(mrc);
 
+	grabInput(0);
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
 	while (!leave) {
 		/* handle events */
@@ -677,6 +678,7 @@ bool View::showInfo(const string& text, bool confirm)
 		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+	grabInput(1);
 	return ret;
 }
 
@@ -882,7 +884,9 @@ void View::createMenus()
 	mControls->add(new MenuItemKey(_("Ball Turbo"),config.k_maxballspeed));
 	mControls->add(new MenuItemKey(_("Idle Return"),config.k_return));
 	mControls->add(new MenuItemSep());
-	mControls->add(new MenuItemRange(_("Key Speed"),AID_NONE,config.i_key_speed,100,1000,50));
+	mControls->add(new MenuItemRange(_("Key Speed"),AID_ADJUSTKEYSPEED,config.i_key_speed,100,1000,50));
+	mControls->add(new MenuItemRange(_("Motion Modifier"),AID_NONE,config.motion_mod,40,160,10));
+	mControls->add(new MenuItemSwitch(_("Invert Motion"),AID_NONE,config.invert));
 	mControls->add(new MenuItemSep());
 	mControls->add(new MenuItemBack(mOptions));
 
@@ -989,6 +993,9 @@ void View::runMenu()
 			case AID_CHANGEKEY:
 				changingKey = true;
 				break;
+			case AID_ADJUSTKEYSPEED:
+				config.key_speed = 0.001 * config.i_key_speed;
+				break;
 			case AID_SOUND:
 				mixer.setMute(!config.sound);
 				break;
@@ -1011,19 +1018,15 @@ void View::runMenu()
 					MainWindow::getModeResolution(config.mode));
 				curMenu = graphicsMenu;
 				break;
-			case AID_STARTORIGINAL:
-				cgame.init("LBreakout2");
-				SDL_Delay(250); /* wait until button released */
-				run();
-				ticks.reset();
-				SDL_ShowCursor(1);
-				break;
 			case AID_STARTCUSTOM:
-				cgame.init(levelsetNames[curLevelsetId]);
+			case AID_STARTORIGINAL:
+				if (aid == AID_STARTORIGINAL)
+					cgame.init("LBreakout2");
+				else
+					cgame.init(levelsetNames[curLevelsetId]);
 				SDL_Delay(250); /* wait until button released */
 				run();
 				ticks.reset();
-				SDL_ShowCursor(1);
 				break;
 			}
 		}
@@ -1040,9 +1043,24 @@ void View::runMenu()
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
 }
 
-
 void View::renderMenu()
 {
 	theme.menuBackground.copy();
 	curMenu->render();
+}
+
+void View::grabInput(int grab)
+{
+	if (grab) {
+		SDL_ShowCursor(0);
+		SDL_SetWindowGrab(mw->mw, SDL_TRUE );
+		SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "1", SDL_HINT_OVERRIDE);
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		SDL_GetRelativeMouseState(0,0);
+	} else {
+		SDL_ShowCursor(1);
+		SDL_SetWindowGrab(mw->mw, SDL_FALSE );
+		SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "0", SDL_HINT_OVERRIDE);
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+	}
 }

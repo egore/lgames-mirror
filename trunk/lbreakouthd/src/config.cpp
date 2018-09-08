@@ -42,8 +42,7 @@ Config::Config()
 	k_maxballspeed = SDL_SCANCODE_C;
 	grab = 1;
 	rel_motion = 1;
-	i_motion_mod = 120;
-	motion_mod = 1.2;
+	motion_mod = 100;
 	convex = 1;
 	linear_corner = 0;
 	invert = 0;
@@ -112,8 +111,7 @@ Config::Config()
 	fp.get( "ballturbo", k_maxballspeed );
 	fp.get( "rel_motion", rel_motion );
 	fp.get( "grab", grab );
-	fp.get( "motion_mod", i_motion_mod );
-	motion_mod = 0.01 * i_motion_mod;
+	fp.get( "motion_mod", motion_mod );
 	fp.get( "convex", convex );
 	fp.get( "linear_corner", linear_corner );
 	fp.get( "random_angle", random_angle );
@@ -170,7 +168,7 @@ void Config::save()
 	ofs << "ballturbo=" << k_maxballspeed << "\n";
 	ofs << "rel_motion=" << rel_motion << "\n";
 	ofs << "grab=" << grab << "\n";
-	ofs << "motion_mod=" << i_motion_mod << "\n";
+	ofs << "motion_mod=" << motion_mod << "\n";
 	ofs << "convex=" << convex << "\n";
 	ofs << "linear_corner=" << linear_corner << "\n";
 	ofs << "random_angle=" << random_angle << "\n";
