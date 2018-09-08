@@ -1047,6 +1047,9 @@ void View::renderMenu()
 {
 	theme.menuBackground.copy();
 	curMenu->render();
+	theme.fSmall.setAlign(ALIGN_X_RIGHT | ALIGN_Y_BOTTOM);
+	theme.fSmall.write(theme.menuBackground.getWidth()-2,theme.menuBackground.getHeight(), "http://lgames.sf.net");
+	theme.fSmall.write(theme.menuBackground.getWidth()-2,theme.menuBackground.getHeight() - theme.fSmall.getLineHeight(), string("Version: ")+PACKAGE_VERSION);
 }
 
 void View::grabInput(int grab)
