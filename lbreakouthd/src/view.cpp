@@ -650,7 +650,7 @@ bool View::showInfo(const string& text, bool confirm)
 	img.copy();
 
 	theme.fNormal.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
-	theme.fNormal.writeText(mw->getWidth()/2,mw->getHeight()/2,text,mw->getWidth()/2);
+	theme.fNormal.write(mw->getWidth()/2,mw->getHeight()/2,text,mw->getWidth()/2);
 
 	SDL_RenderPresent(mrc);
 
