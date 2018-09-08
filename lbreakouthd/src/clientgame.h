@@ -103,7 +103,7 @@ public:
 	ClientGame(Config &cfg);
 	~ClientGame();
 	int init(const string& setname);
-	int update(uint ms, int px, PaddleInputState &pis);
+	int update(uint ms, double rx, PaddleInputState &pis);
 	Game *getGameContext() { return game; }
 	string getLevelsetName() { return levelset->name; }
 	int getCurrentLevelId() { return levelset->cur_level; }

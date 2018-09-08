@@ -85,6 +85,7 @@ class View {
 	void getBallViewInfo(Ball *ball, int *x, int *y, uint *type);
 	void playSounds();
 	void createMenus();
+	void grabInput(int grab);
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();

@@ -95,12 +95,11 @@ ClientPlayer *ClientGame::getNextPlayer()
 }
 
 /** ms is passed milliseconds since last call
- * px is wanted paddle center position scaled to 640 virtual width
- * 	0 (impossible) means no (mouse) input position for this cycle
+ * rx is relative motion of paddle, or 0 for no motion
  * pis is what controls have been activated
  * return flags what has to be rendered new
  */
-int ClientGame::update(uint ms, int px, PaddleInputState &pis)
+int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 {
 	int oldScore = game->paddles[0]->score;
 	int oldWallActive = game->paddles[0]->extra_active[EX_WALL];
@@ -126,19 +125,16 @@ int ClientGame::update(uint ms, int px, PaddleInputState &pis)
 			}
 
 	/* handle paddle movement */
+	double px = game->paddles[0]->cur_x;
 	if (game->paddles[0]->frozen)
-		px = 0;
+		rx = 0;
 	else if (pis.left || pis.right) {
 		if (pis.left)
-			px = game->paddles[0]->cur_x - config.key_speed *
-							(ms << pis.turbo);
+			px -= config.key_speed * (ms << pis.turbo);
 		if (pis.right)
-			px = game->paddles[0]->cur_x + config.key_speed *
-							(ms << pis.turbo);
-	} else if (px != 0) {
-		/* convert center px into left paddle starting position */
-		px = px - game->paddles[0]->w/2;
-	}
+			px += config.key_speed * (ms << pis.turbo);
+	} else
+		px += rx;
 
 	/* update bottom paddle state */
 	game_set_paddle_state(0,px,0,pis.leftFire,pis.rightFire,pis.recall);

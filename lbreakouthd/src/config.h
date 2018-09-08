@@ -56,8 +56,7 @@ public:
 	int k_maxballspeed; /* go to maximum ball speed (while pressed) */
 	int rel_motion; /* use relative mouse motion; motion_mod and invert need this enabled */
 	int grab; /* keep mouse in window */
-	int i_motion_mod; /* motion_mod * 100 used to modify in the menu */
-	double motion_mod; /* multiplied with relative motion */
+	int motion_mod; /* motion_mod in percent */
 	int convex;
 	int invert;
 	double key_speed; /* move with key_speed pix per sec when keys are used */
@@ -82,7 +81,7 @@ public:
 	int fps; /* frames per second: 0 - no limit, 1 - 50, 2 - 100, 3 - 200 */
 	int ball_level;
 	int debris_level;
-	int i_key_speed; /* integer value that is devided by 100 to get real key_speed */
+	int i_key_speed; /* integer value that is divided by 1000 to get real key_speed */
 	/* various */
 	int use_hints;
 	int return_on_click; /* autoreturn on click if true else automatically */
