@@ -14,4 +14,7 @@ warping
 efficient check for active extras and draw only once per sec
 merge background and brick layer to offset layer
 stereo sound
+label object for more efficient font rendering
+smooth score counter and smoothing transitions
+freakout and special levelsets
 ...
