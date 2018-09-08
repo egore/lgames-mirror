@@ -918,9 +918,9 @@ void View::createMenus()
 	mAdv->add(new MenuItemBack(mOptions));
 
 	rootMenu->add(new MenuItemSub(_("New Game"), mNewGame));
-	rootMenu->add(new MenuItem(_("Resume Game"), AID_RESUME));
+	//rootMenu->add(new MenuItem(_("Resume Game"), AID_RESUME));
 	rootMenu->add(new MenuItemSub(_("Options"), mOptions));
-	rootMenu->add(new MenuItem(_("Help"), AID_HELP));
+	//rootMenu->add(new MenuItem(_("Help"), AID_HELP));
 	rootMenu->add(new MenuItem(_("Quit"), AID_QUIT));
 
 	rootMenu->adjust();
@@ -1020,6 +1020,7 @@ void View::runMenu()
 				break;
 			case AID_STARTCUSTOM:
 			case AID_STARTORIGINAL:
+				curWallpaperId = rand() % theme.numWallpapers;
 				if (aid == AID_STARTORIGINAL)
 					cgame.init("LBreakout2");
 				else
