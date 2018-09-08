@@ -1000,6 +1000,13 @@ void View::runMenu()
 				mixer.open(config.channels, config.audio_buffer_size);
 				break;
 			case AID_APPLYTHEMEMODE:
+				/* XXX workaround for SDL bug: clear event
+				 * loop otherwise left mouse button event is
+				 * screwed for the first click*/
+				SDL_Delay(250);
+				SDL_PumpEvents();
+				SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+
 				init(themeNames[config.theme_id],
 					MainWindow::getModeResolution(config.mode));
 				curMenu = graphicsMenu;
