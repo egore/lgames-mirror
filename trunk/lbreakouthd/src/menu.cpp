@@ -114,7 +114,7 @@ int MenuItemEdit::runEditDialog(const string &caption, string &str)
 
 int Menu::handleEvent(const SDL_Event &ev)
 {
-	int ret = 0;
+	int ret = AID_NONE;
 
 	if (ev.type == SDL_MOUSEMOTION) {
 		bool onItem = false;
