@@ -427,6 +427,25 @@ void Font::write(int x, int y, const string& _str, int alpha) {
 	drect.h = surf->h;
 	if (alpha < 255)
 		SDL_SetTextureAlphaMod(tex, alpha);
+
+	/* do a shadow first */
+	if (1) {
+		SDL_Rect drect2 = drect;
+		SDL_Surface *surf2;
+		SDL_Texture *tex2;
+		SDL_Color clr2 = { 0,0,0,255 };
+		if ((surf2 = TTF_RenderUTF8_Blended(font, str, clr2)) == NULL)
+			_logsdlerr();
+		if ((tex2 = SDL_CreateTextureFromSurface(mrc, surf2)) == NULL)
+			_logsdlerr();
+		drect2.x += size/10;
+		drect2.y += size/10;
+		SDL_SetTextureAlphaMod(tex2, alpha/2);
+		SDL_RenderCopy(mrc, tex2, NULL, &drect2);
+		SDL_FreeSurface(surf2);
+		SDL_DestroyTexture(tex2);
+	}
+
 	SDL_RenderCopy(mrc, tex, NULL, &drect);
 	SDL_FreeSurface(surf);
 	SDL_DestroyTexture(tex);
