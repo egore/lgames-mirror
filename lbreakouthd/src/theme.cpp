@@ -346,14 +346,10 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	fSmall.setColor(fontColorNormal);
 
 	/* menu stuff */
-	bool menubackLoaded = false;
-	if (fileExists(path + "/menuback.png")) {
+	if (fileExists(path + "/menuback.png"))
 		menuBackground.load(path + "/menuback.png");
-		menubackLoaded = true;
-	} else if (fileExists(path + "/menuback.jpg")) {
+	else if (fileExists(path + "/menuback.jpg"))
 		menuBackground.load(path + "/menuback.jpg");
-		menubackLoaded = true;
-	}
 	menuBackground.setBlendMode(0);
 	menuX = menuX * screenWidth / menuBackground.getWidth();
 	menuY = menuY * screenHeight / menuBackground.getHeight();
