@@ -297,7 +297,6 @@ void View::render()
 		theme.shot.setAlpha(128);
 		theme.weapon.setAlpha(128);
 		theme.balls.setAlpha(128);
-		theme.extras.setAlpha(128);
 	} else {
 		imgBackground.copy();
 		imgBricks.copy(imgBricksX,imgBricksY);
@@ -307,7 +306,6 @@ void View::render()
 		theme.shot.clearAlpha();
 		theme.weapon.clearAlpha();
 		theme.balls.clearAlpha();
-		theme.extras.clearAlpha();
 	}
 
 	/* balls - shadows */
@@ -323,10 +321,10 @@ void View::render()
 	/* extras - shadows */
 	list_reset(game->extras);
 	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 ) {
-		if (extra->alpha < 255)
-			theme.extrasShadow.setAlpha(extra->alpha);
-		else
-			theme.extrasShadow.clearAlpha();
+		int a = extra->alpha;
+		if (cgame.darknessActive())
+			a /= 2;
+		theme.extrasShadow.setAlpha(a);
 		theme.extrasShadow.copy(extra->type, 0,
 				v2s(extra->x) + theme.shadowOffset,
 				v2s(extra->y) + theme.shadowOffset);
@@ -406,11 +404,19 @@ void View::render()
 	/* extras */
 	list_reset(game->extras);
 	while ( ( extra = (Extra*)list_next( game->extras) ) != 0 ) {
-		if (extra->alpha < 255)
-			theme.extras.setAlpha(extra->alpha);
-		else
-			theme.extras.clearAlpha();
+		int a = extra->alpha;
+		if (cgame.darknessActive())
+			a /= 2;
+		theme.extras.setAlpha(a);
 		theme.extras.copy(extra->type, 0, v2s(extra->x), v2s(extra->y));
+	}
+
+	/* copy part of frame to cover shadow */
+	if (!cgame.darknessActive()) {
+		int sx = (MAPWIDTH-1) * brickScreenWidth;
+		int sy = brickScreenHeight;
+		imgBackground.copy(sx,sy,theme.shadowOffset,
+					(MAPHEIGHT-1)*brickScreenHeight,sx,sy);
 	}
 
 	/* stats */
@@ -1050,7 +1056,7 @@ void View::renderMenu()
 	curMenu->render();
 	theme.fSmall.setAlign(ALIGN_X_RIGHT | ALIGN_Y_BOTTOM);
 	theme.fSmall.write(theme.menuBackground.getWidth()-2,theme.menuBackground.getHeight(), "http://lgames.sf.net");
-	theme.fSmall.write(theme.menuBackground.getWidth()-2,theme.menuBackground.getHeight() - theme.fSmall.getLineHeight(), string("Version: ")+PACKAGE_VERSION);
+	theme.fSmall.write(theme.menuBackground.getWidth()-2,theme.menuBackground.getHeight() - theme.fSmall.getLineHeight(), string("v")+PACKAGE_VERSION);
 }
 
 void View::grabInput(int grab)
