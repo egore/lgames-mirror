@@ -83,13 +83,11 @@ Megadoomer \
 MegaMan2 \
 Memory \
 MontyHall \
-N_Arenas \
 Nations \
 Negundoid \
 NES \
 NewBricks \
 NewOERG1 \
-N_Snapshots \
 ObiWan \
 Oceania \
 OpenSource \

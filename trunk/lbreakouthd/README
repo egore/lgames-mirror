@@ -14,25 +14,9 @@ a brand new fully scalable 16:9 view. Well, it will be, when it's done.
 It's in an early stage right now and a lot of things are still missing
 but the game is basically already playable.
 
-Command line options
---------------------
-What's missing is a proper menu, for example. So for now you need to 
-use the command line. This is what the help says:
-
-Usage: lbreakouthd [-w resolution] [-f] [-p player1,...] [-t theme] levelset
-  -w window resolution in vertical pixels (fixed to 16:9 ratio)
-  -f fullscreen on current screen resolution
-  -p up to four comma separated player names
-  -t theme to be used (LBreakout2 themes ok, too)
-Options are saved to config file, only needed to set new values.
-If levelset is missing default LBreakout2 is used.
-Themes/sets may start with ~ to load from ~/.lbreakouthd
-  (only if installed with make install).
-Example: bin/lbreakouthd -w 720 -p Mike,Tom LBreakout1
-
 Themes
 ------
-The most boring part first: IF you use third-party artwork please check that
+The most boring part first: IF you use other people's artwork please check that
 the license allows you to change and share it (e.g., GPL, PD, CC, OFL, ...)
 and give proper credits in a file named CREDITS (or something like that).
 If this is not done, a theme will not be accepted. For your own artwork please
@@ -43,8 +27,8 @@ keep its dimensions for a 1080p theme. It's pretty much self-explanatory.
 
 To get the fine details, read on.
 
-It's still PNG-based (rasterizing SVG sometimes leads to artifacts and limits
-to vector graphics only, so ...). Whatever resolution the images are in they
+It's still pixel-based (rasterizing SVG sometimes leads to artifacts and limits
+to vector graphics only, so ...). Whatever resolution the images have they
 get scaled to the screen/window size. Just bear a few things in mind:
 
 theme.ini allows to set various things. All options have default values
@@ -54,11 +38,11 @@ you MUST at least provide
 brickWidth = 90
 brickHeight = 45
 
-Otherwise 40x20 will be assumed which will look very funny. For 4k you
-could use 180x90 (remember everything gets scaled up or down to fit the
+Otherwise 40x20 will be assumed which will look very funny. For a 4k theme you
+would use 180x90 (remember everything gets scaled up or down to fit the
 actual screen resolution).
 
-In general, all PNGs can use alpha for transparency. Black is no longer
+In general, all images can use alpha for transparency. Black is no longer
 used as color key (only for old LBreakout2 themes). For missing files 
 Standard theme assets are used as fallback except for the frame (see below).
 
@@ -66,12 +50,14 @@ Assets in bricks.png and extras.png MUST match the given brick size
 exactly. All assets must be in one row (extra space to the right
 or bottom hand side doesn't matter).
 
-backX.png (or jpg is ok now, too) are wallpapers or full backgrounds.
+backX.png (or jpg is now ok, too) are wallpapers or full backgrounds.
 They get scaled by the brickScreenSize to brickFileSize ratio. So the 
 resolution should match bricks.png and extras.png (so that full wallpapers
 will be scaled in the correct ratio to always fill the whole screen).
 Maximum number is 10. Background numbers must be consecutive (e.g., 
 back0.png, back1.png, back3.png will only load the first two).
+
+menuback.png (or jpg) works the same for the menu background.
 
 The main frame comes in three flavors:
 1) frame.png contains the full frame (fitting 16:9).
@@ -99,23 +85,34 @@ chaotic). No extra rows allowed as height is used to determine dimensions.
 Balls get scaled to 60% of brick height. E.g., for 1080p tile size
 should be 27x27 to avoid unnecessary scaling.
 
-shot.png is a row of frames (shotFrameNum or default 4). You can set
-animation speed by shotAnimDelay (default 200 ms). 
+shot.png is a row of frames (shotAnim.frames or default 4). You can set
+animation speed by shotAnim.delay (default 200 ms). 
 Shots get scaled square to 50% of brick height. E.g., for 1080p frame size
 should be 22x22 to avoid unnecessary scaling.
 
-weapon.png is a row of frames (weaponFrameNum or default 4). You can set
-animation speed by weaponAnimDelay (default 200 ms). 
+weapon.png is a row of frames (weaponAnim.frames or default 4). You can set
+animation speed by weaponAnim.delay (default 200 ms). 
 Weapon gets scaled square to 90% of brick height. E.g., for 1080p frame size
 should be 40x40 to avoid unnecessary scaling.
 
-The life symbol is automatically created from paddle.
+explosions.png is a row of frames (explAnim.frames or default 9) for an
+explosion. You can set explosion speed by explAnim.delay (default 50 ms).
+Explosions can have any size but must be square. In future, more rows for
+different explosions will be allowed. 
+
+life.png contains two brick sized, vertically arranged icons for displaying the 
+player's lives. The first icon shows a possible extra paddle, the second shows
+an actual life. It is added at the lower left-hand side of the frame.
 
 You can specify the small and normal text font (default: fsmall.otf and 
-fnormal.otf) and their size (default: 70% and 90% of brick height).
+fnormal.otf) and their size (default: 14 and 18 pixels in theme resolution).
 You can set the colors with fontColorNormal (default white) and 
 fontColorHighlight (default yellow) as red,green,blue,alpha values.
 Use GIMP to mix colors or translate #...... hex values.
+
+menu.* in theme.ini allows to modify some menu position stuff. All values are in
+pixels in theme resolution. Just play around with the values if you're 
+interested in changing it.
 
 Enjoy,
 Michael
