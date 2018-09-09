@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lbreakouthd 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-25 13:12+0200\n"
+"POT-Creation-Date: 2018-09-09 14:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,23 +90,203 @@ msgstr "!JGER!"
 msgid "!INVADERS!"
 msgstr "!EINDRINGLINGE!"
 
-#: src/view.cpp:120
+#: src/view.cpp:166
 msgid "Pause"
 msgstr ""
 
-#: src/view.cpp:332
+#: src/view.cpp:170
+msgid "Quit Game? y/n"
+msgstr "Spiel verlassen? y/n"
+
+#: src/view.cpp:453
 msgid "(Level "
 msgstr "(Ebene "
 
-#: src/view.cpp:345
+#: src/view.cpp:466
 msgid "Active Extras"
 msgstr "Aktive Extras"
 
-#: src/view.cpp:368
+#: src/view.cpp:485
 msgid "Hiscores"
 msgstr "Bestenliste"
 
-#: src/clientgame.cpp:159
+#: src/view.cpp:856
+msgid "Kids"
+msgstr "Kinder"
+
+#: src/view.cpp:856
+msgid "Easy"
+msgstr "Leicht"
+
+#: src/view.cpp:856
+msgid "Medium"
+msgstr "Mittel"
+
+#: src/view.cpp:856
+msgid "Hard"
+msgstr "Schwer"
+
+#: src/view.cpp:871
+msgid "Start Original Levels"
+msgstr "Starte Original Ebenen"
+
+#: src/view.cpp:872
+msgid "Start Custom Levels"
+msgstr "Starte Zusatzebenen"
+
+#: src/view.cpp:873
+msgid "Levelset"
+msgstr "Ebenensatz "
+
+#: src/view.cpp:874
+msgid "Difficulty"
+msgstr "Schwierigkeit"
+
+#: src/view.cpp:876
+msgid "Players"
+msgstr "Spieler"
+
+#: src/view.cpp:878
+msgid "1st"
+msgstr "1."
+
+#: src/view.cpp:879
+msgid "2nd"
+msgstr "2."
+
+#: src/view.cpp:880
+msgid "3rd"
+msgstr "3."
+
+#: src/view.cpp:881
+msgid "4th"
+msgstr "4."
+
+#: src/view.cpp:885
+msgid "Left"
+msgstr "Links"
+
+#: src/view.cpp:886
+msgid "Right"
+msgstr "Rechts"
+
+#: src/view.cpp:887
+msgid "Left Fire"
+msgstr "Feuer Links"
+
+#: src/view.cpp:888
+msgid "Right Fire"
+msgstr "Feuer Rechts"
+
+#: src/view.cpp:889
+msgid "Paddle Turbo"
+msgstr "Schlgerturbo"
+
+#: src/view.cpp:890
+msgid "Ball Turbo"
+msgstr "Ballturbo"
+
+#: src/view.cpp:891
+msgid "Idle Return"
+msgstr "Idle zurck"
+
+#: src/view.cpp:893
+msgid "Key Speed"
+msgstr "Tastengeschwindigkeit"
+
+#: src/view.cpp:894
+msgid "Motion Modifier"
+msgstr "Bewegungsfaktor"
+
+#: src/view.cpp:895
+msgid "Invert Motion"
+msgstr "Bewegung Invertieren"
+
+#: src/view.cpp:899
+msgid "Theme"
+msgstr "Thema"
+
+#: src/view.cpp:900
+msgid "Mode"
+msgstr "Modus"
+
+#: src/view.cpp:901
+msgid "Apply Theme&Mode"
+msgstr "Thema&Modus anwenden"
+
+#: src/view.cpp:905
+msgid "Sound"
+msgstr "Gerusche"
+
+#: src/view.cpp:906
+msgid "Volume"
+msgstr "Lautstrke"
+
+#: src/view.cpp:907
+msgid "Speech"
+msgstr "Sprache"
+
+#: src/view.cpp:909
+msgid "Buffer Size"
+msgstr "Puffergre"
+
+#: src/view.cpp:910
+msgid "Channels"
+msgstr "Kanle"
+
+#: src/view.cpp:911
+msgid "Apply Size&Channels"
+msgstr "Gre&Kanle anwenden"
+
+#: src/view.cpp:915
+msgid "Controls"
+msgstr "Kontrollen"
+
+#: src/view.cpp:916
+msgid "Graphics"
+msgstr "Grafik"
+
+#: src/view.cpp:917
+msgid "Audio"
+msgstr "Audio"
+
+#: src/view.cpp:918
+msgid "Advanced"
+msgstr "Erweitert"
+
+#: src/view.cpp:921
+msgid "Ball Fire Angle"
+msgstr "Ballwinkel"
+
+#: src/view.cpp:921
+msgid "Random"
+msgstr "Zufall"
+
+#: src/view.cpp:922
+msgid "Return Balls"
+msgstr "Blle zurck"
+
+#: src/view.cpp:922
+msgid "Auto"
+msgstr "Auto"
+
+#: src/view.cpp:922
+msgid "On Click"
+msgstr "Mit Klick"
+
+#: src/view.cpp:926
+msgid "New Game"
+msgstr "Neues Spiel"
+
+#: src/view.cpp:928
+msgid "Options"
+msgstr "Optionen"
+
+#: src/view.cpp:930
+msgid "Quit"
+msgstr "Verlassen"
+
+#: src/clientgame.cpp:158
 #, c-format
 msgid "Congratulations, %s, you cleared all levels!"
 msgstr "Glckwnsch, %s, du hast alle Ebenen gesubert!"
