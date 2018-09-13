@@ -184,6 +184,11 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 	/* handle (some) collected extras (most is done in game itself) */
 	for (int i = 0; i < game->mod.collected_extra_count[0]; i++) {
 		switch (game->mod.collected_extras[0][i]) {
+		case EX_WALL:
+			if (!floorActive())
+				ret |= CGF_STARTFLOOR;
+			_loginfo("Wall collected\n");
+			break;
 		case EX_LIFE:
 			players[curPlayer]->gainLife();
 			ret |= CGF_UPDATEBACKGROUND; /* life is on the frame */
