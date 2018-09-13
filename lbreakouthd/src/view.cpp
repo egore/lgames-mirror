@@ -38,6 +38,15 @@ View::View(Config &cfg, ClientGame &_cg)
 
 	/* FIXME: get all from home dir as well and represent much better than this */
 	readDir(string(DATADIR)+"/levels", RD_FILES, levelsetNames);
+	int i = 0;
+	for (auto& n : levelsetNames) {
+		if (n == config.setname) {
+			curLevelsetId = i;
+			break;
+		}
+		i++;
+	}
+	config.setname = levelsetNames[curLevelsetId];
 
 	/* FIXME: get all from home dir as well and represent much better than this */
 	readDir(string(DATADIR)+"/themes", RD_FOLDERS, themeNames);
@@ -870,7 +879,7 @@ void View::createMenus()
 
 	mNewGame->add(new MenuItem(_("Start Original Levels"),AID_STARTORIGINAL));
 	mNewGame->add(new MenuItem(_("Start Custom Levels"),AID_STARTCUSTOM));
-	mNewGame->add(new MenuItemList(_("Levelset"),AID_NONE,curLevelsetId,levelsetNames));
+	mNewGame->add(new MenuItemList(_("Levelset"),AID_SETCHANGED,curLevelsetId,levelsetNames));
 	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemRange(_("Players"),AID_NONE,
@@ -1023,6 +1032,9 @@ void View::runMenu()
 				init(themeNames[config.theme_id],
 					MainWindow::getModeResolution(config.mode));
 				curMenu = graphicsMenu;
+				break;
+			case AID_SETCHANGED:
+				config.setname = levelsetNames[curLevelsetId];
 				break;
 			case AID_STARTCUSTOM:
 			case AID_STARTORIGINAL:

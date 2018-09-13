@@ -3,7 +3,6 @@ setting theme.ini default screws values for loading menu/explosions...
 chaos not attracted by malus magnet
 smaller brick layer image as lower rows can't be edited
 smooth extra floor wall
-shadow of paddle in extra wall and right lower frame
 more colored explosions
 wrap get home dir
 show title/author on start of level
@@ -19,5 +18,5 @@ smooth score counter and smoothing transitions
 freakout and special levelsets
 resume game
 quick help
-alpha down extras in darkness
+speed depending on distance from paddle
 ...
