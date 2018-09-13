@@ -160,13 +160,13 @@ int paddle_check_attract( Paddle *paddle, int type )
 		case EX_WEAK_BALL:
 		case EX_DARKNESS:
 		case EX_GHOST_PADDLE:
+		case EX_CHAOS:
 		case EX_FROZEN:
 			if ( paddle_attract_malus( paddle ) )
 				return 1;
 			return 0;
 			/* neutral */
 		case EX_DISABLE:
-		case EX_CHAOS:
 		case EX_TIME_ADD:
 		case EX_RANDOM:
 			return 0;
