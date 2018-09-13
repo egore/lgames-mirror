@@ -86,7 +86,8 @@ enum {
 	CGF_GAMEOVER = 32,
 	CGF_PLAYERMESSAGE = 64,
 	CGF_NEWANIMATIONS = 128,
-	CGF_LIFELOST = 256
+	CGF_LIFELOST = 256,
+	CGF_STARTFLOOR = 512 /* can be done without but ... */
 };
 class ClientGame {
 	Config &config;
@@ -111,6 +112,7 @@ public:
 	HiscoreChart *getHiscoreChart() { return hiscores.get(levelset->name); }
 	ClientPlayer* getCurrentPlayer() {return players[curPlayer].get(); }
 	int darknessActive() { return game->extra_active[EX_DARKNESS]; }
+	int floorActive() { return game->paddles[0]->extra_active[EX_WALL]; }
 	void updateHiscores();
 	const string& getPlayerMessage() { return msg; }
 };

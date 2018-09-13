@@ -116,13 +116,20 @@ void View::init(string t, uint r)
 	imgScore.create(brickScreenWidth*3, brickScreenHeight);
 	imgScoreX = boardX + (boardWidth - imgScore.getWidth())/2;
 	imgScoreY = brickScreenHeight * 15 + brickScreenHeight/2;
-	imgBricks.create((MAPWIDTH-2)*brickScreenWidth,
-				(MAPHEIGHT-1)*brickScreenHeight);
+	imgBricks.create(EDITWIDTH*brickScreenWidth,
+				EDITHEIGHT*brickScreenHeight);
 	imgBricksX = brickScreenWidth;
 	imgBricksY = brickScreenHeight;
 	imgExtras.create(boardWidth, 4*brickScreenHeight);
 	imgExtrasX = boardX;
 	imgExtrasY = 19*brickScreenHeight;
+	imgFloor.create(EDITWIDTH*brickScreenWidth,brickScreenHeight);
+	imgFloorX = brickScreenWidth;
+	imgFloorY = imgBackground.getHeight() - brickScreenHeight;
+	SDL_SetRenderTarget(mrc, imgFloor.getTex());
+	for (int i = 0; i < EDITWIDTH; i++)
+		theme.bricks.copy(1, 0, i*brickScreenWidth, 0);
+	SDL_SetRenderTarget(mrc, NULL);
 }
 
 View::~View()
@@ -227,6 +234,12 @@ void View::run()
 		/* update animations and particles */
 		shotFrameCounter.update(ms);
 		weaponFrameCounter.update(ms);
+		if (cgame.floorActive()) {
+			if (floorAlpha < 255)
+				floorAlpha += ms*0.25;
+			else
+				floorAlpha = 255;
+		}
 		for (auto it = begin(sprites); it != end(sprites); ++it) {
 			if ((*it).get()->update(ms))
 				it = sprites.erase(it);
@@ -261,6 +274,8 @@ void View::run()
 			renderScoreImage();
 		if (flags & CGF_NEWANIMATIONS)
 			createSprites();
+		if (flags & CGF_STARTFLOOR)
+			floorAlpha = 0;
 
 		/* handle sounds by accessing game->mod */
 		playSounds();
@@ -398,6 +413,12 @@ void View::render()
 	list_reset(game->shots);
 	while ( ( shot = (Shot*)list_next( game->shots) ) != 0 )
 		theme.shot.copy(shotFrameCounter.get(),0,v2s(shot->x),v2s(shot->y));
+
+	/* extra floor */
+	if (cgame.floorActive() && !cgame.darknessActive()) {
+		imgFloor.setAlpha(floorAlpha);
+		imgFloor.copy(imgFloorX,imgFloorY);
+	}
 
 	/* sprites */
 	if (cgame.darknessActive()) {

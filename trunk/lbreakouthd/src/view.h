@@ -56,11 +56,14 @@ class View {
 	int curWallpaperId;
 	Image imgBackground;
 	Image imgBricks;
-	Uint32 imgBricksX, imgBricksY;
+	int imgBricksX, imgBricksY;
 	Image imgScore;
-	Uint32 imgScoreX, imgScoreY;
+	int imgScoreX, imgScoreY;
 	Image imgExtras;
-	Uint32 imgExtrasX, imgExtrasY;
+	int imgExtrasX, imgExtrasY;
+	Image imgFloor; /* extra wall at bottom */
+	int imgFloorX, imgFloorY;
+	double floorAlpha;
 	FrameCounter weaponFrameCounter;
 	FrameCounter shotFrameCounter;
 	list<unique_ptr<Sprite>> sprites;
