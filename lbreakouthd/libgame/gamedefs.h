@@ -467,6 +467,7 @@ typedef struct {
 	int		extra_active[EX_NUMBER]; /* wether extra is active */
 	int 		extra_time[EX_NUMBER]; /* time in milliseconds when extra expires */
 	double		ball_v, ball_v_min, ball_v_max; /* ball velocity */
+	int		ball_auto_speedup;
 	Delay		speedup_delay;
 	int		speedup_level; /* number of speedups */
 	int		paddle_is_convex;

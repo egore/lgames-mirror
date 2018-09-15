@@ -70,6 +70,7 @@ int ClientGame::init(const string& setname)
 	game_set_ball_auto_return( !config.return_on_click );
 	game_set_ball_random_angle( config.random_angle );
 	game_set_ball_accelerated_speed( config.maxballspeed_float );
+	game->ball_auto_speedup = config.ball_auto_turbo;
 
 	/* set first level as snapshot to all players */
 	for (auto& p : players)

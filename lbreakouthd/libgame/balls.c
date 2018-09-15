@@ -109,10 +109,37 @@ void ball_check_brick_reflection( Ball *b )
 	int reflect;
 	int chaos_reflect;
 	int hit_type;
-    Vector oldBallVel = b->vel;
+	Vector oldBallVel = b->vel;
+	int atTarget = 0;
 
-	/* time left? */
-	if (b->target.cur_tm < b->target.time) return;
+	if (!b->target.exists)
+		return;
+
+	/* check if at target without using time
+	 * TODO remove unnecessary time attribute */
+	if (b->vel.x > 0) {
+		if (b->vel.y > 0) {
+			/* moving right&down */
+			if (b->cur.x >= b->target.x && b->cur.y >= b->target.y)
+				atTarget = 1;
+		} else {
+			/* moving right&up */
+			if (b->cur.x >= b->target.x && b->cur.y <= b->target.y)
+				atTarget = 1;
+		}
+	} else {
+		if (b->vel.y > 0) {
+			/* moving left&down */
+			if (b->cur.x <= b->target.x && b->cur.y >= b->target.y)
+				atTarget = 1;
+		} else {
+			/* moving left&up*/
+			if (b->cur.x <= b->target.x && b->cur.y <= b->target.y)
+				atTarget = 1;
+		}
+	}
+	if (!atTarget)
+		return;
 
 	/* if the brick is destructible (thus it'll take damage)
 	 * we must reset the idle time
@@ -956,7 +983,6 @@ void balls_update( int ms )
             if ( cur_game->paddles[0]->maxballspeed_request && !cur_game->paddles[0]->maxballspeed_request_old )
             {
                 cur_game->ball_v = cur_game->accelerated_ball_speed;
-                balls_set_velocity( cur_game->balls, cur_game->ball_v );
             }
             if ( !cur_game->paddles[0]->maxballspeed_request && cur_game->paddles[0]->maxballspeed_request_old )
             {
@@ -968,10 +994,28 @@ void balls_update( int ms )
                 else
                     cur_game->ball_v = cur_game->diff->v_start + 
                         cur_game->diff->v_add * cur_game->speedup_level;
-                balls_set_velocity( cur_game->balls, cur_game->ball_v );
             }
         }
         
+        /* set individual ball speed according to height in map */
+        if (cur_game->ball_auto_speedup) {
+		list_reset(cur_game->balls);
+		while ((ball = list_next(cur_game->balls))) {
+			int topY = 140, bottomY = 300;
+			int by = ball->y + ball_rad;
+			double p = (double)(bottomY - by) / (bottomY - topY);
+			if (p < 0)
+				p = 0;
+			if (p > 1)
+				p = 1;
+			double v = cur_game->ball_v +
+					p*(cur_game->accelerated_ball_speed
+							- cur_game->ball_v);
+			vector_set_length(&ball->vel, v);
+		}
+        } else
+        	balls_set_velocity( cur_game->balls, cur_game->ball_v );
+
 	/* increase speed */
 	if ( !cur_game->extra_active[EX_SLOW] )
 	if ( !cur_game->extra_active[EX_FAST] )
@@ -1554,10 +1598,6 @@ void ball_get_target( Ball *ball )
 		/* we updated primary's side info correctly and may reflect now */
 		ball->target = *prim;
 		ball_reflect( ball );
-        /* we got the reset position and the perpvector so finalize target */
-        /* compute time: assume constant velocity: velocity change must not be too high! */
-        dist = sqrt( SQUARE(center.x - ball->target.x) + SQUARE(center.y - ball->target.y) );
-        ball->target.time = (int)floor(dist / cur_game->ball_v);
         /* target's reset position is center position right now but
            we need the upper left corner of the ball */
         ball->target.x -= ball_rad; ball->target.y -= ball_rad;
@@ -1688,15 +1728,8 @@ void balls_set_velocity( List *balls, double vel )
     double dist;
    
     list_reset( balls );
-    while ( ( b = list_next( balls ) ) ) {
+    while ( ( b = list_next( balls ) ) )
         vector_set_length( &b->vel, vel );
-        if ( b->target.exists ) {
-            dist = sqrt( SQUARE(b->cur.x - b->target.x) + 
-                    SQUARE(b->cur.y - b->target.y) );
-            b->target.time = (int)floor(dist / vel);
-            b->target.cur_tm = 0;
-        }
-    }
 }
 
 /*

@@ -52,6 +52,7 @@ Config::Config()
 	random_angle = 1;
 	maxballspeed_int1000 = 900;
 	maxballspeed_float = 0.7;
+	ball_auto_turbo = 1;
 	/* sounds */
 	sound = 1;
 	volume = 50;
@@ -111,6 +112,7 @@ Config::Config()
 	fp.get( "return", k_return );
 	fp.get( "turbo", k_turbo );
 	fp.get( "ballturbo", k_maxballspeed );
+	fp.get( "ball_auto_turbo", ball_auto_turbo );
 	fp.get( "rel_motion", rel_motion );
 	fp.get( "grab", grab );
 	fp.get( "motion_mod", motion_mod );
@@ -169,6 +171,7 @@ void Config::save()
 	ofs << "return=" << k_return << "\n";
 	ofs << "turbo=" << k_turbo << "\n";
 	ofs << "ballturbo=" << k_maxballspeed << "\n";
+	ofs << "ball_auto_turbo=" << ball_auto_turbo << "\n";
 	ofs << "rel_motion=" << rel_motion << "\n";
 	ofs << "grab=" << grab << "\n";
 	ofs << "motion_mod=" << motion_mod << "\n";
