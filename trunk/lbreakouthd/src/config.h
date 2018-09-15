@@ -65,6 +65,7 @@ public:
 	int random_angle;
 	int maxballspeed_int1000; /* max ball speed in pixels/second */
 	float maxballspeed_float; /* per millisecond */
+	int ball_auto_turbo;
 
 	/* sound */
 	int sound;
