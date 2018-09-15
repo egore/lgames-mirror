@@ -117,7 +117,7 @@ void View::init(string t, uint r)
 	imgScoreX = boardX + (boardWidth - imgScore.getWidth())/2;
 	imgScoreY = brickScreenHeight * 15 + brickScreenHeight/2;
 	imgBricks.create(EDITWIDTH*brickScreenWidth,
-				EDITHEIGHT*brickScreenHeight);
+				(EDITHEIGHT+1)*brickScreenHeight);
 	imgBricksX = brickScreenWidth;
 	imgBricksY = brickScreenHeight;
 	imgExtras.create(boardWidth, 4*brickScreenHeight);
@@ -445,7 +445,7 @@ void View::render()
 	if (!cgame.darknessActive()) {
 		int sx = (MAPWIDTH-1) * brickScreenWidth;
 		int sy = brickScreenHeight;
-		imgBackground.copy(sx,sy,theme.shadowOffset,
+		imgBackground.copy(sx,sy,brickScreenWidth,
 					(MAPHEIGHT-1)*brickScreenHeight,sx,sy);
 	}
 
