@@ -77,7 +77,7 @@ Config::Config()
 	/* if config dir not found create necessary dirs */
 	dname = CONFIGDIR;
 	if (dname != ".") { /* . = disabled install */
-		dname = string(getenv( "HOME" )?getenv( "HOME" ):".") + "/" + dname;
+		dname = getHomeDir() + "/" + dname;
 		if (!dirExists(dname)) {
 			_loginfo("Configuration directory %s not found, creating.\n",
 								dname.c_str());
@@ -148,7 +148,6 @@ void Config::save()
 	ofstream ofs(fname);
 	if (!ofs.is_open()) {
 		_logerr("Could not open config file %s\n",fname.c_str());
-		/* TODO create CONFIGDIR if not . */
 		return;
 	}
 

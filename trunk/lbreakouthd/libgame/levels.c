@@ -50,6 +50,11 @@ static int is_destructible( char brick )
     return 0;
 }
 
+char *get_home_dir() {
+	static char *fallback = ".";
+	return (getenv( "HOME" )?getenv( "HOME" ):fallback);
+}
+
 /*
 ====================================================================
 Publics
@@ -67,8 +72,7 @@ FILE *levelset_open( const char *fname, char *mode )
 	char path[512];
 	if ( fname[0] == '~') {
 		snprintf( path, sizeof(path)-1, "%s/%s/levels/%s",
-			(getenv( "HOME" )?getenv( "HOME" ):"."), 
-			CONFIG_DIR_NAME, fname + 1 );
+			get_home_dir(), CONFIG_DIR_NAME, fname + 1 );
 	}
 	else
 	if ( fname[0] != '/' ) /* keep global pathes */
@@ -276,8 +280,7 @@ int levelset_save( LevelSet *set, char *fname )
 
 	if ( set == 0 || set->count == 0 ) return 0;
 
-	snprintf( path, sizeof(path)-1, "%s/%s/levels/%s",
-			(getenv( "HOME" )?getenv( "HOME" ):"."), 
+	snprintf( path, sizeof(path)-1, "%s/%s/levels/%s", get_home_dir(),
 			CONFIG_DIR_NAME, (fname[0]=='~')?fname+1:fname );
 	if ( ( file = fopen( path, "w" ) ) == 0 ) {
 		fprintf( stderr, "couldn't open %s\n", path );

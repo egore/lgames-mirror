@@ -54,6 +54,12 @@ View::View(Config &cfg, ClientGame &_cg)
 		config.theme_id = 0;
 	config.theme_count = themeNames.size();
 
+	/* name for saved game */
+	if (string(CONFIGDIR) != ".")
+		saveFileName = getHomeDir() + "/" + CONFIGDIR + "/lbreakouthd.sav";
+	else
+		saveFileName = "./lbreakouthd.sav";
+
 	MainWindow::getModeNames(modeNames);
 	if ((uint)config.mode >= modeNames.size())
 		config.mode = 0;
@@ -158,10 +164,15 @@ void View::run()
 	Ticks ticks;
 	Uint32 ms;
 	bool leave = false;
+	bool resumeLater = false;
 	double rx = 0;
+	vector<string> text;
+
+	curWallpaperId = rand() % theme.numWallpapers;
 
 	fpsStart = SDL_GetTicks();
 
+	sprites.clear();
 	renderBackgroundImage();
 	renderBricksImage();
 	renderScoreImage();
@@ -183,8 +194,14 @@ void View::run()
 					ticks.reset();
 					break;
 				case SDL_SCANCODE_ESCAPE:
-					if (showInfo(_("Quit Game? y/n"),true))
+					text.clear();
+					text.push_back(_("Quit Game? y/n"));
+					text.push_back(_("(No hiscore entry yet,"));
+					text.push_back(_("game can be resumed later)"));
+					if (showInfo(text,true)) {
 						leave = true;
+						resumeLater = true;
+					}
 					ticks.reset();
 					break;
 				default:
@@ -298,10 +315,15 @@ void View::run()
 		}
 	}
 
-	/* check hiscores */
-	cgame.updateHiscores();
-	/* TODO show final hiscore */
+	if (resumeLater)
+		saveGame();
+	else {
+		/* check hiscores */
+		cgame.updateHiscores();
+		/* TODO show final hiscore */
+	}
 
+	dim();
 	grabInput(0);
 }
 
@@ -669,15 +691,26 @@ void View::dim()
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
 }
 
+bool View::showInfo(const string &line, bool confirm)
+{
+	vector<string> text;
+	text.push_back(line);
+	return showInfo(text,confirm);
+}
+
 /* Darken current screen content and show info text.
  * If confirm is false, wait for any key/click.
  * If confirm is true, wait for key y/n and return true false. */
-bool View::showInfo(const string& text, bool confirm)
+bool View::showInfo(const vector<string> &text, bool confirm)
 {
+	Font &font = theme.fNormal;
 	SDL_Event ev;
 	Image img;
 	bool leave = false;
 	bool ret = true;
+	uint h = text.size() * font.getLineHeight();
+	int tx = mw->getWidth()/2;
+	int ty = (mw->getHeight() - h)/2;
 
 	img.createFromScreen();
 	SDL_SetRenderDrawColor(mrc,0,0,0,255);
@@ -685,8 +718,11 @@ bool View::showInfo(const string& text, bool confirm)
 	img.setAlpha(64);
 	img.copy();
 
-	theme.fNormal.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
-	theme.fNormal.write(mw->getWidth()/2,mw->getHeight()/2,text,mw->getWidth()/2);
+	font.setAlign(ALIGN_X_CENTER | ALIGN_Y_TOP);
+	for (uint i = 0; i < text.size(); i++) {
+		font.write(tx,ty,text[i]);
+		ty += font.getLineHeight();
+	}
 
 	SDL_RenderPresent(mrc);
 
@@ -955,7 +991,7 @@ void View::createMenus()
 	mAdv->add(new MenuItemBack(mOptions));
 
 	rootMenu->add(new MenuItemSub(_("New Game"), mNewGame));
-	//rootMenu->add(new MenuItem(_("Resume Game"), AID_RESUME));
+	rootMenu->add(new MenuItem(_("Resume Game"), AID_RESUME));
 	rootMenu->add(new MenuItemSub(_("Options"), mOptions));
 	//rootMenu->add(new MenuItem(_("Help"), AID_HELP));
 	rootMenu->add(new MenuItem(_("Quit"), AID_QUIT));
@@ -1058,13 +1094,21 @@ void View::runMenu()
 			case AID_SETCHANGED:
 				config.setname = levelsetNames[curLevelsetId];
 				break;
+			case AID_RESUME:
+				if (resumeGame()) {
+					dim();
+					SDL_Delay(250); /* wait until button released */
+					run();
+					ticks.reset();
+				}
+				break;
 			case AID_STARTCUSTOM:
 			case AID_STARTORIGINAL:
-				curWallpaperId = rand() % theme.numWallpapers;
 				if (aid == AID_STARTORIGINAL)
 					cgame.init("LBreakout2");
 				else
 					cgame.init(levelsetNames[curLevelsetId]);
+				dim();
 				SDL_Delay(250); /* wait until button released */
 				run();
 				ticks.reset();
@@ -1079,6 +1123,7 @@ void View::runMenu()
 			SDL_Delay(10);
 		SDL_FlushEvent(SDL_MOUSEMOTION); /* prevent event loop from dying */
 	}
+	dim();
 
 	/* clear events for menu loop */
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
@@ -1107,4 +1152,84 @@ void View::grabInput(int grab)
 		SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "0", SDL_HINT_OVERRIDE);
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 	}
+}
+
+void View::saveGame()
+{
+	vector<unique_ptr<ClientPlayer>> &players = cgame.getPlayers();
+	ofstream ofs(saveFileName);
+	if (!ofs.is_open()) {
+		_logerr("Could not open file %s\n",saveFileName.c_str());
+		return;
+	}
+
+	ofs << "levelset=" << cgame.getLevelsetName() << "\n";
+	ofs << "difficulty=" << config.diff << "\n";
+	ofs << "players=" << players.size() << "\n";
+	for (uint i = 0; i < players.size(); i++) {
+		ofs << "player" << i << " {\n";
+		ofs << "	name=" << players[i]->getName() << "\n";
+		ofs << "	level=" << players[i]->getLevel() << "\n";
+		ofs << "	score=" << players[i]->getScore() << "\n";
+		ofs << "	lives=" << players[i]->getLives() << "\n";
+		ofs << "}\n";
+	}
+
+	ofs.close();
+	_loginfo("Game saved to %s\n",saveFileName.c_str());
+}
+
+/* Load game settings and init game, return 1 if successful, 0 otherwise */
+int View::resumeGame()
+{
+	if (!fileExists(saveFileName)) {
+		_logerr("No saved game found.\n");
+		return 0;
+	}
+
+	FileParser fp(saveFileName);
+	string setname;
+	int setid = -1;
+
+	if (!fp.get("levelset",setname)) {
+		_logerr("Save game corrupted, no levelset name.\n");
+		return 0;
+	}
+	for (uint i = 0; i < levelsetNames.size(); i++)
+		if (setname == levelsetNames[i]) {
+			setid = i;
+			break;
+		}
+	if (setid == -1) {
+		_logerr("Levelset %s not found, cannot resume game.\n",setname.c_str());
+		return 0;
+	} else
+		curLevelsetId = setid;
+	fp.get("difficulty",config.diff);
+	config.setname = setname;
+	if (!fp.get("players",config.player_count)) {
+		_logerr("Save game corrupted, no player count\n");
+		return 0;
+	}
+	for (int i = 0; i < config.player_count; i++)
+		fp.get(string("player") + to_string(i) + ".name",config.player_names[i]);
+
+
+	/* clear particles */
+	cgame.init(setname);
+
+	/* adjust players */
+	vector<unique_ptr<ClientPlayer>> &players = cgame.getPlayers();
+	for (int i = 0; i < config.player_count; i++) {
+		string prefix = string("player") + to_string(i) + ".";
+		int level, lives, score;
+		if (fp.get(prefix + "score",score))
+			players[i]->setScore(score);
+		if (fp.get(prefix + "level",level))
+			players[i]->setLevel(level);
+		if (fp.get(prefix + "lives",lives))
+			players[i]->setLives(lives);
+	}
+
+	return 1;
 }

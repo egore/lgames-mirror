@@ -1,7 +1,6 @@
+continue for 100% score
 complete advanced options
 setting theme.ini default screws values for loading menu/explosions...  
-more colored explosions
-wrap get home dir
 show title/author on start of level
 show final hiscore after game
 convex paddle
@@ -11,9 +10,6 @@ efficient check for active extras and draw only once per sec
 merge background and brick layer to offset layer
 stereo sound
 label object for more efficient font rendering
-smooth score counter and smoothing transitions
 freakout and special levelsets
-resume game
 quick help
-speed depending on distance from paddle
 ...

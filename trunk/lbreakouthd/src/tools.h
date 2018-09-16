@@ -199,4 +199,6 @@ enum {
 };
 int readDir(const string &dname, int type, vector<string> &fnames);
 
+string getHomeDir();
+
 #endif /* SRC_TOOLS_H_ */
