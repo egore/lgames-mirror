@@ -1,6 +1,7 @@
 continue for 100% score
 complete advanced options
-setting theme.ini default screws values for loading menu/explosions...  
+setting theme.ini default screws values for loading menu/explosions...
+-> direct fallback to single standard assets with reading standard theme.ini  
 show title/author on start of level
 show final hiscore after game
 convex paddle
@@ -10,6 +11,9 @@ efficient check for active extras and draw only once per sec
 merge background and brick layer to offset layer
 stereo sound
 label object for more efficient font rendering
-freakout and special levelsets
+freakout and special levelsets and levelset select dialog
 quick help
+editor
+fade effect for power ball, tailing for explosive ball, fuzzy chaotic ball
+blinking for last 3 secs for floor wall
 ...

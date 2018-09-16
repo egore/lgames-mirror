@@ -1001,7 +1001,7 @@ void balls_update( int ms )
         if (cur_game->ball_auto_speedup) {
 		list_reset(cur_game->balls);
 		while ((ball = list_next(cur_game->balls))) {
-			int topY = 140, bottomY = 300;
+			int topY = 100, bottomY = 380;
 			int by = ball->y + ball_rad;
 			double p = (double)(bottomY - by) / (bottomY - topY);
 			if (p < 0)
