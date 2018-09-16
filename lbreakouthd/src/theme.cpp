@@ -29,8 +29,7 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	bool oldTheme = true; // needed for some workarounds
 
 	if (name[0] == '~')
-		path = string(getenv( "HOME" )?getenv( "HOME" ):".") +
-				"/" + CONFIGDIR + "/themes/" + name.substr(1);
+		path = getHomeDir() + "/" + CONFIGDIR + "/themes/" + name.substr(1);
 	else
 		path = string(DATADIR) + "/themes/" + name;
 

@@ -48,6 +48,7 @@ public:
 		score += s;
 		return score;
 	}
+	void setLives(uint l) { lives = l; }
 	void setScore(int s) { score = s; }
 	uint getLevel() { return level; }
 	uint nextLevel() { return ++level; }
@@ -107,7 +108,6 @@ public:
 	int update(uint ms, double rx, PaddleInputState &pis);
 	Game *getGameContext() { return game; }
 	string getLevelsetName() { return levelset->name; }
-	int getCurrentLevelId() { return levelset->cur_level; }
 	int getLevelCount() { return levelset->count; }
 	HiscoreChart *getHiscoreChart() { return hiscores.get(levelset->name); }
 	ClientPlayer* getCurrentPlayer() {return players[curPlayer].get(); }
@@ -115,6 +115,7 @@ public:
 	int floorActive() { return game->paddles[0]->extra_active[EX_WALL]; }
 	void updateHiscores();
 	const string& getPlayerMessage() { return msg; }
+	vector<unique_ptr<ClientPlayer>>& getPlayers() { return players; }
 };
 
 #endif /* SRC_CLIENTGAME_H_ */

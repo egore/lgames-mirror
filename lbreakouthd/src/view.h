@@ -45,6 +45,7 @@ class View {
 	vector<string> levelsetNames;
 	vector<string> themeNames;
 	vector<string> modeNames;
+	string saveFileName;
 
 	/* game */
 	ClientGame &cgame;
@@ -82,13 +83,16 @@ class View {
 	void renderExtrasImage();
 	void renderActiveExtra(int id, int ms, int x, int y);
 	void dim();
-	bool showInfo(const string& str, bool confirm=false);
+	bool showInfo(const string &line, bool confirm=false);
+	bool showInfo(const vector<string> &text, bool confirm=false);
 	void createParticles(BrickHit *hit);
 	void createSprites();
 	void getBallViewInfo(Ball *ball, int *x, int *y, uint *type);
 	void playSounds();
 	void createMenus();
 	void grabInput(int grab);
+	void saveGame();
+	int resumeGame();
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();

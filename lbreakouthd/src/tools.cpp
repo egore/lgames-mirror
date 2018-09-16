@@ -192,3 +192,8 @@ int readDir(const string &dname, int type, vector<string> &fnames)
 	closedir (dir);
 	return fnames.size();
 }
+
+string getHomeDir() {
+	return string(getenv("HOME")?getenv("HOME"):".");
+}
+
