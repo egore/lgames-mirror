@@ -104,18 +104,26 @@ class ClientGame {
 public:
 	ClientGame(Config &cfg);
 	~ClientGame();
-	int init(const string& setname);
+	int init(const string& setname, int levelid = 0);
 	int update(uint ms, double rx, PaddleInputState &pis);
 	Game *getGameContext() { return game; }
 	string getLevelsetName() { return levelset->name; }
 	int getLevelCount() { return levelset->count; }
 	HiscoreChart *getHiscoreChart() { return hiscores.get(levelset->name); }
 	ClientPlayer* getCurrentPlayer() {return players[curPlayer].get(); }
+	uint getCurrentPlayerId() {return curPlayer; }
+	void setCurrentPlayerId(uint id) {curPlayer = id;}
 	int darknessActive() { return game->extra_active[EX_DARKNESS]; }
 	int floorActive() { return game->paddles[0]->extra_active[EX_WALL]; }
 	void updateHiscores();
 	const string& getPlayerMessage() { return msg; }
 	vector<unique_ptr<ClientPlayer>>& getPlayers() { return players; }
+	void resumePlayer(uint pid, uint lives, int score, uint level) {
+		players[pid]->setLives(lives);
+		players[pid]->setScore(score);
+		players[pid]->setLevel(level);
+		players[pid]->setLevelSnapshot(levelset->levels[level]);
+	}
 };
 
 #endif /* SRC_CLIENTGAME_H_ */
