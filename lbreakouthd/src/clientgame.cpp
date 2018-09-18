@@ -32,7 +32,7 @@ ClientGame::~ClientGame()
 		game_delete(&game);
 }
 
-int ClientGame::init(const string& setname)
+int ClientGame::init(const string& setname, int levelid)
 {
 	/* kill running game if any */
 	if (levelset)
@@ -65,7 +65,7 @@ int ClientGame::init(const string& setname)
 		return -1;
 	}
 	game_set_current(game);
-	game_init(game,levelset->levels[0]);
+	game_init(game,levelset->levels[levelid]);
 	game_set_convex_paddle( config.convex );
 	game_set_ball_auto_return( !config.return_on_click );
 	game_set_ball_random_angle( config.random_angle );
@@ -74,7 +74,7 @@ int ClientGame::init(const string& setname)
 
 	/* set first level as snapshot to all players */
 	for (auto& p : players)
-		p->setLevelSnapshot(levelset->levels[0]);
+		p->setLevelSnapshot(levelset->levels[levelid]);
 	return 0;
 }
 

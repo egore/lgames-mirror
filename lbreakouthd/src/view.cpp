@@ -1165,6 +1165,7 @@ void View::saveGame()
 
 	ofs << "levelset=" << cgame.getLevelsetName() << "\n";
 	ofs << "difficulty=" << config.diff << "\n";
+	ofs << "curplayer=" << cgame.getCurrentPlayerId() << "\n";
 	ofs << "players=" << players.size() << "\n";
 	for (uint i = 0; i < players.size(); i++) {
 		ofs << "player" << i << " {\n";
@@ -1214,21 +1215,23 @@ int View::resumeGame()
 	for (int i = 0; i < config.player_count; i++)
 		fp.get(string("player") + to_string(i) + ".name",config.player_names[i]);
 
-
-	/* clear particles */
-	cgame.init(setname);
+	/* initialize game to level of current player */
+	uint pid = 0;
+	fp.get("curplayer",pid);
+	uint levid = 0;
+	fp.get(string("player") + to_string(pid) + ".level",levid);
+	cgame.init(setname,levid);
+	cgame.setCurrentPlayerId(pid);
 
 	/* adjust players */
-	vector<unique_ptr<ClientPlayer>> &players = cgame.getPlayers();
 	for (int i = 0; i < config.player_count; i++) {
 		string prefix = string("player") + to_string(i) + ".";
-		int level, lives, score;
-		if (fp.get(prefix + "score",score))
-			players[i]->setScore(score);
-		if (fp.get(prefix + "level",level))
-			players[i]->setLevel(level);
-		if (fp.get(prefix + "lives",lives))
-			players[i]->setLives(lives);
+		uint level = 0, lives = 3;
+		int score = 0;
+		fp.get(prefix + "score",score);
+		fp.get(prefix + "level",level);
+		fp.get(prefix + "lives",lives);
+		cgame.resumePlayer(i,lives,score,level);
 	}
 
 	return 1;
