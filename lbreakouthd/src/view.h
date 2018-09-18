@@ -64,7 +64,6 @@ class View {
 	int imgExtrasX, imgExtrasY;
 	Image imgFloor; /* extra wall at bottom */
 	int imgFloorX, imgFloorY;
-	double floorAlpha;
 	FrameCounter weaponFrameCounter;
 	FrameCounter shotFrameCounter;
 	list<unique_ptr<Sprite>> sprites;

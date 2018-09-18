@@ -4,7 +4,7 @@ setting theme.ini default screws values for loading menu/explosions...
 -> direct fallback to single standard assets with reading standard theme.ini  
 show title/author on start of level
 show final hiscore after game
-convex paddle
+flat paddle
 allow removing selected bricks
 warping
 efficient check for active extras and draw only once per sec

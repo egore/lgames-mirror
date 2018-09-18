@@ -115,6 +115,7 @@ public:
 	void setCurrentPlayerId(uint id) {curPlayer = id;}
 	int darknessActive() { return game->extra_active[EX_DARKNESS]; }
 	int floorActive() { return game->paddles[0]->extra_active[EX_WALL]; }
+	int getFloorAlpha() { return game->paddles[0]->wall_alpha; }
 	void updateHiscores();
 	const string& getPlayerMessage() { return msg; }
 	vector<unique_ptr<ClientPlayer>>& getPlayers() { return players; }
@@ -123,6 +124,11 @@ public:
 		players[pid]->setScore(score);
 		players[pid]->setLevel(level);
 		players[pid]->setLevelSnapshot(levelset->levels[level]);
+	}
+	int getFloorTime() {
+		if (!game || !game->paddles[0]->extra_active[EX_WALL])
+			return -1;
+		return game->paddles[0]->extra_time[EX_WALL];
 	}
 };
 

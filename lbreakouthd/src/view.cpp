@@ -251,12 +251,6 @@ void View::run()
 		/* update animations and particles */
 		shotFrameCounter.update(ms);
 		weaponFrameCounter.update(ms);
-		if (cgame.floorActive()) {
-			if (floorAlpha < 255)
-				floorAlpha += ms*0.25;
-			else
-				floorAlpha = 255;
-		}
 		for (auto it = begin(sprites); it != end(sprites); ++it) {
 			if ((*it).get()->update(ms))
 				it = sprites.erase(it);
@@ -291,8 +285,6 @@ void View::run()
 			renderScoreImage();
 		if (flags & CGF_NEWANIMATIONS)
 			createSprites();
-		if (flags & CGF_STARTFLOOR)
-			floorAlpha = 0;
 
 		/* handle sounds by accessing game->mod */
 		playSounds();
@@ -438,7 +430,11 @@ void View::render()
 
 	/* extra floor */
 	if (cgame.floorActive() && !cgame.darknessActive()) {
-		imgFloor.setAlpha(floorAlpha);
+		if (cgame.getFloorTime() <= 3000 && cgame.getFloorTime() > 0) {
+			int off = ((cgame.getFloorTime()/200 % 2) == 0);
+			imgFloor.setAlpha(off?128:255);
+		} else
+			imgFloor.setAlpha(cgame.getFloorAlpha());
 		imgFloor.copy(imgFloorX,imgFloorY);
 	}
 

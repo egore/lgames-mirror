@@ -103,7 +103,6 @@ ClientPlayer *ClientGame::getNextPlayer()
 int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 {
 	int oldScore = game->paddles[0]->score;
-	int oldWallActive = game->paddles[0]->extra_active[EX_WALL];
 	int ret = 0;
 
 	/* reset old modifications (View needs current mods afterwards) */
@@ -196,8 +195,6 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 		break;
 		}
 	}
-	if (oldWallActive != game->paddles[0]->extra_active[EX_WALL])
-		ret |= CGF_UPDATEBRICKS;
 
 	/* handle other modifications */
 	if (game->mod.brick_hit_count > 0)
