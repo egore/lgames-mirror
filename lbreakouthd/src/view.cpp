@@ -1101,7 +1101,7 @@ void View::runMenu()
 			case AID_STARTCUSTOM:
 			case AID_STARTORIGINAL:
 				if (aid == AID_STARTORIGINAL)
-					cgame.init("LBreakout2");
+					cgame.init("LBreakoutHD");
 				else
 					cgame.init(levelsetNames[curLevelsetId]);
 				dim();
