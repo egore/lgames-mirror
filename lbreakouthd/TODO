@@ -1,9 +1,11 @@
 continue for 100% score
+show final hiscore after game
+no fading brick particle for explosion bricks
+levelset select dialog 
 complete advanced options
 setting theme.ini default screws values for loading menu/explosions...
 -> direct fallback to single standard assets with reading standard theme.ini  
 show title/author on start of level
-show final hiscore after game
 flat paddle
 allow removing selected bricks
 warping
@@ -11,9 +13,8 @@ efficient check for active extras and draw only once per sec
 merge background and brick layer to offset layer
 stereo sound
 label object for more efficient font rendering
-freakout and special levelsets and levelset select dialog
+freakout and special levelsets 
 quick help
 editor
 fade effect for power ball, tailing for explosive ball, fuzzy chaotic ball
-blinking for last 3 secs for floor wall
 ...
