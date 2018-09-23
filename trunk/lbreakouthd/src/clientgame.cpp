@@ -20,7 +20,7 @@ using namespace std;
 extern GameDiff diffs[DIFF_COUNT];
 
 ClientGame::ClientGame(Config &cfg) : config(cfg), levelset(0), game(0),
-		curPlayer(0), msg("")
+		curPlayer(0), lastDeadPlayer(NULL), msg("")
 {
 }
 
@@ -160,10 +160,12 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 			}
 		} else {
 			p->setLevelSnapshot(NULL);
-			ret |= CGF_LIFELOST; /* just for sound */
+			ret |= CGF_LIFELOST; /* for sound */
 			if (p->looseLife() == 0) {
 				strprintf(msg,_("Game over, %s!"), p->getName().c_str());
+				ret |= CGF_LASTLIFELOST;
 				ret |= CGF_PLAYERMESSAGE;
+				lastDeadPlayer = p; /* remember for continue */
 			}
 		}
 		p = getNextPlayer();
@@ -184,11 +186,6 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 	/* handle (some) collected extras (most is done in game itself) */
 	for (int i = 0; i < game->mod.collected_extra_count[0]; i++) {
 		switch (game->mod.collected_extras[0][i]) {
-		case EX_WALL:
-			if (!floorActive())
-				ret |= CGF_STARTFLOOR;
-			_loginfo("Wall collected\n");
-			break;
 		case EX_LIFE:
 			players[curPlayer]->gainLife();
 			ret |= CGF_UPDATEBACKGROUND; /* life is on the frame */
@@ -211,4 +208,22 @@ void ClientGame::updateHiscores()
 	HiscoreChart *hs = hiscores.get(levelset->name);
 	for (auto& p : players)
 		hs->add(p->getName(), p->getLevel(), p->getScore());
+}
+
+/* Continue game if lastDeadPlayer is set. Clear score and set lives.
+ * If current players is dead get valid next player. */
+void ClientGame::continueGame()
+{
+	if (!lastDeadPlayer)
+		return; /* should not happen */
+
+	bool wasLastPlayer = (players[curPlayer]->getLives() == 0);
+	lastDeadPlayer->setScore(0);
+	lastDeadPlayer->setLives(diffs[config.diff].lives);
+	lastDeadPlayer = NULL;
+	if (wasLastPlayer) { /* no init in cgame.update() */
+		ClientPlayer *p = getNextPlayer();
+		game_finalize(game);
+		game_init(game,p->getLevelSnapshot());
+	}
 }

@@ -1,11 +1,13 @@
-continue for 100% score
 show final hiscore after game
 no fading brick particle for explosion bricks
 levelset select dialog 
-complete advanced options
 setting theme.ini default screws values for loading menu/explosions...
 -> direct fallback to single standard assets with reading standard theme.ini  
+
 show title/author on start of level
+menu hints
+complete advanced options
+
 flat paddle
 allow removing selected bricks
 warping

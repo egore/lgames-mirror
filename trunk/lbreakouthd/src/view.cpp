@@ -196,8 +196,7 @@ void View::run()
 				case SDL_SCANCODE_ESCAPE:
 					text.clear();
 					text.push_back(_("Quit Game? y/n"));
-					text.push_back(_("(No hiscore entry yet,"));
-					text.push_back(_("game can be resumed later)"));
+					text.push_back(_("(No hiscore entry yet, game can be resumed later.)"));
 					if (showInfo(text,true)) {
 						leave = true;
 						resumeLater = true;
@@ -258,15 +257,30 @@ void View::run()
 
 		/* update game context */
 		flags = cgame.update(ms, rx, pis);
-		if (flags & CGF_PLAYERMESSAGE)
-			showInfo(cgame.getPlayerMessage());
-		if (flags & CGF_GAMEOVER)
-			break;
 		if (flags & CGF_LIFELOST) {
 			mixer.play(theme.sLooseLife);
 			if (config.speech && config.badspeech && (rand()%2))
 				mixer.play((rand()%2)?theme.sDamn:theme.sDammit);
 		}
+		if (flags & CGF_LASTLIFELOST) {
+			text.clear();
+			text.push_back(cgame.getPlayerMessage());
+			text.push_back(_("Buy Continue? y/n"));
+			text.push_back(_("(Costs ALL of your score.)"));
+			if (showInfo(text,true)) {
+				cgame.continueGame();
+				/* game is certainly not over so clear flag */
+				flags &= ~CGF_GAMEOVER;
+				/* continueGame reinits the level */
+				flags |= CGF_NEWLEVEL;
+			}
+			/* and message has been handled, too */
+			flags &= ~CGF_PLAYERMESSAGE;
+		}
+		if (flags & CGF_PLAYERMESSAGE)
+			showInfo(cgame.getPlayerMessage());
+		if (flags & CGF_GAMEOVER)
+			break;
 		if (flags & CGF_NEWLEVEL) {
 			flags |= CGF_UPDATEBACKGROUND | CGF_UPDATEBRICKS |
 					CGF_UPDATESCORE | CGF_UPDATEEXTRAS;
