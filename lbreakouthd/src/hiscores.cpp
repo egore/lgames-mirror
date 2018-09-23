@@ -21,8 +21,9 @@ HiscoreChart::HiscoreChart(const string& _name)
 	name = _name;
 	for (int i = 0; i < CHARTSIZE+1; i++) {
 		entries[i].name = "______";
-		entries[i].level = 10 - i;
+		entries[i].level = 9 - i;
 		entries[i].score = 100000 - i*10000;
+		entries[i].newEntry = false;
 	}
 }
 
@@ -32,6 +33,7 @@ void HiscoreChart::set(int id, const string& n, int l, int s)
 		entries[id].name = n;
 		entries[id].level = l;
 		entries[id].score = s;
+		entries[id].newEntry = false;
 	}
 }
 

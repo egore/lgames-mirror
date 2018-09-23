@@ -326,7 +326,8 @@ void View::run()
 	else {
 		/* check hiscores */
 		cgame.updateHiscores();
-		/* TODO show final hiscore */
+		/* show final hiscore */
+		showFinalHiscores();
 	}
 
 	dim();
@@ -517,7 +518,7 @@ void View::renderBackgroundImage() {
 				+ "/" + to_string(cgame.getLevelCount()) + ")");
 
 	/* hiscores */
-	renderHiscore(tx+bw/4, 3*bh, tw - bw/2, 10*bh);
+	renderHiscore(theme.fNormal, theme.fSmall, tx+bw/4, 3*bh, tw - bw/2, 10*bh,false);
 
 	/* player name */
 	theme.fNormal.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
@@ -537,40 +538,50 @@ void View::renderBackgroundImage() {
 }
 
 /* Render at given region. */
-void View::renderHiscore(int x, int y, int w, int h)
+void View::renderHiscore(Font &fTitle, Font &fEntry, int x, int y, int w, int h, bool detailed)
 {
 	HiscoreChart *chart = cgame.getHiscoreChart();
 
-	int cy = y + (h - theme.fNormal.getLineHeight() - 10*theme.fSmall.getLineHeight())/2;
+	int cy = y + (h - fTitle.getLineHeight() - 10*fEntry.getLineHeight())/2;
 
-	theme.fNormal.setAlign(ALIGN_X_CENTER | ALIGN_Y_TOP);
-	theme.fNormal.write(x + w/2, cy, _("Hiscores"));
-	cy += theme.fNormal.getLineHeight();
+	string str = _("Hiscores");
+	if (detailed)
+		str = cgame.getLevelsetName() + " " + str;
+	fTitle.setAlign(ALIGN_X_CENTER | ALIGN_Y_TOP);
+	fTitle.write(x + w/2, cy, str);
+	cy += fTitle.getLineHeight();
+	if (detailed)
+		cy += fTitle.getLineHeight();
 
-	string str;
 	int cx_num = x;
-	int cx_name = x + theme.fSmall.getCharWidth('0')*3;
-	//int cx_level = x + rc.stdFont.getCharWidth('0')*10;
+	int cx_name = x + fEntry.getCharWidth('0')*3;
+	int cx_level = x + fEntry.getCharWidth('W')*10;
 	int cx_score = x + w;
 
 	for (int i = 0; i < CHARTSIZE; i++) {
 		const ChartEntry *entry = chart->get(i);
+		if (entry->newEntry && detailed)
+			fEntry.setColor(theme.fontColorHighlight);
+		else
+			fEntry.setColor(theme.fontColorNormal);
 
-		theme.fSmall.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
+		fEntry.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
 
 		/* number */
 		str = to_string(i+1) + ".";
-		theme.fSmall.write(cx_num, cy, str);
+		fEntry.write(cx_num, cy, str);
 		/* name */
-		theme.fSmall.write(cx_name, cy, entry->name);
+		fEntry.write(cx_name, cy, entry->name);
 		/* level */
-		//rc.stdFont.write(img.getTex(), cx_level, cy, "L" + to_string(entry->level));
+		if (detailed)
+			fEntry.write(cx_level, cy, "L" + to_string(entry->level+1));
 		/* score */
-		theme.fSmall.setAlign(ALIGN_X_RIGHT | ALIGN_Y_TOP);
-		theme.fSmall.write(cx_score, cy, to_string(entry->score));
+		fEntry.setAlign(ALIGN_X_RIGHT | ALIGN_Y_TOP);
+		fEntry.write(cx_score, cy, to_string(entry->score));
 
-		cy += theme.fSmall.getLineHeight();
+		cy += fEntry.getLineHeight();
 	}
+	fEntry.setColor(theme.fontColorNormal);
 }
 
 void View::renderBricksImage()
@@ -714,19 +725,12 @@ bool View::showInfo(const string &line, bool confirm)
 bool View::showInfo(const vector<string> &text, bool confirm)
 {
 	Font &font = theme.fNormal;
-	SDL_Event ev;
-	Image img;
-	bool leave = false;
 	bool ret = true;
 	uint h = text.size() * font.getLineHeight();
 	int tx = mw->getWidth()/2;
 	int ty = (mw->getHeight() - h)/2;
 
-	img.createFromScreen();
-	SDL_SetRenderDrawColor(mrc,0,0,0,255);
-	SDL_RenderClear(mrc);
-	img.setAlpha(64);
-	img.copy();
+	darkenScreen();
 
 	font.setAlign(ALIGN_X_CENTER | ALIGN_Y_TOP);
 	for (uint i = 0; i < text.size(); i++) {
@@ -737,29 +741,7 @@ bool View::showInfo(const vector<string> &text, bool confirm)
 	SDL_RenderPresent(mrc);
 
 	grabInput(0);
-	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
-	while (!leave) {
-		/* handle events */
-		if (SDL_PollEvent(&ev)) {
-			if (ev.type == SDL_QUIT)
-				quitReceived = leave = true;
-			if (!confirm && (ev.type == SDL_KEYUP ||
-						ev.type == SDL_MOUSEBUTTONUP))
-				leave = true;
-			if (confirm && ev.type == SDL_KEYUP) {
-				if (ev.key.keysym.scancode == SDL_SCANCODE_Y)
-					ret = leave = true;
-				if (ev.key.keysym.scancode == SDL_SCANCODE_N ||
-						ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
-					ret = false;
-					leave = true;
-				}
-			}
-		}
-		SDL_Delay(10);
-		SDL_FlushEvent(SDL_MOUSEMOTION);
-	}
-	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+	ret = waitForKey(confirm);
 	grabInput(1);
 	return ret;
 }
@@ -1232,10 +1214,11 @@ int View::resumeGame()
 	/* initialize game to level of current player */
 	uint pid = 0;
 	fp.get("curplayer",pid);
+	if (pid >= MAX_PLAYERS)
+		pid = 0;
 	uint levid = 0;
 	fp.get(string("player") + to_string(pid) + ".level",levid);
 	cgame.init(setname,levid);
-	cgame.setCurrentPlayerId(pid);
 
 	/* adjust players */
 	for (int i = 0; i < config.player_count; i++) {
@@ -1247,6 +1230,63 @@ int View::resumeGame()
 		fp.get(prefix + "lives",lives);
 		cgame.resumePlayer(i,lives,score,level);
 	}
+	cgame.setCurrentPlayerId(pid);
 
 	return 1;
+}
+
+void View::showFinalHiscores()
+{
+	int x, y, w, h;
+	imgBackground.copy();
+	darkenScreen();
+	w = theme.fNormal.getCharWidth('M')*20;
+	h = mw->getHeight()/2;
+	x = (mw->getWidth() - w)/2;
+	y = h/2;
+	renderHiscore(theme.fNormal, theme.fNormal, x,y,w,h,true);
+	SDL_RenderPresent(mrc);
+	waitForKey(false);
+}
+
+int View::waitForKey(bool confirm)
+{
+	SDL_Event ev;
+	bool ret = true;
+	bool leave = false;
+
+	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+	while (!leave) {
+		/* handle events */
+		if (SDL_PollEvent(&ev)) {
+			if (ev.type == SDL_QUIT)
+				quitReceived = leave = true;
+			if (!confirm && (ev.type == SDL_KEYUP ||
+						ev.type == SDL_MOUSEBUTTONUP))
+				leave = true;
+			if (confirm && ev.type == SDL_KEYUP) {
+				if (ev.key.keysym.scancode == SDL_SCANCODE_Y)
+					ret = leave = true;
+				if (ev.key.keysym.scancode == SDL_SCANCODE_N ||
+						ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+					ret = false;
+					leave = true;
+				}
+			}
+		}
+		SDL_Delay(10);
+		SDL_FlushEvent(SDL_MOUSEMOTION);
+	}
+	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+	return ret;
+}
+
+void View::darkenScreen()
+{
+	Image img;
+	img.createFromScreen();
+	SDL_SetRenderDrawColor(mrc,0,0,0,255);
+	SDL_RenderClear(mrc);
+	img.setAlpha(64);
+	img.copy();
 }

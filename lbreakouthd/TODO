@@ -1,4 +1,3 @@
-show final hiscore after game
 levelset select dialog 
 setting theme.ini default screws values for loading menu/explosions...
 -> direct fallback to single standard assets with reading standard theme.ini  
@@ -7,6 +6,7 @@ show title/author on start of level
 menu hints
 complete advanced options
 
+delete save game on hiscore entry
 flat paddle
 allow removing selected bricks
 warping
@@ -17,5 +17,5 @@ label object for more efficient font rendering
 freakout and special levelsets 
 quick help
 editor
-fade effect for power ball, tailing for explosive ball, fuzzy chaotic ball
+fade effect for power ball, tailing  for explosive ball, fuzzy chaotic ball
 ...

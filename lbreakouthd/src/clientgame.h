@@ -113,7 +113,11 @@ public:
 	HiscoreChart *getHiscoreChart() { return hiscores.get(levelset->name); }
 	ClientPlayer* getCurrentPlayer() {return players[curPlayer].get(); }
 	uint getCurrentPlayerId() {return curPlayer; }
-	void setCurrentPlayerId(uint id) {curPlayer = id;}
+	void setCurrentPlayerId(uint id) {
+		curPlayer = id;
+		/* adjust paddle score */
+		game->paddles[0]->score = players[curPlayer]->getScore();
+	}
 	int darknessActive() { return game->extra_active[EX_DARKNESS]; }
 	int floorActive() { return game->paddles[0]->extra_active[EX_WALL]; }
 	int getFloorAlpha() { return game->paddles[0]->wall_alpha; }
