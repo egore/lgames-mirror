@@ -772,6 +772,10 @@ void View::createParticles(BrickHit *hit)
 	int pw, ph;
 	int bx = hit->x*brickScreenWidth, by = hit->y*brickScreenHeight;
 
+	/* if brick is explosive always explode */
+	if (hit->draw_explosion)
+		hit->dest_type = SHR_BY_EXPL;
+
 	switch (hit->dest_type) {
 	case SHR_BY_NORMAL_BALL:
 		vx = cos( 6.28 * hit->degrees / 180);
