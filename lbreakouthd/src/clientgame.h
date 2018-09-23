@@ -88,7 +88,7 @@ enum {
 	CGF_PLAYERMESSAGE = 64,
 	CGF_NEWANIMATIONS = 128,
 	CGF_LIFELOST = 256,
-	CGF_STARTFLOOR = 512 /* can be done without but ... */
+	CGF_LASTLIFELOST = 512
 };
 class ClientGame {
 	Config &config;
@@ -97,6 +97,7 @@ class ClientGame {
 	Hiscores hiscores;
 	vector<unique_ptr<ClientPlayer>> players;
 	uint curPlayer;
+	ClientPlayer *lastDeadPlayer;
 	string msg;
 
 	ClientPlayer *getNextPlayer();
@@ -130,6 +131,7 @@ public:
 			return -1;
 		return game->paddles[0]->extra_time[EX_WALL];
 	}
+	void continueGame();
 };
 
 #endif /* SRC_CLIENTGAME_H_ */
