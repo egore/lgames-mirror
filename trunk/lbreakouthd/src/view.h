@@ -76,7 +76,7 @@ class View {
 	double v2s(double d) { return d * scaleFactor / 100; }
 	double s2v(double d) { return d * 100 / scaleFactor; }
 	void renderBackgroundImage();
-	void renderHiscore(int x, int y, int w, int h);
+	void renderHiscore(Font &fTitle, Font &fEntry, int x, int y, int w, int h, bool detailed);
 	void renderBricksImage();
 	void renderScoreImage();
 	void renderExtrasImage();
@@ -92,6 +92,9 @@ class View {
 	void grabInput(int grab);
 	void saveGame();
 	int resumeGame();
+	void showFinalHiscores();
+	int waitForKey(bool confirm);
+	void darkenScreen();
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
