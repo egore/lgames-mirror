@@ -1,5 +1,4 @@
 show final hiscore after game
-no fading brick particle for explosion bricks
 levelset select dialog 
 setting theme.ini default screws values for loading menu/explosions...
 -> direct fallback to single standard assets with reading standard theme.ini  
