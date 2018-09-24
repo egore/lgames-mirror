@@ -875,8 +875,17 @@ void View::getBallViewInfo(Ball *ball, int *x, int *y, uint *type)
 void View::playSounds()
 {
 	Game *game = cgame.getGameContext();
+	bool playReflectSound = false;
 
 	if (game->mod.brick_reflected_ball_count > 0)
+		if (game->mod.brick_hit_count == 0)
+			playReflectSound = true;
+	for (int i = 0; i < game->mod.brick_hit_count; i++)
+		if (game->mod.brick_hits[i].type == HT_HIT) {
+			playReflectSound = true;
+			break;
+		}
+	if (playReflectSound)
 		mixer.play(theme.sReflectBrick);
 	if (game->mod.paddle_reflected_ball_count > 0)
 		mixer.play(theme.sReflectPaddle);
