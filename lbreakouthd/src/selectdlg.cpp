@@ -1,5 +1,5 @@
 /*
- * main.cpp
+ * selectdlg.cpp
  * (C) 2018 by Michael Speck
  */
 
@@ -12,40 +12,11 @@
  *                                                                         *
  ***************************************************************************/
 
-using namespace std;
-
 #include "sdl.h"
 #include "tools.h"
 #include "hiscores.h"
 #include "clientgame.h"
 #include "mixer.h"
 #include "theme.h"
-#include "sprite.h"
-#include "menu.h"
 #include "selectdlg.h"
-#include "view.h"
 
-int main(int argc, char **argv)
-{
-	/* i18n */
-#ifdef ENABLE_NLS
-	setlocale (LC_ALL, "");
-	bindtextdomain (PACKAGE, LOCALEDIR);
-	textdomain (PACKAGE);
-#endif
-
-	printf("%s %s\n", PACKAGE_NAME, PACKAGE_VERSION);
-	printf("Copyright 2018 Michael Speck\n");
-	printf("Published under GNU GPL\n");
-	printf("---\n");
-
-	srand(time(NULL));
-
-	Config config;
-	if (argc > 1)
-		config.setname = argv[1]; /* allow override */
-	ClientGame cgame(config);
-	View view(config, cgame);
-	view.runMenu();
-	return 0;
-}

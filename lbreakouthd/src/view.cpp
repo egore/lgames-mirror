@@ -19,14 +19,15 @@
 #include "theme.h"
 #include "sprite.h"
 #include "menu.h"
+#include "selectdlg.h"
 #include "view.h"
 
 extern SDL_Renderer *mrc;
 
 View::View(Config &cfg, ClientGame &_cg)
 	: config(cfg), mw(NULL), curMenu(NULL), curLevelsetId(0),
-	  cgame(_cg), quitReceived(false),
-	  fpsCycles(0), fpsStart(0), fps(0)
+	  selectDlg(theme), cgame(_cg), quitReceived(false),
+	  lblTitle(theme.fNormal), fpsCycles(0), fpsStart(0), fps(0)
 {
 	_loginfo("Initializing SDL\n");
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
@@ -109,9 +110,6 @@ void View::init(string t, uint r)
 		theme.load(t, sw, sh, brickScreenWidth, brickScreenHeight);
 	weaponFrameCounter.init(theme.weaponFrameNum, theme.weaponAnimDelay);
 	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
-
-	/* set label font */
-	lblTitle.setFont(&theme.fNormal);
 
 	/* create menu structure */
 	createMenus();

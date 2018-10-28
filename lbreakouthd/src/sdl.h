@@ -191,9 +191,21 @@ public:
 	void setColor(SDL_Color c);
 	void setAlign(int a);
 	int getSize() {return size;};
-	int getLineHeight() {return TTF_FontLineSkip(font); }
-	int getTextSize(const string& str, int *w, int *h) {return TTF_SizeText(font,str.c_str(),w,h);};
+	int getLineHeight() {
+		if (font)
+			return TTF_FontLineSkip(font);
+		return 0;
+	}
+	int getTextSize(const string& str, int *w, int *h) {
+		*w = 0;
+		*h = 0;
+		if (font)
+			return TTF_SizeText(font,str.c_str(),w,h);
+		return 0;
+	};
 	int getCharWidth(char c) {
+		if (!font)
+			return 0;
 		int w, h;
 		char str[2] = {c, 0};
 		TTF_SizeText(font,str,&w,&h);
@@ -224,16 +236,12 @@ public:
 };
 
 class Label {
-	Font *font;
+	Font &font;
 	uint border;
 	Image img;
 	bool empty;
 public:
-	Label() : font(NULL), border(0), empty(true) {}
-	void setFont(Font *f) {
-		font = f;
-		border = 20 * font->getSize() / 100;
-	}
+	Label(Font &f) : font(f), border(0), empty(true) {}
 	void setText(const string &str);
 	void copy(int x, int y, int align = ALIGN_X_CENTER | ALIGN_Y_CENTER) {
 		if (align & ALIGN_X_CENTER)
@@ -244,7 +252,7 @@ public:
 			y -= img.getHeight() / 2;
 		else if (align & ALIGN_Y_BOTTOM)
 			y -= img.getHeight();
-		if (font && !empty)
+		if (!empty)
 			img.copy(x,y);
 	}
 	void setAlpha(int a) {
