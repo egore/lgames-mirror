@@ -46,6 +46,7 @@ class View {
 	vector<string> themeNames;
 	vector<string> modeNames;
 	string saveFileName;
+	SelectDialog selectDlg;
 
 	/* game */
 	ClientGame &cgame;
