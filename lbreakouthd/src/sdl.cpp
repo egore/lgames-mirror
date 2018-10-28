@@ -480,3 +480,22 @@ void Font::writeText(int x, int y, const string& _text, int wrapwidth, int alpha
 	SDL_DestroyTexture(tex);
 }
 
+void Label::setText(const string &str)
+{
+	if (!font || str == "") {
+		empty = true;
+		return;
+	}
+	int w = 0, h = 0;
+	font->getTextSize(str, &w, &h);
+	if (w == 0 || h == 0)
+		return;
+	img.create(w + 4*border, h + 2*border);
+	img.fill(0, 0, 0, 192);
+	SDL_Texture *old = SDL_GetRenderTarget(mrc);
+	SDL_SetRenderTarget(mrc,img.getTex());
+	font->setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
+	font->write(img.getWidth()/2,img.getHeight()/2,str);
+	SDL_SetRenderTarget(mrc,old);
+	empty = false;
+}

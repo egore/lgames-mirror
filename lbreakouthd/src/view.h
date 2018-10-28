@@ -54,6 +54,8 @@ class View {
 	int scaleFactor; // *100, e.g., 140 means 1.4
 	bool quitReceived;
 	/* render parts */
+	Label lblTitle;
+	SmoothCounter lblTitleCounter;
 	int curWallpaperId;
 	Image imgBackground;
 	Image imgBricks;
@@ -95,6 +97,7 @@ class View {
 	void showFinalHiscores();
 	int waitForKey(bool confirm);
 	void darkenScreen();
+	void initTitleLabel();
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();

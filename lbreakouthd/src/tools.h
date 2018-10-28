@@ -113,6 +113,7 @@ class SmoothCounter {
 	int type;
 	double cpms; /* change per millisecond */
 	double cur, min, max;
+	bool running;
 public:
 	void init(int t, double start, double end, double delay) {
 		type = t;
@@ -125,9 +126,10 @@ public:
 			min = end;
 			cpms *= -1;
 		}
+		running = true;
 	}
 	int update(int ms) {
-		if (cpms == 0)
+		if (cpms == 0 && !running)
 			return 0;
 
 		int ret = 0;
@@ -153,9 +155,12 @@ public:
 			}
 			ret = 1;
 		}
+		if (type == SCT_ONCE && ret)
+			running = false;
 		return ret;
 	}
-	int get() { return cur; }
+	double get() { return cur; }
+	bool isRunning() { return running; }
 };
 
 class FrameCounter : public SmoothCounter {
@@ -163,6 +168,7 @@ public:
 	void init(uint max, uint delay) {
 		SmoothCounter::init(SCT_REPEAT, 0, -0.01 + max, delay);
 	}
+	int get() { return SmoothCounter::get(); }
 };
 
 void strprintf(string& str, const char *fmt, ... );

@@ -109,6 +109,17 @@ public:
 	int update(uint ms, double rx, PaddleInputState &pis);
 	Game *getGameContext() { return game; }
 	string getLevelsetName() { return levelset->name; }
+	void getCurrentLevelNameAndAuthor(string &name, string &author) {
+		ClientPlayer *p = players[curPlayer].get();
+		uint lid = p->getLevel();
+		if (lid >= (uint)levelset->count) {
+			name = "none";
+			author = "none"; /* is done, should not happen */
+		} else {
+			name = levelset->levels[lid]->name;
+			author = levelset->levels[lid]->author;
+		}
+	}
 	int getLevelCount() { return levelset->count; }
 	HiscoreChart *getHiscoreChart() { return hiscores.get(levelset->name); }
 	ClientPlayer* getCurrentPlayer() {return players[curPlayer].get(); }

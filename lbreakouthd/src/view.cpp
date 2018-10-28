@@ -110,6 +110,9 @@ void View::init(string t, uint r)
 	weaponFrameCounter.init(theme.weaponFrameNum, theme.weaponAnimDelay);
 	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
 
+	/* set label font */
+	lblTitle.setFont(&theme.fNormal);
+
 	/* create menu structure */
 	createMenus();
 
@@ -172,6 +175,7 @@ void View::run()
 
 	fpsStart = SDL_GetTicks();
 
+	initTitleLabel();
 	sprites.clear();
 	renderBackgroundImage();
 	renderBricksImage();
@@ -248,6 +252,8 @@ void View::run()
 		ms = ticks.get();
 
 		/* update animations and particles */
+		if (lblTitleCounter.isRunning())
+			lblTitleCounter.update(ms);
 		shotFrameCounter.update(ms);
 		weaponFrameCounter.update(ms);
 		for (auto it = begin(sprites); it != end(sprites); ++it) {
@@ -288,6 +294,8 @@ void View::run()
 			if (!(flags & CGF_LIFELOST) && config.speech && (rand()%2))
 				mixer.play((rand()%2)?theme.sVeryGood:theme.sExcellent);
 			dim();
+			if (!(flags & CGF_LIFELOST))
+				initTitleLabel();
 		}
 		if (flags & CGF_UPDATEBACKGROUND)
 			renderBackgroundImage();
@@ -327,10 +335,12 @@ void View::run()
 		/* check hiscores */
 		cgame.updateHiscores();
 		/* show final hiscore */
-		showFinalHiscores();
+		if (!quitReceived)
+			showFinalHiscores();
 	}
 
-	dim();
+	if (!quitReceived)
+		dim();
 	grabInput(0);
 }
 
@@ -480,6 +490,17 @@ void View::render()
 		int sy = brickScreenHeight;
 		imgBackground.copy(sx,sy,brickScreenWidth,
 					(MAPHEIGHT-1)*brickScreenHeight,sx,sy);
+	}
+
+	/* title and author */
+	if (lblTitleCounter.isRunning()) {
+		double a = 255;
+		if (lblTitleCounter.get() < 1)
+			a = lblTitleCounter.get() * 255;
+		else if (lblTitleCounter.get() >= 4)
+			a = (5-lblTitleCounter.get()) * 255;
+		lblTitle.setAlpha(a);
+		lblTitle.copy((1+MAPWIDTH/2)*brickScreenWidth, mw->getHeight()/2);
 	}
 
 	/* stats */
@@ -1298,4 +1319,13 @@ void View::darkenScreen()
 	SDL_RenderClear(mrc);
 	img.setAlpha(64);
 	img.copy();
+}
+
+void View::initTitleLabel()
+{
+	string n, a;
+	cgame.getCurrentLevelNameAndAuthor(n, a);
+	string str = n + " by " + a;
+	lblTitle.setText(str);
+	lblTitleCounter.init(SCT_ONCE, 0, 5, 1000);
 }
