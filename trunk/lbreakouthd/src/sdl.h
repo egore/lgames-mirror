@@ -223,4 +223,33 @@ public:
 	}
 };
 
+class Label {
+	Font *font;
+	uint border;
+	Image img;
+	bool empty;
+public:
+	Label() : font(NULL), border(0), empty(true) {}
+	void setFont(Font *f) {
+		font = f;
+		border = 20 * font->getSize() / 100;
+	}
+	void setText(const string &str);
+	void copy(int x, int y, int align = ALIGN_X_CENTER | ALIGN_Y_CENTER) {
+		if (align & ALIGN_X_CENTER)
+			x -= img.getWidth() / 2;
+		else if (align & ALIGN_X_RIGHT)
+			x -= img.getWidth();
+		if (align & ALIGN_Y_CENTER)
+			y -= img.getHeight() / 2;
+		else if (align & ALIGN_Y_BOTTOM)
+			y -= img.getHeight();
+		if (font && !empty)
+			img.copy(x,y);
+	}
+	void setAlpha(int a) {
+		img.setAlpha(a);
+	}
+};
+
 #endif /* SDL_H_ */
