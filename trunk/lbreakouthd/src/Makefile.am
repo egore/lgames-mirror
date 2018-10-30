@@ -16,5 +16,9 @@ install-data-local:
 	  $(INSTALL_DATA) -m 666 empty.hscr $(DESTDIR)$(hiscoredir)/lbreakouthd.hscr; \
 	fi;
 
+uninstall-local:
+	rm -rf $(DESTDIR)$(datdir)
+	rm $(DESTDIR)$(hiscoredir)/lbreakouthd.hscr
+
 clean:
 	rm -f *.o lbreakouthd
