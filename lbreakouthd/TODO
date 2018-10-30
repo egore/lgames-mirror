@@ -1,6 +1,5 @@
 setting theme.ini default screws values for loading menu/explosions...
 -> direct fallback to single standard assets with reading standard theme.ini  
-app icon and proper install
 warp option
 delete save game on hiscore entry
 
@@ -21,3 +20,4 @@ optimizations:
 labels for menu
 efficient check for active extras and draw only once per sec
 merge background and brick layer to offset layer
+reuse existing previews on starting custom game again
