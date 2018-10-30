@@ -15,6 +15,19 @@
 #ifndef SRC_SELECTDLG_H_
 #define SRC_SELECTDLG_H_
 
+class SetInfo {
+	friend SelectDialog;
+
+	string name;
+	string version;
+	string author;
+	uint levels;
+	Image preview;
+public:
+	SetInfo(const string &name, Theme &theme);
+
+};
+
 enum {
 	SEL_NONE = -1,
 	SEL_PREV = -2,
@@ -24,14 +37,15 @@ enum {
 class SelectDialog {
 	Theme &theme;
 	bool quitReceived;
-	vector<string> entries;
+	vector<unique_ptr<SetInfo>> entries;
 	int sel;
 	uint pos, max, vlen;
 	int lx, ly; /* list start */
 	uint cw, ch; /* cell size */
+	int px, py;
+	uint pw, ph; /* preview geometry */
 
 	Image background;
-	Image preview;
 
 	void render();
 	void renderPreview();
@@ -51,17 +65,19 @@ class SelectDialog {
 			pos -= vlen-2;
 	}
 public:
-	SelectDialog(Theme &t) : theme(t), quitReceived(false) {
+	SelectDialog(Theme &t) : theme(t), quitReceived(false)
+	{
 		sel = SEL_NONE;
 		pos = max = vlen = 0;
 		lx = ly = 0;
 		cw = ch = 0;
+		px = py = pw = ph = 0;
 	}
-	void init(vector<string> &list);
+	void init();
 	int run();
 	string get() {
 		if (sel >= 0)
-			return entries[sel];
+			return entries[sel]->name;
 		return "none";
 	}
 	bool quitRcvd() { return quitReceived; }

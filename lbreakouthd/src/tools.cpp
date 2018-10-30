@@ -197,3 +197,18 @@ string getHomeDir() {
 	return string(getenv("HOME")?getenv("HOME"):".");
 }
 
+/* not thread safe */
+const string &getFullLevelsetPath(const string &n)
+{
+	static string path;
+	if (n[0] != '~') {
+		path = string(DATADIR) + "/levels/" + n;
+	} else {
+		if (string(CONFIGDIR) == ".")
+			path = "./levels/";
+		else
+			path = getHomeDir() + "/" + CONFIGDIR + "/levels/";
+		path += n.substr(1);
+	}
+	return path;
+}

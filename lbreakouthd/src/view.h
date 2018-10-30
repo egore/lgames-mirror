@@ -41,7 +41,6 @@ class View {
 	/* menu */
 	unique_ptr<Menu> rootMenu;
 	Menu *curMenu, *graphicsMenu;
-	vector<string> levelsetNames;
 	vector<string> themeNames;
 	vector<string> modeNames;
 	string saveFileName;

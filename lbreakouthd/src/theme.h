@@ -18,6 +18,7 @@
 class View;
 class Menu;
 class SelectDialog;
+class SetInfo;
 
 enum {
 	MAXWALLPAPERS= 10
@@ -27,6 +28,7 @@ class Theme {
 	friend View;
 	friend Menu;
 	friend SelectDialog;
+	friend SetInfo;
 
 	string stdPath; /* path to standard theme for fallbacks */
 
