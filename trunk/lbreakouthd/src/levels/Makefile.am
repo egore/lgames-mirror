@@ -75,6 +75,7 @@ Lattices \
 Lattsville \
 LBreakout1 \
 LBreakout2 \
+LBreakoutHD \
 LinuxFun \
 Lord \
 Madness \
