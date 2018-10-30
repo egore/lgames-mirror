@@ -20,7 +20,6 @@ Config::Config()
 	/* levels */
 	levelset_id_home = 0;
 	levelset_count_home = 0;
-	setname = "LBreakout2";
 	/* player */
 	player_count = 1;
 	player_names[0] = "Michael";
@@ -95,7 +94,6 @@ Config::Config()
 	FileParser fp(fname);
 	fp.get("set_id_home", levelset_id_home );
 	fp.get( "set_count_home", levelset_count_home );
-	fp.get( "setname", setname );
 	fp.get( "player_count", player_count );
 	fp.get( "player0", player_names[0] );
 	fp.get( "player1", player_names[1] );
@@ -153,7 +151,6 @@ void Config::save()
 
 	ofs << "set_id_home=" << levelset_id_home << "\n";
 	ofs << "set_count_home=" << levelset_count_home << "\n";
-	ofs << "setname=" << setname << "\n";
 	ofs << "player_count=" << player_count << "\n";
 	ofs << "player0=" << player_names[0] << "\n";
 	ofs << "player1=" << player_names[1] << "\n";

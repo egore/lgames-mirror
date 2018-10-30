@@ -42,8 +42,6 @@ int main(int argc, char **argv)
 	srand(time(NULL));
 
 	Config config;
-	if (argc > 1)
-		config.setname = argv[1]; /* allow override */
 	ClientGame cgame(config);
 	View view(config, cgame);
 	view.runMenu();
