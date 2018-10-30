@@ -43,9 +43,6 @@ View::View(Config &cfg, ClientGame &_cg)
 		config.theme_id = 0;
 	config.theme_count = themeNames.size();
 
-	/* FIXME: get all from home dir as well */
-	readDir(string(DATADIR)+"/levels", RD_FILES, levelsetNames);
-
 	/* name for saved game */
 	if (string(CONFIGDIR) != ".")
 		saveFileName = getHomeDir() + "/" + CONFIGDIR + "/lbreakouthd.sav";
@@ -608,7 +605,7 @@ void View::renderBricksImage()
 			Brick *b = &game->bricks[i][j];
 			if (b->type != MAP_EMPTY && b->id != INVIS_BRICK_ID)
 				theme.bricksShadow.copy(b->id, 0, (i-1)*bw + theme.shadowOffset,
-												(j-1)*bh + theme.shadowOffset);
+						(j-1)*bh + theme.shadowOffset);
 		}
 	for (int i = 1; i < MAPWIDTH-1; i++)
 		for (int j = 1; j < MAPHEIGHT; j++) {
@@ -1123,7 +1120,7 @@ void View::runMenu()
 				break;
 			case AID_STARTCUSTOM:
 				darkenScreen();
-				selectDlg.init(levelsetNames);
+				selectDlg.init();
 				if (selectDlg.run()) {
 					cgame.init(selectDlg.get());
 					dim();

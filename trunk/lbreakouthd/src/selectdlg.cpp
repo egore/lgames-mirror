@@ -21,12 +21,82 @@
 #include "selectdlg.h"
 
 extern SDL_Renderer *mrc;
+extern Brick_Conv brick_conv_table[BRICK_COUNT];
 
-/** Copy (and rearrange list). Set list values */
-void SelectDialog::init(vector<string> &list)
+SetInfo::SetInfo(const string &n, Theme &theme)
+{
+	name = n;
+	levels = 0;
+	version = "1.00"; /* default if not found */
+	author = "?";
+
+	string fpath = getFullLevelsetPath(n);
+	string lines[5+EDIT_HEIGHT];
+	ifstream ifs(fpath);
+	uint offset = 0;
+
+	if (!ifs.is_open()) {
+		_logerr("Levelset %s not found, no preview created\n",n.c_str());
+		return;
+	}
+	for (uint i = 0; i < 5+EDIT_HEIGHT; i++)
+		getline(ifs,lines[i]);
+	if (lines[0].find("Version") != string::npos) {
+		version = lines[0].substr(lines[0].find(':')+1);
+		offset = 1;
+	}
+	author = lines[1 + offset];
+
+	/* TODO count levels */
+
+	/* create preview */
+	uint sw = theme.menuBackground.getWidth();
+	uint sh = theme.menuBackground.getHeight();
+	uint bw = theme.bricks.getGridWidth();
+	uint bh = theme.bricks.getGridHeight();
+	uint soff = bh/3;
+	preview.create(MAPWIDTH*theme.bricks.getGridWidth(),
+			MAPHEIGHT*theme.bricks.getGridHeight());
+	SDL_SetRenderTarget(mrc, preview.getTex());
+	Image& wallpaper = theme.wallpapers[rand()%theme.numWallpapers];
+	for (uint wy = 0; wy < sh; wy += wallpaper.getHeight())
+		for (uint wx = 0; wx < sw; wx += wallpaper.getWidth())
+			wallpaper.copy(wx,wy);
+	theme.frameShadow.copy(soff,soff);
+	/* XXX direct access to brick conversion table from libgame */
+	for (uint j = 0; j < EDITHEIGHT; j++)
+		for (uint i = 0; i < EDITWIDTH; i++) {
+			int k = -1;
+			for ( k = 0; k < BRICK_COUNT; k++ )
+				if (lines[4+offset+j][i] == brick_conv_table[k].c)
+					break;
+			if (k != -1)
+				theme.bricksShadow.copy(brick_conv_table[k].id,0,
+						(i+1)*bw+bh/3, (1+j)*bh+bh/3);
+		}
+	for (uint j = 0; j < EDITHEIGHT; j++)
+		for (uint i = 0; i < EDITWIDTH; i++) {
+			int k = -1;
+			for ( k = 0; k < BRICK_COUNT; k++ )
+				if (lines[4+offset+j][i] == brick_conv_table[k].c)
+					break;
+			if (k != -1)
+				theme.bricks.copy(brick_conv_table[k].id,0,
+							(i+1)*bw, (1+j)*bh);
+		}
+	theme.frame.copy(0,0);
+	SDL_SetRenderTarget(mrc, NULL);
+}
+
+
+/** Create levelset list and previews + layout. */
+void SelectDialog::init()
 {
 	uint sw = theme.menuBackground.getWidth();
 	uint sh = theme.menuBackground.getHeight();
+	vector<string> list;
+
+	readDir(string(DATADIR)+"/levels", RD_FILES, list);
 
 	vlen = (0.7 * sh) / theme.fNormal.getSize(); /* vlen = displayed entries */
 	sel = SEL_NONE;
@@ -37,14 +107,18 @@ void SelectDialog::init(vector<string> &list)
 	ch = 1.1 * theme.fNormal.getSize();
 	lx = 0.1*sw;
 	ly = (sh - vlen*ch)/2;
+	px = 0.4*sw;
+	py = 0.1*sh;
+	pw = 0.5*sw;
+	ph = MAPWIDTH * pw / MAPHEIGHT;
+
+	background.createFromScreen();
 
 	entries.clear();
 	for (auto& e : list) {
-		entries.push_back(e);
-		_loginfo("%s\n",e.c_str());
+		SetInfo *si = new SetInfo(e, theme);
+		entries.push_back(unique_ptr<SetInfo>(si));
 	}
-
-	background.createFromScreen();
 }
 
 void SelectDialog::render()
@@ -53,6 +127,7 @@ void SelectDialog::render()
 	int y = ly;
 
 	background.copy();
+
 	font.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
 	if (pos > 0) {
 		if (sel == SEL_PREV)
@@ -66,7 +141,7 @@ void SelectDialog::render()
 			font.setColor(theme.fontColorHighlight);
 		else
 			font.setColor(theme.fontColorNormal);
-		font.write(lx, y, entries[pos + i]);
+		font.write(lx, y, entries[pos + i]->name);
 	}
 	if (pos < max) {
 		if (sel == SEL_NEXT)
@@ -75,6 +150,9 @@ void SelectDialog::render()
 			font.setColor(theme.fontColorNormal);
 		font.write(lx, y, _("<Next Page>"));
 	}
+
+	if (sel >= 0)
+		entries[sel]->preview.copy(px,py,pw,ph);
 }
 
 int SelectDialog::run()

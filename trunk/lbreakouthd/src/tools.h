@@ -206,5 +206,6 @@ enum {
 int readDir(const string &dname, int type, vector<string> &fnames);
 
 string getHomeDir();
+const string &getFullLevelsetPath(const string &n);
 
 #endif /* SRC_TOOLS_H_ */
