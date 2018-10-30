@@ -25,7 +25,7 @@
 extern SDL_Renderer *mrc;
 
 View::View(Config &cfg, ClientGame &_cg)
-	: config(cfg), mw(NULL), curMenu(NULL), curLevelsetId(0),
+	: config(cfg), mw(NULL), curMenu(NULL),
 	  selectDlg(theme), cgame(_cg), quitReceived(false),
 	  lblTitle(theme.fNormal), fpsCycles(0), fpsStart(0), fps(0)
 {
@@ -37,23 +37,14 @@ View::View(Config &cfg, ClientGame &_cg)
 	mixer.open(cfg.channels, cfg.audio_buffer_size);
 	mixer.setVolume(cfg.volume);
 
-	/* FIXME: get all from home dir as well and represent much better than this */
-	readDir(string(DATADIR)+"/levels", RD_FILES, levelsetNames);
-	int i = 0;
-	for (auto& n : levelsetNames) {
-		if (n == config.setname) {
-			curLevelsetId = i;
-			break;
-		}
-		i++;
-	}
-	config.setname = levelsetNames[curLevelsetId];
-
-	/* FIXME: get all from home dir as well and represent much better than this */
+	/* FIXME: get all from home dir as well */
 	readDir(string(DATADIR)+"/themes", RD_FOLDERS, themeNames);
 	if ((uint)config.theme_id >= themeNames.size())
 		config.theme_id = 0;
 	config.theme_count = themeNames.size();
+
+	/* FIXME: get all from home dir as well */
+	readDir(string(DATADIR)+"/levels", RD_FILES, levelsetNames);
 
 	/* name for saved game */
 	if (string(CONFIGDIR) != ".")
@@ -960,7 +951,7 @@ void View::createMenus()
 
 	mNewGame->add(new MenuItem(_("Start Original Levels"),AID_STARTORIGINAL));
 	mNewGame->add(new MenuItem(_("Start Custom Levels"),AID_STARTCUSTOM));
-	mNewGame->add(new MenuItemList(_("Levelset"),AID_SETCHANGED,curLevelsetId,levelsetNames));
+	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemRange(_("Players"),AID_NONE,
@@ -1115,9 +1106,6 @@ void View::runMenu()
 					MainWindow::getModeResolution(config.mode));
 				curMenu = graphicsMenu;
 				break;
-			case AID_SETCHANGED:
-				config.setname = levelsetNames[curLevelsetId];
-				break;
 			case AID_RESUME:
 				if (resumeGame()) {
 					dim();
@@ -1126,16 +1114,24 @@ void View::runMenu()
 					ticks.reset();
 				}
 				break;
-			case AID_STARTCUSTOM:
 			case AID_STARTORIGINAL:
-				if (aid == AID_STARTORIGINAL)
-					cgame.init("LBreakoutHD");
-				else
-					cgame.init(levelsetNames[curLevelsetId]);
+				cgame.init("LBreakoutHD");
 				dim();
 				SDL_Delay(250); /* wait until button released */
 				run();
 				ticks.reset();
+				break;
+			case AID_STARTCUSTOM:
+				darkenScreen();
+				selectDlg.init(levelsetNames);
+				if (selectDlg.run()) {
+					cgame.init(selectDlg.get());
+					dim();
+					SDL_Delay(250); /* wait until button released */
+					run();
+					ticks.reset();
+				} else if (selectDlg.quitRcvd())
+					quitReceived = true;
 				break;
 			}
 		}
@@ -1214,24 +1210,12 @@ int View::resumeGame()
 
 	FileParser fp(saveFileName);
 	string setname;
-	int setid = -1;
 
 	if (!fp.get("levelset",setname)) {
 		_logerr("Save game corrupted, no levelset name.\n");
 		return 0;
 	}
-	for (uint i = 0; i < levelsetNames.size(); i++)
-		if (setname == levelsetNames[i]) {
-			setid = i;
-			break;
-		}
-	if (setid == -1) {
-		_logerr("Levelset %s not found, cannot resume game.\n",setname.c_str());
-		return 0;
-	} else
-		curLevelsetId = setid;
 	fp.get("difficulty",config.diff);
-	config.setname = setname;
 	if (!fp.get("players",config.player_count)) {
 		_logerr("Save game corrupted, no player count\n");
 		return 0;

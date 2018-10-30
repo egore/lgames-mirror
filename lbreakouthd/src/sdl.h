@@ -128,6 +128,9 @@ public:
 	int load(const string& fname);
 	int load(SDL_Surface *s);
 	int load(Image *s, int x, int y, int w, int h);
+	int duplicate(Image &s) {
+		return load(&s,0,0,s.getWidth(),s.getHeight());
+	}
 	SDL_Texture *getTex();
 	void copy();
 	void copy(int dx, int dy);
