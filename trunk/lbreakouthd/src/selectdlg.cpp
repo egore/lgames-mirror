@@ -150,7 +150,8 @@ void SelectDialog::render()
 			font.setColor(theme.fontColorHighlight);
 		else
 			font.setColor(theme.fontColorNormal);
-		font.write(lx, y, entries[pos + i]->name);
+		if (pos + i < entries.size())
+			font.write(lx, y, entries[pos + i]->name);
 	}
 	if (pos < max) {
 		if (sel == SEL_NEXT)
@@ -206,6 +207,8 @@ int SelectDialog::run()
 						ev.motion.x < (int)(lx + cw) &&
 						ev.motion.y < int(ly + ch*vlen)) {
 					sel = pos + (ev.motion.y - ly)/ch;
+					if ((uint)sel >= entries.size())
+						sel = entries.size()-1;
 				} else if (ev.motion.y < ly)
 					sel = SEL_PREV;
 				else if (ev.motion.y > int(ly + ch*vlen))
