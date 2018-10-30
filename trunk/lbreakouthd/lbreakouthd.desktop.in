@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=LBreakoutHD
+Comment=A ball-and-paddle game with nice graphics.
+Exec=lbreakouthd
+Icon=
+Type=Application
+Categories=Game;
