@@ -1,22 +1,23 @@
-levelset select dialog 
 setting theme.ini default screws values for loading menu/explosions...
 -> direct fallback to single standard assets with reading standard theme.ini  
 app icon and proper install
+warp option
+delete save game on hiscore entry
 
 menu hints
-complete advanced options
-
-fix ball shadow
-delete save game on hiscore entry
-flat paddle
 allow removing selected bricks
-warping
-efficient check for active extras and draw only once per sec
-merge background and brick layer to offset layer
-stereo sound
-label object for more efficient font rendering
+complete advanced options
 freakout and special levelsets 
 quick help
 editor
+option for flat paddle with friction
+
+eye/ear candy:
+fix ball shadow
+stereo sound
 fade effect for power ball, tailing  for explosive ball, fuzzy chaotic ball
-...
+
+optimizations:
+labels for menu
+efficient check for active extras and draw only once per sec
+merge background and brick layer to offset layer
