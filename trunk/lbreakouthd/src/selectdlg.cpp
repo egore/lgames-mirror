@@ -100,10 +100,17 @@ void SelectDialog::init()
 {
 	uint sw = theme.menuBackground.getWidth();
 	uint sh = theme.menuBackground.getHeight();
-	vector<string> list;
+	vector<string> list, list2;
 
 	readDir(string(DATADIR)+"/levels", RD_FILES, list);
 	sort(list.begin(),list.end());
+	if (string(CONFIGDIR) != ".") {
+		readDir(getHomeDir() + "/" + string(CONFIGDIR) + "/levels",
+							RD_FILES, list2);
+		sort(list2.begin(),list2.end());
+		for (auto& s : list2)
+			list.push_back(string("~")+s);
+	}
 
 	vlen = (0.7 * sh) / theme.fNormal.getSize(); /* vlen = displayed entries */
 	sel = SEL_NONE;
@@ -166,6 +173,7 @@ void SelectDialog::render()
 		si->preview.copy(px,py,pw,ph);
 		string str = si->name + " v" + si->version + _(" by ") + si->author;
 		font.setAlign(ALIGN_X_CENTER | ALIGN_Y_TOP);
+		font.setColor(theme.fontColorNormal);
 		font.write(px + pw/2, py+ph+font.getSize(), str);
 		str = "(" + to_string(si->levels) + _(" levels)");
 		font.write(px + pw/2, py+ph+font.getSize()*2, str);

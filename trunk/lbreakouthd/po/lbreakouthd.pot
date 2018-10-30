@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: lbreakouthd 0.8\n"
+"Project-Id-Version: lbreakouthd 0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-09 14:20+0200\n"
+"POT-Creation-Date: 2018-10-30 20:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,223 +66,235 @@ msgstr ""
 msgid "!FREAKOUT!"
 msgstr ""
 
-#: libgame/levels.c:126
+#: libgame/levels.c:130
 msgid "!JUMPING_JACK!"
 msgstr ""
 
-#: libgame/levels.c:129
+#: libgame/levels.c:133
 msgid "!OUTBREAK!"
 msgstr ""
 
-#: libgame/levels.c:132
+#: libgame/levels.c:136
 msgid "!BARRIER!"
 msgstr ""
 
-#: libgame/levels.c:135
+#: libgame/levels.c:139
 msgid "!SITTING_DUCKS!"
 msgstr ""
 
-#: libgame/levels.c:138
+#: libgame/levels.c:142
 msgid "!HUNTER!"
 msgstr ""
 
-#: libgame/levels.c:141
+#: libgame/levels.c:145
 msgid "!INVADERS!"
 msgstr ""
 
-#: src/view.cpp:166
+#: src/view.cpp:183
 msgid "Pause"
 msgstr ""
 
-#: src/view.cpp:170
+#: src/view.cpp:188
 msgid "Quit Game? y/n"
 msgstr ""
 
-#: src/view.cpp:453
+#: src/view.cpp:189
+msgid "(No hiscore entry yet, game can be resumed later.)"
+msgstr ""
+
+#: src/view.cpp:260
+msgid "Buy Continue? y/n"
+msgstr ""
+
+#: src/view.cpp:261
+msgid "(Costs ALL of your score.)"
+msgstr ""
+
+#: src/view.cpp:523
 msgid "(Level "
 msgstr ""
 
-#: src/view.cpp:466
+#: src/view.cpp:536
 msgid "Active Extras"
 msgstr ""
 
-#: src/view.cpp:485
+#: src/view.cpp:554
 msgid "Hiscores"
 msgstr ""
 
-#: src/view.cpp:856
+#: src/view.cpp:934
 msgid "Kids"
 msgstr ""
 
-#: src/view.cpp:856
+#: src/view.cpp:934
 msgid "Easy"
 msgstr ""
 
-#: src/view.cpp:856
+#: src/view.cpp:934
 msgid "Medium"
 msgstr ""
 
-#: src/view.cpp:856
+#: src/view.cpp:934
 msgid "Hard"
 msgstr ""
 
-#: src/view.cpp:871
+#: src/view.cpp:949
 msgid "Start Original Levels"
 msgstr ""
 
-#: src/view.cpp:872
+#: src/view.cpp:950
 msgid "Start Custom Levels"
 msgstr ""
 
-#: src/view.cpp:873
-msgid "Levelset"
-msgstr ""
-
-#: src/view.cpp:874
+#: src/view.cpp:952
 msgid "Difficulty"
 msgstr ""
 
-#: src/view.cpp:876
+#: src/view.cpp:954
 msgid "Players"
 msgstr ""
 
-#: src/view.cpp:878
+#: src/view.cpp:956
 msgid "1st"
 msgstr ""
 
-#: src/view.cpp:879
+#: src/view.cpp:957
 msgid "2nd"
 msgstr ""
 
-#: src/view.cpp:880
+#: src/view.cpp:958
 msgid "3rd"
 msgstr ""
 
-#: src/view.cpp:881
+#: src/view.cpp:959
 msgid "4th"
 msgstr ""
 
-#: src/view.cpp:885
+#: src/view.cpp:963
 msgid "Left"
 msgstr ""
 
-#: src/view.cpp:886
+#: src/view.cpp:964
 msgid "Right"
 msgstr ""
 
-#: src/view.cpp:887
+#: src/view.cpp:965
 msgid "Left Fire"
 msgstr ""
 
-#: src/view.cpp:888
+#: src/view.cpp:966
 msgid "Right Fire"
 msgstr ""
 
-#: src/view.cpp:889
+#: src/view.cpp:967
 msgid "Paddle Turbo"
 msgstr ""
 
-#: src/view.cpp:890
+#: src/view.cpp:968 src/view.cpp:1000
 msgid "Ball Turbo"
 msgstr ""
 
-#: src/view.cpp:891
+#: src/view.cpp:969
 msgid "Idle Return"
 msgstr ""
 
-#: src/view.cpp:893
+#: src/view.cpp:971
 msgid "Key Speed"
 msgstr ""
 
-#: src/view.cpp:894
+#: src/view.cpp:972
 msgid "Motion Modifier"
 msgstr ""
 
-#: src/view.cpp:895
+#: src/view.cpp:973
 msgid "Invert Motion"
 msgstr ""
 
-#: src/view.cpp:899
+#: src/view.cpp:977
 msgid "Theme"
 msgstr ""
 
-#: src/view.cpp:900
+#: src/view.cpp:978
 msgid "Mode"
 msgstr ""
 
-#: src/view.cpp:901
+#: src/view.cpp:979
 msgid "Apply Theme&Mode"
 msgstr ""
 
-#: src/view.cpp:905
+#: src/view.cpp:983
 msgid "Sound"
 msgstr ""
 
-#: src/view.cpp:906
+#: src/view.cpp:984
 msgid "Volume"
 msgstr ""
 
-#: src/view.cpp:907
+#: src/view.cpp:985
 msgid "Speech"
 msgstr ""
 
-#: src/view.cpp:909
+#: src/view.cpp:987
 msgid "Buffer Size"
 msgstr ""
 
-#: src/view.cpp:910
+#: src/view.cpp:988
 msgid "Channels"
 msgstr ""
 
-#: src/view.cpp:911
+#: src/view.cpp:989
 msgid "Apply Size&Channels"
 msgstr ""
 
-#: src/view.cpp:915
+#: src/view.cpp:993
 msgid "Controls"
 msgstr ""
 
-#: src/view.cpp:916
+#: src/view.cpp:994
 msgid "Graphics"
 msgstr ""
 
-#: src/view.cpp:917
+#: src/view.cpp:995
 msgid "Audio"
 msgstr ""
 
-#: src/view.cpp:918
+#: src/view.cpp:996
 msgid "Advanced"
 msgstr ""
 
-#: src/view.cpp:921
+#: src/view.cpp:999
 msgid "Ball Fire Angle"
 msgstr ""
 
-#: src/view.cpp:921
+#: src/view.cpp:999
 msgid "Random"
 msgstr ""
 
-#: src/view.cpp:922
-msgid "Return Balls"
-msgstr ""
-
-#: src/view.cpp:922
-msgid "Auto"
-msgstr ""
-
-#: src/view.cpp:922
+#: src/view.cpp:1000 src/view.cpp:1001
 msgid "On Click"
 msgstr ""
 
-#: src/view.cpp:926
+#: src/view.cpp:1000 src/view.cpp:1001
+msgid "Auto"
+msgstr ""
+
+#: src/view.cpp:1001
+msgid "Return Balls"
+msgstr ""
+
+#: src/view.cpp:1005
 msgid "New Game"
 msgstr ""
 
-#: src/view.cpp:928
+#: src/view.cpp:1006
+msgid "Resume Game"
+msgstr ""
+
+#: src/view.cpp:1007
 msgid "Options"
 msgstr ""
 
-#: src/view.cpp:930
+#: src/view.cpp:1009
 msgid "Quit"
 msgstr ""
 
