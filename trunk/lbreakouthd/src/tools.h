@@ -49,7 +49,7 @@ enum {
 	MAXLEVELS = 40
 };
 
-#define DEBUGLEVEL 1
+#define DEBUGLEVEL 0
 #define _logerr(...) do { \
 		fprintf(stderr,"ERROR: %s:%d: %s(): ", __FILE__, __LINE__, __FUNCTION__); \
 		fprintf (stderr, __VA_ARGS__); \
@@ -207,5 +207,7 @@ int readDir(const string &dname, int type, vector<string> &fnames);
 
 string getHomeDir();
 const string &getFullLevelsetPath(const string &n);
+
+string trimString(const string& str);
 
 #endif /* SRC_TOOLS_H_ */
