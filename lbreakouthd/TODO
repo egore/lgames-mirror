@@ -1,7 +1,7 @@
 setting theme.ini default screws values for loading menu/explosions...
 -> direct fallback to single standard assets with reading standard theme.ini  
 warp option
-delete save game on hiscore entry
+load home directory stuff as well
 
 menu hints
 allow removing selected bricks
@@ -15,6 +15,7 @@ eye/ear candy:
 fix ball shadow
 stereo sound
 fade effect for power ball, tailing  for explosive ball, fuzzy chaotic ball
+have info boxes for old themes centered in empty space not attached to frame
 
 optimizations:
 labels for menu

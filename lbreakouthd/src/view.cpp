@@ -12,6 +12,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <cstdio>
 #include "tools.h"
 #include "sdl.h"
 #include "clientgame.h"
@@ -323,6 +324,8 @@ void View::run()
 		/* show final hiscore */
 		if (!quitReceived)
 			showFinalHiscores();
+		/* delete save game */
+		remove(saveFileName.c_str());
 	}
 
 	if (!quitReceived)
