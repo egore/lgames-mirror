@@ -36,6 +36,7 @@ enum {
 
 class SelectDialog {
 	Theme &theme;
+	Mixer &mixer;
 	bool quitReceived;
 	vector<unique_ptr<SetInfo>> entries;
 	int sel;
@@ -65,7 +66,7 @@ class SelectDialog {
 			pos -= vlen-2;
 	}
 public:
-	SelectDialog(Theme &t) : theme(t), quitReceived(false)
+	SelectDialog(Theme &t, Mixer &m) : theme(t), mixer(m), quitReceived(false)
 	{
 		sel = SEL_NONE;
 		pos = max = vlen = 0;

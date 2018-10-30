@@ -26,7 +26,7 @@ extern SDL_Renderer *mrc;
 
 View::View(Config &cfg, ClientGame &_cg)
 	: config(cfg), mw(NULL), curMenu(NULL),
-	  selectDlg(theme), cgame(_cg), quitReceived(false),
+	  selectDlg(theme, mixer), cgame(_cg), quitReceived(false),
 	  lblTitle(theme.fNormal), fpsCycles(0), fpsStart(0), fps(0)
 {
 	_loginfo("Initializing SDL\n");
@@ -1304,7 +1304,6 @@ void View::initTitleLabel()
 {
 	string n, a;
 	cgame.getCurrentLevelNameAndAuthor(n, a);
-	string str = n + " by " + a;
-	lblTitle.setText(str);
+	lblTitle.setText(n);
 	lblTitleCounter.init(SCT_ONCE, 0, 5, 1000);
 }

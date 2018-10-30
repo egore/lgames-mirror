@@ -12,6 +12,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
 #include "sdl.h"
 #include "tools.h"
 #include "hiscores.h"
@@ -42,12 +43,17 @@ SetInfo::SetInfo(const string &n, Theme &theme)
 	for (uint i = 0; i < 5+EDIT_HEIGHT; i++)
 		getline(ifs,lines[i]);
 	if (lines[0].find("Version") != string::npos) {
-		version = lines[0].substr(lines[0].find(':')+1);
+		version = trimString(lines[0].substr(lines[0].find(':')+1));
 		offset = 1;
 	}
 	author = lines[1 + offset];
 
-	/* TODO count levels */
+	/* count levels */
+	levels = 1;
+	while (getline(ifs, lines[0]))
+		if (lines[0].find("Level:") != string::npos)
+			levels++;
+	ifs.close();
 
 	/* create preview */
 	uint sw = theme.menuBackground.getWidth();
@@ -97,25 +103,28 @@ void SelectDialog::init()
 	vector<string> list;
 
 	readDir(string(DATADIR)+"/levels", RD_FILES, list);
+	sort(list.begin(),list.end());
 
 	vlen = (0.7 * sh) / theme.fNormal.getSize(); /* vlen = displayed entries */
 	sel = SEL_NONE;
 	pos = max = 0;
-	if (list.size() > vlen)
-		max = list.size() - vlen;
+	if (list.size()-1 > vlen) /* we will skip LBreakoutHD so -1 */
+		max = list.size()-1 - vlen;
 	cw = 0.2*sw;
 	ch = 1.1 * theme.fNormal.getSize();
 	lx = 0.1*sw;
 	ly = (sh - vlen*ch)/2;
 	px = 0.4*sw;
-	py = 0.1*sh;
 	pw = 0.5*sw;
 	ph = MAPWIDTH * pw / MAPHEIGHT;
+	py = (sh - ph - 3*theme.fNormal.getSize())/2;
 
 	background.createFromScreen();
 
 	entries.clear();
 	for (auto& e : list) {
+		if (e == "LBreakoutHD")
+			continue;
 		SetInfo *si = new SetInfo(e, theme);
 		entries.push_back(unique_ptr<SetInfo>(si));
 	}
@@ -151,8 +160,15 @@ void SelectDialog::render()
 		font.write(lx, y, _("<Next Page>"));
 	}
 
-	if (sel >= 0)
-		entries[sel]->preview.copy(px,py,pw,ph);
+	if (sel >= 0) {
+		SetInfo *si = entries[sel].get();
+		si->preview.copy(px,py,pw,ph);
+		string str = si->name + " v" + si->version + _(" by ") + si->author;
+		font.setAlign(ALIGN_X_CENTER | ALIGN_Y_TOP);
+		font.write(px + pw/2, py+ph+font.getSize(), str);
+		str = "(" + to_string(si->levels) + _(" levels)");
+		font.write(px + pw/2, py+ph+font.getSize()*2, str);
+	}
 }
 
 int SelectDialog::run()
@@ -174,15 +190,18 @@ int SelectDialog::run()
 					break;
 				case SDL_SCANCODE_PAGEUP:
 					goPrevPage();
+					sel = SEL_NONE;
 					break;
 				case SDL_SCANCODE_PAGEDOWN:
 					goNextPage();
+					sel = SEL_NONE;
 					break;
 				default:
 					break;
 				}
 			}
 			if (ev.type == SDL_MOUSEMOTION) {
+				int oldsel = sel;
 				if (ev.motion.x >= lx && ev.motion.y >= ly &&
 						ev.motion.x < (int)(lx + cw) &&
 						ev.motion.y < int(ly + ch*vlen)) {
@@ -193,12 +212,17 @@ int SelectDialog::run()
 					sel = SEL_NEXT;
 				else
 					sel = SEL_NONE;
+				if (sel != oldsel)
+					mixer.play(theme.sMenuMotion);
 			}
 			if (ev.type == SDL_MOUSEWHEEL) {
-				if (ev.wheel.y < 0)
+				if (ev.wheel.y < 0) {
 					goNextPage();
-				else if (ev.wheel.y > 0)
+					sel = SEL_NONE;
+				} else if (ev.wheel.y > 0) {
 					goPrevPage();
+					sel = SEL_NONE;
+				}
 			}
 			if (ev.type == SDL_MOUSEBUTTONUP) {
 				if (sel == SEL_PREV)
@@ -209,6 +233,8 @@ int SelectDialog::run()
 					ret = 1;
 					leave = true;
 				}
+				if (sel != SEL_NONE)
+					mixer.play(theme.sMenuClick);
 			}
 		}
 		/* render */
