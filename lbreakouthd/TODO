@@ -22,3 +22,7 @@ labels for menu
 efficient check for active extras and draw only once per sec
 merge background and brick layer to offset layer
 reuse existing previews on starting custom game again
+
+already known bugs:
+l10n doesn't work though mo file is installed there
+
