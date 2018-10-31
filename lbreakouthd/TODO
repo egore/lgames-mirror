@@ -1,8 +1,5 @@
-setting theme.ini default screws values for loading menu/explosions...
--> direct fallback to single standard assets with reading standard theme.ini  
 warp option
 load home directory stuff as well
-
 menu hints
 allow removing selected bricks
 complete advanced options

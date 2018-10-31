@@ -25,7 +25,8 @@ extern SDL_Renderer *mrc;
 void Theme::load(string name, uint screenWidth, uint screenHeight,
 				uint brickScreenWidth, uint brickScreenHeight)
 {
-	string path;
+	string path, fpath;
+	uint iw, ih;
 	bool oldTheme = true; // needed for some workarounds
 
 	if (name[0] == '~')
@@ -66,6 +67,8 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	menuFontFocusSize = 21;
 	menuFontColorNormal = {255,255,255,255};
 	menuFontColorFocus  = {255,220,0,255};
+
+	/* load theme values */
 	if (fileExists(path + "/theme.ini")) {
 		oldTheme = false;
 		FileParser fp(path + "/theme.ini");
@@ -111,6 +114,12 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		fp.get("menu.fontFocus.color.a",menuFontColorFocus.a);
 	}
 
+	/* load standard values for fallback */
+	FileParser stdSettings(stdPath + "/theme.ini");
+	int sbfw, sbfh; /* standard brick file width/height */
+	stdSettings.get("brickWidth",sbfw);
+	stdSettings.get("brickHeight",sbfh);
+
 	if (oldTheme) {
 		Image::setRenderScaleQuality(0);
 		Image::useColorKeyBlack = true;
@@ -122,14 +131,17 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	/* adjust shadow offset to screen geometry */
 	shadowOffset = shadowOffset * brickScreenHeight / brickFileHeight;
 
-	/* bricks and extras have exactly brick size */
-	if (fileExists(path + "/bricks.png")) {
+	/* load bricks */
+	if (fileExists(path + "/bricks.png"))
 		bricks.load(path + "/bricks.png",brickFileWidth,brickFileHeight);
-		bricks.scale(brickScreenWidth,brickScreenHeight);
-	}
+	else
+		bricks.load(stdPath + "/bricks.png",sbfw,sbfh);
+	bricks.scale(brickScreenWidth,brickScreenHeight);
+
+	/* load extras */
 	if (fileExists(path + "/extras.png")) {
 		if (oldTheme && (Image::getWidth(path + "/extras.png") & 1)) {
-			/* last extra line is for color key */
+			/* last extra column is for color key */
 			SDL_Surface *surf = IMG_Load(string(path + "/extras.png").c_str());
 			if (surf) {
 				Uint32 ckey = Image::getSurfacePixel(surf,surf->w-1,0);
@@ -139,10 +151,13 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 			}
 		} else
 			extras.load(path + "/extras.png",brickFileWidth,brickFileHeight);
-		extras.scale(brickScreenWidth,brickScreenHeight);
-	}
+	} else
+		extras.load(stdPath + "/extras.png",sbfw,sbfh);
+	extras.scale(brickScreenWidth,brickScreenHeight);
 
-	/* load frame or create for old themes */
+	/* either load frame.png
+	 * or create frame from left,top,right part
+	 * or create standard frame with wall bricks */
 	if (fileExists(path + "/frame.png")) {
 		frame.load(path + "/frame.png");
 		if (brickFileHeight != brickScreenHeight) {
@@ -239,95 +254,117 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	}
 
 	/* paddle is 90% of brick height */
-	if (fileExists(path + "/paddle.png")) {
-		int psize = Image::getHeight(path + "/paddle.png") / 4;
-		if (oldTheme) {
-			/* color key wasn't quite 0x0... */
-			SDL_Surface *surf = IMG_Load(string(path + "/paddle.png").c_str());
-			if (surf) {
-				Uint32 ckey = Image::getSurfacePixel(surf,0,0);
-				SDL_SetColorKey(surf,SDL_TRUE,ckey);
-				paddles.load(surf, psize, psize);
-				SDL_FreeSurface(surf);
-			}
-		} else
-			paddles.load(path + "/paddle.png", psize, psize);
-		paddles.scale(9*brickScreenHeight/10, 9*brickScreenHeight/10);
-	}
+	if (fileExists(path + "/paddle.png"))
+		fpath = path + "/paddle.png";
+	else
+		fpath = stdPath + "/paddle.png";
+	ih = Image::getHeight(fpath) / 4;
+	if (oldTheme && fileExists(path + "/paddle.png")) {
+		/* color key wasn't quite 0x0... */
+		SDL_Surface *surf = IMG_Load(string(path + "/paddle.png").c_str());
+		if (surf) {
+			Uint32 ckey = Image::getSurfacePixel(surf,0,0);
+			SDL_SetColorKey(surf,SDL_TRUE,ckey);
+			paddles.load(surf, ih, ih);
+			SDL_FreeSurface(surf);
+		}
+	} else
+		paddles.load(fpath, ih, ih);
+	paddles.scale(9*brickScreenHeight/10, 9*brickScreenHeight/10);
 
 	/* balls are 60% of brick height */
-	if (fileExists(path + "/ball.png")) {
-		int bsize = Image::getHeight(path + "/ball.png");
-		balls.load(path + "/ball.png",bsize,bsize);
-		balls.scale(6*brickScreenHeight/10,6*brickScreenHeight/10);
-	}
+	if (fileExists(path + "/ball.png"))
+		fpath = path + "/ball.png";
+	else
+		fpath = stdPath + "/ball.png";
+	ih = Image::getHeight(fpath);
+	balls.load(fpath,ih,ih);
+	balls.scale(6*brickScreenHeight/10,6*brickScreenHeight/10);
 
 	/* shots are 50% of brick height */
-	if (fileExists(path + "/shot.png")) {
-		int shtw = Image::getWidth(path + "/shot.png") / shotFrameNum;
-		int shth = Image::getHeight(path + "/shot.png");
-		if (oldTheme) {
-			/* color key wasn't quite 0x0... */
-			SDL_Surface *surf = IMG_Load(string(path + "/shot.png").c_str());
-			if (surf) {
-				Uint32 ckey = Image::getSurfacePixel(surf,0,0);
-				SDL_SetColorKey(surf,SDL_TRUE,ckey);
-				shot.load(surf, shtw, shth);
-				SDL_FreeSurface(surf);
-			}
-		} else
-			shot.load(path + "/shot.png",shtw,shth);
-		shot.scale(5*brickScreenHeight/10,5*brickScreenHeight/10);
-	}
+	if (fileExists(path + "/shot.png"))
+		fpath = path + "/shot.png";
+	else
+		fpath = stdPath + "/shot.png";
+	ih = Image::getHeight(fpath);
+	if (oldTheme && fileExists(path + "/shot.png")) {
+		/* color key wasn't quite 0x0... */
+		SDL_Surface *surf = IMG_Load(string(path + "/shot.png").c_str());
+		if (surf) {
+			Uint32 ckey = Image::getSurfacePixel(surf,0,0);
+			SDL_SetColorKey(surf,SDL_TRUE,ckey);
+			shot.load(surf, ih, ih);
+			SDL_FreeSurface(surf);
+		}
+	} else
+		shot.load(fpath,ih,ih);
+	shot.scale(5*brickScreenHeight/10,5*brickScreenHeight/10);
 
 	/* weapon is 90% brick height (old weapons get scaled as width was 70%) */
-	if (fileExists(path + "/weapon.png")) {
-		int wpnw = Image::getWidth(path + "/weapon.png") / weaponFrameNum;
-		int wpnh = Image::getHeight(path + "/weapon.png");
-		weapon.load(path + "/weapon.png",wpnw,wpnh);
-		weapon.scale(9*brickScreenHeight/10,9*brickScreenHeight/10);
+	if (fileExists(path + "/weapon.png"))
+		fpath = path + "/weapon.png";
+	else {
+		fpath = stdPath + "/weapon.png";
+		stdSettings.get("weaponAnim.frames",weaponFrameNum);
 	}
+	iw = Image::getWidth(fpath) / weaponFrameNum;
+	ih = Image::getHeight(fpath);
+	weapon.load(fpath,iw,ih);
+	weapon.scale(9*brickScreenHeight/10,9*brickScreenHeight/10);
 
 	/* life symbol is brick size, vertically arranged,
 	 * first is off, second is on */
-	if (fileExists(path + "/life.png")) {
+	if (fileExists(path + "/life.png"))
 		life.load(path + "/life.png",brickFileWidth,brickFileHeight);
-		life.scale(brickScreenWidth,brickScreenHeight);
-	}
+	else
+		life.load(stdPath+ "/life.png",sbfw,sbfh);
+	life.scale(brickScreenWidth,brickScreenHeight);
 
 	/* explosions are square, scaled according to brick ratio */
-	if (fileExists(path + "/explosions.png")) {
-		uint sz = Image::getWidth(path + "/explosions.png") / explFrameNum;
-		explosions.load(path + "/explosions.png",sz,sz);
-		uint nw = explosions.getGridWidth() * brickScreenWidth / brickFileWidth;
-		uint nh = explosions.getGridHeight() * brickScreenHeight / brickFileHeight;
-		explosions.scale(nw,nh);
+	if (fileExists(path + "/explosions.png"))
+		fpath = path + "/explosions.png";
+	else {
+		fpath = stdPath + "/explosions.png";
+		stdSettings.get("explAnim.frames",explFrameNum);
 	}
+	iw = Image::getWidth(fpath) / explFrameNum;
+	explosions.load(fpath,iw,iw);
+	if (fileExists(path + "/explosions.png"))
+		explosions.scale(explosions.getGridWidth() * brickScreenWidth / brickFileWidth,
+				explosions.getGridHeight() * brickScreenHeight / brickFileHeight);
+	else
+		explosions.scale(explosions.getGridWidth() * brickScreenWidth / sbfw,
+				explosions.getGridHeight() * brickScreenHeight / sbfh);
 
 	/* load backgrounds always without color key workaround */
 	Image::useColorKeyBlack = false;
 
 	/* load and scale up to 10 wallpapers */
+	string wpath = stdPath;
+	uint wbfh = sbfh, wbfw = sbfw; /* for scaling */
 	if (fileExists(path + "/back0.png") || fileExists(path + "/back0.jpg")) {
-		numWallpapers = 0;
-		for (int i = 0; i < MAXWALLPAPERS; i++) {
-			string wfname = path + "/back" + to_string(i);
-			if (fileExists(wfname + ".png"))
-				wfname += ".png";
-			else if (fileExists(wfname + ".jpg"))
-				wfname += ".jpg";
-			else
-				break;
-			wallpapers[i].load(wfname);
-			if (brickFileHeight != brickScreenHeight) {
-				int nw, nh;
-				nw = wallpapers[i].getWidth() * brickScreenWidth / brickFileWidth;
-				nh = wallpapers[i].getHeight() * brickScreenHeight / brickFileHeight;
-				wallpapers[i].scale(nw, nh);
-			}
-			wallpapers[i].setBlendMode(0);
-			numWallpapers++;
+		wpath = path;
+		wbfh = brickFileHeight;
+		wbfw = brickFileWidth;
+	}
+	numWallpapers = 0;
+	for (int i = 0; i < MAXWALLPAPERS; i++) {
+		string wfname = wpath + "/back" + to_string(i);
+		if (fileExists(wfname + ".png"))
+			wfname += ".png";
+		else if (fileExists(wfname + ".jpg"))
+			wfname += ".jpg";
+		else
+			break;
+		wallpapers[i].load(wfname);
+		if (wbfh != brickScreenHeight) {
+			int nw, nh;
+			nw = wallpapers[i].getWidth() * brickScreenWidth / wbfw;
+			nh = wallpapers[i].getHeight() * brickScreenHeight / wbfh;
+			wallpapers[i].scale(nw, nh);
 		}
+		wallpapers[i].setBlendMode(0);
+		numWallpapers++;
 	}
 
 	/* create shadow images */
@@ -339,8 +376,24 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	shotShadow.createShadow(shot);
 
 	/* fonts */
-	fSmall.load(testRc(path,fontSmallName),fontSmallSize * brickScreenHeight / brickFileHeight);
-	fNormal.load(testRc(path,fontNormalName),fontNormalSize * brickScreenHeight / brickFileHeight);
+	if (fileExists(path + "/" + fontSmallName))
+		fSmall.load(path + "/" + fontSmallName,
+			fontSmallSize * brickScreenHeight / brickFileHeight);
+	else {
+		stdSettings.get("fontSmall.name",fontSmallName);
+		stdSettings.get("fontSmall.size",fontSmallSize);
+		fSmall.load(stdPath + "/" + fontSmallName,
+			fontSmallSize * brickScreenHeight / sbfh);
+	}
+	if (fileExists(path + "/" + fontNormalName))
+		fNormal.load(path + "/" + fontNormalName,
+			fontNormalSize * brickScreenHeight / brickFileHeight);
+	else {
+		stdSettings.get("fontNormal.name",fontNormalName);
+		stdSettings.get("fontNormal.size",fontNormalSize);
+		fNormal.load(stdPath + "/" + fontNormalName,
+			fontNormalSize * brickScreenHeight / sbfh);
+	}
 	fNormal.setColor(fontColorNormal);
 	fSmall.setColor(fontColorNormal);
 
@@ -349,14 +402,38 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		menuBackground.load(path + "/menuback.png");
 	else if (fileExists(path + "/menuback.jpg"))
 		menuBackground.load(path + "/menuback.jpg");
+	else {
+		menuBackground.load(stdPath + "/menuback.jpg");
+		stdSettings.get("menu.centerX",menuX);
+		stdSettings.get("menu.centerY",menuY);
+		stdSettings.get("menu.itemWidth",menuItemWidth);
+		stdSettings.get("menu.itemHeight",menuItemHeight);
+	}
 	menuBackground.setBlendMode(0);
 	menuX = menuX * screenWidth / menuBackground.getWidth();
 	menuY = menuY * screenHeight / menuBackground.getHeight();
 	menuItemWidth = menuItemWidth * screenWidth / menuBackground.getWidth();
 	menuItemHeight = menuItemHeight * screenHeight / menuBackground.getHeight();
 	menuBackground.scale(screenWidth, screenHeight);
-	fMenuNormal.load(testRc(path,menuFontNormalName), menuFontNormalSize * brickScreenHeight / brickFileHeight);
-	fMenuFocus.load(testRc(path,menuFontFocusName), menuFontFocusSize * brickScreenHeight / brickFileHeight);
+
+	if (fileExists(path + "/" + menuFontNormalName))
+		fMenuNormal.load(path + "/" + menuFontNormalName,
+			menuFontNormalSize * brickScreenHeight / brickFileHeight);
+	else {
+		stdSettings.get("menu.fontNormal.name",menuFontNormalName);
+		stdSettings.get("menu.fontNormal.size",menuFontNormalSize);
+		fMenuNormal.load(stdPath + "/" + menuFontNormalName,
+			menuFontNormalSize * brickScreenHeight / sbfh);
+	}
+	if (fileExists(path + "/" + menuFontFocusName))
+		fMenuFocus.load(path + "/" + menuFontFocusName,
+			menuFontFocusSize * brickScreenHeight / brickFileHeight);
+	else {
+		stdSettings.get("menu.fontFocus.name",menuFontFocusName);
+		stdSettings.get("menu.fontFocus.size",menuFontFocusSize);
+		fMenuFocus.load(stdPath + "/" + menuFontFocusName,
+			menuFontFocusSize * brickScreenHeight / sbfh);
+	}
 	fMenuNormal.setColor(menuFontColorNormal);
 	fMenuFocus.setColor(menuFontColorFocus);
 
