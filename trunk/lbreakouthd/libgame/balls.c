@@ -259,11 +259,11 @@ void ball_handle_paddle_contact( Ball *ball, Paddle *paddle, Vector perp_vector 
 
 	/* set new speed vector */
 	ball->vel.x = c.x; ball->vel.y = c.y;
-#ifdef PADDLE_FRICTION
-	/* transfer friction to ball's velocity if not convex */
-	if ( cur_game->paddle_is_convex )
+
+	/* normal paddle has friction if middle part was hit */
+	if (!cur_game->paddle_is_convex && perp_vector.x == 0)
 		ball->vel.x += paddle->v_x * paddle->friction;
-#endif
+
 	ball_mask_vel( ball, old_vx, BALL_NO_ENTROPY );
 	/* only use 2 degree steps */
 	ball->angle = vec2angle( &ball->vel );

@@ -51,7 +51,7 @@ Paddle* paddle_create(
 	paddle->wall_alpha = 0;
 	paddle->x = ((MAP_WIDTH * BRICK_WIDTH) - paddle->w) / 2; /* centered */
 	paddle->cur_x = paddle->x;
-	paddle->friction = 0.3;
+	paddle->friction = 0.15;
 	paddle->friction_delay = 0;
 	/* reset weapon */
 	paddle->weapon_ammo = PADDLE_WEAPON_AMMO;

@@ -136,6 +136,22 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 	} else
 		px += rx;
 
+	/* check friction if normal paddle has moved */
+	if (!config.convex) {
+		Paddle *paddle = game->paddles[0];
+		if (rx != 0 || pis.left || pis.right) {
+			double diff = px - paddle->cur_x;
+			paddle->v_x = diff / ms;
+			/* limit mouse speed */
+			if ( rx != 0 ) {
+				if (paddle->v_x > 5.0) paddle->v_x = 5.0;
+				if (paddle->v_x < -5.0) paddle->v_x = -5.0;
+			}
+			frictionTimeout.set(200);
+		} else if (frictionTimeout.update(ms))
+			paddle->v_x = 0;
+	}
+
 	/* update bottom paddle state */
 	game_set_paddle_state(0,px,0,pis.leftFire,pis.rightFire,pis.recall);
 

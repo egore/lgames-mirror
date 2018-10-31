@@ -1023,6 +1023,7 @@ void View::createMenus()
 	mOptions->add(new MenuItemSub(_("Advanced"),mAdv));
 	mOptions->add(new MenuItemBack(rootMenu.get()));
 
+	mAdv->add(new MenuItemList(_("Paddle Style"),AID_NONE,config.convex,_("Normal"),_("Convex")));
 	mAdv->add(new MenuItemList(_("Ball Fire Angle"),AID_NONE,config.random_angle,"50",_("Random")));
 	mAdv->add(new MenuItemList(_("Ball Turbo"),AID_NONE,config.ball_auto_turbo,_("On Click"),_("Auto")));
 	mAdv->add(new MenuItemList(_("Return Balls"),AID_NONE,config.return_on_click,_("Auto"),_("On Click")));
