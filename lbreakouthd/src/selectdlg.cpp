@@ -12,7 +12,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <algorithm>
 #include "sdl.h"
 #include "tools.h"
 #include "hiscores.h"

@@ -25,6 +25,8 @@ using namespace std;
 #include <string>
 #include <vector>
 #include <memory>
+#include <cstdio>
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include "config.h"
