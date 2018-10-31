@@ -1043,7 +1043,13 @@ void View::runMenu()
 					changingKey = false;
 					break;
 				}
+			} else if (ev.type == SDL_KEYDOWN &&
+				ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+				Menu *lm = curMenu->getLastMenu();
+				if (lm)
+					curMenu = lm;
 			}
+
 		}
 
 		/* update current menu */
