@@ -1,9 +1,9 @@
 menu hints
-complete advanced options (extra vs ball visibility)
+
 freakout and special levelsets 
 quick help
 editor
-allow removing selected bricks
+allow removing selected bricks (?)
 
 eye/ear candy:
 fix ball shadow
@@ -12,7 +12,6 @@ fade effect for power ball, tailing  for explosive ball, fuzzy chaotic ball
 have info boxes for old themes centered in empty space not attached to frame
 themes should get selection dialog as well
 shine effect
-option for rendering quality of old sets
 
 optimizations:
 labels for menu

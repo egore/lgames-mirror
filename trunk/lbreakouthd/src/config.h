@@ -81,8 +81,8 @@ public:
 	int bonus_info;
 	int fps; /* frames per second: 0 - no limit, 1 - 50, 2 - 100, 3 - 200 */
 	int ball_level;
-	int debris_level;
 	int i_key_speed; /* integer value that is divided by 1000 to get real key_speed */
+	int antialiasing;
 	/* various */
 	int use_hints;
 	int return_on_click; /* autoreturn on click if true else automatically */

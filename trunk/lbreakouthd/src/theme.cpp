@@ -23,7 +23,8 @@ extern SDL_Renderer *mrc;
 /** Load resources and scale if necessary using bricks screen height.
  * Whatever is missing: Fall back to Standard theme. */
 void Theme::load(string name, uint screenWidth, uint screenHeight,
-				uint brickScreenWidth, uint brickScreenHeight)
+				uint brickScreenWidth, uint brickScreenHeight,
+				int antialiasing)
 {
 	string path, fpath;
 	uint iw, ih;
@@ -121,7 +122,7 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	stdSettings.get("brickHeight",sbfh);
 
 	if (oldTheme) {
-		Image::setRenderScaleQuality(0);
+		Image::setRenderScaleQuality(antialiasing);
 		Image::useColorKeyBlack = true;
 	} else {
 		Image::setRenderScaleQuality(1);

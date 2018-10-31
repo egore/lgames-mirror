@@ -66,7 +66,7 @@ Config::Config()
 	bonus_info = 1;
 	fps = 1;
 	ball_level = BALL_BELOW_BONUS;
-	debris_level = DEBRIS_ABOVE_BALL;
+	antialiasing = 0;
 	/* various */
 	use_hints = 1;
 	return_on_click = 0;
@@ -132,9 +132,9 @@ Config::Config()
 	fp.get( "bonus_info", bonus_info );
 	fp.get( "fps", fps );
 	fp.get( "ball_level", ball_level );
-	fp.get( "debris_level", debris_level );
 	fp.get( "i_key_speed", i_key_speed );
 	key_speed = 0.001 * i_key_speed;
+	fp.get( "antialiasing", antialiasing );
 	fp.get( "use_hints", use_hints );
 	fp.get( "return_on_click", return_on_click );
 	fp.get( "theme_id", theme_id );
@@ -188,8 +188,8 @@ void Config::save()
 	ofs << "bonus_info=" << bonus_info << "\n";
 	ofs << "fps=" << fps << "\n";
 	ofs << "ball_level=" << ball_level << "\n";
-	ofs << "debris_level=" << debris_level << "\n";
 	ofs << "i_key_speed=" << i_key_speed << "\n";
+	ofs << "antialiasing=" << antialiasing << "\n";
 	ofs << "use_hints=" << use_hints << "\n";
 	ofs << "return_on_click=" << return_on_click << "\n";
 	ofs << "theme_id=" << theme_id << "\n";

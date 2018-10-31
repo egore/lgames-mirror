@@ -101,7 +101,7 @@ void View::init(string t, uint r)
 	mw = new MainWindow("LBreakoutHD", sw, sh, (r==0) );
 
 	/* load theme (scaled if necessary) */
-	theme.load(t, sw, sh, brickScreenWidth, brickScreenHeight);
+	theme.load(t, sw, sh, brickScreenWidth, brickScreenHeight, config.antialiasing);
 	weaponFrameCounter.init(theme.weaponFrameNum, theme.weaponAnimDelay);
 	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
 	warpIconAlphaCounter.init(SCT_UPDOWN, 64, 255, 3);
@@ -447,12 +447,14 @@ void View::render()
 	}
 
 	/* balls */
-	list_reset(game->balls);
-	while ( ( ball = (Ball*)list_next( game->balls ) ) != 0 ) {
-		uint type;
-		int px, py;
-		getBallViewInfo(ball, &px, &py, &type);
-		theme.balls.copy(type,0,px,py);
+	if (config.ball_level == BALL_BELOW_BONUS) {
+		list_reset(game->balls);
+		while ( ( ball = (Ball*)list_next( game->balls ) ) != 0 ) {
+			uint type;
+			int px, py;
+			getBallViewInfo(ball, &px, &py, &type);
+			theme.balls.copy(type,0,px,py);
+		}
 	}
 
 	/* shots */
@@ -489,6 +491,17 @@ void View::render()
 			a /= 2;
 		theme.extras.setAlpha(a);
 		theme.extras.copy(extra->type, 0, v2s(extra->x), v2s(extra->y));
+	}
+
+	/* balls */
+	if (config.ball_level == BALL_ABOVE_BONUS) {
+		list_reset(game->balls);
+		while ( ( ball = (Ball*)list_next( game->balls ) ) != 0 ) {
+			uint type;
+			int px, py;
+			getBallViewInfo(ball, &px, &py, &type);
+			theme.balls.copy(type,0,px,py);
+		}
 	}
 
 	/* copy part of frame to cover shadow */
@@ -1003,6 +1016,7 @@ void View::createMenus()
 
 	mGraphics->add(new MenuItemList(_("Theme"),AID_NONE,config.theme_id,themeNames));
 	mGraphics->add(new MenuItemList(_("Mode"),AID_NONE,config.mode,modeNames));
+	mGraphics->add(new MenuItemList(_("Antialiasing"),AID_NONE,config.antialiasing,_("Auto"),_("Always")));
 	mGraphics->add(new MenuItem(_("Apply Theme&Mode"),AID_APPLYTHEMEMODE));
 	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemBack(mOptions));
@@ -1024,6 +1038,7 @@ void View::createMenus()
 	mOptions->add(new MenuItemBack(rootMenu.get()));
 
 	mAdv->add(new MenuItemList(_("Paddle Style"),AID_NONE,config.convex,_("Normal"),_("Convex")));
+	mAdv->add(new MenuItemList(_("Ball Level"),AID_NONE,config.ball_level,_("Below Bonus"),_("Above Bonus")));
 	mAdv->add(new MenuItemList(_("Ball Fire Angle"),AID_NONE,config.random_angle,"50",_("Random")));
 	mAdv->add(new MenuItemList(_("Ball Turbo"),AID_NONE,config.ball_auto_turbo,_("On Click"),_("Auto")));
 	mAdv->add(new MenuItemList(_("Return Balls"),AID_NONE,config.return_on_click,_("Auto"),_("On Click")));
@@ -1034,7 +1049,7 @@ void View::createMenus()
 
 	rootMenu->add(new MenuItemSub(_("New Game"), mNewGame));
 	rootMenu->add(new MenuItem(_("Resume Game"), AID_RESUME));
-	rootMenu->add(new MenuItemSub(_("Options"), mOptions));
+	rootMenu->add(new MenuItemSub(_("Settings"), mOptions));
 	//rootMenu->add(new MenuItem(_("Help"), AID_HELP));
 	rootMenu->add(new MenuItem(_("Quit"), AID_QUIT));
 
