@@ -12,7 +12,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <cstdio>
 #include "tools.h"
 #include "sdl.h"
 #include "clientgame.h"
@@ -38,8 +37,17 @@ View::View(Config &cfg, ClientGame &_cg)
 	mixer.open(cfg.channels, cfg.audio_buffer_size);
 	mixer.setVolume(cfg.volume);
 
-	/* FIXME: get all from home dir as well */
+	/* load theme names */
 	readDir(string(DATADIR)+"/themes", RD_FOLDERS, themeNames);
+	sort(themeNames.begin(),themeNames.end());
+	if (string(CONFIGDIR) != ".") {
+		vector<string> homeThemes;
+		readDir(getHomeDir() + "/" + CONFIGDIR + "/themes",
+						RD_FOLDERS, homeThemes);
+		sort(homeThemes.begin(),homeThemes.end());
+		for (auto &e : homeThemes)
+			themeNames.push_back(string("~")+e);
+	}
 	if ((uint)config.theme_id >= themeNames.size())
 		config.theme_id = 0;
 	config.theme_count = themeNames.size();
