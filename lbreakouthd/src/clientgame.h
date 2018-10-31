@@ -71,9 +71,11 @@ public:
 	int rightFire = 0;
 	int speedUp = 0;
 	int recall = 0;
+	int warp = 0;
 
 	void reset() {
-		left = right = turbo = leftFire = rightFire = speedUp = recall = 0;
+		left = right = turbo = leftFire = rightFire =
+					speedUp = recall = warp = 0;
 	}
 };
 
@@ -88,7 +90,8 @@ enum {
 	CGF_PLAYERMESSAGE = 64,
 	CGF_NEWANIMATIONS = 128,
 	CGF_LIFELOST = 256,
-	CGF_LASTLIFELOST = 512
+	CGF_LASTLIFELOST = 512,
+	CGF_WARPOK = 1024
 };
 class ClientGame {
 	Config &config;

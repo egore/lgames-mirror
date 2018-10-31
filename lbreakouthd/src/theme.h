@@ -68,6 +68,7 @@ class Theme {
 	GridImage weapon;
 	GridImage explosions;
 	GridImage life;
+	Image warpIcon;
 	Font fSmall, fNormal;
 	Font fMenuNormal, fMenuFocus;
 

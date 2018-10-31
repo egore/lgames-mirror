@@ -27,7 +27,9 @@ extern SDL_Renderer *mrc;
 View::View(Config &cfg, ClientGame &_cg)
 	: config(cfg), mw(NULL), curMenu(NULL),
 	  selectDlg(theme, mixer), cgame(_cg), quitReceived(false),
-	  lblTitle(theme.fNormal), fpsCycles(0), fpsStart(0), fps(0)
+	  lblTitle(theme.fNormal),
+	  showWarpIcon(false), warpIconX(0), warpIconY(0),
+	  fpsCycles(0), fpsStart(0), fps(0)
 {
 	_loginfo("Initializing SDL\n");
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
@@ -102,6 +104,8 @@ void View::init(string t, uint r)
 	theme.load(t, sw, sh, brickScreenWidth, brickScreenHeight);
 	weaponFrameCounter.init(theme.weaponFrameNum, theme.weaponAnimDelay);
 	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
+	warpIconAlphaCounter.init(SCT_UPDOWN, 64, 255, 3);
+	showWarpIcon = false;
 
 	/* create menu structure */
 	createMenus();
@@ -129,6 +133,8 @@ void View::init(string t, uint r)
 	for (int i = 0; i < EDITWIDTH; i++)
 		theme.bricks.copy(1, 0, i*brickScreenWidth, 0);
 	SDL_SetRenderTarget(mrc, NULL);
+	warpIconX = (MAPWIDTH - 2)*brickScreenWidth;
+	warpIconY = (MAPHEIGHT - 1)*brickScreenHeight;
 }
 
 View::~View()
@@ -238,11 +244,15 @@ void View::run()
 			pis.rightFire = 1;
 		if (keystate[config.k_turbo])
 			pis.turbo = 1;
+		if (keystate[config.k_warp])
+			pis.warp = 1;
 
 		/* get passed time */
 		ms = ticks.get();
 
 		/* update animations and particles */
+		if (showWarpIcon)
+			warpIconAlphaCounter.update(ms);
 		if (lblTitleCounter.isRunning())
 			lblTitleCounter.update(ms);
 		shotFrameCounter.update(ms);
@@ -285,8 +295,10 @@ void View::run()
 			if (!(flags & CGF_LIFELOST) && config.speech && (rand()%2))
 				mixer.play((rand()%2)?theme.sVeryGood:theme.sExcellent);
 			dim();
-			if (!(flags & CGF_LIFELOST))
+			if (!(flags & CGF_LIFELOST)) {
 				initTitleLabel();
+				showWarpIcon = false;
+			}
 		}
 		if (flags & CGF_UPDATEBACKGROUND)
 			renderBackgroundImage();
@@ -298,6 +310,8 @@ void View::run()
 			renderScoreImage();
 		if (flags & CGF_NEWANIMATIONS)
 			createSprites();
+		if (flags & CGF_WARPOK)
+			showWarpIcon = true;
 
 		/* handle sounds by accessing game->mod */
 		playSounds();
@@ -494,6 +508,12 @@ void View::render()
 			a = (5-lblTitleCounter.get()) * 255;
 		lblTitle.setAlpha(a);
 		lblTitle.copy((1+MAPWIDTH/2)*brickScreenWidth, mw->getHeight()/2);
+	}
+
+	/* warp icon */
+	if (showWarpIcon) {
+		theme.warpIcon.setAlpha(warpIconAlphaCounter.get());
+		theme.warpIcon.copy(warpIconX,warpIconY);
 	}
 
 	/* stats */
@@ -1006,6 +1026,7 @@ void View::createMenus()
 	mAdv->add(new MenuItemList(_("Ball Fire Angle"),AID_NONE,config.random_angle,"50",_("Random")));
 	mAdv->add(new MenuItemList(_("Ball Turbo"),AID_NONE,config.ball_auto_turbo,_("On Click"),_("Auto")));
 	mAdv->add(new MenuItemList(_("Return Balls"),AID_NONE,config.return_on_click,_("Auto"),_("On Click")));
+	mAdv->add(new MenuItemRange(_("Warp Limit"),AID_NONE,config.rel_warp_limit,0,100,10));
 	mAdv->add(new MenuItemSep());
 	mAdv->add(new MenuItemBack(mOptions));
 

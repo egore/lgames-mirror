@@ -330,6 +330,10 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		life.load(stdPath+ "/life.png",sbfw,sbfh);
 	life.scale(brickScreenWidth,brickScreenHeight);
 
+	/* warp symbol is brick size */
+	warpIcon.load(testRc(path,"warp.png"));
+	warpIcon.scale(brickScreenWidth,brickScreenHeight);
+
 	/* explosions are square, scaled according to brick ratio */
 	if (fileExists(path + "/explosions.png"))
 		fpath = path + "/explosions.png";
