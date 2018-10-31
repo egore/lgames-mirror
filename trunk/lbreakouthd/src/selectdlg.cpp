@@ -120,6 +120,8 @@ void SelectDialog::init()
 	ch = 1.1 * theme.fMenuNormal.getSize();
 	lx = 0.1*sw;
 	ly = (sh - vlen*ch)/2;
+	tx = sw/2;
+	ty = ly/2;
 	px = 0.4*sw;
 	pw = 0.5*sw;
 	ph = MAPWIDTH * pw / MAPHEIGHT;
@@ -142,6 +144,11 @@ void SelectDialog::render()
 	int y = ly;
 
 	background.copy();
+
+	theme.fMenuFocus.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
+	theme.fMenuFocus.setColor(theme.menuFontColorNormal);
+	theme.fMenuFocus.write(tx, ty, _("Select Levelset (press ESC to exit)"));
+	theme.fMenuFocus.setColor(theme.menuFontColorFocus);
 
 	font.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
 	if (pos > 0) {
