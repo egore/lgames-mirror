@@ -67,6 +67,9 @@ class View {
 	int imgFloorX, imgFloorY;
 	FrameCounter weaponFrameCounter;
 	FrameCounter shotFrameCounter;
+	SmoothCounter warpIconAlphaCounter;
+	bool showWarpIcon;
+	int warpIconX, warpIconY;
 	list<unique_ptr<Sprite>> sprites;
 	/* stats */
 	Uint32 fpsCycles, fpsStart;

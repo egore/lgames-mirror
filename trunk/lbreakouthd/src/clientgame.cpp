@@ -147,6 +147,12 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 	game_update(ms);
 	game->paddles[0]->maxballspeed_request_old = pis.speedUp;
 
+	/* can and wants to warp */
+	if (pis.warp && game->bricks_left < game->warp_limit) {
+		game->level_over = 1;
+		game->winner = PADDLE_BOTTOM;
+	}
+
 	/* switch level/player? */
 	if (game->level_over) {
 		ClientPlayer *p = players[curPlayer].get();
@@ -194,8 +200,11 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 	}
 
 	/* handle other modifications */
-	if (game->mod.brick_hit_count > 0)
+	if (game->mod.brick_hit_count > 0) {
 		ret |= CGF_UPDATEBRICKS | CGF_NEWANIMATIONS;
+		if (game->bricks_left < game->warp_limit)
+			ret |= CGF_WARPOK;
+	}
 	if (game->paddles[0]->score != oldScore) {
 		players[curPlayer]->setScore(game->paddles[0]->score);
 		ret |= CGF_UPDATESCORE;
