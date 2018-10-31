@@ -283,6 +283,15 @@ public:
 			i->render();
 	}
 	int handleEvent(const SDL_Event &ev);
+	Menu *getLastMenu() {
+		MenuItemBack *bi = NULL;
+		for (auto& item : items) {
+			bi = dynamic_cast<MenuItemBack*>(item.get());
+			if (bi)
+				return bi->getLastMenu();
+		}
+		return NULL;
+	}
 };
 
 #endif /* SRC_MENU_H_ */
