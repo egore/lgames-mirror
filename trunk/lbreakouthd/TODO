@@ -13,6 +13,7 @@ fix ball shadow
 stereo sound
 fade effect for power ball, tailing  for explosive ball, fuzzy chaotic ball
 have info boxes for old themes centered in empty space not attached to frame
+themes should get selection dialog as well
 
 optimizations:
 labels for menu
