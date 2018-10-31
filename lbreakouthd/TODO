@@ -1,11 +1,9 @@
-warp option
 menu hints
-complete advanced options
+complete advanced options (extra vs ball visibility)
 freakout and special levelsets 
 quick help
 editor
 allow removing selected bricks
-option for flat paddle with friction
 
 eye/ear candy:
 fix ball shadow
@@ -14,6 +12,7 @@ fade effect for power ball, tailing  for explosive ball, fuzzy chaotic ball
 have info boxes for old themes centered in empty space not attached to frame
 themes should get selection dialog as well
 shine effect
+option for rendering quality of old sets
 
 optimizations:
 labels for menu

@@ -102,6 +102,7 @@ class ClientGame {
 	uint curPlayer;
 	ClientPlayer *lastDeadPlayer;
 	string msg;
+	Timeout frictionTimeout;
 
 	ClientPlayer *getNextPlayer();
 	void initLevel(Level *l);
