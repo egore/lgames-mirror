@@ -140,15 +140,15 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 
 	/* load extras */
 	if (fileExists(path + "/extras.png")) {
-		if (oldTheme && (Image::getWidth(path + "/extras.png") & 1)) {
-			/* last extra column is for color key */
+		if (oldTheme) {
 			SDL_Surface *surf = IMG_Load(string(path + "/extras.png").c_str());
-			if (surf) {
+			/* last extra column is for color key, none otherwise */
+			if (Image::getWidth(path + "/extras.png") & 1) {
 				Uint32 ckey = Image::getSurfacePixel(surf,surf->w-1,0);
 				SDL_SetColorKey(surf,SDL_TRUE,ckey);
-				extras.load(surf, brickFileWidth, brickFileHeight);
-				SDL_FreeSurface(surf);
 			}
+			extras.load(surf, brickFileWidth, brickFileHeight);
+			SDL_FreeSurface(surf);
 		} else
 			extras.load(path + "/extras.png",brickFileWidth,brickFileHeight);
 	} else
