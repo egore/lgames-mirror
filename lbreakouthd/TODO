@@ -22,4 +22,5 @@ reuse existing previews on starting custom game again
 
 already known bugs:
 l10n doesn't work though mo file is installed there
+on non-american keyboard: z has to be pressed for y because scancode ain't keycode
 

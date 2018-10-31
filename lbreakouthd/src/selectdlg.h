@@ -41,6 +41,7 @@ class SelectDialog {
 	vector<unique_ptr<SetInfo>> entries;
 	int sel;
 	uint pos, max, vlen;
+	int tx, ty; /* centered title position */
 	int lx, ly; /* list start */
 	uint cw, ch; /* cell size */
 	int px, py;
