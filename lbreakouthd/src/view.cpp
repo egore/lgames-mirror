@@ -1028,6 +1028,7 @@ void View::createMenus()
 	mAdv->add(new MenuItemList(_("Ball Turbo"),AID_NONE,config.ball_auto_turbo,_("On Click"),_("Auto")));
 	mAdv->add(new MenuItemList(_("Return Balls"),AID_NONE,config.return_on_click,_("Auto"),_("On Click")));
 	mAdv->add(new MenuItemRange(_("Warp Limit"),AID_NONE,config.rel_warp_limit,0,100,10));
+	mAdv->add(new MenuItemRange(_("Acc. Ball Speed"),AID_MAXBALLSPEEDCHANGED,config.maxballspeed_int1000,700,1200,50));
 	mAdv->add(new MenuItemSep());
 	mAdv->add(new MenuItemBack(mOptions));
 
@@ -1164,6 +1165,9 @@ void View::runMenu()
 					ticks.reset();
 				} else if (selectDlg.quitRcvd())
 					quitReceived = true;
+				break;
+			case AID_MAXBALLSPEEDCHANGED:
+				config.maxballspeed_float = (float)config.maxballspeed_int1000 / 1000;
 				break;
 			}
 		}
