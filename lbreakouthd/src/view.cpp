@@ -106,6 +106,7 @@ void View::init(string t, uint r)
 	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
 	warpIconAlphaCounter.init(SCT_UPDOWN, 64, 255, 3);
 	showWarpIcon = false;
+	energyBallAlphaCounter.init(SCT_UPDOWN, 32, 255, 2);
 
 	/* create menu structure */
 	createMenus();
@@ -251,6 +252,7 @@ void View::run()
 		ms = ticks.get();
 
 		/* update animations and particles */
+		energyBallAlphaCounter.update(ms);
 		if (showWarpIcon)
 			warpIconAlphaCounter.update(ms);
 		if (lblTitleCounter.isRunning())
@@ -356,7 +358,6 @@ void View::render()
 {
 	Game *game = cgame.getGameContext(); /* direct lib game context */
 	Paddle *paddle = game->paddles[0]; /* local paddle always at bottom */
-	Ball *ball = 0;
 	Extra *extra = 0;
 	Shot *shot = 0;
 
@@ -366,7 +367,6 @@ void View::render()
 		theme.paddles.setAlpha(128);
 		theme.shot.setAlpha(128);
 		theme.weapon.setAlpha(128);
-		theme.balls.setAlpha(128);
 	} else {
 		imgBackground.copy();
 		imgBricks.copy(imgBricksX,imgBricksY);
@@ -375,18 +375,10 @@ void View::render()
 		theme.paddles.clearAlpha();
 		theme.shot.clearAlpha();
 		theme.weapon.clearAlpha();
-		theme.balls.clearAlpha();
 	}
 
 	/* balls - shadows */
-	list_reset(game->balls);
-	while ( ( ball = (Ball*)list_next( game->balls ) ) != 0 ) {
-		uint type;
-		int px, py;
-		getBallViewInfo(ball, &px, &py, &type);
-		theme.ballsShadow.copy(type, 0,
-				px + theme.shadowOffset, py + theme.shadowOffset);
-	}
+	renderBalls(true);
 
 	/* extras - shadows */
 	list_reset(game->extras);
@@ -447,15 +439,8 @@ void View::render()
 	}
 
 	/* balls */
-	if (config.ball_level == BALL_BELOW_BONUS) {
-		list_reset(game->balls);
-		while ( ( ball = (Ball*)list_next( game->balls ) ) != 0 ) {
-			uint type;
-			int px, py;
-			getBallViewInfo(ball, &px, &py, &type);
-			theme.balls.copy(type,0,px,py);
-		}
-	}
+	if (config.ball_level == BALL_BELOW_BONUS)
+		renderBalls();
 
 	/* shots */
 	list_reset(game->shots);
@@ -494,15 +479,8 @@ void View::render()
 	}
 
 	/* balls */
-	if (config.ball_level == BALL_ABOVE_BONUS) {
-		list_reset(game->balls);
-		while ( ( ball = (Ball*)list_next( game->balls ) ) != 0 ) {
-			uint type;
-			int px, py;
-			getBallViewInfo(ball, &px, &py, &type);
-			theme.balls.copy(type,0,px,py);
-		}
-	}
+	if (config.ball_level == BALL_ABOVE_BONUS)
+		renderBalls();
 
 	/* copy part of frame to cover shadow */
 	if (!cgame.darknessActive()) {
@@ -1360,4 +1338,30 @@ void View::initTitleLabel()
 	cgame.getCurrentLevelNameAndAuthor(n, a);
 	lblTitle.setText(n);
 	lblTitleCounter.init(SCT_ONCE, 0, 5, 1000);
+}
+
+void View::renderBalls(bool shadow)
+{
+	Game *game = cgame.getGameContext();
+	Ball *ball;
+	list_reset(game->balls);
+	while ( ( ball = (Ball*)list_next( game->balls ) ) != 0 ) {
+		uint type;
+		uint alpha = 255;
+		int px, py;
+		getBallViewInfo(ball, &px, &py, &type);
+		if (type == 1) /* energy ball */
+			alpha = energyBallAlphaCounter.get();
+		if (cgame.darknessActive())
+			alpha /= 2;
+		if (shadow) {
+			theme.ballsShadow.setAlpha(alpha);
+			theme.ballsShadow.copy(type,0,
+					px + theme.shadowOffset,
+					py + theme.shadowOffset);
+		} else {
+			theme.balls.setAlpha(alpha);
+			theme.balls.copy(type,0,px,py);
+		}
+	}
 }

@@ -68,6 +68,7 @@ class View {
 	FrameCounter weaponFrameCounter;
 	FrameCounter shotFrameCounter;
 	SmoothCounter warpIconAlphaCounter;
+	SmoothCounter energyBallAlphaCounter;
 	bool showWarpIcon;
 	int warpIconX, warpIconY;
 	list<unique_ptr<Sprite>> sprites;
@@ -85,6 +86,7 @@ class View {
 	void renderScoreImage();
 	void renderExtrasImage();
 	void renderActiveExtra(int id, int ms, int x, int y);
+	void renderBalls(bool shadow = false);
 	void dim();
 	bool showInfo(const string &line, bool confirm=false);
 	bool showInfo(const vector<string> &text, bool confirm=false);
