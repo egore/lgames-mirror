@@ -112,19 +112,19 @@ void SelectDialog::init()
 			list.push_back(string("~")+s);
 	}
 
-	vlen = (0.7 * sh) / theme.fNormal.getSize(); /* vlen = displayed entries */
+	vlen = (0.7 * sh) / theme.fMenuNormal.getSize(); /* vlen = displayed entries */
 	sel = SEL_NONE;
 	pos = max = 0;
 	if (list.size()-1 > vlen) /* we will skip LBreakoutHD so -1 */
 		max = list.size()-1 - vlen;
 	cw = 0.2*sw;
-	ch = 1.1 * theme.fNormal.getSize();
+	ch = 1.1 * theme.fMenuNormal.getSize();
 	lx = 0.1*sw;
 	ly = (sh - vlen*ch)/2;
 	px = 0.4*sw;
 	pw = 0.5*sw;
 	ph = MAPWIDTH * pw / MAPHEIGHT;
-	py = (sh - ph - 3*theme.fNormal.getSize())/2;
+	py = (sh - ph - 3*theme.fMenuNormal.getSize())/2;
 
 	background.createFromScreen();
 
@@ -139,7 +139,7 @@ void SelectDialog::init()
 
 void SelectDialog::render()
 {
-	Font &font = theme.fNormal;
+	Font &font = theme.fMenuNormal;
 	int y = ly;
 
 	background.copy();
@@ -147,24 +147,24 @@ void SelectDialog::render()
 	font.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
 	if (pos > 0) {
 		if (sel == SEL_PREV)
-			font.setColor(theme.fontColorHighlight);
+			font.setColor(theme.menuFontColorFocus);
 		else
-			font.setColor(theme.fontColorNormal);
+			font.setColor(theme.menuFontColorNormal);
 		font.write(lx, ly-ch, _("<Previous Page>"));
 	}
 	for (uint i = 0; i < vlen; i++, y += ch) {
 		if (pos + i < entries.size() && sel == (int)(pos + i))
-			font.setColor(theme.fontColorHighlight);
+			font.setColor(theme.menuFontColorFocus);
 		else
-			font.setColor(theme.fontColorNormal);
+			font.setColor(theme.menuFontColorNormal);
 		if (pos + i < entries.size())
 			font.write(lx, y, entries[pos + i]->name);
 	}
 	if (pos < max) {
 		if (sel == SEL_NEXT)
-			font.setColor(theme.fontColorHighlight);
+			font.setColor(theme.menuFontColorFocus);
 		else
-			font.setColor(theme.fontColorNormal);
+			font.setColor(theme.menuFontColorNormal);
 		font.write(lx, y, _("<Next Page>"));
 	}
 
@@ -173,7 +173,7 @@ void SelectDialog::render()
 		si->preview.copy(px,py,pw,ph);
 		string str = si->name + " v" + si->version + _(" by ") + si->author;
 		font.setAlign(ALIGN_X_CENTER | ALIGN_Y_TOP);
-		font.setColor(theme.fontColorNormal);
+		font.setColor(theme.menuFontColorNormal);
 		font.write(px + pw/2, py+ph+font.getSize(), str);
 		str = "(" + to_string(si->levels) + _(" levels)");
 		font.write(px + pw/2, py+ph+font.getSize()*2, str);

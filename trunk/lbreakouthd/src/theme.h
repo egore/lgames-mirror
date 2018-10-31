@@ -78,11 +78,13 @@ class Theme {
 	Sound sLooseLife, sExtras[EX_NUMBER];
 
 	void addBox(Image &img, int x, int y, int w, int h);
-	string testRc(const string &path, const string &fname) {
+	const string &testRc(const string &path, const string &fname) {
+		static string fpath; /* not thread safe */
 		if (fileExists(path + "/" + fname))
-			return path + "/" + fname;
+			fpath = path + "/" + fname;
 		else
-			return stdPath + "/" + fname;
+			fpath = stdPath + "/" + fname;
+		return fpath;
 	}
 public:
 	Theme() : brickFileWidth(0), brickFileHeight(0), shadowOffset(0),

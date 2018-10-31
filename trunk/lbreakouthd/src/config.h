@@ -35,7 +35,6 @@ public:
 	int levelset_id_home;
 	int levelset_count_home; /* save number of levelsets for safety
 	                                (to reset id if count changed) */
-	string setname; /* name of selected levelset */
 	/* players */
 	int player_count;
 	string player_names[MAXCONFIGPLAYERNAMES];

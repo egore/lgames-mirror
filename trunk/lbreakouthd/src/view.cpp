@@ -91,12 +91,7 @@ void View::init(string t, uint r)
 	mw = new MainWindow("LBreakoutHD", sw, sh, (r==0) );
 
 	/* load theme (scaled if necessary) */
-	/* XXX load standard theme first for fallback, theme.testRc is
-	 * ok for sounds and fonts but gets too tricky with some
-	 * of the graphics so this is still the best way to do it ... */
-	theme.load("Standard",sw, sh, brickScreenWidth, brickScreenHeight);
-	if (t != "Standard")
-		theme.load(t, sw, sh, brickScreenWidth, brickScreenHeight);
+	theme.load(t, sw, sh, brickScreenWidth, brickScreenHeight);
 	weaponFrameCounter.init(theme.weaponFrameNum, theme.weaponAnimDelay);
 	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
 
@@ -177,6 +172,7 @@ void View::run()
 			if (ev.type == SDL_QUIT) {
 				quitReceived = true;
 				leave = true;
+				resumeLater = true;
 			}
 			if (ev.type == SDL_KEYUP) {
 				switch (ev.key.keysym.scancode) {
