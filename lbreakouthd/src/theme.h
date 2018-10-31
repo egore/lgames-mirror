@@ -100,7 +100,8 @@ public:
 		stdPath = string(DATADIR) + "/themes/Standard";
 	}
 	void load(string name, uint screenWidth, uint screenHeight,
-				uint brickScreenWidth, uint brickScreenHeight);
+				uint brickScreenWidth, uint brickScreenHeight,
+				int antialiasing);
 };
 
 #endif /* SRC_THEME_H_ */
