@@ -278,7 +278,17 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	else
 		fpath = stdPath + "/ball.png";
 	ih = Image::getHeight(fpath);
-	balls.load(fpath,ih,ih);
+	if (oldTheme && fileExists(path + "/ball.png")) {
+		/* color key wasn't quite 0x0... */
+		SDL_Surface *surf = IMG_Load(string(path + "/ball.png").c_str());
+		if (surf) {
+			Uint32 ckey = Image::getSurfacePixel(surf,0,0);
+			SDL_SetColorKey(surf,SDL_TRUE,ckey);
+			balls.load(surf, ih, ih);
+			SDL_FreeSurface(surf);
+		}
+	} else
+		balls.load(fpath,ih,ih);
 	balls.scale(6*brickScreenHeight/10,6*brickScreenHeight/10);
 
 	/* shots are 50% of brick height */
