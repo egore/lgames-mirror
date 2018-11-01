@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lbreakouthd 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-01 19:53+0100\n"
+"POT-Creation-Date: 2018-11-01 20:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -500,55 +500,58 @@ msgid "  (Lvl: "
 msgstr ""
 
 #: src/view.cpp:1510
-msgid "Extra score"
+msgid "Extra Score"
 msgstr ""
 
 #: src/view.cpp:1511
-msgid "Gold shower"
+msgid "Gold Shower"
 msgstr ""
 
 #: src/view.cpp:1513
-msgid "Extra life"
+msgid "Extra Life"
 msgstr ""
 
 #: src/view.cpp:1514
-msgid "Extra ball"
-msgstr ""
+#, fuzzy
+msgid "Extra Ball"
+msgstr "Blle zurck"
 
 #: src/view.cpp:1516
-msgid "Expand paddle"
+msgid "Expand Paddle"
 msgstr ""
 
 #: src/view.cpp:1517
-msgid "Shrink paddle"
+msgid "Shrink Paddle"
 msgstr ""
 
 #: src/view.cpp:1519
-msgid "Sticky paddle"
+msgid "Sticky Paddle"
 msgstr ""
 
 #: src/view.cpp:1520
-msgid "Plasma weapon"
+msgid "Plasma Weapon"
 msgstr ""
 
 #: src/view.cpp:1522
-msgid "Slow balls"
+msgid "Slow Balls"
 msgstr ""
 
 #: src/view.cpp:1523
-msgid "Fast balls"
-msgstr ""
+#, fuzzy
+msgid "Fast Balls"
+msgstr "Blle zurck"
 
 #: src/view.cpp:1525
-msgid "Energy balls"
-msgstr ""
+#, fuzzy
+msgid "Energy Balls"
+msgstr "Blle zurck"
 
 #: src/view.cpp:1526
-msgid "Explosive balls"
+msgid "Explosive Balls"
 msgstr ""
 
 #: src/view.cpp:1528
-msgid "Extra floor"
+msgid "Extra Floor"
 msgstr ""
 
 #: src/view.cpp:1529
@@ -557,31 +560,33 @@ msgstr ""
 
 #: src/view.cpp:1531
 #, fuzzy
-msgid "Bonus magnet"
+msgid "Bonus Magnet"
 msgstr "Bonusebene"
 
 #: src/view.cpp:1532
-msgid "Malus magnet"
-msgstr ""
+#, fuzzy
+msgid "Malus Magnet"
+msgstr "Bonusebene"
 
 #: src/view.cpp:1534
-msgid "Chaotic balls"
+msgid "Chaotic Balls"
 msgstr ""
 
 #: src/view.cpp:1535
-msgid "Weak balls"
-msgstr ""
+#, fuzzy
+msgid "Weak Balls"
+msgstr "Blle zurck"
 
 #: src/view.cpp:1537
-msgid "Frozen paddle"
+msgid "Frozen Paddle"
 msgstr ""
 
 #: src/view.cpp:1538
-msgid "Ghost paddle"
+msgid "Ghost Paddle"
 msgstr ""
 
 #: src/view.cpp:1540
-msgid "Extra time"
+msgid "Extra Time"
 msgstr ""
 
 #: src/view.cpp:1541
@@ -597,31 +602,31 @@ msgid "Indestructible"
 msgstr ""
 
 #: src/view.cpp:1547
-msgid "Regular wall"
+msgid "Regular Wall"
 msgstr ""
 
 #: src/view.cpp:1549
-msgid "Chaotic reflection"
+msgid "Chaotic Wall"
 msgstr ""
 
 #: src/view.cpp:1550
-msgid "Regular brick"
+msgid "Regular Brick"
 msgstr ""
 
 #: src/view.cpp:1552
-msgid "Multi-hit brick"
+msgid "Multi-hit Brick"
 msgstr ""
 
 #: src/view.cpp:1553
-msgid "Regenerative brick"
+msgid "Regenerative Brick"
 msgstr ""
 
 #: src/view.cpp:1555
-msgid "Explosive brick"
+msgid "Explosive Brick"
 msgstr ""
 
 #: src/view.cpp:1556
-msgid "Growing brick"
+msgid "Growing Brick"
 msgstr ""
 
 #: src/clientgame.cpp:180
