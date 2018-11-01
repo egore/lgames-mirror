@@ -13,11 +13,14 @@ So LBreakoutHD is a clean cut with the old core engine (still in C) and
 a brand new fully scalable 16:9 view.
 
 
-Extras
-------
+Extras/Bricks
+-------------
 
 All extras/bricks are listed in the in-game help but some might need a little
 more explanations:
+
+Gold Shower:	Any brick without an extra on its own will release a 1000 score
+		extra when destroyed. Lasts 20 secs.
 
 Sticky Paddle:	Balls get attached and can be released manually by pressing
 		a fire key. Reflection vector is kept. Lasts 20 secs.
@@ -50,6 +53,20 @@ Explosive Balls: All adjacent bricks (including multi-hit bricks) will be
 		destroyed as well (except for wall bricks). Lasts 5 secs.
 		
 Weak Balls:	40% chance ball does not break a brick and gets just reflected.
+
+Regular Wall:		In contrast to the indestructible one it can be
+			destroyed by energy balls.
+		
+Chaotic Wall:		Will reflect balls randomly. Can be destroyed by
+			energy balls.
+
+Regenerative Bricks: 	Will restore health over time if not hit again.
+
+Explosive Bricks: 	Will destroy adjacent bricks on destruction 
+			(except walls).
+
+Growing Bricks: 	Will grow new bricks on destruction in adjacent 
+			locations (if not blocked by balls). 			
 
 
 Themes
