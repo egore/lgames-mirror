@@ -42,6 +42,8 @@ class MenuItem {
 protected:
 	Menu *parent;
 	string caption;
+	string tooltipText;
+	Label tooltip;
 	int x, y, w, h;
 	int focus;
 	int actionId;
@@ -49,8 +51,9 @@ protected:
 
 	void renderPart(const string &str, int align);
 public:
-	MenuItem(const string &c, int aid = AID_NONE) :
-			parent(NULL), caption(c), x(0), y(0), w(1), h(1),
+	MenuItem(const string &c, const string &tt, int aid = AID_NONE) :
+			parent(NULL), caption(c), tooltipText(tt),
+			x(0), y(0), w(1), h(1),
 			focus(0), actionId(aid), fadingAlpha(0) {}
 	virtual ~MenuItem() {}
 	void setGeometry(int _x, int _y, int _w, int _h) {
@@ -60,7 +63,8 @@ public:
 		h = _h;
 		_logdebug(2,"Geometry for %s: %d,%d,%d,%d\n",caption.c_str(),x,y,w,h);
 	}
-	void setParent(Menu *p) { parent = p; }
+	void setParent(Menu *p);
+	void setTooltip(const string &tt);
 	bool hasPointer(int px, int py) {
 		return (px >= x && px < x + w && py >= y && py < y + h);
 	}
@@ -89,7 +93,7 @@ public:
 
 class MenuItemSep : public MenuItem {
 public:
-	MenuItemSep() : MenuItem("") {}
+	MenuItemSep() : MenuItem("","") {}
 };
 
 /* Sub items manage destruction of submenus ... */
@@ -97,7 +101,7 @@ class MenuItemSub : public MenuItem {
 	unique_ptr<Menu> submenu;
 public:
 	MenuItemSub(const string &c, Menu *sub)
-		: MenuItem(c,AID_ENTERMENU), submenu(sub) {}
+		: MenuItem(c,"",AID_ENTERMENU), submenu(sub) {}
 	Menu *getSubMenu() { return submenu.get(); }
 };
 
@@ -106,7 +110,7 @@ class MenuItemBack : public MenuItem {
 	Menu *prevMenu;
 public:
 	MenuItemBack(Menu *last)
-		: MenuItem(_("Back"),AID_LEAVEMENU), prevMenu(last) {}
+		: MenuItem(_("Back"),"",AID_LEAVEMENU), prevMenu(last) {}
 	Menu *getLastMenu() { return prevMenu; }
 };
 
@@ -116,9 +120,9 @@ protected:
 	int min, max, step;
 	int &val;
 public:
-	MenuItemRange(const string &c, int aid, int &_val,
+	MenuItemRange(const string &c, const string &tt, int aid, int &_val,
 				int _min, int _max, int _step)
-		: MenuItem(c+":",aid),
+		: MenuItem(c+":",tt,aid),
 		  min(_min), max(_max), step(_step), val(_val) {}
 	virtual void render() {
 		renderPart(caption, ALIGN_X_LEFT);
@@ -145,17 +149,20 @@ class MenuItemList : public MenuItemRange {
 protected:
 	vector<string> options;
 public:
-	MenuItemList(const string &c, int aid, int &v, vector<string> &opts)
-			: MenuItemRange(c,aid,v,0,opts.size()-1,1) {
+	MenuItemList(const string &c, const string &tt, int aid,
+					int &v, vector<string> &opts)
+			: MenuItemRange(c,tt,aid,v,0,opts.size()-1,1) {
 		options = opts;
 	}
-	MenuItemList(const string &c, int aid, int &v, const char **opts, uint optNum)
-			: MenuItemRange(c,aid,v,0,optNum-1,1) {
+	MenuItemList(const string &c, const string &tt, int aid,
+					int &v, const char **opts, uint optNum)
+			: MenuItemRange(c,tt,aid,v,0,optNum-1,1) {
 		for (uint i = 0; i < optNum; i++)
 			options.push_back(opts[i]);
 	}
-	MenuItemList(const string &c, int aid, int &v, const string &opt1, const string &opt2)
-			: MenuItemRange(c,aid,v,0,1,1) {
+	MenuItemList(const string &c, const string &tt, int aid,
+					int &v, const string &opt1, const string &opt2)
+			: MenuItemRange(c,tt,aid,v,0,1,1) {
 		options.push_back(opt1);
 		options.push_back(opt2);
 	}
@@ -177,8 +184,9 @@ class MenuItemIntList : public MenuItemRange {
 	int &val;
 	vector<int> options;
 public:
-	MenuItemIntList(const string &c, int &v, const int *opts, uint optNum)
-				: MenuItemRange(c,AID_NONE,idx,0,optNum-1,1), val(v) {
+	MenuItemIntList(const string &c, const string &tt,
+					int &v, const int *opts, uint optNum)
+				: MenuItemRange(c,tt,AID_NONE,idx,0,optNum-1,1), val(v) {
 		idx = 0;
 		for (uint i = 0; i < optNum; i++) {
 			if (opts[i] == val)
@@ -200,16 +208,16 @@ public:
 
 class MenuItemSwitch : public MenuItemList {
 public:
-	MenuItemSwitch(const string &c, int aid, int &v)
-			: MenuItemList(c,aid,v,_("Off"),_("On")) {}
+	MenuItemSwitch(const string &c, const string &tt, int aid, int &v)
+			: MenuItemList(c,tt,aid,v,_("Off"),_("On")) {}
 };
 
 class MenuItemKey : public MenuItem {
 	int &sc;
 	bool waitForNewKey;
 public:
-	MenuItemKey(const string &c, int &_sc)
-		: MenuItem(c+":",AID_CHANGEKEY), sc(_sc), waitForNewKey(false) {}
+	MenuItemKey(const string &c, const string &tt, int &_sc)
+		: MenuItem(c+":",tt,AID_CHANGEKEY), sc(_sc), waitForNewKey(false) {}
 	virtual void render() {
 		renderPart(caption, ALIGN_X_LEFT);
 		if (waitForNewKey)
@@ -235,7 +243,7 @@ class MenuItemEdit : public MenuItem {
 	int runEditDialog(const string &caption, string &str);
 public:
 	MenuItemEdit(const string &c, string &s, int aid = AID_NONE)
-			: MenuItem(c,AID_NONE), str(s) {}
+			: MenuItem(c,"",AID_NONE), str(s) {}
 	virtual void render() {
 		renderPart(caption, ALIGN_X_LEFT);
 		renderPart(str, ALIGN_X_RIGHT);
@@ -262,6 +270,8 @@ public:
 	MenuItem *getCurItem() { return curItem; }
 	Font *getNormalFont() { return &theme.fMenuNormal; }
 	Font *getFocusFont() { return &theme.fMenuFocus; }
+	Font *getTooltipFont() { return &theme.fSmall; }
+	uint getTooltipWidth() { return 0.3*theme.menuBackground.getWidth(); }
 	void adjust() {
 		int h = items.size() * theme.menuItemHeight;
 		int w = theme.menuItemWidth;
