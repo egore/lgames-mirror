@@ -1,3 +1,11 @@
+1.0:
+- "new" level set LBreakoutHD
+- level set select dialog
+- resume option
+- continue option
+- tooltips for menu
+- tons of fixes and enhancements 
+
 0.8:
 - added sounds, effects, menu
 - fixed a lot of bugs
