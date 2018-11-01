@@ -25,9 +25,9 @@
 extern SDL_Renderer *mrc;
 
 View::View(Config &cfg, ClientGame &_cg)
-	: config(cfg), mw(NULL), curMenu(NULL),
+	: config(cfg), mw(NULL),
+	  curMenu(NULL), graphicsMenu(NULL), resumeMenuItem(NULL),
 	  selectDlg(theme, mixer), cgame(_cg), quitReceived(false),
-	  lblTitle(theme.fNormal),
 	  showWarpIcon(false), warpIconX(0), warpIconY(0),
 	  fpsCycles(0), fpsStart(0), fps(0)
 {
@@ -336,9 +336,10 @@ void View::run()
 		}
 	}
 
-	if (resumeLater)
+	if (resumeLater) {
 		saveGame();
-	else {
+		updateResumeGameTooltip();
+	} else {
 		/* check hiscores */
 		cgame.updateHiscores();
 		/* show final hiscore */
@@ -964,13 +965,20 @@ void View::createMenus()
 	mControls = new Menu(theme);
 	mAdv = new Menu(theme);
 
-	mNewGame->add(new MenuItem(_("Start Original Levels"),AID_STARTORIGINAL));
-	mNewGame->add(new MenuItem(_("Start Custom Levels"),AID_STARTCUSTOM));
+	mNewGame->add(new MenuItem(_("Start Original Levels"),
+			_("Start level set 'LBreakoutHD'."),
+			AID_STARTORIGINAL));
+	mNewGame->add(new MenuItem(_("Start Custom Levels"),
+			_("Select and run a custom level set."),
+			AID_STARTCUSTOM));
 	mNewGame->add(new MenuItemSep());
-	mNewGame->add(new MenuItemList(_("Difficulty"),AID_NONE,config.diff,diffNames,4));
+	mNewGame->add(new MenuItemList(_("Difficulty"),
+			_("This affects lives, paddle size and ball speed. For Kids and Easy score is reduced, for Hard a bonus a given."),
+			AID_NONE,config.diff,diffNames,4));
 	mNewGame->add(new MenuItemSep());
-	mNewGame->add(new MenuItemRange(_("Players"),AID_NONE,
-					config.player_count,1,MAX_PLAYERS,1));
+	mNewGame->add(new MenuItemRange(_("Players"),
+			_("Number and names of players. Players alternate whenever a life is lost."),
+			AID_NONE,config.player_count,1,MAX_PLAYERS,1));
 	mNewGame->add(new MenuItemEdit(_("1st"),config.player_names[0]));
 	mNewGame->add(new MenuItemEdit(_("2nd"),config.player_names[1]));
 	mNewGame->add(new MenuItemEdit(_("3rd"),config.player_names[2]));
@@ -978,34 +986,62 @@ void View::createMenus()
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemBack(rootMenu.get()));
 
-	mControls->add(new MenuItemKey(_("Left"),config.k_left));
-	mControls->add(new MenuItemKey(_("Right"),config.k_right));
-	mControls->add(new MenuItemKey(_("Left Fire"),config.k_lfire));
-	mControls->add(new MenuItemKey(_("Right Fire"),config.k_rfire));
-	mControls->add(new MenuItemKey(_("Paddle Turbo"),config.k_turbo));
-	mControls->add(new MenuItemKey(_("Ball Turbo"),config.k_maxballspeed));
-	mControls->add(new MenuItemKey(_("Idle Return"),config.k_return));
+	mControls->add(new MenuItemKey(_("Left"),"", config.k_left));
+	mControls->add(new MenuItemKey(_("Right"),"",config.k_right));
+	mControls->add(new MenuItemKey(_("Left Fire"),
+			_("Fire balls to the left. Ignored if 'Ball Fire Angle' in 'Advanced Settings' is 'Random'."),
+			config.k_lfire));
+	mControls->add(new MenuItemKey(_("Right Fire"),
+			_("Fire balls to the right. Ignored if 'Ball Fire Angle' in 'Advanced Settings' is 'Random'."),
+			config.k_rfire));
+	mControls->add(new MenuItemKey(_("Paddle Turbo"),
+			_("Speed up paddle movement."),
+			config.k_turbo));
+	mControls->add(new MenuItemKey(_("Ball Turbo"),
+			_("Speed up balls to limit 'Acc. Ball Speed' in 'Advanced Settings'."),
+			config.k_maxballspeed));
+	mControls->add(new MenuItemKey(_("Idle Return"),
+			_("Return all idle balls (no effective brick hits for some time) to the paddle."),
+			config.k_return));
 	mControls->add(new MenuItemSep());
-	mControls->add(new MenuItemRange(_("Key Speed"),AID_ADJUSTKEYSPEED,config.i_key_speed,100,1000,50));
-	mControls->add(new MenuItemRange(_("Motion Modifier"),AID_NONE,config.motion_mod,40,160,10));
-	mControls->add(new MenuItemSwitch(_("Invert Motion"),AID_NONE,config.invert));
+	mControls->add(new MenuItemRange(_("Key Speed"),
+			_("The higher the value the faster the paddle moves by keys."),
+			AID_ADJUSTKEYSPEED,config.i_key_speed,100,1000,50));
+	mControls->add(new MenuItemRange(_("Motion Modifier"),
+			_("Adjust mouse sensitivity."),
+			AID_NONE,config.motion_mod,40,160,10));
+	mControls->add(new MenuItemSwitch(_("Invert Motion"),
+			_("Invert mouse motion if needed."),
+			AID_NONE,config.invert));
 	mControls->add(new MenuItemSep());
 	mControls->add(new MenuItemBack(mOptions));
 
-	mGraphics->add(new MenuItemList(_("Theme"),AID_NONE,config.theme_id,themeNames));
-	mGraphics->add(new MenuItemList(_("Mode"),AID_NONE,config.mode,modeNames));
-	mGraphics->add(new MenuItemList(_("Antialiasing"),AID_NONE,config.antialiasing,_("Auto"),_("Always")));
-	mGraphics->add(new MenuItem(_("Apply Theme&Mode"),AID_APPLYTHEMEMODE));
+	mGraphics->add(new MenuItemList(_("Theme"),
+			_("Select theme. (not applied yet)"),
+			AID_NONE,config.theme_id,themeNames));
+	mGraphics->add(new MenuItemList(_("Mode"),
+			_("Select mode. (not applied yet)"),
+			AID_NONE,config.mode,modeNames));
+	mGraphics->add(new MenuItemList(_("Antialiasing"),
+			_("'Auto' means no antialiasing for old LBreakout2 low resolution themes as this might cause (slight) graphical errors. 'Always' means to use it even for low resolution themes."),
+			AID_NONE,config.antialiasing,_("Auto"),_("Always")));
+	mGraphics->add(new MenuItem(_("Apply Theme&Mode"),
+			_("Apply the above settings."),AID_APPLYTHEMEMODE));
 	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemBack(mOptions));
 
-	mAudio->add(new MenuItemSwitch(_("Sound"),AID_SOUND,config.sound));
-	mAudio->add(new MenuItemRange(_("Volume"),AID_VOLUME,config.volume,0,100,10));
-	mAudio->add(new MenuItemSwitch(_("Speech"),AID_NONE,config.speech));
+	mAudio->add(new MenuItemSwitch(_("Sound"),"",AID_SOUND,config.sound));
+	mAudio->add(new MenuItemRange(_("Volume"),"",AID_VOLUME,config.volume,0,100,10));
+	mAudio->add(new MenuItemSwitch(_("Speech"),"",AID_NONE,config.speech));
 	mAudio->add(new MenuItemSep());
-	mAudio->add(new MenuItemIntList(_("Buffer Size"),config.audio_buffer_size,bufSizes,5));
-	mAudio->add(new MenuItemIntList(_("Channels"),config.channels,channelNums,3));
-	mAudio->add(new MenuItem(_("Apply Size&Channels"),AID_APPLYAUDIO));
+	mAudio->add(new MenuItemIntList(_("Buffer Size"),
+			_("Reduce buffer size if you experience sound delays. Might have more CPU impact though. (not applied yet)"),
+			config.audio_buffer_size,bufSizes,5));
+	mAudio->add(new MenuItemIntList(_("Channels"),
+			_("More channels gives more sound variety, less channels less (not applied yet)"),config.channels,
+			channelNums,3));
+	mAudio->add(new MenuItem(_("Apply Size&Channels"),
+			_("Apply above settings"),AID_APPLYAUDIO));
 	mAudio->add(new MenuItemSep());
 	mAudio->add(new MenuItemBack(mOptions));
 
@@ -1015,21 +1051,37 @@ void View::createMenus()
 	mOptions->add(new MenuItemSub(_("Advanced"),mAdv));
 	mOptions->add(new MenuItemBack(rootMenu.get()));
 
-	mAdv->add(new MenuItemList(_("Paddle Style"),AID_NONE,config.convex,_("Normal"),_("Convex")));
-	mAdv->add(new MenuItemList(_("Ball Level"),AID_NONE,config.ball_level,_("Below Bonus"),_("Above Bonus")));
-	mAdv->add(new MenuItemList(_("Ball Fire Angle"),AID_NONE,config.random_angle,"50",_("Random")));
-	mAdv->add(new MenuItemList(_("Ball Turbo"),AID_NONE,config.ball_auto_turbo,_("On Click"),_("Auto")));
-	mAdv->add(new MenuItemList(_("Return Balls"),AID_NONE,config.return_on_click,_("Auto"),_("On Click")));
-	mAdv->add(new MenuItemRange(_("Warp Limit"),AID_NONE,config.rel_warp_limit,0,100,10));
-	mAdv->add(new MenuItemRange(_("Acc. Ball Speed"),AID_MAXBALLSPEEDCHANGED,config.maxballspeed_int1000,700,1200,50));
+	mAdv->add(new MenuItemList(_("Paddle Style"),
+			_("Use 'Convex' for casual play: The paddle is treated as convex allowing easy aiming.\nUse 'Normal' for regular behaviour. You will have to aim by using the side hemispheres or giving balls momentum by moving at the right moment when they hit the flat part. Only for experience players."),
+			AID_NONE,config.convex,_("Normal"),_("Convex")));
+	mAdv->add(new MenuItemList(_("Ball Layer"),
+			_("'Below Extras' is the normal layer. It might get hard with many extras and effects though, so change to 'Above Extras' to have balls always on top of everything (looks weird but helps to keep an eye on them)."),
+			AID_NONE,config.ball_level,_("Below Extras"),_("Above Extras")));
+	mAdv->add(new MenuItemList(_("Ball Fire Angle"),
+			_("Either 50° to the left/right or random no matter what fire key has been pressed."),
+			AID_NONE,config.random_angle,"50°",_("Random")));
+	mAdv->add(new MenuItemList(_("Ball Turbo"),
+			_("'Auto' will automatically speed up your balls (the farther away from the paddle the more). 'Manually' puts them to maximum speed while key is pressed (default key is c)."),
+			AID_NONE,config.ball_auto_turbo,_("Manually"),_("Auto")));
+	mAdv->add(new MenuItemList(_("Return Balls"),
+			_("'Auto' returns all idle balls (no effective brick hits) after 10 seconds to the paddle.\n'Manually' requires you to press a key (default key is Backspace).\n'Auto' is more convenient but 'Manually' might be required for (badly designed) levels where balls need to bounce around a lot."),
+			AID_NONE,config.return_on_click,_("Auto"),_("Manually")));
+	mAdv->add(new MenuItemRange(_("Warp Limit"),
+			_("If this percentage of bricks is destroyed you can warp to the next level (no penalties) by pressing 'w'. A small icon at the lower right hand side is shown when warp is ready."),
+			AID_NONE,config.rel_warp_limit,0,100,10));
+	mAdv->add(new MenuItemRange(_("Acc. Ball Speed"),
+			_("Maximum speed of accelerated balls."),
+			AID_MAXBALLSPEEDCHANGED,config.maxballspeed_int1000,700,1200,50));
 	mAdv->add(new MenuItemSep());
 	mAdv->add(new MenuItemBack(mOptions));
 
 	rootMenu->add(new MenuItemSub(_("New Game"), mNewGame));
-	rootMenu->add(new MenuItem(_("Resume Game"), AID_RESUME));
+	resumeMenuItem = new MenuItem(_("Resume Game"), _(""), AID_RESUME);
+	updateResumeGameTooltip();
+	rootMenu->add(resumeMenuItem);
 	rootMenu->add(new MenuItemSub(_("Settings"), mOptions));
 	//rootMenu->add(new MenuItem(_("Help"), AID_HELP));
-	rootMenu->add(new MenuItem(_("Quit"), AID_QUIT));
+	rootMenu->add(new MenuItem(_("Quit"), "", AID_QUIT));
 
 	rootMenu->adjust();
 }
@@ -1336,7 +1388,7 @@ void View::initTitleLabel()
 {
 	string n, a;
 	cgame.getCurrentLevelNameAndAuthor(n, a);
-	lblTitle.setText(n);
+	lblTitle.setText(theme.fNormal, n);
 	lblTitleCounter.init(SCT_ONCE, 0, 5, 1000);
 }
 
@@ -1365,3 +1417,46 @@ void View::renderBalls(bool shadow)
 		}
 	}
 }
+
+void View::updateResumeGameTooltip()
+{
+	if (!resumeMenuItem)
+		return;
+	if (!fileExists(saveFileName)) {
+		resumeMenuItem->setTooltip(_("No saved game."));
+		return;
+	}
+
+	/* XXX multiple locations... */
+	const char *diffNames[] = {_("Kids"),_("Easy"),_("Medium"),_("Hard") } ;
+	string text, str;
+	uint diff, pnum;
+	FileParser fp(saveFileName);
+	fp.get("levelset",text);
+	fp.get("difficulty",diff);
+	fp.get("players",pnum);
+	text += " - ";
+	if (diff < 4)
+		text += diffNames[diff];
+	text += " - ";
+	text += to_string(pnum);
+	text += _(" player(s)\n");
+
+	for (uint i = 0; i < pnum; i++) {
+		string prefix = string("player") + to_string(i) + ".";
+		string name;
+		uint level = 0, lives = 3;
+		int score = 0;
+		fp.get(prefix + "name",name);
+		fp.get(prefix + "score",score);
+		fp.get(prefix + "level",level);
+		fp.get(prefix + "lives",lives);
+		text += name + ": " + to_string(score) + _("  (Lvl: ")
+				+ to_string(level+1) + ")";
+		if ( i < pnum-1)
+			text += "\n";
+	}
+
+	resumeMenuItem->setTooltip(text);
+}
+

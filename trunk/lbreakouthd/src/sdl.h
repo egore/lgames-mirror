@@ -206,6 +206,18 @@ public:
 			return TTF_SizeText(font,str.c_str(),w,h);
 		return 0;
 	};
+	int getWrappedTextSize(const string& str, uint maxw, int *w, int *h) {
+		*w = *h = 0;
+		SDL_Surface *surf = TTF_RenderUTF8_Blended_Wrapped(
+						font, str.c_str(), clr, maxw);
+		if (surf) { /* any way to do this without rendering? */
+			*w = surf->w;
+			*h = surf->h;
+			SDL_FreeSurface(surf);
+			return 1;
+		}
+		return 0;
+	}
 	int getCharWidth(char c) {
 		if (!font)
 			return 0;
@@ -239,14 +251,14 @@ public:
 };
 
 class Label {
-	Font &font;
-	uint border;
 	Image img;
 	bool empty;
 public:
-	Label(Font &f) : font(f), border(0), empty(true) {}
-	void setText(const string &str);
+	Label() : empty(true) {}
+	void setText(Font &f, const string &str, uint max = 0);
 	void copy(int x, int y, int align = ALIGN_X_CENTER | ALIGN_Y_CENTER) {
+		if (empty)
+			return;
 		if (align & ALIGN_X_CENTER)
 			x -= img.getWidth() / 2;
 		else if (align & ALIGN_X_RIGHT)
@@ -255,8 +267,7 @@ public:
 			y -= img.getHeight() / 2;
 		else if (align & ALIGN_Y_BOTTOM)
 			y -= img.getHeight();
-		if (!empty)
-			img.copy(x,y);
+		img.copy(x,y);
 	}
 	void setAlpha(int a) {
 		img.setAlpha(a);

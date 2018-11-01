@@ -480,23 +480,33 @@ void Font::writeText(int x, int y, const string& _text, int wrapwidth, int alpha
 	SDL_DestroyTexture(tex);
 }
 
-void Label::setText(const string &str)
+void Label::setText(Font &font, const string &str, uint maxw)
 {
 	if (str == "") {
 		empty = true;
 		return;
 	}
-	border = 20 * font.getSize() / 100; /* FIXME: fixed for now */
+	uint border = 20 * font.getSize() / 100; /* FIXME: fixed for now */
 	int w = 0, h = 0;
-	font.getTextSize(str, &w, &h);
+
+	/* get size */
+	if (maxw == 0) /* single centered line */
+		font.getTextSize(str, &w, &h);
+	else
+		font.getWrappedTextSize(str, maxw, &w, &h);
+
 	if (w == 0 || h == 0)
 		return;
+
 	img.create(w + 4*border, h + 2*border);
 	img.fill(0, 0, 0, 192);
 	SDL_Texture *old = SDL_GetRenderTarget(mrc);
 	SDL_SetRenderTarget(mrc,img.getTex());
-	font.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
-	font.write(img.getWidth()/2,img.getHeight()/2,str);
+	if (maxw == 0) {
+		font.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
+		font.write(img.getWidth()/2,img.getHeight()/2,str);
+	} else
+		font.writeText(2*border, border, str, maxw);
 	SDL_SetRenderTarget(mrc,old);
 	empty = false;
 }

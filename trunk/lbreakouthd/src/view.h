@@ -41,6 +41,7 @@ class View {
 	/* menu */
 	unique_ptr<Menu> rootMenu;
 	Menu *curMenu, *graphicsMenu;
+	MenuItem *resumeMenuItem;
 	vector<string> themeNames;
 	vector<string> modeNames;
 	string saveFileName;
@@ -102,6 +103,7 @@ class View {
 	int waitForKey(bool confirm);
 	void darkenScreen();
 	void initTitleLabel();
+	void updateResumeGameTooltip();
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
