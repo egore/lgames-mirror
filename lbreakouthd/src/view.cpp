@@ -112,20 +112,18 @@ void View::init(string t, uint r)
 	createMenus();
 
 	/* create render images and positions */
-	int boardX = MAPWIDTH * brickScreenWidth;
-	int boardWidth = sw - boardX - brickScreenWidth;
 	imgBackground.create(sw,sh);
 	imgBackground.setBlendMode(0);
 	curWallpaperId = rand() % theme.numWallpapers;
 	imgScore.create(brickScreenWidth*3, brickScreenHeight);
-	imgScoreX = boardX + (boardWidth - imgScore.getWidth())/2;
+	imgScoreX = theme.boardX + (theme.boardWidth - imgScore.getWidth())/2;
 	imgScoreY = brickScreenHeight * 15 + brickScreenHeight/2;
 	imgBricks.create(EDITWIDTH*brickScreenWidth,
 				(EDITHEIGHT+1)*brickScreenHeight);
 	imgBricksX = brickScreenWidth;
 	imgBricksY = brickScreenHeight;
-	imgExtras.create(boardWidth, 4*brickScreenHeight);
-	imgExtrasX = boardX;
+	imgExtras.create(theme.boardWidth, 4*brickScreenHeight);
+	imgExtrasX = theme.boardX;
 	imgExtrasY = 19*brickScreenHeight;
 	imgFloor.create(EDITWIDTH*brickScreenWidth,brickScreenHeight);
 	imgFloorX = brickScreenWidth;
@@ -336,10 +334,9 @@ void View::run()
 		}
 	}
 
-	if (resumeLater) {
+	if (resumeLater)
 		saveGame();
-		updateResumeGameTooltip();
-	} else {
+	else {
 		/* check hiscores */
 		cgame.updateHiscores();
 		/* show final hiscore */
@@ -348,6 +345,7 @@ void View::run()
 		/* delete save game */
 		remove(saveFileName.c_str());
 	}
+	updateResumeGameTooltip();
 
 	if (!quitReceived)
 		dim();
@@ -533,8 +531,8 @@ void View::renderBackgroundImage() {
 	theme.frame.copy(0,0);
 
 	/* title + current level */
-	int tx = MAPWIDTH*bw, ty = bh;
-	int tw = mw->getWidth() - tx - bw;
+	int tx = theme.boardX, ty = bh;
+	int tw = theme.boardWidth;
 	theme.fNormal.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
 	theme.fSmall.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
 	theme.fNormal.write(tx+tw/2, ty + bh/2, cgame.getLevelsetName().c_str());
@@ -1076,11 +1074,13 @@ void View::createMenus()
 	mAdv->add(new MenuItemBack(mOptions));
 
 	rootMenu->add(new MenuItemSub(_("New Game"), mNewGame));
-	resumeMenuItem = new MenuItem(_("Resume Game"), _(""), AID_RESUME);
-	updateResumeGameTooltip();
+	resumeMenuItem = new MenuItem(_("Resume Game"), "", AID_RESUME);
 	rootMenu->add(resumeMenuItem);
+	updateResumeGameTooltip();
+	rootMenu->add(new MenuItemSep());
 	rootMenu->add(new MenuItemSub(_("Settings"), mOptions));
-	//rootMenu->add(new MenuItem(_("Help"), AID_HELP));
+	rootMenu->add(new MenuItem(_("Help"), "", AID_HELP));
+	rootMenu->add(new MenuItemSep());
 	rootMenu->add(new MenuItem(_("Quit"), "", AID_QUIT));
 
 	rootMenu->adjust();
@@ -1213,6 +1213,9 @@ void View::runMenu()
 				break;
 			case AID_MAXBALLSPEEDCHANGED:
 				config.maxballspeed_float = (float)config.maxballspeed_int1000 / 1000;
+				break;
+			case AID_HELP:
+				showHelp();
 				break;
 			}
 		}
@@ -1348,10 +1351,11 @@ int View::waitForKey(bool confirm)
 	bool ret = true;
 	bool leave = false;
 
+	SDL_PumpEvents();
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
 	while (!leave) {
 		/* handle events */
-		if (SDL_PollEvent(&ev)) {
+		if (SDL_WaitEvent(&ev)) {
 			if (ev.type == SDL_QUIT)
 				quitReceived = leave = true;
 			if (!confirm && (ev.type == SDL_KEYUP ||
@@ -1367,7 +1371,6 @@ int View::waitForKey(bool confirm)
 				}
 			}
 		}
-		SDL_Delay(10);
 		SDL_FlushEvent(SDL_MOUSEMOTION);
 	}
 	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
@@ -1460,3 +1463,40 @@ void View::updateResumeGameTooltip()
 	resumeMenuItem->setTooltip(text);
 }
 
+void View::showHelp()
+{
+	string helpText =
+		"You can control your paddle either with the mouse or keyboard. "
+		"Destroying bricks will release extras sometimes. Good ones are "
+		"colored green, neutral ones grey, bad ones red and score related ones golden. "
+		"Some of the bricks take more than one shot, regenerate over time, explode or grow new bricks. "
+		"Balls will get faster (until life is lost) and the difficulty setting will influence "
+		"number of lives, ball speed, paddle size and score.\n\n"
+		"While playing you can press\n"
+		"  - ESC to leave the game (you'll have to confirm)\n"
+		"  - w to warp to next level (if enough bricks were destroyed)\n"
+		"  - p to pause/unpause the game\n\n"
+		"If you leave a game you can resume it later (no hiscores entry yet).\n\n"
+		"If you loose all lives you can buy a continue (score set to 0, initial number of lives restored). "
+		"If you don't buy a continue the game is over (hiscores entry is checked) and can no longer be resumed. "
+		"\n\nEnjoy the game!\n"
+		"          Michael Speck"
+		;
+
+	int x = brickScreenWidth, y = brickScreenHeight;
+	uint maxw = 0.5*mw->getWidth();
+
+	darkenScreen();
+
+	theme.fNormal.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
+	theme.fNormal.write(x,y,_("Help"));
+	y += 2*brickScreenHeight;
+
+	theme.fSmall.writeText(x, y, helpText, maxw);
+	SDL_RenderPresent(mrc);
+
+	SDL_Delay(250);
+	waitForKey(false);
+
+	return;
+}

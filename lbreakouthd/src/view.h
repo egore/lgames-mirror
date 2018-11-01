@@ -91,6 +91,7 @@ class View {
 	void dim();
 	bool showInfo(const string &line, bool confirm=false);
 	bool showInfo(const vector<string> &text, bool confirm=false);
+	void showHelp();
 	void createParticles(BrickHit *hit);
 	void createSprites();
 	void getBallViewInfo(Ball *ball, int *x, int *y, uint *type);

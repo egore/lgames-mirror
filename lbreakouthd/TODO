@@ -1,13 +1,13 @@
-quick help
-freakout and special levelsets 
+fix ball shadow
+warp icon
+
+freakout and special levelsets (?) 
 editor
 allow removing selected bricks (?)
 
 eye/ear candy:
-fix ball shadow
 stereo sound
 tail for explosive ball, fuzzy chaotic ball
-have info boxes for old themes centered in empty space not attached to frame
 themes should get selection dialog as well
 shine effect
 
@@ -17,6 +17,7 @@ efficient check for active extras and draw only once per sec
 merge background and brick layer to offset layer
 reuse existing previews on starting custom game again
 smooth menu tooltips at pointer position
+solve waiting for key release in a better way
 
 already known bugs:
 l10n doesn't work though mo file is installed there
