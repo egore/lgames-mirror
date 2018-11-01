@@ -337,7 +337,11 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	life.scale(brickScreenWidth,brickScreenHeight);
 
 	/* warp symbol is brick size */
-	warpIcon.load(testRc(path,"warp.png"));
+	/* ignore old warp icon as it's geometry sucks big time */
+	if (!oldTheme)
+		warpIcon.load(testRc(path,"warp.png"));
+	else
+		warpIcon.load(stdPath + "/warp.png");
 	warpIcon.scale(brickScreenWidth,brickScreenHeight);
 
 	/* explosions are square, scaled according to brick ratio */
