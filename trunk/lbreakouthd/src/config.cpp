@@ -71,7 +71,7 @@ Config::Config()
 	use_hints = 1;
 	return_on_click = 0;
 	theme_id = 0;
-	theme_count = 4;
+	theme_count = 1;
 
 	/* if config dir not found create necessary dirs */
 	dname = CONFIGDIR;

@@ -1058,8 +1058,8 @@ void View::createMenus()
 			_("'Below Extras' is the normal layer. It might get hard with many extras and effects though, so change to 'Above Extras' to have balls always on top of everything (looks weird but helps to keep an eye on them)."),
 			AID_NONE,config.ball_level,_("Below Extras"),_("Above Extras")));
 	mAdv->add(new MenuItemList(_("Ball Fire Angle"),
-			_("Either 50° to the left/right or random no matter what fire key has been pressed."),
-			AID_NONE,config.random_angle,"50°",_("Random")));
+			_("Either 50 degrees to the left/right or random no matter what fire key has been pressed."),
+			AID_NONE,config.random_angle,"50",_("Random")));
 	mAdv->add(new MenuItemList(_("Ball Turbo"),
 			_("'Auto' will automatically speed up your balls (the farther away from the paddle the more). 'Manually' puts them to maximum speed while key is pressed (default key is c)."),
 			AID_NONE,config.ball_auto_turbo,_("Manually"),_("Auto")));
@@ -1507,53 +1507,53 @@ void View::showHelp()
 	y -= brickScreenHeight;
 	x += maxw + brickScreenWidth;
 	int x2 = x + 4*brickScreenWidth;
-	renderExtraHelp(theme.extras, 2, 0, _("Extra score"), x, y);
-	renderExtraHelp(theme.extras, 6, 0, _("Gold shower"), x2, y);
+	renderExtraHelp(theme.extras, 2, 0, _("Extra Score"), x, y);
+	renderExtraHelp(theme.extras, 6, 0, _("Gold Shower"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 9, 0, _("Extra life"), x, y);
-	renderExtraHelp(theme.extras, 12, 0, _("Extra ball"), x2, y);
+	renderExtraHelp(theme.extras, 9, 0, _("Extra Life"), x, y);
+	renderExtraHelp(theme.extras, 12, 0, _("Extra Ball"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 8, 0, _("Expand paddle"), x, y);
-	renderExtraHelp(theme.extras, 7, 0, _("Shrink paddle"), x2, y);
+	renderExtraHelp(theme.extras, 8, 0, _("Expand Paddle"), x, y);
+	renderExtraHelp(theme.extras, 7, 0, _("Shrink Paddle"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 10, 0, _("Sticky paddle"), x, y);
-	renderExtraHelp(theme.extras, 15, 0, _("Plasma weapon"), x2, y);
+	renderExtraHelp(theme.extras, 10, 0, _("Sticky Paddle"), x, y);
+	renderExtraHelp(theme.extras, 15, 0, _("Plasma Weapon"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 18, 0, _("Slow balls"), x, y);
-	renderExtraHelp(theme.extras, 17, 0, _("Fast balls"), x2, y);
+	renderExtraHelp(theme.extras, 18, 0, _("Slow Balls"), x, y);
+	renderExtraHelp(theme.extras, 17, 0, _("Fast Balls"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 11, 0, _("Energy balls"), x, y);
-	renderExtraHelp(theme.extras, 25, 0, _("Explosive balls"), x2, y);
+	renderExtraHelp(theme.extras, 11, 0, _("Energy Balls"), x, y);
+	renderExtraHelp(theme.extras, 25, 0, _("Explosive Balls"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 13, 0, _("Extra floor"), x, y);
+	renderExtraHelp(theme.extras, 13, 0, _("Extra Floor"), x, y);
 	renderExtraHelp(theme.extras, 19, 0, _("Joker (collect goodies)"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 26, 0, _("Bonus magnet"), x, y);
-	renderExtraHelp(theme.extras, 27, 0, _("Malus magnet"), x2, y);
+	renderExtraHelp(theme.extras, 26, 0, _("Bonus Magnet"), x, y);
+	renderExtraHelp(theme.extras, 27, 0, _("Malus Magnet"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 21, 0, _("Chaotic balls"), x, y);
-	renderExtraHelp(theme.extras, 28, 0, _("Weak balls"), x2, y);
+	renderExtraHelp(theme.extras, 21, 0, _("Chaotic Balls"), x, y);
+	renderExtraHelp(theme.extras, 28, 0, _("Weak Balls"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 14, 0, _("Frozen paddle"), x, y);
-	renderExtraHelp(theme.extras, 22, 0, _("Ghost paddle"), x2, y);
+	renderExtraHelp(theme.extras, 14, 0, _("Frozen Paddle"), x, y);
+	renderExtraHelp(theme.extras, 22, 0, _("Ghost Paddle"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.extras, 24, 0, _("Extra time"), x, y);
+	renderExtraHelp(theme.extras, 24, 0, _("Extra Time"), x, y);
 	renderExtraHelp(theme.extras, 23, 0, _("Reset"), x2, y);
 	y += 1.2*brickScreenHeight;
 	renderExtraHelp(theme.extras, 16, 0, _("Random"), x, y);
 	renderExtraHelp(theme.extras, 20, 0, _("Darkness"), x2, y);
 	y += 2*brickScreenHeight;
 	renderExtraHelp(theme.bricks, 0, 0, _("Indestructible"), x, y);
-	renderExtraHelp(theme.bricks, 1, 0, _("Regular wall"), x2, y);
+	renderExtraHelp(theme.bricks, 1, 0, _("Regular Wall"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.bricks, 2, 0, _("Chaotic reflection"), x, y);
-	renderExtraHelp(theme.bricks, 14, 0, _("Regular brick"), x2, y);
+	renderExtraHelp(theme.bricks, 2, 0, _("Chaotic Wall"), x, y);
+	renderExtraHelp(theme.bricks, 14, 0, _("Regular Brick"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.bricks, 5, 0, _("Multi-hit brick"), x, y);
-	renderExtraHelp(theme.bricks, 9, 0, _("Regenerative brick"), x2, y);
+	renderExtraHelp(theme.bricks, 5, 0, _("Multi-hit Brick"), x, y);
+	renderExtraHelp(theme.bricks, 9, 0, _("Regenerative Brick"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.bricks, 18, 0, _("Explosive brick"), x, y);
-	renderExtraHelp(theme.bricks, 19, 0, _("Growing brick"), x2, y);
+	renderExtraHelp(theme.bricks, 18, 0, _("Explosive Brick"), x, y);
+	renderExtraHelp(theme.bricks, 19, 0, _("Growing Brick"), x2, y);
 
 	SDL_RenderPresent(mrc);
 
