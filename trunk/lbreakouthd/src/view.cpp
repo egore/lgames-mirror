@@ -368,7 +368,6 @@ void View::render()
 		theme.weapon.setAlpha(128);
 	} else {
 		imgBackground.copy();
-		imgBricks.copy(imgBricksX,imgBricksY);
 		imgScore.copy(imgScoreX,imgScoreY);
 		imgExtras.copy(imgExtrasX,imgExtrasY);
 		theme.paddles.clearAlpha();
@@ -378,6 +377,9 @@ void View::render()
 
 	/* balls - shadows */
 	renderBalls(true);
+
+	if (!cgame.darknessActive())
+		imgBricks.copy(imgBricksX,imgBricksY);
 
 	/* extras - shadows */
 	list_reset(game->extras);
