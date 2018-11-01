@@ -31,6 +31,9 @@ class Theme {
 	friend SetInfo;
 
 	string stdPath; /* path to standard theme for fallbacks */
+	bool oldTheme;
+	int boardX;
+	uint boardWidth;
 
 	/* loaded from theme.ini */
 	string title;
@@ -88,7 +91,8 @@ class Theme {
 		return fpath;
 	}
 public:
-	Theme() : brickFileWidth(0), brickFileHeight(0), shadowOffset(0),
+	Theme() : oldTheme(true),
+			brickFileWidth(0), brickFileHeight(0), shadowOffset(0),
 			fontSmallSize(0), fontNormalSize(0),
 			shotFrameNum(0), shotAnimDelay(0),
 			weaponFrameNum(0), weaponAnimDelay(0),

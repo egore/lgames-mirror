@@ -28,7 +28,6 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 {
 	string path, fpath;
 	uint iw, ih;
-	bool oldTheme = true; // needed for some workarounds
 
 	if (name[0] == '~')
 		path = getHomeDir() + "/" + CONFIGDIR + "/themes/" + name.substr(1);
@@ -40,6 +39,7 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	_loginfo("Loading theme %s\n",path.c_str());
 
 	/* set default config values for old themes */
+	oldTheme = true;
 	title = "unknown";
 	author = "unknown";
 	version= "v?.??";
@@ -114,6 +114,10 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		fp.get("menu.fontFocus.color.b",menuFontColorFocus.b);
 		fp.get("menu.fontFocus.color.a",menuFontColorFocus.a);
 	}
+
+	/* standard board geometry, will be shifted if composed frame is used */
+	boardX = MAPWIDTH * brickScreenWidth;
+	boardWidth = screenWidth - boardX - brickScreenWidth;
 
 	/* load standard values for fallback */
 	FileParser stdSettings(stdPath + "/theme.ini");
@@ -202,8 +206,9 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 			ftop.copy(brickScreenWidth,0,(MAPWIDTH-2)*brickScreenWidth,brickScreenHeight);
 			fright.copy((MAPWIDTH-1)*brickScreenWidth,0,brickScreenWidth,screenHeight);
 
-			int boardWidth = screenWidth - (MAPWIDTH+1)*brickScreenWidth;
-			int boardX = MAPWIDTH*brickScreenWidth;
+			/* adjust board position to have some distance from frame */
+			boardX += brickScreenWidth/2;
+
 			addBox(frame, boardX, brickScreenHeight, boardWidth,
 							12*brickScreenHeight);
 			addBox(frame, boardX, brickScreenHeight*14, boardWidth,
