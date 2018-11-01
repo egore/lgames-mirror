@@ -10,9 +10,47 @@ second: I wanted to clean up the code (the not really well working
 network stuff bothered me) and not mix SDL2 with SDL for dependencies.
 
 So LBreakoutHD is a clean cut with the old core engine (still in C) and
-a brand new fully scalable 16:9 view. Well, it will be, when it's done.
-It's in an early stage right now and a lot of things are still missing
-but the game is basically already playable.
+a brand new fully scalable 16:9 view.
+
+
+Extras
+------
+
+All extras/bricks are listed in the in-game help but some might need a little
+more explanations:
+
+Sticky Paddle:	Balls get attached and can be released manually by pressing
+		a fire key. Reflection vector is kept. Lasts 20 secs.
+
+Energy Balls:	Balls destroy everything (no reflection) except 
+		indestructible walls and bonus floor. Lasts 5 secs.
+		
+Extra Floor:	Adds barrier to bottom so balls can't leave the screen.
+		Starts blinking three seconds before it runs out. Lasts 10 secs.
+		
+Frozen Paddle:	Paddle can't move for 1 sec.
+
+Random:		Can be ANY extra, so ... do you feel lucky, punk?
+
+Joker:		Instantly collects all good extras and destroys all neutral
+		and bad ones. Some are even doubled like extra balls and score.
+		
+Chaotic Balls:	Balls will randomly reflect for 20 secs.
+
+Ghost Paddle:	If not moving, paddle will disappear after 200 ms until moved
+		again. So you think you can place a paddle somewhere and wait for
+		the ball to hit it? Think again. Very nasty in combination with
+		Frozen Paddle. Lasts 20 secs.
+		
+Reset:		Resets every active extra, good or bad.
+
+Extra Time:	Will add 7 secs to all active extras.
+
+Explosive Balls: All adjacent bricks (including multi-hit bricks) will be 
+		destroyed as well (except for wall bricks). Lasts 5 secs.
+		
+Weak Balls:	40% chance ball does not break a brick and gets just reflected.
+
 
 Themes
 ------
@@ -95,14 +133,15 @@ animation speed by weaponAnim.delay (default 200 ms).
 Weapon gets scaled square to 90% of brick height. E.g., for 1080p frame size
 should be 40x40 to avoid unnecessary scaling.
 
-explosions.png is a row of frames (explAnim.frames or default 9) for an
+explosions.png are rows of frames (explAnim.frames or default 9) for an
 explosion. You can set explosion speed by explAnim.delay (default 50 ms).
-Explosions can have any size but must be square. In future, more rows for
-different explosions will be allowed. 
+Explosions can have any size but must be square.
 
 life.png contains two brick sized, vertically arranged icons for displaying the 
 player's lives. The first icon shows a possible extra paddle, the second shows
 an actual life. It is added at the lower left-hand side of the frame.
+
+warp.png is a brick sized icon used to indicate warp is ready.
 
 You can specify the small and normal text font (default: fsmall.otf and 
 fnormal.otf) and their size (default: 14 and 18 pixels in theme resolution).

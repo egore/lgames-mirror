@@ -1526,7 +1526,7 @@ void View::showHelp()
 	renderExtraHelp(theme.extras, 25, 0, _("Explosive balls"), x2, y);
 	y += 1.2*brickScreenHeight;
 	renderExtraHelp(theme.extras, 13, 0, _("Extra floor"), x, y);
-	renderExtraHelp(theme.extras, 19, 0, _("Collect all bonuses"), x2, y);
+	renderExtraHelp(theme.extras, 19, 0, _("Joker (collect goodies)"), x2, y);
 	y += 1.2*brickScreenHeight;
 	renderExtraHelp(theme.extras, 26, 0, _("Bonus magnet"), x, y);
 	renderExtraHelp(theme.extras, 27, 0, _("Malus magnet"), x2, y);
