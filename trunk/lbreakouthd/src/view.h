@@ -102,9 +102,10 @@ class View {
 	int resumeGame();
 	void showFinalHiscores();
 	int waitForKey(bool confirm);
-	void darkenScreen();
+	void darkenScreen(int alpha = 32);
 	void initTitleLabel();
 	void updateResumeGameTooltip();
+	void renderExtraHelp(GridImage &img, uint gx, uint gy, const string &str, int x, int y);
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();

@@ -1,6 +1,3 @@
-fix ball shadow
-warp icon
-
 freakout and special levelsets (?) 
 editor
 allow removing selected bricks (?)
@@ -20,6 +17,6 @@ smooth menu tooltips at pointer position
 solve waiting for key release in a better way
 
 already known bugs:
-l10n doesn't work though mo file is installed there
+l10n doesn't work though mo file is installed there?
 on non-american keyboard: z has to be pressed for y because scancode ain't keycode
 

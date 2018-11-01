@@ -1052,7 +1052,7 @@ void View::createMenus()
 	mOptions->add(new MenuItemBack(rootMenu.get()));
 
 	mAdv->add(new MenuItemList(_("Paddle Style"),
-			_("Use 'Convex' for casual play: The paddle is treated as convex allowing easy aiming.\nUse 'Normal' for regular behaviour. You will have to aim by using the side hemispheres or giving balls momentum by moving at the right moment when they hit the flat part. Only for experience players."),
+			_("Use 'Convex' for casual play: The paddle is treated as convex allowing easy aiming.\nUse 'Normal' for regular behaviour. You will have to aim by using the side hemispheres or giving balls momentum by moving at the right moment when they hit the flat part. Only for experienced players."),
 			AID_NONE,config.convex,_("Normal"),_("Convex")));
 	mAdv->add(new MenuItemList(_("Ball Layer"),
 			_("'Below Extras' is the normal layer. It might get hard with many extras and effects though, so change to 'Above Extras' to have balls always on top of everything (looks weird but helps to keep an eye on them)."),
@@ -1379,13 +1379,13 @@ int View::waitForKey(bool confirm)
 	return ret;
 }
 
-void View::darkenScreen()
+void View::darkenScreen(int alpha)
 {
 	Image img;
 	img.createFromScreen();
 	SDL_SetRenderDrawColor(mrc,0,0,0,255);
 	SDL_RenderClear(mrc);
-	img.setAlpha(64);
+	img.setAlpha(alpha);
 	img.copy();
 }
 
@@ -1465,13 +1465,21 @@ void View::updateResumeGameTooltip()
 	resumeMenuItem->setTooltip(text);
 }
 
+void View::renderExtraHelp(GridImage &img, uint gx, uint gy, const string &str, int x, int y)
+{
+	img.copy(gx,gy,x,y);
+	theme.fSmall.setAlign(ALIGN_X_LEFT | ALIGN_Y_CENTER);
+	theme.fSmall.write(x + 1.1*img.getGridWidth(), y + img.getGridHeight()/2, str);
+}
+
 void View::showHelp()
 {
 	string helpText =
 		"You can control your paddle either with the mouse or keyboard. "
-		"Destroying bricks will release extras sometimes. Good ones are "
-		"colored green, neutral ones grey, bad ones red and score related ones golden. "
-		"Some of the bricks take more than one shot, regenerate over time, explode or grow new bricks. "
+		"Destroying bricks will release extras sometimes. Some are good, "
+		"some are bad and some may be good or bad. "
+		"Some of the bricks take more than one shot, regenerate over time, explode or grow new bricks "
+		"(see README for more details). "
 		"Balls will get faster (until life is lost) and the difficulty setting will influence "
 		"number of lives, ball speed, paddle size and score.\n\n"
 		"While playing you can press\n"
@@ -1486,7 +1494,7 @@ void View::showHelp()
 		;
 
 	int x = brickScreenWidth, y = brickScreenHeight;
-	uint maxw = 0.5*mw->getWidth();
+	uint maxw = brickScreenWidth * 10;
 
 	darkenScreen();
 
@@ -1495,10 +1503,59 @@ void View::showHelp()
 	y += 2*brickScreenHeight;
 
 	theme.fSmall.writeText(x, y, helpText, maxw);
+
+	y -= brickScreenHeight;
+	x += maxw + brickScreenWidth;
+	int x2 = x + 4*brickScreenWidth;
+	renderExtraHelp(theme.extras, 2, 0, _("Extra score"), x, y);
+	renderExtraHelp(theme.extras, 6, 0, _("Gold shower"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 9, 0, _("Extra life"), x, y);
+	renderExtraHelp(theme.extras, 12, 0, _("Extra ball"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 8, 0, _("Expand paddle"), x, y);
+	renderExtraHelp(theme.extras, 7, 0, _("Shrink paddle"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 10, 0, _("Sticky paddle"), x, y);
+	renderExtraHelp(theme.extras, 15, 0, _("Plasma weapon"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 18, 0, _("Slow balls"), x, y);
+	renderExtraHelp(theme.extras, 17, 0, _("Fast balls"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 11, 0, _("Energy balls"), x, y);
+	renderExtraHelp(theme.extras, 25, 0, _("Explosive balls"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 13, 0, _("Extra floor"), x, y);
+	renderExtraHelp(theme.extras, 19, 0, _("Collect all bonuses"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 26, 0, _("Bonus magnet"), x, y);
+	renderExtraHelp(theme.extras, 27, 0, _("Malus magnet"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 21, 0, _("Chaotic balls"), x, y);
+	renderExtraHelp(theme.extras, 28, 0, _("Weak balls"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 14, 0, _("Frozen paddle"), x, y);
+	renderExtraHelp(theme.extras, 22, 0, _("Ghost paddle"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 24, 0, _("Extra time"), x, y);
+	renderExtraHelp(theme.extras, 23, 0, _("Reset"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.extras, 16, 0, _("Random"), x, y);
+	renderExtraHelp(theme.extras, 20, 0, _("Darkness"), x2, y);
+	y += 2*brickScreenHeight;
+	renderExtraHelp(theme.bricks, 0, 0, _("Indestructible"), x, y);
+	renderExtraHelp(theme.bricks, 1, 0, _("Regular wall"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.bricks, 2, 0, _("Chaotic reflection"), x, y);
+	renderExtraHelp(theme.bricks, 5, 0, _("Multi-hit brick"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.bricks, 9, 0, _("Regenerative brick"), x, y);
+	renderExtraHelp(theme.bricks, 18, 0, _("Explosive brick"), x2, y);
+	y += 1.2*brickScreenHeight;
+	renderExtraHelp(theme.bricks, 19, 0, _("Growing brick"), x, y);
+
 	SDL_RenderPresent(mrc);
 
 	SDL_Delay(250);
 	waitForKey(false);
-
-	return;
 }
