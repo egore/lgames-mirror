@@ -1547,12 +1547,13 @@ void View::showHelp()
 	renderExtraHelp(theme.bricks, 1, 0, _("Regular wall"), x2, y);
 	y += 1.2*brickScreenHeight;
 	renderExtraHelp(theme.bricks, 2, 0, _("Chaotic reflection"), x, y);
-	renderExtraHelp(theme.bricks, 5, 0, _("Multi-hit brick"), x2, y);
+	renderExtraHelp(theme.bricks, 14, 0, _("Regular brick"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.bricks, 9, 0, _("Regenerative brick"), x, y);
-	renderExtraHelp(theme.bricks, 18, 0, _("Explosive brick"), x2, y);
+	renderExtraHelp(theme.bricks, 5, 0, _("Multi-hit brick"), x, y);
+	renderExtraHelp(theme.bricks, 9, 0, _("Regenerative brick"), x2, y);
 	y += 1.2*brickScreenHeight;
-	renderExtraHelp(theme.bricks, 19, 0, _("Growing brick"), x, y);
+	renderExtraHelp(theme.bricks, 18, 0, _("Explosive brick"), x, y);
+	renderExtraHelp(theme.bricks, 19, 0, _("Growing brick"), x2, y);
 
 	SDL_RenderPresent(mrc);
 
