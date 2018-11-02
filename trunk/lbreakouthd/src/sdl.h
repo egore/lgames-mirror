@@ -272,6 +272,16 @@ public:
 	void setAlpha(int a) {
 		img.setAlpha(a);
 	}
+	uint getHeight() {
+		if (empty)
+			return 0;
+		return img.getHeight();
+	}
+	uint getWidth() {
+		if (empty)
+			return 0;
+		return img.getWidth();
+	}
 };
 
 #endif /* SDL_H_ */

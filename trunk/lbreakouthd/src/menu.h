@@ -44,12 +44,18 @@ protected:
 	string caption;
 	string tooltipText;
 	Label tooltip;
+	Timeout tooltipTimeout;
 	int x, y, w, h;
 	int focus;
 	int actionId;
 	double fadingAlpha;
 
 	void renderPart(const string &str, int align);
+	void renderTooltip() {
+		if (focus && !tooltipTimeout.running())
+			tooltip.copy(x+1.1*w, y+h/2-tooltip.getHeight()/2,
+						ALIGN_X_LEFT | ALIGN_Y_TOP);
+	}
 public:
 	MenuItem(const string &c, const string &tt, int aid = AID_NONE) :
 			parent(NULL), caption(c), tooltipText(tt),
@@ -70,8 +76,10 @@ public:
 	}
 	void setFocus(int on) {
 		focus = on;
-		if (focus)
+		if (focus) {
 			fadingAlpha = 255;
+			tooltipTimeout.set(500);
+		}
 
 	}
 	virtual void update(uint ms) {
@@ -80,9 +88,12 @@ public:
 			if (fadingAlpha < 0)
 				fadingAlpha = 0;
 		}
+		if (focus && tooltipTimeout.running())
+			tooltipTimeout.update(ms);
 	}
 	virtual void render() {
 		renderPart(caption, ALIGN_X_LEFT);
+		renderTooltip();
 	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN)
@@ -125,8 +136,8 @@ public:
 		: MenuItem(c+":",tt,aid),
 		  min(_min), max(_max), step(_step), val(_val) {}
 	virtual void render() {
-		renderPart(caption, ALIGN_X_LEFT);
 		renderPart(to_string(val), ALIGN_X_RIGHT);
+		MenuItem::render();
 	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN) {
@@ -173,8 +184,8 @@ public:
 		val = _cur;
 	}
 	virtual void render() {
-		renderPart(caption, ALIGN_X_LEFT);
 		renderPart(options[val], ALIGN_X_RIGHT);
+		MenuItem::render();
 	}
 };
 
@@ -196,8 +207,8 @@ public:
 		val = options[idx]; /* if not found, fallback to first value */
 	}
 	virtual void render() {
-		renderPart(caption, ALIGN_X_LEFT);
 		renderPart(to_string(val), ALIGN_X_RIGHT);
+		MenuItem::render();
 	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		MenuItemRange::handleEvent(ev);
@@ -219,11 +230,11 @@ public:
 	MenuItemKey(const string &c, const string &tt, int &_sc)
 		: MenuItem(c+":",tt,AID_CHANGEKEY), sc(_sc), waitForNewKey(false) {}
 	virtual void render() {
-		renderPart(caption, ALIGN_X_LEFT);
 		if (waitForNewKey)
 			renderPart("???", ALIGN_X_RIGHT);
 		else
 			renderPart(SDL_GetScancodeName((SDL_Scancode)sc), ALIGN_X_RIGHT);
+		MenuItem::render();
 	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN)
@@ -245,8 +256,8 @@ public:
 	MenuItemEdit(const string &c, string &s, int aid = AID_NONE)
 			: MenuItem(c,"",AID_NONE), str(s) {}
 	virtual void render() {
-		renderPart(caption, ALIGN_X_LEFT);
 		renderPart(str, ALIGN_X_RIGHT);
+		MenuItem::render();
 	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN)
