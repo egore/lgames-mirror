@@ -5,7 +5,7 @@ AC_CANONICAL_TARGET
 
 AM_CONFIG_HEADER(config.h)
 
-AM_INIT_AUTOMAKE(lpairs,1.0.4)
+AM_INIT_AUTOMAKE(lpairs,1.0.5)
 
 dnl Checks for programs.
 AM_GNU_GETTEXT
@@ -17,7 +17,7 @@ AC_CHECK_LIB(m, main,, AC_MSG_ERROR(lib math is needed))
 
 dnl check SDL version
 AM_PATH_SDL(1.0.0,, AC_MSG_ERROR(lib SDL is needed))
-CFLAGS="$CFLAGS $SDL_CFLAGS"
+CFLAGS="$CFLAGS $SDL_CFLAGS -Wno-unused-result"
 LIBS="$LIBS $SDL_LIBS"
 AM_PATH_SDL(1.1.5, CFLAGS="$CFLAGS -DSDL_1_1_5",)
 

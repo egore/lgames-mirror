@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lpairs 1.0.1\n"
 "Report-Msgid-Bugs-To: http://lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2008-08-30 20:57+0200\n"
+"POT-Creation-Date: 2018-11-02 20:15+0100\n"
 "PO-Revision-Date: 2005-09-26 14:49+0200\n"
 "Last-Translator: Michael Speck <kulkanie@gmx.net>\n"
 "Language-Team: German\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -77,37 +78,45 @@ msgstr "Sound:"
 msgid "Volume:"
 msgstr "Lautstaerke"
 
-#: lpairs/pairs.c:427
+#: lpairs/pairs.c:482
 #, c-format
-msgid "Congratulations! You have resolved this puzzle!"
-msgstr "Glueckwunsch! Sie haben dieses Puzzle geloest!"
+msgid "Congratulations!"
+msgstr ""
 
-#: lpairs/pairs.c:429
+#: lpairs/pairs.c:484
 #, c-format
-msgid "It now will restart with the same settings."
-msgstr "Es wird jetzt mit den gleichen Einstellungen neu gestartet."
+msgid "Press ESC to exit or"
+msgstr ""
 
-#: lpairs/pairs.c:431
+#: lpairs/pairs.c:486
 #, c-format
-msgid "If you want to change these press <Escape> after restart."
-msgstr "Wenn Sie diese aendern moechten, druecken Sie ESC nach dem Neuteilen."
+msgid "any other key to restart."
+msgstr ""
 
-#: lpairs/pairs.c:433
-#, c-format
-msgid "(Press any key to continue...)"
-msgstr "(Beliebige Taste um fortzufahren...)"
-
-#: lpairs/pairs.c:578
+#: lpairs/pairs.c:631
 #, c-format
 msgid "Pairs left: %i"
 msgstr "Verbliebene Paare: %i"
 
-#: lpairs/pairs.c:583
+#: lpairs/pairs.c:636
 #, c-format
 msgid "Tries: %i"
 msgstr "Versuche: %i"
 
-#: lpairs/pairs.c:586
+#: lpairs/pairs.c:639
 #, c-format
 msgid "Time: %s"
 msgstr "Zeit: %s"
+
+#~ msgid "Congratulations! You have resolved this puzzle!"
+#~ msgstr "Glueckwunsch! Sie haben dieses Puzzle geloest!"
+
+#~ msgid "It now will restart with the same settings."
+#~ msgstr "Es wird jetzt mit den gleichen Einstellungen neu gestartet."
+
+#~ msgid "If you want to change these press <Escape> after restart."
+#~ msgstr ""
+#~ "Wenn Sie diese aendern moechten, druecken Sie ESC nach dem Neuteilen."
+
+#~ msgid "(Press any key to continue...)"
+#~ msgstr "(Beliebige Taste um fortzufahren...)"

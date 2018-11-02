@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: http://lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2008-08-30 20:57+0200\n"
+"POT-Creation-Date: 2018-11-02 20:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -76,37 +77,32 @@ msgstr ""
 msgid "Volume:"
 msgstr ""
 
-#: lpairs/pairs.c:427
+#: lpairs/pairs.c:482
 #, c-format
-msgid "Congratulations! You have resolved this puzzle!"
+msgid "Congratulations!"
 msgstr ""
 
-#: lpairs/pairs.c:429
+#: lpairs/pairs.c:484
 #, c-format
-msgid "It now will restart with the same settings."
+msgid "Press ESC to exit or"
 msgstr ""
 
-#: lpairs/pairs.c:431
+#: lpairs/pairs.c:486
 #, c-format
-msgid "If you want to change these press <Escape> after restart."
+msgid "any other key to restart."
 msgstr ""
 
-#: lpairs/pairs.c:433
-#, c-format
-msgid "(Press any key to continue...)"
-msgstr ""
-
-#: lpairs/pairs.c:578
+#: lpairs/pairs.c:631
 #, c-format
 msgid "Pairs left: %i"
 msgstr ""
 
-#: lpairs/pairs.c:583
+#: lpairs/pairs.c:636
 #, c-format
 msgid "Tries: %i"
 msgstr ""
 
-#: lpairs/pairs.c:586
+#: lpairs/pairs.c:639
 #, c-format
 msgid "Time: %s"
 msgstr ""
