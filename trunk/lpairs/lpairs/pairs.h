@@ -104,10 +104,10 @@ void run_game( Pairs *pairs );
 void draw_button( Pairs *pairs, int map_x, int map_y, int type );
 
 /* get map contents at position */
-inline int get_map_cont( Pairs *pairs, int map_x, int map_y );
+int get_map_cont( Pairs *pairs, int map_x, int map_y );
 
 /* set map contents at position */
-inline void set_map_cont( Pairs *pairs, int map_x, int map_y, int cont );
+void set_map_cont( Pairs *pairs, int map_x, int map_y, int cont );
 
 /* draw all buttons */
 void draw_all_buttons( Pairs *pairs, int type );

@@ -32,7 +32,7 @@ int cur_time, last_time;
 // sdl surface //
 
 /* return full path of bitmap */
-inline void get_full_bmp_path( char *full_path, char *file_name )
+void get_full_bmp_path( char *full_path, char *file_name )
 {
     sprintf(full_path,  "%sgfx/%s", SRC_DIR, file_name );
 }
@@ -111,7 +111,7 @@ int disp_format(SDL_Surface *sur)
 /*
     lock surface
 */
-inline void lock_surf(SDL_Surface *sur)
+void lock_surf(SDL_Surface *sur)
 {
     if (SDL_MUSTLOCK(sur))
         SDL_LockSurface(sur);
@@ -120,7 +120,7 @@ inline void lock_surf(SDL_Surface *sur)
 /*
     unlock surface
 */
-inline void unlock_surf(SDL_Surface *sur)
+void unlock_surf(SDL_Surface *sur)
 {
     if (SDL_MUSTLOCK(sur))
         SDL_UnlockSurface(sur);
@@ -355,7 +355,7 @@ int write_text(Font *fnt, SDL_Surface *dest, int x, int y, char *str, int alpha)
 /*
     lock font surface
 */
-inline void lock_font(Font *fnt)
+void lock_font(Font *fnt)
 {
     if (SDL_MUSTLOCK(fnt->pic))
         SDL_LockSurface(fnt->pic);
@@ -364,7 +364,7 @@ inline void lock_font(Font *fnt)
 /*
     unlock font surface
 */
-inline void unlock_font(Font *fnt)
+void unlock_font(Font *fnt)
 {
     if (SDL_MUSTLOCK(fnt->pic))
         SDL_UnlockSurface(fnt->pic);
@@ -481,7 +481,7 @@ void hardware_cap()
 /*
     update rectangle (0,0,0,0)->fullscreen
 */
-inline void refresh_screen(int x, int y, int w, int h)
+void refresh_screen(int x, int y, int w, int h)
 {
     SDL_UpdateRect(sdl.screen, x, y, w, h);
 }
@@ -631,7 +631,7 @@ void wait_for_click()
 /*
     lock surface
 */
-inline void lock_screen()
+void lock_screen()
 {
     if (SDL_MUSTLOCK(sdl.screen))
         SDL_LockSurface(sdl.screen);
@@ -640,7 +640,7 @@ inline void lock_screen()
 /*
     unlock surface
 */
-inline void unlock_screen()
+void unlock_screen()
 {
     if (SDL_MUSTLOCK(sdl.screen))
         SDL_UnlockSurface(sdl.screen);
@@ -649,7 +649,7 @@ inline void unlock_screen()
 /*
     flip hardware screens (double buffer)
 */
-inline void flip_screen()
+void flip_screen()
 {
     SDL_Flip(sdl.screen);
 }
