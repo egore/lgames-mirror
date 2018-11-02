@@ -240,10 +240,10 @@ class Ticks {
 public:
 	Ticks() { now = last = SDL_GetTicks(); }
 	void reset() { now = last = SDL_GetTicks(); }
-	Uint32 get() {
+	Uint32 get(bool zeroOK = false) {
 		now = SDL_GetTicks();
 		Uint32 ms = now - last;
-		if (ms < 1)
+		if (ms == 0 && !zeroOK)
 			ms = 1;
 		last = now;
 		return ms;

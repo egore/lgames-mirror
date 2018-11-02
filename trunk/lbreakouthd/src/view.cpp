@@ -160,6 +160,8 @@ void View::run()
 	int flags;
 	PaddleInputState pis;
 	Ticks ticks;
+	Ticks renderTicks;
+	int maxDelay, delay = 0;
 	Uint32 ms;
 	bool leave = false;
 	bool resumeLater = false;
@@ -169,6 +171,14 @@ void View::run()
 	curWallpaperId = rand() % theme.numWallpapers;
 
 	fpsStart = SDL_GetTicks();
+	fpsCycles = 0;
+
+	if (config.fps == 1)
+		maxDelay = 5;
+	else if (config.fps == 2)
+		maxDelay = 10;
+	else
+		maxDelay = 0;
 
 	initTitleLabel();
 	sprites.clear();
@@ -180,6 +190,8 @@ void View::run()
 	grabInput(1);
 
 	while (!leave) {
+		renderTicks.reset();
+
 		/* handle events */
 		if (SDL_PollEvent(&ev)) {
 			if (ev.type == SDL_QUIT) {
@@ -192,6 +204,9 @@ void View::run()
 				case SDL_SCANCODE_P:
 					showInfo(_("Pause"));
 					ticks.reset();
+					break;
+				case SDL_SCANCODE_F:
+					config.show_fps = !config.show_fps;
 					break;
 				case SDL_SCANCODE_ESCAPE:
 					text.clear();
@@ -320,11 +335,6 @@ void View::run()
 		render();
 		SDL_RenderPresent(mrc);
 
-		/* limit frame rate */
-		if (config.fps)
-			SDL_Delay(5);
-		SDL_FlushEvent(SDL_MOUSEMOTION); /* prevent event loop from dying */
-
 		/* stats */
 		fpsCycles++;
 		fps = 1000 * fpsCycles / (SDL_GetTicks() - fpsStart);
@@ -332,6 +342,12 @@ void View::run()
 			fpsCycles = 0;
 			fpsStart = SDL_GetTicks();
 		}
+
+		/* limit frame rate */
+		delay = maxDelay - renderTicks.get(true);
+		if (delay > 0)
+			SDL_Delay(delay);
+		SDL_FlushEvent(SDL_MOUSEMOTION); /* prevent event loop from dying */
 	}
 
 	if (resumeLater)
@@ -509,8 +525,10 @@ void View::render()
 	}
 
 	/* stats */
-	theme.fSmall.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
-	theme.fSmall.write(0,0,to_string((int)fps));
+	if (config.show_fps) {
+		theme.fSmall.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
+		theme.fSmall.write(0,0,to_string((int)fps));
+	}
 }
 
 /** Take background image, add frame and static hiscore chart */
@@ -951,6 +969,7 @@ void View::createMenus()
 {
 	Menu *mNewGame, *mOptions, *mAudio, *mGraphics, *mControls, *mAdv;
 	const char *diffNames[] = {_("Kids"),_("Easy"),_("Medium"),_("Hard") } ;
+	const char *fpsLimitNames[] = {_("No Limit"),_("200 FPS"),_("100 FPS") } ;
 	const int bufSizes[] = { 256, 512, 1024, 2048, 4096 };
 	const int channelNums[] = { 8, 16, 32 };
 
@@ -1028,6 +1047,10 @@ void View::createMenus()
 	mGraphics->add(new MenuItem(_("Apply Theme&Mode"),
 			_("Apply the above settings."),AID_APPLYTHEMEMODE));
 	mGraphics->add(new MenuItemSep());
+	mGraphics->add(new MenuItemList(_("Frame Limit"),
+			"Maximum number of frames per second.\nBe careful: The higher the limit the more insensitive your mouse becomes to slow movements (because relative motion is used and program cycles are shorter).\n200 FPS should be a good value.",
+			AID_NONE,config.fps,fpsLimitNames,3));
+	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemBack(mOptions));
 
 	mAudio->add(new MenuItemSwitch(_("Sound"),"",AID_SOUND,config.sound));
@@ -1061,7 +1084,7 @@ void View::createMenus()
 			_("Either 50 degrees to the left/right or random no matter what fire key has been pressed."),
 			AID_NONE,config.random_angle,"50",_("Random")));
 	mAdv->add(new MenuItemList(_("Ball Turbo"),
-			_("'Auto' will automatically speed up your balls (the farther away from the paddle the more). 'Manually' puts them to maximum speed while key is pressed (default key is c)."),
+			_("'Auto' will automatically speed up your balls (the farther away from the paddle the more).\n'Manually' puts them to maximum speed while key is pressed (default key is c)."),
 			AID_NONE,config.ball_auto_turbo,_("Manually"),_("Auto")));
 	mAdv->add(new MenuItemList(_("Return Balls"),
 			_("'Auto' returns all idle balls (no effective brick hits) after 10 seconds to the paddle.\n'Manually' requires you to press a key (default key is Backspace).\n'Auto' is more convenient but 'Manually' might be required for (badly designed) levels where balls need to bounce around a lot."),
