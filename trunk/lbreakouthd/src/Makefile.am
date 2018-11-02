@@ -17,7 +17,7 @@ install-data-local:
 	fi;
 
 uninstall-local:
-	rm -rf $(DESTDIR)$(datdir)
+	rm -rf $(DESTDIR)$(datadir)/lbreakouthd
 	rm $(DESTDIR)$(hiscoredir)/lbreakouthd.hscr
 
 clean:
