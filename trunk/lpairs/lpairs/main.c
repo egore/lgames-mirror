@@ -142,6 +142,18 @@ void setup_menu()
     MM_Ck();
 }
 
+static int all_filter( const SDL_Event *event ) { return 0; }
+
+void event_clear_sdl_queue()
+{
+    SDL_EventFilter old_filter;
+    SDL_Event event;
+    old_filter = SDL_GetEventFilter();
+    SDL_SetEventFilter( all_filter );
+    while ( SDL_PollEvent( &event ) );
+    SDL_SetEventFilter( old_filter );
+}
+
 int main(int argc, char *argv[])
 {
     Pairs pairs;
@@ -236,7 +248,7 @@ int main(int argc, char *argv[])
         M_CmA(mm.c_mn, ms);
         M_Shw(mm.c_mn);
         refresh_rects();
-        SDL_Delay( 5 );
+        SDL_Delay( 1 );
     }
 
     // terminate menu //
