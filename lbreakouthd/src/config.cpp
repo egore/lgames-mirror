@@ -65,6 +65,7 @@ Config::Config()
 	fade = 1;
 	bonus_info = 1;
 	fps = 1;
+	show_fps = 0;
 	ball_level = BALL_BELOW_BONUS;
 	antialiasing = 0;
 	/* various */
@@ -131,6 +132,7 @@ Config::Config()
 	fp.get( "fade", fade );
 	fp.get( "bonus_info", bonus_info );
 	fp.get( "fps", fps );
+	fp.get( "show_fps", show_fps );
 	fp.get( "ball_level", ball_level );
 	fp.get( "i_key_speed", i_key_speed );
 	key_speed = 0.001 * i_key_speed;
@@ -187,6 +189,7 @@ void Config::save()
 	ofs << "fade=" << fade << "\n";
 	ofs << "bonus_info=" << bonus_info << "\n";
 	ofs << "fps=" << fps << "\n";
+	ofs << "show_fps=" << show_fps << "\n";
 	ofs << "ball_level=" << ball_level << "\n";
 	ofs << "i_key_speed=" << i_key_speed << "\n";
 	ofs << "antialiasing=" << antialiasing << "\n";

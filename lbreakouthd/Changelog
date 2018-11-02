@@ -1,3 +1,5 @@
+- optimized game loop delay
+- added option for fps limit
 - draw menu tooltip only once and with delay
 - allow z or y to confirm
 
