@@ -63,10 +63,6 @@ void MenuItem::renderPart(const string &str, int align)
 		f->setAlign(align | ALIGN_Y_CENTER);
 		f->write(tx+txoff,ty,str,fadingAlpha);
 	}
-
-	/* show tooltip next to item if focused */
-	if (focus)
-		tooltip.copy(x+1.1*w, y, ALIGN_X_LEFT | ALIGN_Y_TOP);
 }
 
 /** Run a dialog for editing a UTF8 string. ESC cancels editing (string

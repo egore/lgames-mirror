@@ -499,7 +499,7 @@ void Label::setText(Font &font, const string &str, uint maxw)
 		return;
 
 	img.create(w + 4*border, h + 2*border);
-	img.fill(0, 0, 0, 192);
+	img.fill(0, 0, 0, 224);
 	SDL_Texture *old = SDL_GetRenderTarget(mrc);
 	SDL_SetRenderTarget(mrc,img.getTex());
 	if (maxw == 0) {

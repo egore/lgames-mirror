@@ -1,4 +1,5 @@
-
+- draw menu tooltip only once and with delay
+- allow z or y to confirm
 
 1.0:
 - "new" level set LBreakoutHD
