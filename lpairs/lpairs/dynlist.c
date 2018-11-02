@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "dynlist.h"
 
 /* initialize list */
@@ -131,7 +132,7 @@ int dl_delete_poi(Dyn_List *dlst, void *item)
                 break;
         }
         else {
-            fprintf(stderr, "ERR: dl_delete: list does not contain item 0x%x...\n", (int)item);
+            fprintf(stderr, "ERR: dl_delete: list does not contain item 0x%lu...\n", (uintptr_t)item);
             return 1;
         }
 
@@ -239,7 +240,7 @@ DL_Entry *dl_get_entry(Dyn_List *dlst, void *item)
                 break;
         }
         else {
-            fprintf(stderr, "ERR: DL_GetE: list does not contain item 0x%x...\n", (int)item);
+            fprintf(stderr, "ERR: DL_GetE: list does not contain item 0x%lu...\n", (uintptr_t)item);
             return 0;
         }
 
