@@ -1048,7 +1048,7 @@ void View::createMenus()
 			_("Apply the above settings."),AID_APPLYTHEMEMODE));
 	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemList(_("Frame Limit"),
-			"Maximum number of frames per second.\nBe careful: The higher the limit the more insensitive your mouse becomes to slow movements (because relative motion is used and program cycles are shorter).\n200 FPS should be a good value.",
+			"Maximum number of frames per second.\nBe careful: The higher the limit the more insensitive your mouse might become to slow movements (because relative motion is used and program cycles are shorter).\n200 FPS should be a good value.",
 			AID_NONE,config.fps,fpsLimitNames,3));
 	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemBack(mOptions));

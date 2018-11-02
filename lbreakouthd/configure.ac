@@ -40,15 +40,19 @@ AC_CHECK_FUNCS([memset strchr strdup strrchr])
 datdir=$datadir/$PACKAGE
 hiscoredir=$localstatedir
 configdir=.lbreakouthd
+debugflags=""
 AC_ARG_ENABLE( install,
 [  --disable-install       No installation. Start from source directory.], 
 datdir="." hiscoredir="." configdir=".")
+AC_ARG_ENABLE( debug,
+[  --enable-debug       Add debug symbols, no optimization.], 
+debugflags="-O0 -g")
 AC_SUBST(datdir)
 AC_SUBST(hiscoredir)
 
 CFLAGS="$CFLAGS -Wno-int-conversion -Wno-format -Wno-implicit-function-declaration"
-CFLAGS="$CFLAGS -O0 -g -DSRC_DIR=\\\"$datdir\\\" -DCONFIG_DIR_NAME=\\\"$configdir\\\""
-CXXFLAGS="$CXXFLAGS $(sdl2-config --cflags) -Wall -O0 -g"
+CFLAGS="$CFLAGS $debugflags -DSRC_DIR=\\\"$datdir\\\" -DCONFIG_DIR_NAME=\\\"$configdir\\\""
+CXXFLAGS="$CXXFLAGS $(sdl2-config --cflags) -Wall $debugflags"
 CXXFLAGS="$CXXFLAGS -std=c++11 -DLOCALEDIR=\\\"$localedir\\\" -DCONFIGDIR=\\\"$configdir\\\" -DDATADIR=\\\"$datdir\\\" -DHISCOREDIR=\\\"$hiscoredir\\\""
 LIBS="$LIBS $(sdl2-config --libs)"
 
