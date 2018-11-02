@@ -266,7 +266,7 @@ int open_game( Pairs *pairs, int width, int height )
 
                 }
 
-            SDL_Delay( 5 );
+            SDL_Delay( 1 );
 
         }
 
@@ -499,7 +499,7 @@ void run_game( Pairs *pairs )
 
             }
 
-        SDL_Delay( 5 );
+        SDL_Delay( 1 );
     }
 
     if ( cfg.dim )
