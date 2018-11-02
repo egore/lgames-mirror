@@ -1364,10 +1364,10 @@ int View::waitForKey(bool confirm)
 						ev.type == SDL_MOUSEBUTTONUP))
 				leave = true;
 			if (confirm && ev.type == SDL_KEYUP) {
-				if (ev.key.keysym.scancode == SDL_SCANCODE_Y)
+				int sc = ev.key.keysym.scancode;
+				if (sc == SDL_SCANCODE_Y || sc == SDL_SCANCODE_Z)
 					ret = leave = true;
-				if (ev.key.keysym.scancode == SDL_SCANCODE_N ||
-						ev.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+				if (sc == SDL_SCANCODE_N || sc == SDL_SCANCODE_ESCAPE) {
 					ret = false;
 					leave = true;
 				}
