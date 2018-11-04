@@ -190,6 +190,7 @@ int readDir(const string &dname, int type, vector<string> &fnames)
 		fnames.push_back(ent->d_name);
 	}
 	closedir (dir);
+	sort(fnames.begin(),fnames.end());
 	return fnames.size();
 }
 

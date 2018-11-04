@@ -1,3 +1,5 @@
+1.0.1:
+- sort file names directly when reading directory
 - optimize code by default (--enable-debug required for debug info)
 - optimized game loop delay
 - added option for fps limit
