@@ -41,12 +41,10 @@ View::View(Config &cfg, ClientGame &_cg)
 
 	/* load theme names */
 	readDir(string(DATADIR)+"/themes", RD_FOLDERS, themeNames);
-	sort(themeNames.begin(),themeNames.end());
 	if (string(CONFIGDIR) != ".") {
 		vector<string> homeThemes;
 		readDir(getHomeDir() + "/" + CONFIGDIR + "/themes",
 						RD_FOLDERS, homeThemes);
-		sort(homeThemes.begin(),homeThemes.end());
 		for (auto &e : homeThemes)
 			themeNames.push_back(string("~")+e);
 	}

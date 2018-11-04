@@ -102,11 +102,9 @@ void SelectDialog::init()
 	vector<string> list, list2;
 
 	readDir(string(DATADIR)+"/levels", RD_FILES, list);
-	sort(list.begin(),list.end());
 	if (string(CONFIGDIR) != ".") {
 		readDir(getHomeDir() + "/" + string(CONFIGDIR) + "/levels",
 							RD_FILES, list2);
-		sort(list2.begin(),list2.end());
 		for (auto& s : list2)
 			list.push_back(string("~")+s);
 	}
