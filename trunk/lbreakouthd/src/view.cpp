@@ -167,6 +167,7 @@ void View::run()
 	vector<string> text;
 
 	curWallpaperId = rand() % theme.numWallpapers;
+	showWarpIcon = false;
 
 	fpsStart = SDL_GetTicks();
 	fpsCycles = 0;
