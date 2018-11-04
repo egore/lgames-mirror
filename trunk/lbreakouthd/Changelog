@@ -1,3 +1,5 @@
+- fixed bug in level set preview
+
 1.0.1:
 - smoother auto speed transition for balls
 - sort file names directly when reading directory

@@ -75,7 +75,7 @@ SetInfo::SetInfo(const string &n, Theme &theme)
 			for ( k = 0; k < BRICK_COUNT; k++ )
 				if (lines[4+offset+j][i] == brick_conv_table[k].c)
 					break;
-			if (k != -1 && k != INVIS_BRICK_ID)
+			if (k < BRICK_COUNT && k != INVIS_BRICK_ID)
 				theme.bricksShadow.copy(brick_conv_table[k].id,0,
 						(i+1)*bw+bh/3, (1+j)*bh+bh/3);
 		}
@@ -85,7 +85,7 @@ SetInfo::SetInfo(const string &n, Theme &theme)
 			for ( k = 0; k < BRICK_COUNT; k++ )
 				if (lines[4+offset+j][i] == brick_conv_table[k].c)
 					break;
-			if (k != -1 && k != INVIS_BRICK_ID)
+			if (k < BRICK_COUNT && k != INVIS_BRICK_ID)
 				theme.bricks.copy(brick_conv_table[k].id,0,
 							(i+1)*bw, (1+j)*bh);
 		}
