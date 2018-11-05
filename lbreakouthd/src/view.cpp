@@ -226,20 +226,26 @@ void View::run()
 		/* get paddle input state */
 		pis.reset();
 		/* mouse input */
-		int mxoff;
-		Uint32 buttons = SDL_GetRelativeMouseState( &mxoff, NULL );
+		int mxoff = 0, mx = 0;
+		Uint32 buttons = 0;
+		if (config.rel_motion)
+			buttons = SDL_GetRelativeMouseState( &mxoff, NULL );
+		else
+			buttons = SDL_GetMouseState(&mx, NULL);
 		if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT))
 			pis.leftFire = 1;
 		if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT))
 			pis.rightFire = 1;
 		if (buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE))
 			pis.speedUp = 1;
-		if (mxoff != 0) {
+		if (config.rel_motion && mxoff != 0) {
 			if (config.invert)
 				mxoff = -mxoff;
 			mxoff = mxoff * config.motion_mod / 100;
 			rx = s2v((double)mxoff);
-		} else
+		} else if (!config.rel_motion)
+			rx = s2v((double)mx);
+		else
 			rx = 0;
 		/* key input */
 		const Uint8 *keystate = SDL_GetKeyboardState(NULL);
@@ -1025,11 +1031,14 @@ void View::createMenus()
 	mControls->add(new MenuItemRange(_("Key Speed"),
 			_("The higher the value the faster the paddle moves by keys."),
 			AID_ADJUSTKEYSPEED,config.i_key_speed,100,1000,50));
+	mControls->add(new MenuItemList(_("Mouse Input"),
+			_("'Absolute' uses absolute mouse position. No fine tuning possible and you might experience delay (if moving too far to the right you'll need to come back to the paddle position first) but it will be more accurate for slow movements.\n'Relative' allows modifying paddle speed but might get inaccurate for slow movements with high resolution and high frame rates."),
+			AID_NONE,config.rel_motion,_("Absolute"),_("Relative")));
 	mControls->add(new MenuItemRange(_("Motion Modifier"),
-			_("Adjust mouse sensitivity."),
+			_("Adjust mouse sensitivity. (relative motion only)"),
 			AID_NONE,config.motion_mod,40,160,10));
 	mControls->add(new MenuItemSwitch(_("Invert Motion"),
-			_("Invert mouse motion if needed."),
+			_("Invert mouse motion if needed. (relative motion only)"),
 			AID_NONE,config.invert));
 	mControls->add(new MenuItemSep());
 	mControls->add(new MenuItemBack(mOptions));
