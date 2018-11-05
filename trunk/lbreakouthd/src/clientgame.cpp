@@ -96,7 +96,8 @@ ClientPlayer *ClientGame::getNextPlayer()
 }
 
 /** ms is passed milliseconds since last call
- * rx is relative motion of paddle, or 0 for no motion
+ * rx is either relative motion of paddle, or 0 for no motion
+ * 	  or absolute mouse position (depending on config.rel_motion)
  * pis is what controls have been activated
  * return flags what has to be rendered new
  */
@@ -124,20 +125,22 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 				break;
 			}
 
-	/* handle paddle movement */
+	/* handle paddle movement, px is resulting absolute position */
 	double px = game->paddles[0]->cur_x;
-	if (game->paddles[0]->frozen)
-		rx = 0;
-	else if (pis.left || pis.right) {
-		if (pis.left)
-			px -= config.key_speed * (ms << pis.turbo);
-		if (pis.right)
-			px += config.key_speed * (ms << pis.turbo);
-	} else
-		px += rx;
+	if (!game->paddles[0]->frozen) {
+		if (pis.left || pis.right) {
+			if (pis.left)
+				px -= config.key_speed * (ms << pis.turbo);
+			if (pis.right)
+				px += config.key_speed * (ms << pis.turbo);
+		} else if (config.rel_motion)
+			px += rx;
+		else
+			px = rx;
+	}
 
 	/* check friction if normal paddle has moved */
-	if (!config.convex) {
+	if (!config.convex && config.rel_motion) {
 		Paddle *paddle = game->paddles[0];
 		if (rx != 0 || pis.left || pis.right) {
 			double diff = px - paddle->cur_x;

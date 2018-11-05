@@ -41,7 +41,7 @@ Config::Config()
 	k_warp = SDL_SCANCODE_W;
 	k_maxballspeed = SDL_SCANCODE_C;
 	grab = 1;
-	rel_motion = 1;
+	rel_motion = 0;
 	motion_mod = 100;
 	convex = 1;
 	linear_corner = 0;
