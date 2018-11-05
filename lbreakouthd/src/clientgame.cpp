@@ -127,21 +127,23 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 
 	/* handle paddle movement, px is resulting absolute position */
 	double px = game->paddles[0]->cur_x;
-	if (!game->paddles[0]->frozen) {
-		if (pis.left || pis.right) {
-			if (pis.left)
-				px -= config.key_speed * (ms << pis.turbo);
-			if (pis.right)
-				px += config.key_speed * (ms << pis.turbo);
-		} else if (config.rel_motion)
-			px += rx;
-		else
-			px = rx;
-	}
+	if (game->paddles[0]->frozen)
+		rx = 0; /* no friction as well */
+	else if (pis.left || pis.right) {
+		if (pis.left)
+			px -= config.key_speed * (ms << pis.turbo);
+		if (pis.right)
+			px += config.key_speed * (ms << pis.turbo);
+	} else if (config.rel_motion)
+		px += rx;
+	else
+		px = rx;
 
 	/* check friction if normal paddle has moved */
-	if (!config.convex && config.rel_motion) {
+	if (!config.convex) {
 		Paddle *paddle = game->paddles[0];
+		if (!config.rel_motion)
+			rx = px - paddle->cur_x;
 		if (rx != 0 || pis.left || pis.right) {
 			double diff = px - paddle->cur_x;
 			paddle->v_x = diff / ms;
