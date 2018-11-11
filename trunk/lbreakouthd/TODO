@@ -1,6 +1,5 @@
 editor
 freakout and special levelsets (?) 
-allow removing selected bricks (?)
 
 eye/ear candy:
 stereo sound
@@ -14,6 +13,7 @@ efficient check for active extras and draw only once per sec
 reuse existing previews on starting custom game again
 smooth menu tooltips at pointer position
 solve waiting for key release in a better way
+label for score
 
 already known bugs:
 l10n doesn't work though mo file is installed???

@@ -207,6 +207,10 @@ void View::run()
 				case SDL_SCANCODE_F:
 					config.show_fps = !config.show_fps;
 					break;
+				case SDL_SCANCODE_D:
+					runBrickDestroyDlg();
+					ticks.reset();
+					break;
 				case SDL_SCANCODE_ESCAPE:
 					text.clear();
 					text.push_back(_("Quit Game? y/n"));
@@ -1516,7 +1520,8 @@ void View::showHelp()
 		"While playing you can press\n"
 		"  - ESC to leave the game (you'll have to confirm)\n"
 		"  - w to warp to next level (if enough bricks were destroyed)\n"
-		"  - p to pause/unpause the game\n\n"
+		"  - p to pause/unpause the game\n"
+		"  - d to destroy a brick (workaround for bad level design)\n\n"
 		"If you leave a game you can resume it later (no hiscores entry yet).\n\n"
 		"If you loose all lives you can buy a continue (score set to 0, initial number of lives restored). "
 		"If you don't buy a continue the game is over (hiscores entry is checked) and can no longer be resumed. "
@@ -1590,4 +1595,58 @@ void View::showHelp()
 
 	SDL_Delay(250);
 	waitForKey(false);
+}
+
+void View::runBrickDestroyDlg()
+{
+	SDL_Event ev;
+	bool leave = false;
+	int selx = -1, sely = -1;
+	int texty = (EDITHEIGHT+2)*brickScreenHeight;
+
+	imgBackground.copy();
+	darkenScreen(64);
+	imgBricks.setAlpha(128);
+	imgBricks.copy(imgBricksX,imgBricksY);
+	imgBricks.clearAlpha();
+	theme.fNormal.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
+	theme.fNormal.write(imgBricksX+imgBricks.getWidth()/2, texty,
+				_("Plane of Inner Stability"));
+	texty += theme.fNormal.getLineHeight();
+	theme.fSmall.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
+	theme.fSmall.write(imgBricksX+imgBricks.getWidth()/2, texty,
+				_("Left-click on any brick to destroy it (costs 10% score)."));
+	texty += theme.fSmall.getLineHeight();
+	theme.fSmall.write(imgBricksX+imgBricks.getWidth()/2, texty,
+				_("Press any key to cancel selection."));
+	SDL_RenderPresent(mrc);
+
+	grabInput(0);
+
+	SDL_Delay(250);
+	SDL_PumpEvents();
+	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+	while (!leave) {
+		/* handle events */
+		if (SDL_WaitEvent(&ev)) {
+			if (ev.type == SDL_QUIT)
+				quitReceived = leave = true;
+			if (ev.type == SDL_KEYUP)
+				leave = true;
+			if (ev.type == SDL_MOUSEBUTTONUP && ev.button.button == SDL_BUTTON_LEFT) {
+				selx = ev.button.x / brickScreenWidth;
+				sely = ev.button.y / brickScreenHeight;
+				if (!cgame.destroyBrick(selx,sely))
+					selx = sely = -1; /* no brick found */
+				else
+					leave = 1;
+			}
+		}
+		SDL_FlushEvent(SDL_MOUSEMOTION);
+	}
+
+	grabInput(1);
+	SDL_Delay(250);
+	SDL_PumpEvents();
+	SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
