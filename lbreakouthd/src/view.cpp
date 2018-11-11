@@ -777,7 +777,7 @@ bool View::showInfo(const string &line, bool confirm)
  * If confirm is true, wait for key y/n and return true false. */
 bool View::showInfo(const vector<string> &text, bool confirm)
 {
-	Font &font = theme.fNormal;
+	Font &font = theme.fSmall;
 	bool ret = true;
 	uint h = text.size() * font.getLineHeight();
 	int tx = mw->getWidth()/2;
