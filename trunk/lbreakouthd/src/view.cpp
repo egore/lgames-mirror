@@ -1284,14 +1284,18 @@ void View::grabInput(int grab)
 	if (grab) {
 		SDL_ShowCursor(0);
 		SDL_SetWindowGrab(mw->mw, SDL_TRUE );
-		SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "1", SDL_HINT_OVERRIDE);
-		SDL_SetRelativeMouseMode(SDL_TRUE);
-		SDL_GetRelativeMouseState(0,0);
+		if (config.rel_motion) {
+			SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "1", SDL_HINT_OVERRIDE);
+			SDL_SetRelativeMouseMode(SDL_TRUE);
+			SDL_GetRelativeMouseState(0,0);
+		}
 	} else {
 		SDL_ShowCursor(1);
 		SDL_SetWindowGrab(mw->mw, SDL_FALSE );
-		SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "0", SDL_HINT_OVERRIDE);
-		SDL_SetRelativeMouseMode(SDL_FALSE);
+		if (config.rel_motion) {
+			SDL_SetHintWithPriority(SDL_HINT_MOUSE_RELATIVE_MODE_WARP, "0", SDL_HINT_OVERRIDE);
+			SDL_SetRelativeMouseMode(SDL_FALSE);
+		}
 	}
 }
 
