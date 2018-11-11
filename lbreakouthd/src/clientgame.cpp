@@ -257,3 +257,21 @@ void ClientGame::continueGame()
 		game_init(game,p->getLevelSnapshot());
 	}
 }
+
+int ClientGame::destroyBrick(int x, int y)
+{
+	if (x < 1 || y < 1 || x >= MAPWIDTH-1 || y >= MAPHEIGHT-1)
+		return 0;
+	if (game->bricks[x][y].type == MAP_EMPTY)
+		return 0;
+
+	/* copied from libgame/bricks.c::brick_start_expl
+	 * as functions seems to get optimized out as not used in lib */
+	game->bricks[x][y].exp_time = BRICK_EXP_TIME;
+	game->bricks[x][y].exp_paddle = game->paddles[0];
+	game->bricks[x][y].mx = x;
+	game->bricks[x][y].my = y;
+	game->bricks[x][y].score = -10 * players[curPlayer]->getScore() / 100;
+	list_add(game->exp_bricks, &game->bricks[x][y] );
+	return 1;
+}

@@ -151,6 +151,7 @@ public:
 		return game->paddles[0]->extra_time[EX_WALL];
 	}
 	void continueGame();
+	int destroyBrick(int x, int y);
 };
 
 #endif /* SRC_CLIENTGAME_H_ */
