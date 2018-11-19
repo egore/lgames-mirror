@@ -30,6 +30,34 @@ SetInfo::SetInfo(const string &n, Theme &theme)
 	version = "1.00"; /* default if not found */
 	author = "?";
 
+	/* create empty preview */
+	uint sw = theme.menuBackground.getWidth();
+	uint sh = theme.menuBackground.getHeight();
+	uint bw = theme.bricks.getGridWidth();
+	uint bh = theme.bricks.getGridHeight();
+	uint soff = bh/3;
+	preview.create(MAPWIDTH*theme.bricks.getGridWidth(),
+			MAPHEIGHT*theme.bricks.getGridHeight());
+	SDL_SetRenderTarget(mrc, preview.getTex());
+	Image& wallpaper = theme.wallpapers[rand()%theme.numWallpapers];
+	for (uint wy = 0; wy < sh; wy += wallpaper.getHeight())
+		for (uint wx = 0; wx < sw; wx += wallpaper.getWidth())
+			wallpaper.copy(wx,wy);
+	theme.frameShadow.copy(soff,soff);
+
+	if (n[0] == '!') { /* special levels */
+		version = "1.00";
+		author = "LGames";
+		levels = 1;
+		/* finalize empty level */
+		theme.fMenuNormal.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
+		theme.fMenuNormal.write(preview.getWidth()/2,preview.getHeight()/2,_("Mini Game"));
+		theme.frame.copy(0,0);
+		SDL_SetRenderTarget(mrc, NULL);
+		return;
+	}
+
+	/* get normal levelset info */
 	string fpath = getFullLevelsetPath(n);
 	string lines[5+EDIT_HEIGHT];
 	ifstream ifs(fpath);
@@ -37,6 +65,8 @@ SetInfo::SetInfo(const string &n, Theme &theme)
 
 	if (!ifs.is_open()) {
 		_logerr("Levelset %s not found, no preview created\n",n.c_str());
+		theme.frame.copy(0,0);
+		SDL_SetRenderTarget(mrc, NULL);
 		return;
 	}
 	for (uint i = 0; i < 5+EDIT_HEIGHT; i++)
@@ -54,21 +84,8 @@ SetInfo::SetInfo(const string &n, Theme &theme)
 			levels++;
 	ifs.close();
 
-	/* create preview */
-	uint sw = theme.menuBackground.getWidth();
-	uint sh = theme.menuBackground.getHeight();
-	uint bw = theme.bricks.getGridWidth();
-	uint bh = theme.bricks.getGridHeight();
-	uint soff = bh/3;
-	preview.create(MAPWIDTH*theme.bricks.getGridWidth(),
-			MAPHEIGHT*theme.bricks.getGridHeight());
-	SDL_SetRenderTarget(mrc, preview.getTex());
-	Image& wallpaper = theme.wallpapers[rand()%theme.numWallpapers];
-	for (uint wy = 0; wy < sh; wy += wallpaper.getHeight())
-		for (uint wx = 0; wx < sw; wx += wallpaper.getWidth())
-			wallpaper.copy(wx,wy);
-	theme.frameShadow.copy(soff,soff);
-	/* XXX direct access to brick conversion table from libgame */
+	/* add bricks of first level
+	 * XXX direct access to brick conversion table from libgame */
 	for (uint j = 0; j < EDITHEIGHT; j++)
 		for (uint i = 0; i < EDITWIDTH; i++) {
 			int k = -1;
@@ -101,7 +118,16 @@ void SelectDialog::init()
 	uint sh = theme.menuBackground.getHeight();
 	vector<string> list, list2;
 
-	readDir(string(DATADIR)+"/levels", RD_FILES, list);
+	//list.push_back(_("!FREAKOUT!"));
+	list.push_back(_("!JUMPING_JACK!"));
+	list.push_back(_("!OUTBREAK!"));
+	list.push_back(_("!BARRIER!"));
+	list.push_back(_("!SITTING_DUCKS!"));
+	list.push_back(_("!HUNTER!"));
+	list.push_back(_("!INVADERS!"));
+	readDir(string(DATADIR)+"/levels", RD_FILES, list2);
+	for (auto& s : list2)
+		list.push_back(s);
 	if (string(CONFIGDIR) != ".") {
 		readDir(getHomeDir() + "/" + string(CONFIGDIR) + "/levels",
 							RD_FILES, list2);
