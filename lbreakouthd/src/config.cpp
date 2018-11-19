@@ -30,7 +30,7 @@ Config::Config()
 	diff = 2;
 	startlevel = 0;
 	rel_warp_limit = 80;
-	addBonusLevels = 1;
+	add_bonus_levels = 1;
 	/* controls */
 	k_left = SDL_SCANCODE_LEFT;
 	k_right = SDL_SCANCODE_RIGHT;
@@ -103,7 +103,7 @@ Config::Config()
 	fp.get( "diff", diff );
 	fp.get( "starting_level", startlevel );
 	fp.get( "rel_warp_limit", rel_warp_limit );
-	fp.get( "add_bonus_levels", addBonusLevels );
+	fp.get( "add_bonus_levels", add_bonus_levels );
 	fp.get( "left", k_left );
 	fp.get( "right", k_right );
 	fp.get( "fire_left", k_lfire );
@@ -161,7 +161,7 @@ void Config::save()
 	ofs << "diff=" << diff << "\n";
 	ofs << "starting_level=" << startlevel << "\n";
 	ofs << "rel_warp_limit=" << rel_warp_limit << "\n";
-	ofs << "add_bonus_levels=" << addBonusLevels << "\n";
+	ofs << "add_bonus_levels=" << add_bonus_levels << "\n";
 	ofs << "left=" << k_left << "\n";
 	ofs << "right=" << k_right << "\n";
 	ofs << "fire_left=" << k_lfire << "\n";

@@ -51,7 +51,7 @@ int ClientGame::init(const string& setname, int levelid)
 						diffs[config.diff].max_lives)));
 
 	/* load levelset from install directory or home directory */
-	if ((levelset = levelset_load(setname.c_str(), 0)) == 0) {
+	if ((levelset = levelset_load(setname.c_str(), config.add_bonus_levels)) == 0) {
 		_logerr("Could not load levelset %s\n",setname.c_str());
 		return -1;
 	}
@@ -64,6 +64,7 @@ int ClientGame::init(const string& setname, int levelid)
 		_logerr("Could not create game context\n");
 		return -1;
 	}
+	game->localServerGame = 1; /* for special levels */
 	game_set_current(game);
 	game_init(game,levelset->levels[levelid]);
 	game_set_convex_paddle( config.convex );

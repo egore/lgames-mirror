@@ -1107,6 +1107,7 @@ void View::createMenus()
 	mAdv->add(new MenuItemRange(_("Acc. Ball Speed"),
 			_("Maximum speed of accelerated balls."),
 			AID_MAXBALLSPEEDCHANGED,config.maxballspeed_int1000,700,1200,50));
+	mAdv->add(new MenuItemSwitch(_("Bonus Levels"),"Add bonus levels with a mini game every 4 regular levels. Game over will end the mini game without loosing a life. ",AID_NONE,config.add_bonus_levels));
 	mAdv->add(new MenuItemSep());
 	mAdv->add(new MenuItemBack(mOptions));
 
