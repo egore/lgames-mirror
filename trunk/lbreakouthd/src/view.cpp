@@ -319,6 +319,7 @@ void View::run()
 			if (!(flags & CGF_LIFELOST) && config.speech && (rand()%2))
 				mixer.play((rand()%2)?theme.sVeryGood:theme.sExcellent);
 			dim();
+			ticks.reset();
 			if (!(flags & CGF_LIFELOST)) {
 				initTitleLabel();
 				showWarpIcon = false;
@@ -762,7 +763,9 @@ void View::dim()
 		SDL_RenderPresent(mrc);
 		SDL_Delay(10);
 	}
-	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+
+	/* make sure no input is given yet for next state */
+	waitForInputRelease();
 }
 
 bool View::showInfo(const string &line, bool confirm)
@@ -1214,10 +1217,7 @@ void View::runMenu()
 				/* XXX workaround for SDL bug: clear event
 				 * loop otherwise left mouse button event is
 				 * screwed for the first click*/
-				SDL_Delay(250);
-				SDL_PumpEvents();
-				SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
-
+				waitForInputRelease();
 				init(themeNames[config.theme_id],
 					MainWindow::getModeResolution(config.mode));
 				curMenu = graphicsMenu;
@@ -1225,7 +1225,6 @@ void View::runMenu()
 			case AID_RESUME:
 				if (resumeGame()) {
 					dim();
-					SDL_Delay(250); /* wait until button released */
 					run();
 					ticks.reset();
 				}
@@ -1233,7 +1232,6 @@ void View::runMenu()
 			case AID_STARTORIGINAL:
 				cgame.init("LBreakoutHD");
 				dim();
-				SDL_Delay(250); /* wait until button released */
 				run();
 				ticks.reset();
 				break;
@@ -1243,7 +1241,6 @@ void View::runMenu()
 				if (selectDlg.run()) {
 					cgame.init(selectDlg.get());
 					dim();
-					SDL_Delay(250); /* wait until button released */
 					run();
 					ticks.reset();
 				} else if (selectDlg.quitRcvd())
@@ -1268,7 +1265,7 @@ void View::runMenu()
 	dim();
 
 	/* clear events for menu loop */
-	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+	waitForInputRelease();
 }
 
 void View::renderMenu()
@@ -1598,7 +1595,7 @@ void View::showHelp()
 
 	SDL_RenderPresent(mrc);
 
-	SDL_Delay(250);
+	waitForInputRelease();
 	waitForKey(false);
 }
 
@@ -1627,10 +1624,7 @@ void View::runBrickDestroyDlg()
 	SDL_RenderPresent(mrc);
 
 	grabInput(0);
-
-	SDL_Delay(250);
-	SDL_PumpEvents();
-	SDL_FlushEvents(SDL_FIRSTEVENT,SDL_LASTEVENT);
+	waitForInputRelease();
 	while (!leave) {
 		/* handle events */
 		if (SDL_WaitEvent(&ev)) {
@@ -1651,7 +1645,38 @@ void View::runBrickDestroyDlg()
 	}
 
 	grabInput(1);
-	SDL_Delay(250);
+	waitForInputRelease();
+}
+
+/* wait up to 1s for release of all buttons and keys.
+ * Clear SDL event loop afterwards.
+ */
+void View::waitForInputRelease()
+{
+	SDL_Event ev;
+	bool leave = false;
+	int timeout = 500, numkeys;
+	Ticks ticks;
+
+	SDL_PumpEvents();
+	SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+	while (!leave) {
+		if (SDL_PollEvent(&ev) && ev.type == SDL_QUIT)
+			quitReceived = leave = true;
+		leave = true;
+		if (SDL_GetMouseState(NULL, NULL))
+			leave = false;
+		const Uint8 *keystate = SDL_GetKeyboardState(&numkeys);
+		for (int i = 0; i < numkeys; i++)
+			if (keystate[i]) {
+				leave = false;
+				break;
+			}
+		timeout -= ticks.get();
+		if (timeout <= 0)
+			leave = true;
+		SDL_Delay(10);
+	}
 	SDL_PumpEvents();
 	SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 }
