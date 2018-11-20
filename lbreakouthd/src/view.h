@@ -107,6 +107,7 @@ class View {
 	void updateResumeGameTooltip();
 	void renderExtraHelp(GridImage &img, uint gx, uint gy, const string &str, int x, int y);
 	void runBrickDestroyDlg();
+	void waitForInputRelease();
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();
