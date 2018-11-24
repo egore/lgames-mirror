@@ -42,8 +42,10 @@ void MenuItem::renderPart(Label &ln, Label &lf, int align)
 	}
 	align = align | ALIGN_Y_CENTER;
 
-	if (!focus)
+	if (!focus) {
+		ln.setAlpha(255 - fadingAlpha);
 		ln.copy(tx, ty, align);
+	}
 	if (focus || fadingAlpha > 0) {
 		lf.setAlpha(fadingAlpha);
 		lf.copy(tx+txoff, ty, align);
