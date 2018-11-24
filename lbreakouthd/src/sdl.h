@@ -145,6 +145,9 @@ public:
 				on?SDL_BLENDMODE_BLEND:SDL_BLENDMODE_NONE);
 	}
 	void fill(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
+	void fill(const SDL_Color &c) {
+		fill(c.r,c.g,c.b,c.a);
+	}
 	void scale(int nw, int nh);
 	int createShadow(Image &img);
 };
@@ -251,10 +254,23 @@ public:
 };
 
 class Label {
-	Image img;
 	bool empty;
+	Image img;
+	int border; /* -1 for default 20% font size border */
+	SDL_Color bgColor;
 public:
-	Label() : empty(true) {}
+	Label() : empty(true), border(-1) {
+		bgColor.r = bgColor.g = bgColor.b = 0;
+		bgColor.a = 224;
+	}
+	void setBgColor(const SDL_Color &c) {
+		bgColor = c;
+	}
+	void setBorder(int b) {
+		if (b < 0)
+			b = -1;
+		border = b;
+	}
 	void setText(Font &f, const string &str, uint max = 0);
 	void copy(int x, int y, int align = ALIGN_X_CENTER | ALIGN_Y_CENTER) {
 		if (empty)
