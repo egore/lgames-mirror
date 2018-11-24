@@ -3,16 +3,9 @@ freakout set
 
 eye/ear candy:
 stereo sound
-tail for explosive ball, fuzzy chaotic ball
 themes should get selection dialog as well
 shine effect
 show some info on bonus levels and show proper name in label
 
-optimizations:
-efficient check for active extras and draw only once per sec
-reuse existing previews on starting custom game again
-label for score
-
 already known bugs:
 l10n doesn't work though mo file is installed???
-

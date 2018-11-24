@@ -27,7 +27,8 @@ extern SDL_Renderer *mrc;
 View::View(Config &cfg, ClientGame &_cg)
 	: config(cfg), mw(NULL),
 	  curMenu(NULL), graphicsMenu(NULL), resumeMenuItem(NULL),
-	  selectDlg(theme, mixer), cgame(_cg), quitReceived(false),
+	  selectDlg(theme, mixer), lblCredits1(true), lblCredits2(true),
+	  cgame(_cg), quitReceived(false),
 	  showWarpIcon(false), warpIconX(0), warpIconY(0),
 	  fpsCycles(0), fpsStart(0), fps(0)
 {
@@ -108,6 +109,10 @@ void View::init(string t, uint r)
 
 	/* create menu structure */
 	createMenus();
+
+	/* set credit labels */
+	lblCredits1.setText(theme.fSmall, "http://lgames.sf.net");
+	lblCredits2.setText(theme.fSmall, string("v")+PACKAGE_VERSION);
 
 	/* create render images and positions */
 	imgBackground.create(sw,sh);
@@ -1278,10 +1283,13 @@ void View::runMenu()
 void View::renderMenu()
 {
 	theme.menuBackground.copy();
+	lblCredits1.copy(theme.menuBackground.getWidth()-2,
+				theme.menuBackground.getHeight(),
+				ALIGN_X_RIGHT | ALIGN_Y_BOTTOM);
+	lblCredits2.copy(theme.menuBackground.getWidth()-2,
+				theme.menuBackground.getHeight() - theme.fSmall.getLineHeight(),
+				ALIGN_X_RIGHT | ALIGN_Y_BOTTOM);
 	curMenu->render();
-	theme.fSmall.setAlign(ALIGN_X_RIGHT | ALIGN_Y_BOTTOM);
-	theme.fSmall.write(theme.menuBackground.getWidth()-2,theme.menuBackground.getHeight(), "http://lgames.sf.net");
-	theme.fSmall.write(theme.menuBackground.getWidth()-2,theme.menuBackground.getHeight() - theme.fSmall.getLineHeight(), string("v")+PACKAGE_VERSION);
 }
 
 void View::grabInput(int grab)

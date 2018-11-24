@@ -103,6 +103,8 @@ class ClientGame {
 	ClientPlayer *lastDeadPlayer;
 	string msg;
 	Timeout frictionTimeout;
+	bool extrasActive;
+	Timeout extrasUpdateTimeout;
 
 	ClientPlayer *getNextPlayer();
 	void initLevel(Level *l);

@@ -1,3 +1,4 @@
+- optimized menu rendering by using labels
 - properly wait for release of keys and buttons
 - re-enabled mini games
 

@@ -20,8 +20,9 @@ using namespace std;
 extern GameDiff diffs[DIFF_COUNT];
 
 ClientGame::ClientGame(Config &cfg) : config(cfg), levelset(0), game(0),
-		curPlayer(0), lastDeadPlayer(NULL), msg("")
+		curPlayer(0), lastDeadPlayer(NULL), msg(""), extrasActive(false)
 {
+	extrasUpdateTimeout.set(200);
 }
 
 ClientGame::~ClientGame()
@@ -72,6 +73,7 @@ int ClientGame::init(const string& setname, int levelid)
 	game_set_ball_random_angle( config.random_angle );
 	game_set_ball_accelerated_speed( config.maxballspeed_float );
 	game->ball_auto_speedup = config.ball_auto_turbo;
+	extrasActive = false;
 
 	/* set first level as snapshot to all players */
 	for (auto& p : players)
@@ -110,21 +112,24 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 	/* reset old modifications (View needs current mods afterwards) */
 	game_reset_mods();
 
-	/* as long as any extra is active render active extras
-	 * FIXME: only a limited set of extras is relevant so this can
-	 * be checked way more sufficiently...
-	 */
-	for (int i = 0; i < EX_NUMBER; i++)
-		if (game->extra_active[i]) {
-			ret |= CGF_UPDATEEXTRAS;
-			break;
-		}
-	if (!(ret & CGF_UPDATEEXTRAS))
+	/* as long as any extra is active render active extras every 200 ms */
+	if (extrasUpdateTimeout.update(ms)) {
+		bool oldExtrasActive = extrasActive;
 		for (int i = 0; i < EX_NUMBER; i++)
-			if (game->paddles[0]->extra_active[i]) {
-				ret |= CGF_UPDATEEXTRAS;
+			if (game->extra_active[i]) {
+				extrasActive = true;
 				break;
 			}
+		if (!(ret & CGF_UPDATEEXTRAS))
+			for (int i = 0; i < EX_NUMBER; i++)
+				if (game->paddles[0]->extra_active[i]) {
+					extrasActive = true;
+					break;
+				}
+		if (extrasActive || oldExtrasActive)
+			ret |= CGF_UPDATEEXTRAS;
+		extrasUpdateTimeout.reset();
+	}
 
 	/* handle paddle movement, px is resulting absolute position */
 	double px = game->paddles[0]->cur_x;
