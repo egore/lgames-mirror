@@ -61,13 +61,9 @@ public:
 	static uint tooltipWidth;
 
 	MenuItem(const string &c, const string &tt, int aid = AID_NONE) :
-			caption(c), x(0), y(0), w(1), h(1),
+			caption(c), lblNormal(true), lblFocus(true),
+			x(0), y(0), w(1), h(1),
 			focus(0), actionId(aid), fadingAlpha(0) {
-		SDL_Color clr = {0,0,0,0};
-		lblNormal.setBgColor(clr);
-		lblNormal.setBorder(0);
-		lblFocus.setBgColor(clr);
-		lblFocus.setBorder(0);
 		if (MenuItem::fNormal && MenuItem::fFocus) {
 			lblNormal.setText(*(MenuItem::fNormal), c);
 			lblFocus.setText(*(MenuItem::fFocus), c);
@@ -128,12 +124,8 @@ class MenuItemValue : public MenuItem {
 public:
 	MenuItemValue(const string &c, const string &v,
 				const string &tt, int aid = AID_NONE) :
-				MenuItem(c + ":",tt,aid), value("") {
-		SDL_Color clr = {0,0,0,0};
-		lblValueNormal.setBgColor(clr);
-		lblValueNormal.setBorder(0);
-		lblValueFocus.setBgColor(clr);
-		lblValueFocus.setBorder(0);
+				MenuItem(c + ":",tt,aid), value(""),
+				lblValueNormal(true), lblValueFocus(true) {
 		setValue(v);
 	}
 	void setValue(const string &v) {

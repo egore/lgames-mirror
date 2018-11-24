@@ -46,6 +46,7 @@ class View {
 	vector<string> modeNames;
 	string saveFileName;
 	SelectDialog selectDlg;
+	Label lblCredits1, lblCredits2;
 
 	/* game */
 	ClientGame &cgame;

@@ -259,9 +259,13 @@ class Label {
 	int border; /* -1 for default 20% font size border */
 	SDL_Color bgColor;
 public:
-	Label() : empty(true), border(-1) {
+	Label(bool transparent=false) : empty(true), border(-1) {
 		bgColor.r = bgColor.g = bgColor.b = 0;
-		bgColor.a = 224;
+		if (transparent) {
+			bgColor.a = 0;
+			border = 0;
+		} else
+			bgColor.a = 224;
 	}
 	void setBgColor(const SDL_Color &c) {
 		bgColor = c;
