@@ -40,27 +40,42 @@ class Menu;
 /** Basic menu item with just a caption, returns action id on click */
 class MenuItem {
 protected:
-	Menu *parent;
 	string caption;
-	string tooltipText;
 	Label tooltip;
+	Label lblNormal;
+	Label lblFocus;
 	Timeout tooltipTimeout;
 	int x, y, w, h;
 	int focus;
 	int actionId;
 	double fadingAlpha;
 
-	void renderPart(const string &str, int align);
+	void renderPart(Label &ln, Label &lf, int align);
 	void renderTooltip() {
 		if (focus && !tooltipTimeout.running())
 			tooltip.copy(x+1.1*w, y+h/2-tooltip.getHeight()/2,
 						ALIGN_X_LEFT | ALIGN_Y_TOP);
 	}
 public:
+	static Font *fNormal, *fFocus, *fTooltip;
+	static uint tooltipWidth;
+
 	MenuItem(const string &c, const string &tt, int aid = AID_NONE) :
-			parent(NULL), caption(c), tooltipText(tt),
-			x(0), y(0), w(1), h(1),
-			focus(0), actionId(aid), fadingAlpha(0) {}
+			caption(c), x(0), y(0), w(1), h(1),
+			focus(0), actionId(aid), fadingAlpha(0) {
+		SDL_Color clr = {0,0,0,0};
+		lblNormal.setBgColor(clr);
+		lblNormal.setBorder(0);
+		lblFocus.setBgColor(clr);
+		lblFocus.setBorder(0);
+		if (MenuItem::fNormal && MenuItem::fFocus) {
+			lblNormal.setText(*(MenuItem::fNormal), c);
+			lblFocus.setText(*(MenuItem::fFocus), c);
+		}
+		if (MenuItem::fTooltip)
+			tooltip.setText(*(MenuItem::fTooltip),tt,
+						MenuItem::tooltipWidth);
+	}
 	virtual ~MenuItem() {}
 	void setGeometry(int _x, int _y, int _w, int _h) {
 		x = _x;
@@ -69,8 +84,11 @@ public:
 		h = _h;
 		_logdebug(2,"Geometry for %s: %d,%d,%d,%d\n",caption.c_str(),x,y,w,h);
 	}
-	void setParent(Menu *p);
-	void setTooltip(const string &tt);
+	void setTooltip(const string &tt) {
+		if (MenuItem::fTooltip)
+			tooltip.setText(*(MenuItem::fTooltip),tt,
+					MenuItem::tooltipWidth);
+	}
 	bool hasPointer(int px, int py) {
 		return (px >= x && px < x + w && py >= y && py < y + h);
 	}
@@ -92,13 +110,42 @@ public:
 			tooltipTimeout.update(ms);
 	}
 	virtual void render() {
-		renderPart(caption, ALIGN_X_LEFT);
+		renderPart(lblNormal, lblFocus, ALIGN_X_LEFT);
 		renderTooltip();
 	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN)
 			return actionId;
 		return 0;
+	}
+};
+
+/** Allow a string value in addition to caption. */
+class MenuItemValue : public MenuItem {
+	string value;
+	Label lblValueNormal;
+	Label lblValueFocus;
+public:
+	MenuItemValue(const string &c, const string &v,
+				const string &tt, int aid = AID_NONE) :
+				MenuItem(c + ":",tt,aid), value("") {
+		SDL_Color clr = {0,0,0,0};
+		lblValueNormal.setBgColor(clr);
+		lblValueNormal.setBorder(0);
+		lblValueFocus.setBgColor(clr);
+		lblValueFocus.setBorder(0);
+		setValue(v);
+	}
+	void setValue(const string &v) {
+		value = v;
+		if (MenuItem::fNormal && MenuItem::fFocus) {
+			lblValueNormal.setText(*(MenuItem::fNormal), value);
+			lblValueFocus.setText(*(MenuItem::fFocus), value);
+		}
+	}
+	virtual void render() {
+		renderPart(lblValueNormal, lblValueFocus, ALIGN_X_RIGHT);
+		MenuItem::render();
 	}
 };
 
@@ -126,20 +173,17 @@ public:
 };
 
 /* Range items allow modifying a referenced value. */
-class MenuItemRange : public MenuItem {
+class MenuItemRange : public MenuItemValue {
 protected:
 	int min, max, step;
 	int &val;
 public:
 	MenuItemRange(const string &c, const string &tt, int aid, int &_val,
 				int _min, int _max, int _step)
-		: MenuItem(c+":",tt,aid),
+		: MenuItemValue(c,to_string(_val),tt,aid),
 		  min(_min), max(_max), step(_step), val(_val) {}
-	virtual void render() {
-		renderPart(to_string(val), ALIGN_X_RIGHT);
-		MenuItem::render();
-	}
 	virtual int handleEvent(const SDL_Event &ev) {
+		int oldval = val;
 		if (ev.type == SDL_MOUSEBUTTONDOWN) {
 			if (ev.button.button == SDL_BUTTON_LEFT) {
 				val += step;
@@ -150,9 +194,11 @@ public:
 				if (val < min)
 					val = max;
 			}
+			if (val != oldval)
+				setValue(to_string(val));
 			return actionId;
 		}
-		return 0;
+		return AID_NONE;
 	}
 };
 
@@ -164,28 +210,35 @@ public:
 					int &v, vector<string> &opts)
 			: MenuItemRange(c,tt,aid,v,0,opts.size()-1,1) {
 		options = opts;
+		setValue(options[v]);
 	}
 	MenuItemList(const string &c, const string &tt, int aid,
 					int &v, const char **opts, uint optNum)
 			: MenuItemRange(c,tt,aid,v,0,optNum-1,1) {
 		for (uint i = 0; i < optNum; i++)
 			options.push_back(opts[i]);
+		setValue(options[v]);
 	}
 	MenuItemList(const string &c, const string &tt, int aid,
 					int &v, const string &opt1, const string &opt2)
 			: MenuItemRange(c,tt,aid,v,0,1,1) {
 		options.push_back(opt1);
 		options.push_back(opt2);
+		setValue(options[v]);
 	}
 	void setOptions(vector<string> &opts, int _cur) {
 		options = opts;
 		min = 0;
 		max = opts.size() - 1;
 		val = _cur;
+		setValue(options[val]);
 	}
-	virtual void render() {
-		renderPart(options[val], ALIGN_X_RIGHT);
-		MenuItem::render();
+	virtual int handleEvent(const SDL_Event &ev) {
+		int oldval = val;
+		int ret = MenuItemRange::handleEvent(ev);
+		if (val != oldval)
+			setValue(options[val]);
+		return ret;
 	}
 };
 
@@ -205,15 +258,15 @@ public:
 			options.push_back(opts[i]);
 		}
 		val = options[idx]; /* if not found, fallback to first value */
-	}
-	virtual void render() {
-		renderPart(to_string(val), ALIGN_X_RIGHT);
-		MenuItem::render();
+		setValue(to_string(options[idx]));
 	}
 	virtual int handleEvent(const SDL_Event &ev) {
-		MenuItemRange::handleEvent(ev);
+		int oldval = val;
+		int ret = MenuItemRange::handleEvent(ev);
 		val = options[idx];
-		return AID_NONE;
+		if (val != oldval)
+			setValue(to_string(options[idx]));
+		return ret;
 	}
 };
 
@@ -223,46 +276,46 @@ public:
 			: MenuItemList(c,tt,aid,v,_("Off"),_("On")) {}
 };
 
-class MenuItemKey : public MenuItem {
+class MenuItemKey : public MenuItemValue {
 	int &sc;
 	bool waitForNewKey;
 public:
 	MenuItemKey(const string &c, const string &tt, int &_sc)
-		: MenuItem(c+":",tt,AID_CHANGEKEY), sc(_sc), waitForNewKey(false) {}
-	virtual void render() {
-		if (waitForNewKey)
-			renderPart("???", ALIGN_X_RIGHT);
-		else
-			renderPart(SDL_GetScancodeName((SDL_Scancode)sc), ALIGN_X_RIGHT);
-		MenuItem::render();
+			: MenuItemValue(c,"",tt,AID_CHANGEKEY),
+			  sc(_sc), waitForNewKey(false) {
+		setValue(SDL_GetScancodeName((SDL_Scancode)sc));
 	}
 	virtual int handleEvent(const SDL_Event &ev) {
-		if (ev.type == SDL_MOUSEBUTTONDOWN)
+		if (ev.type == SDL_MOUSEBUTTONDOWN) {
 			waitForNewKey = true;
+			setValue("???");
+		}
 		return actionId;
 	}
 	void setKey(int nsc) {
 		sc = nsc;
 		waitForNewKey = false;
+		setValue(SDL_GetScancodeName((SDL_Scancode)sc));
 	}
-	void cancelChange() { waitForNewKey = false; }
+	void cancelChange() {
+		setValue(SDL_GetScancodeName((SDL_Scancode)sc));
+		waitForNewKey = false;
+	}
 };
 
-class MenuItemEdit : public MenuItem {
+class MenuItemEdit : public MenuItemValue {
 	string &str;
 
 	int runEditDialog(const string &caption, string &str);
 public:
 	MenuItemEdit(const string &c, string &s, int aid = AID_NONE)
-			: MenuItem(c,"",AID_NONE), str(s) {}
-	virtual void render() {
-		renderPart(str, ALIGN_X_RIGHT);
-		MenuItem::render();
-	}
+			: MenuItemValue(c,s,"",AID_NONE), str(s) {}
 	virtual int handleEvent(const SDL_Event &ev) {
 		if (ev.type == SDL_MOUSEBUTTONDOWN)
-			if (runEditDialog(_("Enter Name"),str))
+			if (runEditDialog(_("Enter Name"),str)) {
+				setValue(str);
 				return actionId;
+			}
 		return AID_NONE;
 	}
 };
@@ -276,13 +329,8 @@ public:
 	~Menu() {}
 	void add(MenuItem *item) {
 		items.push_back(unique_ptr<MenuItem>(item));
-		item->setParent(this);
 	}
 	MenuItem *getCurItem() { return curItem; }
-	Font *getNormalFont() { return &theme.fMenuNormal; }
-	Font *getFocusFont() { return &theme.fMenuFocus; }
-	Font *getTooltipFont() { return &theme.fSmall; }
-	uint getTooltipWidth() { return 0.3*theme.menuBackground.getWidth(); }
 	void adjust() {
 		int h = items.size() * theme.menuItemHeight;
 		int w = theme.menuItemWidth;

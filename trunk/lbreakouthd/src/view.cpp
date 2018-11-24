@@ -985,6 +985,13 @@ void View::createMenus()
 	const int bufSizes[] = { 256, 512, 1024, 2048, 4096 };
 	const int channelNums[] = { 8, 16, 32 };
 
+	/* XXX too lazy to set fonts for each and every item...
+	 * use static pointers instead */
+	MenuItem::fNormal = &theme.fMenuNormal;
+	MenuItem::fFocus = &theme.fMenuFocus;
+	MenuItem::fTooltip = &theme.fSmall;
+	MenuItem::tooltipWidth = 0.3 * theme.menuBackground.getWidth();
+
 	rootMenu.reset(); /* delete any old menu ... */
 
 	rootMenu = unique_ptr<Menu>(new Menu(theme)); /* .. or is assigning a new object doing it? */

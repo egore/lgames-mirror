@@ -21,47 +21,32 @@
 
 extern SDL_Renderer *mrc;
 
-void MenuItem::setParent(Menu *p)
-{
-	parent = p;
-	setTooltip(tooltipText);
-}
-
-void MenuItem::setTooltip(const string &tt)
-{
-	tooltipText = tt;
-	if (parent)
-		tooltip.setText(*(parent->getTooltipFont()),tooltipText,
-					parent->getTooltipWidth());
-}
+Font *MenuItem::fNormal = NULL;
+Font *MenuItem::fFocus = NULL;
+Font *MenuItem::fTooltip = NULL;
+uint MenuItem::tooltipWidth = 300;
 
 /** Helper to render a part of the menu item. Position is determined
  * by given alignment. */
-void MenuItem::renderPart(const string &str, int align)
+void MenuItem::renderPart(Label &ln, Label &lf, int align)
 {
-	if (!parent)
-		return; /* should never happen */
+	if (!MenuItem::fFocus || !MenuItem::fNormal)
+		return;
 
-	int tx = x + w/2, ty = y + h/2;
-	int txoff = 0;
-	if (align == ALIGN_X_LEFT) {
-		tx = x;
-		txoff = -parent->getFocusFont()->getSize()/5;
-	} else if (align == ALIGN_X_RIGHT) {
+	int tx = x, ty = y + h/2;
+	int txoff = -MenuItem::fFocus->getSize()/5;
+
+	if (align == ALIGN_X_RIGHT) {
 		tx = x + w;
-		txoff = parent->getFocusFont()->getSize()/5;
+		txoff = MenuItem::fFocus->getSize()/5;
 	}
+	align = align | ALIGN_Y_CENTER;
 
-	Font *f = parent->getNormalFont();
-	if (focus)
-		f = parent->getFocusFont();
-
-	f->setAlign(align | ALIGN_Y_CENTER);
-	f->write(tx+(focus?txoff:0),ty,str,focus?255:(255-fadingAlpha));
-	if (!focus && fadingAlpha > 0) {
-		f = parent->getFocusFont();
-		f->setAlign(align | ALIGN_Y_CENTER);
-		f->write(tx+txoff,ty,str,fadingAlpha);
+	if (!focus)
+		ln.copy(tx, ty, align);
+	if (focus || fadingAlpha > 0) {
+		lf.setAlpha(fadingAlpha);
+		lf.copy(tx+txoff, ty, align);
 	}
 }
 
@@ -71,13 +56,19 @@ void MenuItem::renderPart(const string &str, int align)
 int MenuItemEdit::runEditDialog(const string &caption, string &str)
 {
 	int ret = 0;
-	Font *f = parent->getNormalFont();
+	Font *f = MenuItem::fNormal;
 	SDL_Event event;
 	string backup = str;
 	Image img;
 	img.createFromScreen();
 	img.setAlpha(64);
 	bool done = false;
+
+	/* should never fail but be safe */
+	if (f == NULL) {
+		_logerr("No font for edit dialog???\n");
+		return ret;
+	}
 
 	f->setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
 

@@ -1,3 +1,6 @@
+- properly wait for release of keys and buttons
+- re-enabled mini games
+
 1.0.2:
 - added option to destroy single bricks as workaround for bad levels
 - added option for absolute mouse input

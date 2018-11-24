@@ -9,10 +9,8 @@ shine effect
 show some info on bonus levels and show proper name in label
 
 optimizations:
-labels for menu
 efficient check for active extras and draw only once per sec
 reuse existing previews on starting custom game again
-smooth menu tooltips at pointer position
 label for score
 
 already known bugs:

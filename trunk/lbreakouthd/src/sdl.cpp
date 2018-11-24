@@ -486,7 +486,10 @@ void Label::setText(Font &font, const string &str, uint maxw)
 		empty = true;
 		return;
 	}
-	uint border = 20 * font.getSize() / 100; /* FIXME: fixed for now */
+
+	int b = border;
+	if (b == -1)
+		b = 20 * font.getSize() / 100;
 	int w = 0, h = 0;
 
 	/* get size */
@@ -498,15 +501,15 @@ void Label::setText(Font &font, const string &str, uint maxw)
 	if (w == 0 || h == 0)
 		return;
 
-	img.create(w + 4*border, h + 2*border);
-	img.fill(0, 0, 0, 224);
+	img.create(w + 4*b, h + 2*b);
+	img.fill(bgColor);
 	SDL_Texture *old = SDL_GetRenderTarget(mrc);
 	SDL_SetRenderTarget(mrc,img.getTex());
 	if (maxw == 0) {
 		font.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
 		font.write(img.getWidth()/2,img.getHeight()/2,str);
 	} else
-		font.writeText(2*border, border, str, maxw);
+		font.writeText(2*b, b, str, maxw);
 	SDL_SetRenderTarget(mrc,old);
 	empty = false;
 }
