@@ -276,6 +276,9 @@ public:
 		border = b;
 	}
 	void setText(Font &f, const string &str, uint max = 0);
+	void clearText() {
+		empty = true;
+	}
 	void copy(int x, int y, int align = ALIGN_X_CENTER | ALIGN_Y_CENTER) {
 		if (empty)
 			return;

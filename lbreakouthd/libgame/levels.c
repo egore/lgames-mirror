@@ -115,6 +115,31 @@ home directory (fname begins with ~) or installation directory.
 addBonusLevels is also the seed if not 0.
 ====================================================================
 */
+static void setBonusLevelName(Level *l) {
+	switch (l->type) {
+	case LT_JUMPING_JACK:
+		snprintf(l->name,32,"%s",_("Jumping Jack"));
+		break;
+	case LT_OUTBREAK:
+		snprintf(l->name,32,"%s",_("Outbreak"));
+		break;
+	case LT_BARRIER:
+		snprintf(l->name,32,"%s",_("Barrier"));
+		break;
+	case LT_SITTING_DUCKS:
+		snprintf(l->name,32,"%s",_("Sitting Ducks"));
+		break;
+	case LT_HUNTER:
+		snprintf(l->name,32,"%s",_("Hunter"));
+		break;
+	case LT_DEFENDER:
+		snprintf(l->name,32,"%s",_("Invaders"));
+		break;
+	default:
+		snprintf(l->name,32,"%s",_("unknown"));
+		break;
+	}
+}
 LevelSet *levelset_load( const char *fname, int addBonusLevels )
 {
 	int version, update, i, j, num;
@@ -129,21 +154,17 @@ LevelSet *levelset_load( const char *fname, int addBonusLevels )
         sprintf(set->name,"%s",fname);
         if (!strcmp(fname,_("!JUMPING_JACK!")))
             set->levels[0]->type = LT_JUMPING_JACK;
-        else
-        if (!strcmp(fname,_("!OUTBREAK!")))
+        else if (!strcmp(fname,_("!OUTBREAK!")))
             set->levels[0]->type = LT_OUTBREAK;
-        else
-        if (!strcmp(fname,_("!BARRIER!")))
+        else if (!strcmp(fname,_("!BARRIER!")))
             set->levels[0]->type = LT_BARRIER;
-        else
-        if (!strcmp(fname,_("!SITTING_DUCKS!")))
+        else if (!strcmp(fname,_("!SITTING_DUCKS!")))
             set->levels[0]->type = LT_SITTING_DUCKS;
-        else
-        if (!strcmp(fname,_("!HUNTER!")))
+        else if (!strcmp(fname,_("!HUNTER!")))
             set->levels[0]->type = LT_HUNTER;
-        else
-        if (!strcmp(fname,_("!INVADERS!")))
+        else if (!strcmp(fname,_("!INVADERS!")))
             set->levels[0]->type = LT_DEFENDER;
+        setBonusLevelName(set->levels[0]);
         return set;
     }
     
@@ -159,6 +180,7 @@ LevelSet *levelset_load( const char *fname, int addBonusLevels )
         {
             level = level_create_empty("LGames", "Bonus Level");
             level->type = RANDOM(LT_JUMPING_JACK,LT_LAST-1);
+            setBonusLevelName(level);
             list_insert(levels,level,j);
             j += 5;
         }

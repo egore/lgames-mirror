@@ -57,6 +57,7 @@ class View {
 	/* render parts */
 	Label lblTitle;
 	SmoothCounter lblTitleCounter;
+	Label lblInfo; /* for mini games */
 	int curWallpaperId;
 	Image imgBackground;
 	Image imgBricks;
