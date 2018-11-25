@@ -129,6 +129,10 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 		if (extrasActive || oldExtrasActive)
 			ret |= CGF_UPDATEEXTRAS;
 		extrasUpdateTimeout.reset();
+
+		/* XXX use timer to update bonus level info as well */
+		if (game->isBonusLevel)
+			ret |= CGF_UPDATEINFO;
 	}
 
 	/* handle paddle movement, px is resulting absolute position */
@@ -280,4 +284,22 @@ int ClientGame::destroyBrick(int x, int y)
 	game->bricks[x][y].score = -10 * players[curPlayer]->getScore() / 100;
 	list_add(game->exp_bricks, &game->bricks[x][y] );
 	return 1;
+}
+
+const string &ClientGame::getBonusLevelInfo()
+{
+	static string info;
+	if (!game->isBonusLevel)
+		info = "normal level";
+	else switch (game->level_type) {
+	case LT_BARRIER:
+		strprintf(info, _("Level: %d, Size: %d/12"),
+				game->blBarrierLevel, game->blBarrierLevel+2);
+		break;
+	case LT_SITTING_DUCKS:
+		strprintf(info, _("Total Hits: %d, Current Price: %d"),
+				game->blNumCompletedRuns, game->blMaxScore);
+		break;
+	}
+	return info;
 }

@@ -601,7 +601,7 @@ static void bricks_init_bonus_level( Game *game, int game_type, int level_type )
             break;
         case LT_BARRIER:
             game->blActionTime = 3000; /* time until move down */
-            game->blMaxScore = 4000;
+            game->blMaxScore = 6000;
             game->blBarrierLevel = 1;
             game->blBarrierMoves = 0;
             delay_set(&game->blDelay,game->blActionTime);
@@ -611,14 +611,14 @@ static void bricks_init_bonus_level( Game *game, int game_type, int level_type )
             if (game->blDuckPositions) free(game->blDuckPositions);
             game->blTotalNumDucks = game->blNumDucks = 8;
             game->blDuckPositions = (int*)calloc(2*game->blTotalNumDucks,sizeof(int));
-            game->blDuckPositions[0]  = 1; game->blDuckPositions[1]  = 5;
-            game->blDuckPositions[2]  = 2; game->blDuckPositions[3]  = 3;
-            game->blDuckPositions[4]  = 4; game->blDuckPositions[5]  = 2;
-            game->blDuckPositions[6]  = 6; game->blDuckPositions[7]  = 1;
-            game->blDuckPositions[8]  = 9; game->blDuckPositions[9]  = 1;
-            game->blDuckPositions[10] = 11; game->blDuckPositions[11] = 2;
-            game->blDuckPositions[12] = 13; game->blDuckPositions[13] = 3;
-            game->blDuckPositions[14] = 14; game->blDuckPositions[15] = 5;
+            game->blDuckPositions[0]  = 1; game->blDuckPositions[1]  = 5+3;
+            game->blDuckPositions[2]  = 2; game->blDuckPositions[3]  = 3+3;
+            game->blDuckPositions[4]  = 4; game->blDuckPositions[5]  = 2+3;
+            game->blDuckPositions[6]  = 6; game->blDuckPositions[7]  = 1+3;
+            game->blDuckPositions[8]  = 9; game->blDuckPositions[9]  = 1+3;
+            game->blDuckPositions[10] = 11; game->blDuckPositions[11] = 2+3;
+            game->blDuckPositions[12] = 13; game->blDuckPositions[13] = 3+3;
+            game->blDuckPositions[14] = 14; game->blDuckPositions[15] = 5+3;
             game->blDuckBaseScore = 6000;
             game->blMaxScore = game->blDuckBaseScore;
             for (i=0;i<game->blTotalNumDucks;i++)
@@ -852,7 +852,7 @@ int brick_hit( int mx, int my, int metal, int type, Vector imp, Paddle *paddle )
                         paddle->score += ratio*cur_game->blMaxScore;
                         cur_game->totalBonusLevelScore += ratio*cur_game->blMaxScore;
                         //printf("SD: hit!\n");
-                        cur_game->blMaxScore *= 1.05;
+                        cur_game->blMaxScore += 1000;
                         cur_game->blNumCompletedRuns++;
                         cur_game->blRatioSum += ratio;
                         brick_set_by_id(cur_game,mx,my,3); 
@@ -970,13 +970,18 @@ int brick_hit( int mx, int my, int metal, int type, Vector imp, Paddle *paddle )
             case LT_BARRIER:
                 if (my == 1)
                 {
+                	int s = (cur_game->blBarrierMaxMoves -
+                			cur_game->blBarrierMoves) *
+                			cur_game->blMaxScore /
+					cur_game->blBarrierMaxMoves;
+                	s /= 100;
+                	s *= 100;
+                	if (s < 0)
+                		s = 0;
                     /* build a tougher barrier, enter next level */
-                    ratio = ((double)(cur_game->blBarrierMaxMoves - cur_game->blBarrierMoves))/cur_game->blBarrierMaxMoves;
-                    if (ratio<0) ratio=0;
-                    paddle->score += 500*cur_game->blBarrierLevel + ratio*cur_game->blMaxScore;
-                    cur_game->totalBonusLevelScore += 500*cur_game->blBarrierLevel + ratio*cur_game->blMaxScore;
-                    //printf("BR: maxScore: %d, ratio: %f, respawn time: %d\n",cur_game->blMaxScore,ratio,cur_game->blActionTime);
-                    //cur_game->blActionTime *= 0.95;
+                    paddle->score += s;
+                    cur_game->totalBonusLevelScore += s;
+                    cur_game->blActionTime *= 0.98;
                     cur_game->blMaxScore += 1000;
                     delay_set(&cur_game->blDelay,cur_game->blActionTime);
                     cur_game->blBarrierMoves = 0;

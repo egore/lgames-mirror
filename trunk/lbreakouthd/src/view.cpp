@@ -110,9 +110,10 @@ void View::init(string t, uint r)
 	/* create menu structure */
 	createMenus();
 
-	/* set credit labels */
+	/* set label stuff*/
 	lblCredits1.setText(theme.fSmall, "http://lgames.sf.net");
 	lblCredits2.setText(theme.fSmall, string("v")+PACKAGE_VERSION);
+	lblInfo.setBorder(2);
 
 	/* create render images and positions */
 	imgBackground.create(sw,sh);
@@ -121,8 +122,9 @@ void View::init(string t, uint r)
 	imgScore.create(brickScreenWidth*3, brickScreenHeight);
 	imgScoreX = theme.boardX + (theme.boardWidth - imgScore.getWidth())/2;
 	imgScoreY = brickScreenHeight * 15 + brickScreenHeight/2;
+	/* EDITHEIGHT+1 enough for everything except barrier so make it bigger */
 	imgBricks.create(EDITWIDTH*brickScreenWidth,
-				(EDITHEIGHT+1)*brickScreenHeight);
+				(EDITHEIGHT+4)*brickScreenHeight);
 	imgBricksX = brickScreenWidth;
 	imgBricksY = brickScreenHeight;
 	imgExtras.create(theme.boardWidth, 4*brickScreenHeight);
@@ -185,6 +187,7 @@ void View::run()
 		maxDelay = 0;
 
 	initTitleLabel();
+	lblInfo.clearText();
 	sprites.clear();
 	renderBackgroundImage();
 	renderBricksImage();
@@ -329,6 +332,7 @@ void View::run()
 				initTitleLabel();
 				showWarpIcon = false;
 			}
+			lblInfo.clearText();
 		}
 		if (flags & CGF_UPDATEBACKGROUND)
 			renderBackgroundImage();
@@ -342,6 +346,8 @@ void View::run()
 			createSprites();
 		if (flags & CGF_WARPOK)
 			showWarpIcon = true;
+		if (flags & CGF_UPDATEINFO)
+			lblInfo.setText(theme.fSmall, cgame.getBonusLevelInfo());
 
 		/* handle sounds by accessing game->mod */
 		playSounds();
@@ -532,6 +538,10 @@ void View::render()
 		lblTitle.setAlpha(a);
 		lblTitle.copy((1+MAPWIDTH/2)*brickScreenWidth, mw->getHeight()/2);
 	}
+
+	/* info for bonus levels */
+	if (cgame.isBonusLevel())
+		lblInfo.copy(1.1*brickScreenWidth,(MAPHEIGHT-1)*brickScreenHeight,ALIGN_X_LEFT | ALIGN_Y_TOP);
 
 	/* warp icon */
 	if (showWarpIcon) {

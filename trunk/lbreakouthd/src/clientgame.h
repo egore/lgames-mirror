@@ -91,7 +91,8 @@ enum {
 	CGF_NEWANIMATIONS = 128,
 	CGF_LIFELOST = 256,
 	CGF_LASTLIFELOST = 512,
-	CGF_WARPOK = 1024
+	CGF_WARPOK = 1024,
+	CGF_UPDATEINFO = 2048
 };
 class ClientGame {
 	Config &config;
@@ -154,6 +155,10 @@ public:
 	}
 	void continueGame();
 	int destroyBrick(int x, int y);
+	int isBonusLevel() {
+		return game->isBonusLevel;
+	}
+	const string &getBonusLevelInfo();
 };
 
 #endif /* SRC_CLIENTGAME_H_ */

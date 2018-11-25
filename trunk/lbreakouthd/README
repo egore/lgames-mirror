@@ -69,6 +69,20 @@ Growing Bricks: 	Will grow new bricks on destruction in adjacent
 			locations (if not blocked by balls). 			
 
 
+Mini Games
+----------
+Barrier: Try to break through the barrier and hit the wall behind it. Barrier
+gets faster and thicker (up to 12 layers) with every breakthrough. The faster
+you succeed the more score you gain. Game is over when a barrier reaches the
+paddle or you loose the ball.
+
+Sitting Ducks: 8 ducks. A ball launched from the top. Try to hit the ducks that
+is on *directly*. If you fail it is removed. If you succeed you get some score
+and another duck is highlighted (ball is launched from ceiling again). Multiple
+hits in a row will increase trophy price. Game is over when you loose the ball
+or all ducks were destroyed.
+
+
 Themes
 ------
 The most boring part first: IF you use other people's artwork please check that
