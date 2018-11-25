@@ -300,6 +300,17 @@ const string &ClientGame::getBonusLevelInfo()
 		strprintf(info, _("Total Hits: %d, Current Price: %d"),
 				game->blNumCompletedRuns, game->blMaxScore);
 		break;
+	case LT_DEFENDER:
+		strprintf(info, _("Wave: %d, Invaders: %d/%d"),
+				game->blNumCompletedRuns+1,
+				game->blNumInvaders, game->blInvaderLimit);
+		break;
+	case LT_OUTBREAK:
+		strprintf(info, _("Wave: %d, Infections: %d/%d, Active: %d/%d"),
+				game->blNumCompletedRuns+1,
+				game->blCancerCount, game->blCancerLimit,
+				game->bricks_left, game->blCancerSimLimit);
+		break;
 	}
 	return info;
 }
