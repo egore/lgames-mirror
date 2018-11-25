@@ -503,9 +503,12 @@ typedef struct {
   int blActionTime;         /* e.g.,brick dies/grows after that time */
   Delay blDelay;            /* e.g., new brick after this times out or barrier moves down */
   int blMaxScore;           /* maximum score for current run */
+  int blGameOver;           /* flag for game over */
   int bl_jj_mx, bl_jj_my;   /* position of current jumping jack */
   int blCancerCount;        /* number of bricks grown so far, must not exceed bl_cancer_limit */
-  int blCancerLimit;        /* game over if this many bricks sprung into existence */
+  int blCancerLimit;        /* wave over if this many bricks were created */
+  int blCancerSimLimit;     /* game over if this many bricks sprung into existence at same time */
+  int blCancerScore;        /* score for eliminating single brick */
   int blBarrierLevel;       /* size of barrier */
   int blBarrierMoves;       /* how often barrier has moved in this run */
   int blBarrierMaxMoves;    /* max number of possible moves before game over */

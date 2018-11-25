@@ -471,7 +471,7 @@ static void bricks_add_invader( Game *game, int *wave_over )
 	inv = &game->blInvaders[game->blNumInvaders++];
 	inv->id = RANDOM(BRICK_GROW_FIRST,BRICK_GROW_LAST);
 	inv->x = mx; inv->y = my;
-	game->blInvaderTime = 99*game->blInvaderTime/100; /* get faster and faster */
+	//game->blInvaderTime = 98*game->blInvaderTime/100; /* get faster and faster */
 	/* DEBUG: printf("%d\n",game->blInvaderTime); */
 	delay_set(&inv->delay,RANDOM(95,105)*game->blInvaderTime/100);
 	brick_set_by_id(game,mx,my,inv->id);
@@ -486,7 +486,7 @@ static void bricks_init_next_wave( Game *game )
 {
 	if (game->blNumCompletedRuns==0)
 	{
-		game->blInvaderLimit= 50;  /* total number of invaders in this wave */
+		game->blInvaderLimit= 20;  /* total number of invaders in this wave */
 		if (game->blInvaders) free(game->blInvaders);
 		game->blInvaders = (Invader*)calloc(game->blInvaderLimit,sizeof(Invader));
 	}
@@ -592,12 +592,15 @@ static void bricks_init_bonus_level( Game *game, int game_type, int level_type )
             brick_create_instable( game, game->blActionTime );
             break;
         case LT_OUTBREAK:
-            game->blActionTime = 4000; /* time until new brick */
+            game->blGameOver = 0;
+            game->blActionTime = 2000; /* time until new brick */
             game->blMaxScore = 6000;
-            game->blCancerCount = 0;
-            game->blCancerLimit = 50;
+            game->blCancerScore = 400;
+            game->blCancerCount = 3;
+            game->blCancerLimit = 20;
+            game->blCancerSimLimit = 10;
             delay_set(&game->blDelay,game->blActionTime);
-            for (i=0;i<5;i++) brick_create_instable( game, -1 );
+            for (i=0;i<3;i++) brick_create_instable( game, -1 );
             break;
         case LT_BARRIER:
             game->blActionTime = 3000; /* time until move down */
@@ -631,8 +634,8 @@ static void bricks_init_bonus_level( Game *game, int game_type, int level_type )
             bricks_create_hunter_area( game ); /* includes setting hunter and first prey */
             break;
 		case LT_DEFENDER:
-			game->blActionTime = 2000; /* time until new invader */
-			game->blMaxScore = 40000;  /* max score per wave */
+			game->blActionTime = 1600; /* time until new invader */
+			game->blMaxScore = 5000; /* score for wave clearance */
 			game->blInvaderScore = 400;
 			bricks_init_next_wave( game );
 			break;
@@ -939,32 +942,38 @@ int brick_hit( int mx, int my, int metal, int type, Vector imp, Paddle *paddle )
 				cur_game->blTotalNumKilledInvaders++;
 				if (cur_game->bricks_left==0) /* cleared this wave, next one please! */
 				{
-                    ratio = ((double)(cur_game->blInvaderLimit - cur_game->blNumKilledInvaders))/cur_game->blInvaderLimit;
-					paddle->score += ratio*cur_game->blMaxScore;
-					cur_game->totalBonusLevelScore += ratio*cur_game->blMaxScore;
+                    	    	    	    paddle->score += cur_game->blMaxScore;
+					cur_game->totalBonusLevelScore += cur_game->blMaxScore;
 					cur_game->blActionTime *= 0.95;
-					cur_game->blMaxScore *= 1.05;
-					cur_game->blInvaderScore *= 1.05;
+					cur_game->blMaxScore += 1000;
+					cur_game->blInvaderScore += 100;
                     cur_game->blNumCompletedRuns++;
                     cur_game->blRatioSum += ratio;
 					bricks_init_next_wave( cur_game );
 				}
 				break;
             case LT_OUTBREAK:
-                if (cur_game->bricks_left==0)
+        	    paddle->score += cur_game->blCancerScore;
+        	    cur_game->totalBonusLevelScore += cur_game->blCancerScore;
+                if (!cur_game->blGameOver && (cur_game->bricks_left==0 ||
+                		cur_game->blCancerCount >= cur_game->blCancerLimit))
                 {
                     /* reset scene */
-                    ratio = ((double)(cur_game->blCancerLimit - cur_game->blCancerCount))/cur_game->blCancerLimit;
-                    paddle->score += ratio*cur_game->blMaxScore;
-                    cur_game->totalBonusLevelScore += ratio*cur_game->blMaxScore;
+                    paddle->score += cur_game->blMaxScore;
+                    cur_game->totalBonusLevelScore += cur_game->blMaxScore;
                     //printf("OB: maxScore: %d, ratio: %f, respawn time: %d\n",cur_game->blMaxScore,ratio,cur_game->blActionTime);
                     cur_game->blActionTime *= 0.95;
-                    cur_game->blMaxScore *= 1.05;
+                    cur_game->blMaxScore += 1000;
+                    cur_game->blCancerScore += 100;
                     delay_set(&cur_game->blDelay,cur_game->blActionTime);
-                    cur_game->blCancerCount = 0;
+                    cur_game->blCancerCount = 3;
                     cur_game->blNumCompletedRuns++;
                     cur_game->blRatioSum += ratio;
-                    for (i=0;i<5;i++) brick_create_instable( cur_game, -1 );
+                    for (int i = 1; i < MAP_WIDTH-1; i++)
+                            for (int j = 1; j < MAP_HEIGHT-1; j++)
+                                brick_set_by_id(cur_game,i,j,-1);
+                    cur_game->bricks_left = 0;
+                    for (i=0;i<3;i++) brick_create_instable( cur_game, -1 );
                 }
                 break;
             case LT_BARRIER:
@@ -1164,12 +1173,15 @@ void bricks_update( int ms )
                     cur_game->bricks_left = 0;
                 break;
             case LT_OUTBREAK:
-                if (delay_timed_out(&cur_game->blDelay,ms))
+                if (delay_timed_out(&cur_game->blDelay,ms) &&
+                		cur_game->blCancerCount<cur_game->blCancerLimit)
                 {
                     brick_create_instable(cur_game,-1);
                     cur_game->blCancerCount++;
-                    if (cur_game->blCancerCount>cur_game->blCancerLimit)
-                        cur_game->bricks_left = 0; /* fake level cleared */
+                    if (cur_game->bricks_left >= cur_game->blCancerSimLimit) {
+                        cur_game->blGameOver = 1;
+                        cur_game->bricks_left = 0;
+                    }
                 }
                 break;
             case LT_BARRIER:

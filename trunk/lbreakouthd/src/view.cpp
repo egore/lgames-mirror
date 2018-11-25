@@ -972,6 +972,8 @@ void View::playSounds()
 	bool explPlayed = false;
 	bool energyPlayed = false;
 	for (int i = 0; i < game->mod.brick_hit_count; i++) {
+		if (game->mod.brick_hits[i].no_sound)
+			continue;
 		if (game->mod.brick_hits[i].type != HT_REMOVE)
 			continue;
 		if (game->mod.brick_hits[i].dest_type == SHR_BY_ENERGY_BALL && !energyPlayed) {

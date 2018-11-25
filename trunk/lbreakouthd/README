@@ -82,6 +82,14 @@ and another duck is highlighted (ball is launched from ceiling again). Multiple
 hits in a row will increase trophy price. Game is over when you loose the ball
 or all ducks were destroyed.
 
+Invaders: Clear wave after wave of 20 alien space bricks each! With each wave
+more score can be gained but it also gets faster... Game is over when an invader
+reaches paddle level.
+
+Outbreak: Stop the outbreak! Each wave 20 infections occur. When 10 infections
+are active simultaneously the game is over so clear them faster than they occur.
+Each wave incubation time gets shorter.
+
 
 Themes
 ------
