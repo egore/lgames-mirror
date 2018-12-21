@@ -1265,6 +1265,10 @@ void View::runMenu()
 				darkenScreen();
 				selectDlg.init();
 				if (selectDlg.run()) {
+					/* if FREAKOUT is started again change
+					 * seed to get different order of levels */
+					if (selectDlg.get() == TOURNAMENT)
+						config.freakout_seed = rand();
 					cgame.init(selectDlg.get());
 					dim();
 					run();

@@ -78,7 +78,7 @@ int list_insert( List *list, void *item, int pos );
 Add new item at the end of the list.
 ====================================================================
 */
-int list_add( List *list, void *item );
+int list_add( List *list, const void *item );
 /*
 ====================================================================
 Delete item at pos. If this was the current entry update
