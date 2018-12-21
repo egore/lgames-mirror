@@ -333,6 +333,7 @@ void View::run()
 			if (!(flags & CGF_LIFELOST)) {
 				initTitleLabel();
 				showWarpIcon = false;
+				sprites.clear();
 			}
 			lblInfo.clearText();
 		}
