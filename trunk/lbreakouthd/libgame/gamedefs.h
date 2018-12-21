@@ -505,6 +505,7 @@ typedef struct {
   int blMaxScore;           /* maximum score for current run */
   int blGameOver;           /* flag for game over */
   int bl_jj_mx, bl_jj_my;   /* position of current jumping jack */
+  int bl_jj_time;           /* time until explosion for info */
   int blCancerCount;        /* number of bricks grown so far, must not exceed bl_cancer_limit */
   int blCancerLimit;        /* wave over if this many bricks were created */
   int blCancerSimLimit;     /* game over if this many bricks sprung into existence at same time */

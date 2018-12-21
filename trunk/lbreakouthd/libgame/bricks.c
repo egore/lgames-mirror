@@ -374,11 +374,11 @@ static void select_random_duck( Game *game )
 static void bricks_create_new_prey( Game *game, int mx, int my)
 {
     /* get position */
-    while (mx==-1||my==-1||game->bricks[mx][my].type!=MAP_EMPTY)
-    {
-        if (mx==-1) mx = RANDOM(game->blHunterAreaX1+2,game->blHunterAreaX2-2);
-        if (my==-1) my = RANDOM(game->blHunterAreaY1+2,game->blHunterAreaY2-2);
-    }
+	if (mx==-1 || my==-1)
+		do {
+			mx = RANDOM(game->blHunterAreaX1+2,game->blHunterAreaX2-2);
+			my = RANDOM(game->blHunterAreaY1+2,game->blHunterAreaY2-2);
+		} while (game->bricks[mx][my].type != MAP_EMPTY);
     /* set brick */
     brick_set_by_id(game,mx,my,game->blHunterPreyId);
 	bricks_add_grow_mod(mx,my,game->blHunterPreyId);
@@ -587,8 +587,9 @@ static void bricks_init_bonus_level( Game *game, int game_type, int level_type )
     switch (level_type)
     {
         case LT_JUMPING_JACK:
-            game->blActionTime = 20000; /* time in millisecs */
+            game->blActionTime = 15000; /* time in millisecs */
             game->blMaxScore = 2000;
+            cur_game->bl_jj_time = cur_game->blActionTime;
             brick_create_instable( game, game->blActionTime );
             break;
         case LT_OUTBREAK:
@@ -598,7 +599,7 @@ static void bricks_init_bonus_level( Game *game, int game_type, int level_type )
             game->blCancerScore = 400;
             game->blCancerCount = 3;
             game->blCancerLimit = 20;
-            game->blCancerSimLimit = 10;
+            game->blCancerSimLimit = 7;
             delay_set(&game->blDelay,game->blActionTime);
             for (i=0;i<3;i++) brick_create_instable( game, -1 );
             break;
@@ -630,7 +631,7 @@ static void bricks_init_bonus_level( Game *game, int game_type, int level_type )
             break;
         case LT_HUNTER:
             game->blActionTime = 30000; /* time in millisecs */
-            game->blMaxScore = 10000;
+            game->blMaxScore = 6000;
             bricks_create_hunter_area( game ); /* includes setting hunter and first prey */
             break;
 		case LT_DEFENDER:
@@ -832,11 +833,11 @@ int brick_hit( int mx, int my, int metal, int type, Vector imp, Paddle *paddle )
                 {
                     /* we caught a brick! */
                     ratio = ((double)cur_game->blHunterTimeLeft)/cur_game->blActionTime;
-                    paddle->score += ratio*cur_game->blMaxScore;
-                    cur_game->totalBonusLevelScore += ratio*cur_game->blMaxScore;
-                    printf("H: maxScore: %d, ratio: %f, respawn time: %d\n",cur_game->blMaxScore,ratio,cur_game->blActionTime);
+                    paddle->score += cur_game->blMaxScore;
+                    cur_game->totalBonusLevelScore += cur_game->blMaxScore;
+                    //printf("H: maxScore: %d, ratio: %f, respawn time: %d\n",cur_game->blMaxScore,ratio,cur_game->blActionTime);
                     cur_game->blActionTime *= 0.95;
-                    cur_game->blMaxScore *= 1.05;
+                    cur_game->blMaxScore += 1000;
                     cur_game->blNumCompletedRuns++;
                     cur_game->blRatioSum += ratio;
                     bricks_create_new_prey(cur_game,-1,-1);
@@ -904,13 +905,16 @@ int brick_hit( int mx, int my, int metal, int type, Vector imp, Paddle *paddle )
             case LT_JUMPING_JACK:
                 /* grow another brick (since a hit means sure removal) */
                 ratio = ((double)cur_game->bricks[cur_game->bl_jj_mx][cur_game->bl_jj_my].exp_time)/cur_game->blActionTime;
-                paddle->score += ratio*cur_game->blMaxScore;
-                cur_game->totalBonusLevelScore += ratio*cur_game->blMaxScore;
+                paddle->score += cur_game->blMaxScore;
+                cur_game->totalBonusLevelScore += cur_game->blMaxScore;
                 //printf("JJ: maxScore: %d, ratio: %f, respawn time: %d\n",cur_game->blMaxScore,ratio,cur_game->blActionTime);
                 cur_game->blActionTime *= 0.95;
-                cur_game->blMaxScore *= 1.05;
+                if (cur_game->blActionTime < 3000)
+                	cur_game->blActionTime = 3000;
+                cur_game->blMaxScore += 500;
                 cur_game->blNumCompletedRuns++;
                 cur_game->blRatioSum += ratio;
+                cur_game->bl_jj_time = cur_game->blActionTime;
                 brick_create_instable( cur_game, cur_game->blActionTime );
                 break;
         }
@@ -1167,6 +1171,11 @@ void bricks_update( int ms )
     if (cur_game->localServerGame)
         switch (cur_game->level_type)
         {
+        	case LT_JUMPING_JACK:
+        		cur_game->bl_jj_time -= ms;
+        		if (cur_game->bl_jj_time < 0)
+        			cur_game->bl_jj_time = 0;
+        		break;
             case LT_HUNTER:
                 cur_game->blHunterTimeLeft -= ms;
                 if (cur_game->blHunterTimeLeft<0)

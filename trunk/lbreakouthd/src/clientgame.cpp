@@ -311,6 +311,14 @@ const string &ClientGame::getBonusLevelInfo()
 				game->blCancerCount, game->blCancerLimit,
 				game->bricks_left, game->blCancerSimLimit);
 		break;
+	case LT_HUNTER:
+		strprintf(info, _("Hits: %d, Current Price: %d, Time: %d secs"),
+				game->blNumCompletedRuns, game->blMaxScore, game->blHunterTimeLeft/1000);
+		break;
+	case LT_JUMPING_JACK:
+		strprintf(info, _("Hits: %d, Current Price: %d, Time: %d secs"),
+				game->blNumCompletedRuns, game->blMaxScore, game->bl_jj_time/1000);
+		break;
 	}
 	return info;
 }
