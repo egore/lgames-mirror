@@ -90,6 +90,10 @@ Outbreak: Stop the outbreak! Each wave 20 infections occur. When 10 infections
 are active simultaneously the game is over so clear them faster than they occur.
 Each wave incubation time gets shorter.
 
+Hunter: Catch the prey with the hunter. Hit the matching colors to move the
+hunter left, right, up or down. If you hit the wall the game is over. There is
+a time limit to catch the prey. If time runs out the game is also over. With each
+successful catch you'll get more score but less time.
 
 Themes
 ------

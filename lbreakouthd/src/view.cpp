@@ -216,8 +216,10 @@ void View::run()
 					config.show_fps = !config.show_fps;
 					break;
 				case SDL_SCANCODE_D:
-					runBrickDestroyDlg();
-					ticks.reset();
+					if (!cgame.isBonusLevel()) {
+						runBrickDestroyDlg();
+						ticks.reset();
+					}
 					break;
 				case SDL_SCANCODE_ESCAPE:
 					text.clear();
