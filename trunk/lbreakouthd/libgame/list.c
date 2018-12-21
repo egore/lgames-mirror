@@ -96,7 +96,7 @@ int list_insert( List *list, void *item, int pos )
 Add new item at the end of the list.
 ====================================================================
 */
-int list_add( List *list, void *item )
+int list_add( List *list, const void *item )
 {
     ListEntry    *new_entry = 0;
     /* check if insertion possible */

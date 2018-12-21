@@ -51,7 +51,10 @@ SetInfo::SetInfo(const string &n, Theme &theme)
 		levels = 1;
 		/* finalize empty level */
 		theme.fMenuNormal.setAlign(ALIGN_X_CENTER | ALIGN_Y_CENTER);
-		theme.fMenuNormal.write(preview.getWidth()/2,preview.getHeight()/2,_("Mini Game"));
+		if (n == TOURNAMENT)
+			theme.fMenuNormal.write(preview.getWidth()/2,preview.getHeight()/2,_("Superset with ALL levels"));
+		else
+			theme.fMenuNormal.write(preview.getWidth()/2,preview.getHeight()/2,_("Mini Game"));
 		theme.frame.copy(0,0);
 		SDL_SetRenderTarget(mrc, NULL);
 		return;
@@ -118,7 +121,7 @@ void SelectDialog::init()
 	uint sh = theme.menuBackground.getHeight();
 	vector<string> list, list2;
 
-	//list.push_back(_("!FREAKOUT!"));
+	list.push_back(_(TOURNAMENT));
 	list.push_back(_("!JUMPING_JACK!"));
 	list.push_back(_("!OUTBREAK!"));
 	list.push_back(_("!BARRIER!"));

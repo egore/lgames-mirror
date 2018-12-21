@@ -45,6 +45,7 @@ public:
 	int rel_warp_limit; /* percentage of bricks required to be destroyed
 	                           before player may proceed to next level */
 	int add_bonus_levels; /* add some bonus levels */
+	int freakout_seed; /* seed for current freakout set */
 	/* controls (SDL scancodes) */
 	int k_left;
 	int k_right;

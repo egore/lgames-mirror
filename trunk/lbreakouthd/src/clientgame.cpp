@@ -52,7 +52,10 @@ int ClientGame::init(const string& setname, int levelid)
 						diffs[config.diff].max_lives)));
 
 	/* load levelset from install directory or home directory */
-	if ((levelset = levelset_load(setname.c_str(), config.add_bonus_levels)) == 0) {
+	if (setname == TOURNAMENT) {
+		if (!loadAllLevels())
+			return -1;
+	} else if ((levelset = levelset_load(setname.c_str(), config.add_bonus_levels)) == 0) {
 		_logerr("Could not load levelset %s\n",setname.c_str());
 		return -1;
 	}
@@ -321,4 +324,21 @@ const string &ClientGame::getBonusLevelInfo()
 		break;
 	}
 	return info;
+}
+
+int ClientGame::loadAllLevels()
+{
+	vector<string> list;
+	List *sets;
+
+	readDir(string(DATADIR)+"/levels", RD_FILES, list);
+	sets = list_create( LIST_NO_AUTO_DELETE, 0 );
+	for (auto& s : list)
+		list_add(sets, s.c_str());
+
+	levelset = levelset_load_all(sets, config.freakout_seed,
+						config.add_bonus_levels);
+	list_delete(sets);
+
+	return (levelset!=NULL);
 }
