@@ -19,6 +19,7 @@ enum {
 	/* menu action ids */
 	AID_NONE = 0,
 	AID_FOCUSCHANGED, /* XXX used to play sound */
+	AID_CLICKED, /* dummy click to trigger sound */
 	AID_ENTERMENU,
 	AID_LEAVEMENU,
 	AID_RESUME,
@@ -110,9 +111,12 @@ public:
 		renderTooltip();
 	}
 	virtual int handleEvent(const SDL_Event &ev) {
-		if (ev.type == SDL_MOUSEBUTTONDOWN)
+		if (ev.type == SDL_MOUSEBUTTONDOWN) {
+			if (actionId == AID_NONE)
+				return AID_CLICKED;
 			return actionId;
-		return 0;
+		}
+		return AID_NONE;
 	}
 };
 
@@ -188,6 +192,8 @@ public:
 			}
 			if (val != oldval)
 				setValue(to_string(val));
+			if (actionId == AID_NONE)
+				return AID_CLICKED;
 			return actionId;
 		}
 		return AID_NONE;
