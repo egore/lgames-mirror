@@ -6,6 +6,8 @@ DEFS = @DEFS@ @inst_flag@ @sound_flag@ @locdir_flag@
 bin_PROGRAMS = lpairs
 lpairs_SOURCES = main.c pairs.c dynlist.c sdl.c cfg.c menu.c sndsrv.c
 
+lpairs_LDADD = $(INTLLIBS)
+
 #source
 EXTRA_DIST = main.c pairs.c dynlist.c sdl.c cfg.c menu.c sndsrv.c \
 pairs.h dynlist.h sdl.h cfg.h menu.h sndsrv.h gettext.h \
