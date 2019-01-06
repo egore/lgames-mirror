@@ -76,12 +76,12 @@ renderPageBegin('OCC - Overview',null,array(
 /* Show login info + stats */
 $stats=ioLoadUserStats($uid);
 $gamecount=$stats['wins']+$stats['draws']+$stats['losses'];
-echo '<P><TABLE width=100% class="textBox"><TR>';
-echo '<TD>Logged in as: <B>'.$uid.'</B></TD><TD>&nbsp;&nbsp;&nbsp;</TD>';
-echo '<TD align="right">'.$gamecount.' games total, ';
+echo '<p>Hello <b>'.$uid.'</B>! </p>';
+echo '<P class=textBox>';
+echo $gamecount.' games total, ';
 echo $stats['wins'].' wins, '.$stats['draws'].' draws, ';
 echo $stats['losses'].' losses';
-echo '</TD></TR></TABLE></P>';
+echo '</P>';
 
 /* Update filter for game list and load infos. */
 if (isset($_POST) && isset($_POST['search'])) {
@@ -139,8 +139,8 @@ if (count($list)>0) {
 	echo '<TD><B>White&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
 	echo '<TD><B>Black&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
 	echo '<TD><B>Moves&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
-	echo '<TD><B>Starting Date&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
-	echo '<TD><B>Last Move On&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
+	echo '<TD class=pconly><B>Starting Date&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
+	echo '<TD class=pconly><B>Last Move On&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
 	echo '<TD></TD></TR>';
 	foreach ($list as $info) {
 		if ($info['p_maymove'])
@@ -159,8 +159,8 @@ if (count($list)>0) {
 		else
 			echo '<TD>'.$info['black'].'</TD>';
 		echo '<TD>'.$info['curmove'].'</TD>';
-		echo '<TD>'.$startdate.'&nbsp;&nbsp;</TD>';
-		echo '<TD>'.$lastdate.'&nbsp;&nbsp;</TD>';
+		echo '<TD class=pconly>'.$startdate.'&nbsp;&nbsp;</TD>';
+		echo '<TD class=pconly>'.$lastdate.'&nbsp;&nbsp;</TD>';
 		echo '<TD><A href="board.php?gid='.$info['gid'].'">';
 		echo 'View</A></TD></TR>';
 	}
