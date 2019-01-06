@@ -1,6 +1,6 @@
 <?php
 /* General render functions */
-$version = '1.3.5';
+$version = '1.4';
 
 /* Render beginning of page (HTML+logo+link bar+title). $class is CSS 
  * class of main table (empty= no class). $title may be null. $pagetitle
@@ -13,6 +13,7 @@ function renderPageBegin($pagetitle,$class,$links,$title)
 		$pagetitle='Online Chess Club';
 
 	echo '<HTML><HEAD><TITLE>'.$pagetitle.'</TITLE>'.
+		'<meta name="viewport" content="width=device-width, initial-scale=1.0">'.
 		'<LINK rel=stylesheet type="text/css" '.
 		'href="images/'.$theme.'/style.css">'.
 		'<meta http-equiv=Content-Type content="text/html; '.
@@ -30,6 +31,7 @@ function renderPageBegin($pagetitle,$class,$links,$title)
 		}
 		echo ' ]';
 	}
+	/*echo '<hr width=100%>';*/
 	if ($title) {
 		echo '<BR><IMG src="images/spacer.gif" height=5><BR>';
 		echo '<B>'.$title.'</B>';
@@ -49,15 +51,16 @@ function renderPageEnd($credits)
 	global $btstart, $version;
 
 	echo '<HR width=100%>';
-	echo '<TABLE width=100% border=0><TR><TD class="tiny" valign="top">';
-	echo 'Online Chess Club v'.$version.'<BR>Published under GNU GPL</TD>';
-	echo '<TD valign="top" align="right" class="tiny">';
-	echo '&copy; 2003-2016 Michael Speck<BR><A class="tiny" href="http://lgames.sf.net">http://lgames.sf.net</A>';
-	echo '</TD></TR></TABLE>';
+	echo '<div class=row>';
+	echo '<div class=leftcredits>';
+	echo 'Online Chess Club v'.$version.'<br>Published under GNU GPL';
 	if (!empty($credits))
-		echo '<P class="tiny">'.$credits.'</P>';
+		echo '<br><br>'.$credits;
+	echo '</div><div class=rightcredits>';
+	echo '&copy; 2003-2018 Michael Speck<br> <A class="tiny" href="http://lgames.sf.net">http://lgames.sf.net</A>';
 	if (!empty($btstart))
-		echo '<DIV align="right" class="tiny">Build-time: '.sprintf("%.3f",1000*(microtime(true)-$btstart)).' msecs</DIV>';
+		echo '<br><br>Build-time: '.sprintf("%.3f",1000*(microtime(true)-$btstart)).' msecs';
+	echo '</div></div>';
 	echo '</TD></TR></TABLE></DIV>';
 	echo '</BODY></HTML>';
 }
@@ -371,7 +374,7 @@ function renderPrivateNotes($uid,$oid)
 	echo '<INPUT type="hidden" name="movebackup" value="">';
 	echo 'Notes:<FONT class="warning"> (encrypted)</FONT>&nbsp;';
 	echo '<INPUT type="image" src="images/'.$theme.'/savenotes.gif" onClick="gatherPNotesFormData(); return true;"><BR>';
-	echo '<TEXTAREA cols=35 rows=3 name="privnotes">'.$notes.'</TEXTAREA>';
+	echo '<TEXTAREA cols=20 rows=3 name="privnotes">'.$notes.'</TEXTAREA>';
 	echo '</FORM>';
 }
 
@@ -380,18 +383,16 @@ function renderPrivateNotes($uid,$oid)
  * $comment: current comment */
 function renderChatter($game, $comment)
 {
-	echo '<TABLE width=100% border=0 cellspacing=0 cellpadding=0><TR><TD>';
-	echo '<TABLE width=100% border=0 cellspacing=1 cellpadding=1 class="textFrame"><TR><TD class="textFrameData">';
+	echo '<div class=textFrameData>';
 	for ($i=count($game['chatter'])-1;$i>=0;$i--)
 		echo '<I>'.$game['chatter'][$i].'</I><BR>';
-	echo '</TD></TR></TABLE>';
-	echo '</TD></TR><TR><TD align="center">';
+	echo '</div>';
 	if ($game['p_maymove']) {
+		echo 'Message:<br>';
 		echo '<FORM name="commentForm" method="post">';
-		echo '<TEXTAREA cols=80 rows=2 name="comment">'.$comment.'</TEXTAREA>';
+		echo '<TEXTAREA cols=30 rows=2 name="comment">'.$comment.'</TEXTAREA>';
 		echo '</FORM>';
 	}
-	echo '</TD></TR></TABLE>';
 }
 
 ?>

@@ -1,47 +1,43 @@
 body {
 	font-family: Arial, Helvetica;
-	font-size: 12px;
 	color: #333340;
 	background-color: #ffffff;
 }
 
-form,textarea,input,td {
+form,textarea,input,td,select,option,button,submit {
 	font-family: Arial, Helvetica; 
-	font-size: 12px; 
 	color: #333340;
+	font-size: normal;
 }
 
 A:link,A:visited,A:active { 
 	font-family: verdana; 
-	font-size: 12px; 
 	color: #5555cc;
 	text-decoration: none;
 }
 
 A:hover {
 	font-family: verdana; 
-	font-size: 12px;
 	color: #2222aa;
 	text-decoration: underline;
 }
 
 A.tiny:link,A.tiny:visited,A.tiny:active { 
 	font-family: verdana; 
-	font-size: 10px; 
+	font-size: small; 
 	color: #5555cc;
 	text-decoration: none;
 }
 
 A.tiny:hover {
 	font-family: verdana; 
-	font-size: 10px;
+	font-size: small;
 	color: #2222aa;
 	text-decoration: underline;
 }
 
 A.head:link,A.head:visited,A.head:active { 
 	font-family: verdana; 
-	font-size: 12px; 
 	color: #333340;
 	text-decoration: none;
 }
@@ -53,21 +49,37 @@ A.head:hover {
 	text-decoration: underline;
 }
 
+.row {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+.leftcredits {
+	font-size: small;
+	text-align: left;
+	float: left;
+	width: 50%;
+}
+.rightcredits {
+	text-align: right;
+	font-size: small;
+	float: right;
+	width: 50%;
+}
+
 .large {
-	font-size: 16px; 
+	font-size: large; 
 }
 
 .warning {
-	font-size: 12px;
 	color: #dd2222; 
 }
 
 .tiny {
-	font-size: 10px;
+	font-size: small;
 }
 
 .info {
-	font-size: 12px; 
 	color: #5555cc;
 }
 
@@ -103,15 +115,16 @@ A.head:hover {
 }
 
 .textFrameData {
-	background-color: #ffffff;
+	background-color: white;
+	border: #333340 solid 1px;
 }
 
 .boardPageTable {
-	width: 600;
+	width: 100%;
 }
 
 .helpPageTable {
-	width: 600;
+	width: 100%;
 }
 
 .textBox {
@@ -128,3 +141,22 @@ A.head:hover {
 	color: #0000bb;
 }
 
+.pconly {
+	display: none;
+}
+
+@media only screen and (min-width: 768px) {
+
+.boardPageTable {
+	width: 600;
+}
+
+.helpPageTable {
+	width: 600;
+}
+
+.pconly {
+	display: inline;
+}
+
+}

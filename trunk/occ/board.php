@@ -114,11 +114,11 @@ $links=array();
 $links['Overview']='index.php';
 if ($browse) {
 	if (!$game['archived'])
-		$links['Input Mode']='board.php?gid='.$gid;
-	$links['Rotate Board']='board.php?gid='.$gid.'&browse=1&rotate='.$rotate;
+		$links['Play']='board.php?gid='.$gid;
+	$links['Rotate']='board.php?gid='.$gid.'&browse=1&rotate='.$rotate;
 } else if ($game['curmove']>0)
-	$links['Browsing Mode']='board.php?gid='.$gid.'&browse=1&rotate=1';
-$links['PGN Format']='pgnformat.php?gid='.$gid;
+	$links['Browse']='board.php?gid='.$gid.'&browse=1&rotate=1';
+$links['PGN']='pgnformat.php?gid='.$gid;
 $links['Help']='help.php?gid='.$gid;
 $links['Logout']='logout.php';
 renderPageBegin($pagetitle,'boardPageTable',$links,null);
