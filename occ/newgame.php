@@ -64,7 +64,7 @@ foreach($users as $usr)
 </SELECT>
 </TD></TR>
 <TR><TD colspan=2>Comment (if Black):</TD></TR>
-<TR><TD colspan=2><TEXTAREA cols=20 rows=3 name="comment"></TEXTAREA>
+<TR><TD colspan=2><TEXTAREA cols=30 rows=3 name="comment"></TEXTAREA>
 </TD></TR>
 <TR><TD colspan=2 align="center">
 <INPUT type="submit" name="submit" value="Open New Game">

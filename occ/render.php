@@ -12,35 +12,33 @@ function renderPageBegin($pagetitle,$class,$links,$title)
 	if ($pagetitle==null)
 		$pagetitle='Online Chess Club';
 
-	echo '<HTML><HEAD><TITLE>'.$pagetitle.'</TITLE>'.
+	echo '<title>'.$pagetitle.'</title>'.
 		'<meta name="viewport" content="width=device-width, initial-scale=1.0">'.
-		'<LINK rel=stylesheet type="text/css" '.
+		'<link rel=stylesheet type="text/css" '.
 		'href="images/'.$theme.'/style.css">'.
-		'<meta http-equiv=Content-Type content="text/html; '.
-		'charset=utf-8"></HEAD><BODY>';
-	echo '<DIV align="center">';
-	echo '<P><IMG alt="" src="images/'.$theme.'/logo.jpg"><BR>';
+		'<meta charset=utf-8">';
+		
+	echo '<div class=mainwrapper>';
+	if (strstr($pagetitle,"Browsing Mode") !== false || 
+			strstr($pagetitle,"Input Mode") !== false)
+		echo '<h1 class=pclogo>Online Chess Club</h1>';
+	else
+		echo '<h1 class=logo>Online Chess Club</h1>';
 	if ($links) {
-		echo '[ ';
+		echo '<p class=navbar>[ ';
 		$i=0;
 		foreach ($links as $name=>$url) {
-			echo '<A href="'.$url.'">'.$name.'</A>';
+			echo "<a href=$url>$name</a>";
 			$i++;
-			if ($i<count($links))
+			if ($i < count($links))
 				echo ' | ';
 		}
-		echo ' ]';
+		echo ' ]</p>';
 	}
-	/*echo '<hr width=100%>';*/
-	if ($title) {
-		echo '<BR><IMG src="images/spacer.gif" height=5><BR>';
-		echo '<B>'.$title.'</B>';
-	}
-	echo '</P>';
-	if (!empty($class))
-		echo '<TABLE class="'.$class.'" border=0 cellspacing=0 cellpadding=0><TR><TD align="center">';
-	else
-		echo '<TABLE border=0 cellspacing=0 cellpadding=0><TR><TD align="center">';
+	if ($title)
+		echo '<p class=subtitle>'.$title.'</p>';
+
+	echo '<div class=maincontent>';
 }
 
 /* Render end of page (footer+HTML). If $credit is not empty display it. 
@@ -50,7 +48,8 @@ function renderPageEnd($credits)
 {
 	global $btstart, $version;
 
-	echo '<HR width=100%>';
+	echo '<hr width=100% class=clearall>';
+	
 	echo '<div class=row>';
 	echo '<div class=leftcredits>';
 	echo 'Online Chess Club v'.$version.'<br>Published under GNU GPL';
@@ -61,8 +60,8 @@ function renderPageEnd($credits)
 	if (!empty($btstart))
 		echo '<br><br>Build-time: '.sprintf("%.3f",1000*(microtime(true)-$btstart)).' msecs';
 	echo '</div></div>';
-	echo '</TD></TR></TABLE></DIV>';
-	echo '</BODY></HTML>';
+	
+	echo '</div></div>';
 }
 
 /* Render functions for various components of chess page */
@@ -81,8 +80,8 @@ function renderCommandForm($game,$cmdres,$move)
 		$i_move++;
 	} else if ($game['curstate']=='D')
 		$i_move++;
-	echo '<P align="center">';
-	echo '<B>'.$game['white'].'</B> - <B>'.$game['black'].'</B> ';
+	echo '<p class=boardtitle>';
+	echo '<b>'.$game['white'].'</b> - <b>'.$game['black'].'</b> <br class=pconly>';
 	echo '('.$i_plyr.'\'s turn #'.$i_move.')</P>';
 	echo '<FORM name="commandForm" method="post">';
 	echo '<INPUT type="hidden" name="cmd" value="">';
@@ -117,23 +116,23 @@ function renderCommandForm($game,$cmdres,$move)
 			$info=$game['p_opponent'].' has offered a draw.';
 			echo '<P class=info><B>'.$info.'</B></P>';
 		}
-		echo '<TABLE width=100%><TR><TD align=left>';
-		echo '<INPUT class=warning type="submit" value="Accept Draw" onClick="onClickAcceptDraw()">&nbsp;&nbsp;';
-		echo '</TD><TD align=right>';
+		echo '<div>';
+		echo '<INPUT class=warning type="submit" value="Accept Draw" onClick="onClickAcceptDraw()">';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 		echo '<INPUT type="submit" value="Refuse Draw" onClick="onClickRefuseDraw()">';
-		echo '</TD></TR></TABLE>';
+		echo '</div>';
 	} else if ($game['p_maymove'] && $game['curstate']=='?') {
 		/* Normal move form */
-		echo '<TABLE width=100%><TR><TD align=left>';
+		echo '<div>';
 		echo '<INPUT id=moveButton type="button" value="Move" onClick="onClickMove()">';
-		echo '</TD><TD align=center>';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 		echo '<INPUT type="button" value="Offer Draw" onClick="onClickOfferDraw()">';
-		echo '</TD><TD align=right>';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 		if ($game['p_mayabort'])
 			echo '<INPUT class=warning type="button" value="Abort Game" onClick="onClickAbortGame()">';
 		else
 			echo '<INPUT class=warning type="button" value="Resign" onClick="onClickResign()">';
-		echo '</TD></TR></TABLE>';
+		echo '</div>';
 		echo '<INPUT type="hidden" size=10 name="move" value="'.$move.'">';
 		/* clear move highlight and move button */
 		echo '<script language="Javascript">checkMoveButton(); highlightMove(null)</script>';
@@ -216,9 +215,9 @@ function renderHistory($list,$diff,$browsing)
 		return;
 
 	echo '<P>';
-	echo '<TABLE width=100% border=0 cellpadding=1 cellspacing=1 class="textFrame">';
+	echo '<TABLE width=100% border=0 cellpadding=1 cellspacing=1 class=textFrame>';
 
-	echo '<TR><TD class="textFrameData">';
+	echo '<TR><TD class=textFrameData>';
 	$num=floor((count($list)+1)/2);
 	/* Show only few last moves if not browsing */
 	if (!$browsing && $num>12) {
@@ -238,13 +237,13 @@ function renderHistory($list,$diff,$browsing)
 	}
 	echo '</TD></TR>';
 	if ($browsing) {
-		echo '<TR><TD class="textFrameData">';
+		echo '<TR><TD class=textFrameData>';
 		for ($i=0; $i<15; $i++)
 			echo '<IMG name="tslot'.$i.'" src="images/'.$theme.'/sempty.gif">';
 		echo '</TD></TR>';
 	} else if (!empty($diff)) {
 		$names=array('pawn','knight','bishop','rook','queen');
-		echo '<TR><TD class="textFrameData">';
+		echo '<TR><TD class=textFrameData>';
 		/* White first */
 		$src=null;
 		for ($i=0;$i<5;$i++)
@@ -284,7 +283,7 @@ function renderBoard($board,$pc,$active)
 
 	/* build chessboard */
 	echo '<div class=boardFrame>';
-	echo '<TABLE class="board">';
+	echo '<table class="board">';
 	if ($pc=='w') {
 		$index=56;
 		$pos_change = 1;
@@ -295,7 +294,7 @@ function renderBoard($board,$pc,$active)
 		$line_change = 16;
 	}
 	for ($y=0;$y<9;$y++) {
-		echo '<TR>';
+		echo '<tr>';
 		for ($x=0;$x<9;$x++) {
     			if ($y==8) {
 				/* number at bottom */
@@ -304,16 +303,16 @@ function renderBoard($board,$pc,$active)
 						$c = chr(96+$x);
 					else
 						$c = chr(96+9-$x);
-					echo '<TD class=pconly align="center"><IMG height=4 src="images/spacer.gif"><BR><B class="boardCoord">'.$c.'</B></TD>';
+					echo '<td class="boardCoord">'.$c.'</td>';
 				} else
-					echo '<TD class=pconly></TD><TD class=pconly></TD>';
+					echo '<td class="boardCoord"></td>';
 			} else if ($x==0) {
 				/* number on the left */
 				if ( $pc == 'w' )
 					$i = 8-$y;
 				else
 					$i = $y+1;
-				echo '<TD class=pconly><B class="boardCoord">'.$i.'</B></TD><TD class=pconly><IMG width=4 src="images/spacer.gif"></TD>';
+				echo '<td class="boardCoord">'.$i.'</td>';
 			} else {
 				/* normal tile */
 				if ($board) {
@@ -326,30 +325,30 @@ function renderBoard($board,$pc,$active)
 				else
 					$class='boardTileBlack';
 				if ($board==null) {
-					echo '<TD class="'.$class.'"><IMG name="b'.$index.'" src="images/'.$theme.'/empty.gif"></TD>';
+					echo '<td class="'.$class.'"><img width=40 height=40 name="b'.$index.'" src="images/'.$theme.'/empty.gif"></td>';
 				} else if ($name!='empty') {
 					if ($active) {
 						if ($pc!=$color)
 							$cmdpart=sprintf('x%s',i2bc($index));
 						else
 							$cmdpart=sprintf('%s%s',$board[$index][1],i2bc($index));
-						echo '<TD id="btd'.$index.'" class="'.$class.'"><A href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><IMG class=figure border=0 src="images/'.$theme.'/'.$color.$name.'.gif"></A></TD>';
-        				} else
-						echo '<TD class="'.$class.'"><IMG class=figure src="images/'.$theme.'/'.$color.$name.'.gif"></TD>';
+						echo '<td id="btd'.$index.'" class="'.$class.'"><a href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><img class=figure border=0 src="images/'.$theme.'/'.$color.$name.'.svg"></a></td>';
+        			} else
+						echo '<td class="'.$class.'"><img class=figure src="images/'.$theme.'/'.$color.$name.'.svg"></td>';
 				} else {
 					if ($active) {
 						$cmdpart=sprintf('-%s',i2bc($index));
-						echo '<TD id="btd'.$index.'" class="'.$class.'"><A href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><IMG class=figure border=0 src="images/'.$theme.'/empty.gif"></A></TD>';
+						echo '<td id="btd'.$index.'" class="'.$class.'"><a href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><img class=figure border=0 src="images/'.$theme.'/empty.gif"></a></td>';
 					} else
-						echo '<TD class="'.$class.'"><IMG class=figure src="images/'.$theme.'/empty.gif"></TD>';
+						echo '<td class="'.$class.'"><img class=figure src="images/'.$theme.'/empty.gif"></td>';
 				}
 				$index += $pos_change;
 			}
 		}
 		$index += $line_change;
-		echo "</TR>";
+		echo "</tr>";
 	}
-	echo "</TABLE></div>";
+	echo "</table></div>";
 }
 
 /* Render private notes formular
@@ -373,8 +372,8 @@ function renderPrivateNotes($uid,$oid)
 	echo '<INPUT type="hidden" name="commentbackup" value="">';
 	echo '<INPUT type="hidden" name="movebackup" value="">';
 	echo 'Notes:<FONT class="warning"> (encrypted)</FONT>&nbsp;';
-	echo '<INPUT type="image" src="images/'.$theme.'/savenotes.gif" onClick="gatherPNotesFormData(); return true;"><BR>';
-	echo '<TEXTAREA cols=20 rows=3 name="privnotes">'.$notes.'</TEXTAREA>';
+	echo '<INPUT type="button" value=Save onClick="gatherPNotesFormData(); return true;"><BR>';
+	echo '<TEXTAREA class=textinput rows=3 name="privnotes">'.$notes.'</TEXTAREA>';
 	echo '</FORM>';
 }
 
@@ -386,13 +385,13 @@ function renderChatter($game, $comment)
 	echo '<div class=textFrameData>';
 	for ($i=count($game['chatter'])-1;$i>=0;$i--)
 		echo '<I>'.$game['chatter'][$i].'</I><BR>';
-	echo '</div>';
 	if ($game['p_maymove']) {
-		echo 'Message:<br>';
+		echo 'Your Message:<br>';
 		echo '<FORM name="commentForm" method="post">';
-		echo '<TEXTAREA cols=30 rows=2 name="comment">'.$comment.'</TEXTAREA>';
+		echo '<TEXTAREA class=textinput rows=3 name="comment">'.$comment.'</TEXTAREA>';
 		echo '</FORM>';
 	}
+	echo '</div>';
 }
 
 ?>

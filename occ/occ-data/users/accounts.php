@@ -2,6 +2,7 @@
 $passwords = array ( 
   "guest" => "guest",
   "guest2" => "guest",
+  "test" => "test"
 );
 /* ***** MAIL-ADDRESSES ***** */
 $mail_addresses = array (

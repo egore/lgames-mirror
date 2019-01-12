@@ -44,10 +44,10 @@ if (empty($uid)) {
 	$theme='default';
 	renderPageBegin(null,null,null,null);
 	if (!empty($errmsg)) {
-		echo '<B class="warning">'.$errmsg.'</B><BR>';
+		echo '<b class="warning">'.$errmsg.'</b><br>';
 		echo '<a href="sendpwd.php">Lost your password?</a><br><br>';
 	}
-	echo '<TABLE border=0><TR><TD align="center">';
+	echo '<div align=center><TABLE border=0><TR><TD align="center">';
 	echo '<FORM method="POST"><DIV align="right">';
 	echo 'Username: &nbsp;&nbsp;&nbsp;&nbsp;';
 	echo '<INPUT type="text" size=20 name="uid" value=""><BR><BR>';
@@ -55,7 +55,7 @@ if (empty($uid)) {
 	echo '<INPUT type="password" size=20 name="pwd" value="">';
 	echo '</DIV><BR><INPUT type="submit" value="Login"></FORM>';
 	echo '<FONT class="warning">(Cookies must be enabled to login.)</FONT>';
-	echo '</TD></TR></TABLE>';
+	echo '</TD></TR></TABLE></div>';
 	if ($releaseinfo)
 		echo '<P class="releaseInfo">'.$releaseinfo.'</P>';
 	renderPageEnd(null);
@@ -76,12 +76,12 @@ renderPageBegin('OCC - Overview',null,array(
 /* Show login info + stats */
 $stats=ioLoadUserStats($uid);
 $gamecount=$stats['wins']+$stats['draws']+$stats['losses'];
-echo '<p>Hello <b>'.$uid.'</B>! </p>';
-echo '<P class=textBox>';
+echo '<p>Hello <b>'.$uid.'</b>! </p>';
+echo '<span class=textBox>';
 echo $gamecount.' games total, ';
 echo $stats['wins'].' wins, '.$stats['draws'].' draws, ';
 echo $stats['losses'].' losses';
-echo '</P>';
+echo '</span>';
 
 /* Update filter for game list and load infos. */
 if (isset($_POST) && isset($_POST['search'])) {
