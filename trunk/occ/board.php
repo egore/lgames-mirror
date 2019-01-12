@@ -22,7 +22,7 @@ else
 /* Includes */
 include 'misc.php';
 include 'io.php';
-include "render.php";
+include 'render.php';
 include 'chess.php';
 
 /* Check posted command. The POST name is always 'cmd' in any formular.
@@ -121,18 +121,21 @@ if ($browse) {
 $links['PGN']='pgnformat.php?gid='.$gid;
 $links['Help']='help.php?gid='.$gid;
 $links['Logout']='logout.php';
-renderPageBegin($pagetitle,'boardPageTable',$links,null);
+renderPageBegin($pagetitle,null,$links,null);
 if ($game==null)
-	echo '<P class="warning">Game "'.$gid.'" not found!</P>';
+	echo '<p class="warning">Game "'.$gid.'" not found!</p>';
 else {
-	echo '<section class=sctn_board>';
+	echo '<div class=row>';
+	
+	echo '<div class=col50><section class=sctn_board>';
 	if ($browse)
 		renderBoard(null,$pcolor,null);
 	else
 		renderBoard($game['board'],$game['p_color'],
 						$game['p_maymove'],0);
-	echo '</section>';
-	echo '<section class=sctn_command>';
+	echo '</section></div>';
+	
+	echo '<div class=col50><section class=sctn_command>';
 	if ($browse) {
 		renderBrowserForm($game);
 		renderHistory($game['mhistory'],null,1);
@@ -141,11 +144,16 @@ else {
 		renderHistory($game['mhistory'],getCMDiff($game['board']),0);
 	}
 	echo '</section>';
+	
 	if (!$browse && $game['p_color']) {
 		echo '<section class=sctn_notes>';
 		renderPrivateNotes($uid,$game['p_opponent']);
 		echo '</section>';
 	}
+	echo '</div>';
+	
+	echo '</div>';
+	
 	if (!$browse) {
 		echo '<section class=sctn_chat>';
 		renderChatter($game,$comment);

@@ -4,7 +4,7 @@ include 'render.php';
 
 function anchor($name,$title)
 {
-  echo '<A name="'.$name.'"><B>'.$title.'</B></A>';
+  echo '<h3 id="'.$name.'">'.$title.'</h3>';
 }
 
 $links=array();
@@ -17,11 +17,10 @@ $links['Logout']='logout.php';
 renderPageBegin('OCC - Help',helpPageTable,$links,'Help Page');
 ?>
 
-<DIV align="left">
-<A name="toc">
+<div class=helpwrapper>
 
 <P>
-<A name="toc">Topics:</A>
+<h3 id="toc">Topics:</h3>
 <UL>
   <LI><A href="#overview">Overview</A></LI>
   <LI><A href="#mygames">My Games</A></LI>

@@ -256,12 +256,12 @@ function renderBoard()
 		} else 
 			pref="w";
 		switch (value) {
-			case 1: chessman="pawn.gif"; break;
-			case 2: chessman="knight.gif"; break;
-			case 3: chessman="bishop.gif"; break;
-			case 4: chessman="rook.gif"; break;
-			case 5: chessman="queen.gif"; break;
-			case 6: chessman="king.gif"; break;
+			case 1: chessman="pawn.svg"; break;
+			case 2: chessman="knight.svg"; break;
+			case 3: chessman="bishop.svg"; break;
+			case 4: chessman="rook.svg"; break;
+			case 5: chessman="queen.svg"; break;
+			case 6: chessman="king.svg"; break;
 		}
 		document.images["b"+i].src="images/"+theme+"/"+pref+chessman;
 	}

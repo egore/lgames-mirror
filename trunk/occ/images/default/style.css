@@ -1,53 +1,67 @@
 body {
-	font-family: Arial, Helvetica;
+	font-family: Arial;
 	color: #333340;
 	background-color: #ffffff;
 	margin: 0;
+	font-size: normal;
 }
 
 form,textarea,input,td,select,option,button {
-	font-family: Arial, Helvetica; 
+	font-family: Arial;
 	color: #333340;
 	font-size: normal;
 }
 
+a {
+	font-family: Arial; 
+}
+
 A:link,A:visited,A:active { 
-	font-family: verdana; 
 	color: #5555cc;
 	text-decoration: none;
 }
 
 A:hover {
-	font-family: verdana; 
 	color: #2222aa;
 	text-decoration: underline;
 }
 
 A.tiny:link,A.tiny:visited,A.tiny:active { 
-	font-family: verdana; 
 	font-size: small; 
 	color: #5555cc;
 	text-decoration: none;
 }
 
 A.tiny:hover {
-	font-family: verdana; 
 	font-size: small;
 	color: #2222aa;
 	text-decoration: underline;
 }
 
 A.head:link,A.head:visited,A.head:active { 
-	font-family: verdana; 
 	color: #333340;
 	text-decoration: none;
 }
 
 A.head:hover {
-	font-family: verdana; 
-	font-size: 12px;
 	color: #333340;
 	text-decoration: underline;
+}
+
+.pclogo {
+	color: #777777;
+	display: none;
+}
+.logo {
+	color: #777777;
+}
+
+.maincontent {
+	display: inline-block;
+}
+
+.subtitle {
+	font-weight: bold;
 }
 
 .row {
@@ -85,12 +99,15 @@ A.head:hover {
 }
 
 .boardFrame {
-	background-color: #eeeeff;
-	padding: 2;
+	background-color: #ccccdd;
+	padding: 1;
 }
 
 .boardCoord {
 	color: #777799;
+	font-weight: bold;
+	text-align: center;
+	padding: 2;
 }
 
 .board {
@@ -123,18 +140,19 @@ A.head:hover {
 	background-color: white;
 	border: #333340 solid 1px;
 	padding: 2px;
+	text-align: left;
 }
 
-.boardPageTable {
-	width: 100%;
-}
-
-.helpPageTable {
-	width: 100%;
+.helpwrapper {
+	width: 90%;
+	display: inline-block;
+	text-align: left;
 }
 
 .textBox {
-	background-color: #f2f2f2;
+	background-color: #e2e2e2;
+	padding: 5px;
+	border-radius: 4px;
 }
 
 .textBoxHighlight {
@@ -151,18 +169,67 @@ A.head:hover {
 	display: none;
 }
 
-@media only screen and (min-width: 768px) {
-
-.boardPageTable {
-	width: 600;
+.col50 {
+	width: 100%;
 }
 
-.helpPageTable {
-	width: 600;
+.sctn_notes {
+	text-align: left;
+	padding: 10px;
+}
+
+.sctn_command {
+	padding: 10px;
+}
+
+.sctn_chat {
+	padding: 10px;
+	clear: both;
+	text-align: left;
+}
+
+.textinput {
+	width: 100%;
+	border: 1px #333340 solid;
+}
+
+.mainwrapper {
+	width: 100%;
+	text-align: center;
+}
+
+.clearall {
+	clear: both;
+}
+
+@media only screen and (min-width: 768px) {
+
+.pclogo {
+	display: block;
+}
+
+.helpwrapper {
+	width: 50%;
 }
 
 .pconly {
 	display: inline;
+}
+
+.col50 {
+	width: 50%;
+	padding: 0;
+	margin: 0;
+	float: left;
+}
+
+.boardtitle {
+	font-size: x-large; 
+}
+
+.mainwrapper {
+	margin: auto;
+	width: 50%;
 }
 
 }
