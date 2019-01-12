@@ -81,9 +81,9 @@ function renderCommandForm($game,$cmdres,$move)
 		$i_move++;
 	} else if ($game['curstate']=='D')
 		$i_move++;
-	echo '<P align="center" class="large">';
-	echo '<B>'.$game['white'].'</B> - <B>'.$game['black'].'</B><BR>';
-	echo 'Move '.$i_move.' ('.$i_plyr.')</P>';
+	echo '<P align="center">';
+	echo '<B>'.$game['white'].'</B> - <B>'.$game['black'].'</B> ';
+	echo '('.$i_plyr.'\'s turn #'.$i_move.')</P>';
 	echo '<FORM name="commandForm" method="post">';
 	echo '<INPUT type="hidden" name="cmd" value="">';
 	echo '<INPUT type="hidden" name="comment" value="">';
@@ -283,7 +283,7 @@ function renderBoard($board,$pc,$active)
 		$pc='w';
 
 	/* build chessboard */
-	echo '<TABLE class="boardFrame"><TR><TD>';
+	echo '<div class=boardFrame>';
 	echo '<TABLE class="board">';
 	if ($pc=='w') {
 		$index=56;
@@ -304,16 +304,16 @@ function renderBoard($board,$pc,$active)
 						$c = chr(96+$x);
 					else
 						$c = chr(96+9-$x);
-					echo '<TD align="center"><IMG height=4 src="images/spacer.gif"><BR><B class="boardCoord">'.$c.'</B></TD>';
+					echo '<TD class=pconly align="center"><IMG height=4 src="images/spacer.gif"><BR><B class="boardCoord">'.$c.'</B></TD>';
 				} else
-					echo '<TD></TD><TD></TD>';
+					echo '<TD class=pconly></TD><TD class=pconly></TD>';
 			} else if ($x==0) {
 				/* number on the left */
 				if ( $pc == 'w' )
 					$i = 8-$y;
 				else
 					$i = $y+1;
-				echo '<TD><B class="boardCoord">'.$i.'</B></TD><TD><IMG width=4 src="images/spacer.gif"></TD>';
+				echo '<TD class=pconly><B class="boardCoord">'.$i.'</B></TD><TD class=pconly><IMG width=4 src="images/spacer.gif"></TD>';
 			} else {
 				/* normal tile */
 				if ($board) {
@@ -333,15 +333,15 @@ function renderBoard($board,$pc,$active)
 							$cmdpart=sprintf('x%s',i2bc($index));
 						else
 							$cmdpart=sprintf('%s%s',$board[$index][1],i2bc($index));
-						echo '<TD id="btd'.$index.'" class="'.$class.'"><A href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><IMG border=0 src="images/'.$theme.'/'.$color.$name.'.gif"></A></TD>';
+						echo '<TD id="btd'.$index.'" class="'.$class.'"><A href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><IMG class=figure border=0 src="images/'.$theme.'/'.$color.$name.'.gif"></A></TD>';
         				} else
-						echo '<TD class="'.$class.'"><IMG src="images/'.$theme.'/'.$color.$name.'.gif"></TD>';
+						echo '<TD class="'.$class.'"><IMG class=figure src="images/'.$theme.'/'.$color.$name.'.gif"></TD>';
 				} else {
 					if ($active) {
 						$cmdpart=sprintf('-%s',i2bc($index));
-						echo '<TD id="btd'.$index.'" class="'.$class.'"><A href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><IMG border=0 src="images/'.$theme.'/empty.gif"></A></TD>';
+						echo '<TD id="btd'.$index.'" class="'.$class.'"><A href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><IMG class=figure border=0 src="images/'.$theme.'/empty.gif"></A></TD>';
 					} else
-						echo '<TD class="'.$class.'"><IMG src="images/'.$theme.'/empty.gif"></TD>';
+						echo '<TD class="'.$class.'"><IMG class=figure src="images/'.$theme.'/empty.gif"></TD>';
 				}
 				$index += $pos_change;
 			}
@@ -349,7 +349,7 @@ function renderBoard($board,$pc,$active)
 		$index += $line_change;
 		echo "</TR>";
 	}
-	echo "</TABLE></TD></TR></TABLE>";
+	echo "</TABLE></div>";
 }
 
 /* Render private notes formular

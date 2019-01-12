@@ -125,33 +125,32 @@ renderPageBegin($pagetitle,'boardPageTable',$links,null);
 if ($game==null)
 	echo '<P class="warning">Game "'.$gid.'" not found!</P>';
 else {
-	echo '<TABLE width=100% border=0 cellspacing=0 cellpadding=0><TR><TD valign="top" rowspan=2>';
+	echo '<section class=sctn_board>';
 	if ($browse)
 		renderBoard(null,$pcolor,null);
 	else
 		renderBoard($game['board'],$game['p_color'],
 						$game['p_maymove'],0);
-	echo '<IMG src="images/spacer.gif" width=10><BR></TD>';
-	echo '<TD rowspan=2><IMG width=10 alt="" src="images/spacer.gif"></TD>';
-	echo '<TD width=0 valign="top">';
+	echo '</section>';
+	echo '<section class=sctn_command>';
 	if ($browse) {
 		renderBrowserForm($game);
 		renderHistory($game['mhistory'],null,1);
 	} else {
 		renderCommandForm($game,$cmdres,$move);
-		renderHistory($game['mhistory'],getCMDiff($game['board']),
-									0);
+		renderHistory($game['mhistory'],getCMDiff($game['board']),0);
 	}
-	echo '</TD></TR><TR><TD valign=bottom>';
-	if (!$browse && $game['p_color'])
+	echo '</section>';
+	if (!$browse && $game['p_color']) {
+		echo '<section class=sctn_notes>';
 		renderPrivateNotes($uid,$game['p_opponent']);
-	echo '</TD></TR>';
-	if (!$browse) {
-		echo '<TR><TD colspan=3>';
-		renderChatter($game,$comment);
-		echo '</TD</TR>';
+		echo '</section>';
 	}
-	echo '</TABLE>';
+	if (!$browse) {
+		echo '<section class=sctn_chat>';
+		renderChatter($game,$comment);
+		echo '</section>';
+	}
 }
 include "images/$theme/credits.php";
 renderPageEnd($credits);
