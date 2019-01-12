@@ -2,9 +2,10 @@ body {
 	font-family: Arial, Helvetica;
 	color: #333340;
 	background-color: #ffffff;
+	margin: 0;
 }
 
-form,textarea,input,td,select,option,button,submit {
+form,textarea,input,td,select,option,button {
 	font-family: Arial, Helvetica; 
 	color: #333340;
 	font-size: normal;
@@ -86,7 +87,6 @@ A.head:hover {
 .boardFrame {
 	background-color: #eeeeff;
 	padding: 2;
-	border-spacing: 2;
 }
 
 .boardCoord {
@@ -94,6 +94,7 @@ A.head:hover {
 }
 
 .board {
+	width: 100%;
 	border-spacing: 0;
 	padding: 0;
 }
@@ -101,13 +102,17 @@ A.head:hover {
 .boardTileWhite {
 	background-color: #ffffff;
 	background-image: url(wsquare.jpg);
-	padding: 2;
+	padding: 0;
 }
 
 .boardTileBlack {
 	background-color: #cccccc;
 	background-image: url(bsquare.jpg);
-	padding: 2;
+	padding: 0;
+}
+
+.figure {
+	width: 100%;
 }
 
 .textFrame {
@@ -117,6 +122,7 @@ A.head:hover {
 .textFrameData {
 	background-color: white;
 	border: #333340 solid 1px;
+	padding: 2px;
 }
 
 .boardPageTable {
