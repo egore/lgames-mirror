@@ -45,6 +45,7 @@ renderPageBegin('OCC - New Game',null,array(
 	'Logout'=>'logout.php'),
 	'New Game');
 ?>
+<div class=inlineblock>
 <FORM onSubmit="return confirm_new();" action="newgame.php" method="POST">
 <TABLE border=0>
 <TR><TD>Color:</TD><TD align=right>
@@ -71,6 +72,7 @@ foreach($users as $usr)
 </TD></TR>
 </TABLE>
 </FORM>
+</div>
 
 <?php
 renderPageEnd(null);

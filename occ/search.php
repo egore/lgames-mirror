@@ -12,6 +12,7 @@ renderPageBegin('OCC - Search',null,array(
 	'Logout'=>'logout.php'),
 	'Search Games');
 
+echo '<div class=inlineblock>';
 echo '<FORM method="post" action="index.php"><TABLE border=0>';
 echo '<TR><TD>Location:</TD>';
 echo '<TD align="right"><SELECT name="location">';
@@ -47,6 +48,7 @@ echo '</SELECT></TD></TR>';
 echo '</TABLE>';
 echo '<BR><INPUT type="submit" value="Search" name="search">';
 echo '</FORM>';
+echo '</div>';
 
 renderPageEnd(null);
 ?>
