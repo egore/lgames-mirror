@@ -190,11 +190,11 @@ function renderBrowserForm($game)
 		echo '<span class=info><b>Game result: '.$res.'</b></span>';
 	}
 	echo '</P><div class=inlineblock>';
-	echo '<A class=playbutton href="first" onClick="return gotoMove(0);">&nbsp;|&#9664;&nbsp;</A>';
-	echo '<A class=playbutton href="prev" onClick="return gotoMove(cur_move-1);">&nbsp;&#9664;&nbsp;</A>';
+	echo '<A class=playbutton href="first" onClick="return gotoMove(0);">&nbsp;&nbsp;&nbsp;|&#9664;&nbsp;&nbsp;&nbsp;</A>';
+	echo '<A class=playbutton href="prev" onClick="return gotoMove(cur_move-1);">&nbsp;&nbsp;&nbsp;&#9664;&nbsp;&nbsp;&nbsp;</A>';
 	echo '<a id=turncounter class=playbutton>0</a>';
-	echo '<A class=playbutton href="next" onClick="return gotoMove(cur_move+1);">&nbsp;&#9654;&nbsp;</A>';
-	echo '<A class=playbutton href="last" onClick="return gotoMove(move_count-1);">&nbsp;&#9654;|&nbsp;</A>';
+	echo '<A class=playbutton href="next" onClick="return gotoMove(cur_move+1);">&nbsp;&nbsp;&nbsp;&#9654;&nbsp;&nbsp;&nbsp;</A>';
+	echo '<A class=playbutton href="last" onClick="return gotoMove(move_count-1);">&nbsp;&nbsp;&nbsp;&#9654;|&nbsp;&nbsp;&nbsp;</A>';
 	echo '</div>';
 }
 
