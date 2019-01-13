@@ -47,7 +47,7 @@ if (empty($uid)) {
 		echo '<b class="warning">'.$errmsg.'</b><br>';
 		echo '<a href="sendpwd.php">Lost your password?</a><br><br>';
 	}
-	echo '<div align=center><TABLE border=0><TR><TD align="center">';
+	echo '<div class=inlineblock><TABLE border=0><TR><TD align="center">';
 	echo '<FORM method="POST"><DIV align="right">';
 	echo 'Username: &nbsp;&nbsp;&nbsp;&nbsp;';
 	echo '<INPUT type="text" size=20 name="uid" value=""><BR><BR>';
@@ -134,13 +134,14 @@ if ($_SESSION['filter_name']=='Open Games') {
 /* Display list */
 echo '<P><B>'.count($list).' '.$_SESSION['filter_name'].'</B></P>';
 if (count($list)>0) {
+	echo '<div class=inlineblock>';
 	echo '<TABLE cellpadding=0 border=0 cellspacing=5 class="textBox">';
 	echo '<TR><TD></TD>';
 	echo '<TD><B>White&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
 	echo '<TD><B>Black&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
 	echo '<TD><B>Moves&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
-	echo '<TD class=pconly><B>Starting Date&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
-	echo '<TD class=pconly><B>Last Move On&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
+	echo '<TD><B class=pconly>Starting Date&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
+	echo '<TD><B class=pconly>Last Move On&nbsp;&nbsp;&nbsp;&nbsp;</B></TD>';
 	echo '<TD></TD></TR>';
 	foreach ($list as $info) {
 		if ($info['p_maymove'])
@@ -159,12 +160,13 @@ if (count($list)>0) {
 		else
 			echo '<TD>'.$info['black'].'</TD>';
 		echo '<TD>'.$info['curmove'].'</TD>';
-		echo '<TD class=pconly>'.$startdate.'&nbsp;&nbsp;</TD>';
-		echo '<TD class=pconly>'.$lastdate.'&nbsp;&nbsp;</TD>';
+		echo '<TD><span class=pconly>'.$startdate.'&nbsp;&nbsp;</span></TD>';
+		echo '<TD><span class=pconly>'.$lastdate.'&nbsp;&nbsp;</span></TD>';
 		echo '<TD><A href="board.php?gid='.$info['gid'].'">';
 		echo 'View</A></TD></TR>';
 	}
 	echo '</TABLE>';
+	echo '</div>';
 }
 if ($_SESSION['allow_newgame'])
 	echo '<P>[ <A href="newgame.php">New Game</A> ]</P>';

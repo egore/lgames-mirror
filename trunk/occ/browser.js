@@ -10,10 +10,6 @@ echo '<script language="Javascript">theme="'.$theme.'";</script>';
 <script language="Javascript">
 /* Preload images */
 var preload=new Image(); 
-preload.src="images/"+theme+"/h_white.gif";
-preload.src="images/"+theme+"/h_black.gif";
-for (index=0; index<10; index++)
-	preload.src="images/"+theme+"/d"+index+".gif";
 
 /* Variables */
 var parse_error="";
@@ -76,22 +72,13 @@ function gotoMove(move_id)
 		else while(cur_move<move_id)
 			moveForward();
 	}
+	var str = "B";
 	if (move_id%2==0)
-		document.images["colorpin"].src="images/"+theme+"/h_white.gif";
-	else
-		document.images["colorpin"].src="images/"+theme+"/h_black.gif";
-	renderMoveNumber(Math.floor(move_id/2)+1);
+		str = "W";
+	str = str + (Math.floor(move_id/2)+1);
+	document.getElementById('turncounter').innerHTML = str;
 	renderBoard();
 	return false;
-}
-
-/* Render move number (two digits) in control panel. */
-function renderMoveNumber(round)
-{
-	d1=Math.floor(round/10);
-	d2=Math.floor(round%10);
-	document.images["digit1"].src="images/"+theme+"/d"+d1+".gif";
-	document.images["digit2"].src="images/"+theme+"/d"+d2+".gif";
 }
 
 /* Go one move forward in history without rendering the board. */
@@ -183,7 +170,7 @@ function moveBackward()
 function showDiff()
 {
 	for (i=0; i<15; i++)
-		document.images["tslot"+i].src="images/"+theme+"/sempty.gif";
+		document.images["tslot"+i].src="images/"+theme+"/empty.gif";
 
 	/* Compute chessmen difference */
 	for (i=0; i<5; i++) 
@@ -204,20 +191,20 @@ function showDiff()
 		if (bottom=="b" && diff[4-i]<0) {
 			for (j=0; j<-diff[4-i]; j++) {
 				document.images["tslot"+slot_id].src=
-					"images/"+theme+"/sb"+name+".gif";
+					"images/"+theme+"/b"+name+".svg";
 				slot_id++;
 			}
 		} else if (bottom=="w" && diff[4-i]>0) {
 			for (j=0; j<diff[4-i]; j++) {
 				document.images["tslot"+slot_id].src=
-					"images/"+theme+"/sw"+name+".gif";
+					"images/"+theme+"/w"+name+".svg";
 				slot_id++;
 			}
 		}
 	}
 	/* Have one slot empty for separation */
 	if (slot_id > 0) {
-		document.images["tslot"+slot_id].src="images/"+theme+"/sempty.gif";
+		document.images["tslot"+slot_id].src="images/"+theme+"/empty.gif";
 		slot_id++;
 	}
 	/* Top player next */
@@ -226,14 +213,14 @@ function showDiff()
 		if (bottom=="b" && diff[4-i]>0) {
 			for (j=0; j<diff[4-i]; j++) {
 				document.images["tslot"+slot_id].src=
-					"images/"+theme+"/sw"+name+".gif";
+					"images/"+theme+"/w"+name+".svg";
 				slot_id++; 
 			}
 		}
 		else if (bottom=="w" && diff[4-i]<0) {
 			for (j=0; j<-diff[4-i]; j++) {
 				document.images["tslot"+slot_id].src=
-					"images/"+theme+"/sb"+name+".gif";
+					"images/"+theme+"/b"+name+".svg";
 				slot_id++;
 			}
 		}

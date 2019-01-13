@@ -12,6 +12,31 @@ form,textarea,input,td,select,option,button {
 	font-size: normal;
 }
 
+.mainwrapper {
+	width: 100%;
+	text-align: center;
+}
+
+main {
+	display: inline-block;
+}
+
+header {
+	color: #777777;
+	font-size: x-large;
+	font-weight: bold;
+	padding: 3px;
+}
+
+nav {
+	padding: 3px;
+}
+
+footer {
+	display: inline-block;
+	width: 90%;
+}
+
 a {
 	font-family: Arial; 
 }
@@ -46,18 +71,6 @@ A.head:link,A.head:visited,A.head:active {
 A.head:hover {
 	color: #333340;
 	text-decoration: underline;
-}
-
-.pclogo {
-	color: #777777;
-	display: none;
-}
-.logo {
-	color: #777777;
-}
-
-.maincontent {
-	display: inline-block;
 }
 
 .subtitle {
@@ -100,14 +113,14 @@ A.head:hover {
 
 .boardFrame {
 	background-color: #ccccdd;
-	padding: 1;
+	padding: 0;
 }
 
 .boardCoord {
 	color: #777799;
 	font-weight: bold;
 	text-align: center;
-	padding: 2;
+	padding: 1;
 }
 
 .board {
@@ -179,7 +192,13 @@ A.head:hover {
 }
 
 .sctn_command {
-	padding: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.sctn_board {
+	margin: 0px;
+	padding: 0px;
 }
 
 .sctn_chat {
@@ -191,26 +210,44 @@ A.head:hover {
 .textinput {
 	width: 100%;
 	border: 1px #333340 solid;
-}
-
-.mainwrapper {
-	width: 100%;
-	text-align: center;
+	border-radius: 3px;
 }
 
 .clearall {
 	clear: both;
 }
 
+.inlineblock {
+	display: inline-block;
+}
+
+.boardtitle {
+	margin-top: 0px;
+}
+
+.chatmessage {
+	margin: 3px;
+	padding: 3px;
+	font-style: italic;
+	background-color: #d4d3e5;
+	border-radius: 4px;
+}
+
+a.playbutton {
+	background-color: #999999;
+	border-radius: 3px;
+	color: white;
+	font-weight: bold;
+	padding: 2px;
+	padding-left: 4px;
+	padding-right: 4px;
+	margin: 4px;
+}
+a.playbutton:hover {
+	text-decoration: none;
+}
+
 @media only screen and (min-width: 768px) {
-
-.pclogo {
-	display: block;
-}
-
-.helpwrapper {
-	width: 50%;
-}
 
 .pconly {
 	display: inline;
@@ -224,12 +261,17 @@ A.head:hover {
 }
 
 .boardtitle {
-	font-size: x-large; 
+	font-size: larger;
+	margin-top: 10px;
 }
 
 .mainwrapper {
 	margin: auto;
-	width: 50%;
+	width: 60%;
+}
+
+.boardFrame {
+	padding: 4px;
 }
 
 }

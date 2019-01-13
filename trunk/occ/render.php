@@ -21,11 +21,11 @@ function renderPageBegin($pagetitle,$class,$links,$title)
 	echo '<div class=mainwrapper>';
 	if (strstr($pagetitle,"Browsing Mode") !== false || 
 			strstr($pagetitle,"Input Mode") !== false)
-		echo '<h1 class=pclogo>Online Chess Club</h1>';
+		echo '<header class=pconly>Online Chess Club</header>';
 	else
-		echo '<h1 class=logo>Online Chess Club</h1>';
+		echo '<header>Online Chess Club</header>';
 	if ($links) {
-		echo '<p class=navbar>[ ';
+		echo '<nav>[ ';
 		$i=0;
 		foreach ($links as $name=>$url) {
 			echo "<a href=$url>$name</a>";
@@ -33,12 +33,12 @@ function renderPageBegin($pagetitle,$class,$links,$title)
 			if ($i < count($links))
 				echo ' | ';
 		}
-		echo ' ]</p>';
+		echo ' ]</nav>';
 	}
 	if ($title)
 		echo '<p class=subtitle>'.$title.'</p>';
 
-	echo '<div class=maincontent>';
+	echo '<main>';
 }
 
 /* Render end of page (footer+HTML). If $credit is not empty display it. 
@@ -48,7 +48,10 @@ function renderPageEnd($credits)
 {
 	global $btstart, $version;
 
-	echo '<hr width=100% class=clearall>';
+	echo '</main>';
+	echo '<footer class=clearall>';
+
+	echo '<hr>';
 	
 	echo '<div class=row>';
 	echo '<div class=leftcredits>';
@@ -61,7 +64,10 @@ function renderPageEnd($credits)
 		echo '<br><br>Build-time: '.sprintf("%.3f",1000*(microtime(true)-$btstart)).' msecs';
 	echo '</div></div>';
 	
-	echo '</div></div>';
+	echo '</footer>';
+
+	echo '</div>';
+	
 }
 
 /* Render functions for various components of chess page */
@@ -172,8 +178,8 @@ function renderBrowserForm($game)
 {
 	global $theme;
 
-	echo '<P align="center" class="large">';
-	echo '<B>'.$game['white'].'</B> - <B>'.$game['black'].'</B><BR>';
+	echo '<P class=boardtitle>';
+	echo '<B>'.$game['white'].'</B> - <B>'.$game['black'].'</B><BR class=pconly> ';
 	if ($game['curstate']!='?' && $game['curstate']!='D') {
 		if ($game['curstate']=='-')
 			$res='draw';
@@ -181,26 +187,15 @@ function renderBrowserForm($game)
 			$res='White won';
 		else 
 			$res='Black won';
-		echo '<FONT class=info><b>Game result: '.$res.'</b></FONT>';
+		echo '<span class=info><b>Game result: '.$res.'</b></span>';
 	}
-	echo '</P><P align="center">';
-	echo '<A href="first" onClick="return gotoMove(0);">';
-	echo '<IMG alt="" src="images/'.$theme.'/h_first.gif" border=0></A>';
-	echo '<IMG width=2 height=2 alt="" src="images/spacer.gif">';
-	echo '<A href="prev" onClick="return gotoMove(cur_move-1);">';
-	echo '<IMG alt="" src="images/'.$theme.'/h_backward.gif" border=0></A>';
-	echo '<IMG width=2 height=2 alt="" src="images/spacer.gif">';
-	echo '<IMG name="colorpin" alt="" src="images/h_white.gif">';
-	echo '<IMG name="digit1" alt="" src="images/'.$theme.'/d0.gif">';
-	echo '<IMG name="digit2" alt="" src="images/'.$theme.'/d1.gif">';
-	echo '<IMG alt="" src="images/'.$theme.'/h_right.gif">';
-	echo '<IMG width=2 height=2 alt="" src="images/spacer.gif">';
-	echo '<A href="next" onClick="return gotoMove(cur_move+1);">';
-	echo '<IMG alt="" src="images/'.$theme.'/h_forward.gif" border=0></A>';
-	echo '<IMG width=2 height=2 alt="" src="images/spacer.gif">';
-	echo '<A href="last" onClick="return gotoMove(move_count-1);">';
-	echo '<IMG alt="" src="images/'.$theme.'/h_last.gif" border=0></A>';
-	echo '</P>';
+	echo '</P><div class=inlineblock>';
+	echo '<A class=playbutton href="first" onClick="return gotoMove(0);">|&#9664;</A>';
+	echo '<A class=playbutton href="prev" onClick="return gotoMove(cur_move-1);">&#9664;</A>';
+	echo '<a id=turncounter class=playbutton>0</a>';
+	echo '<A class=playbutton href="next" onClick="return gotoMove(cur_move+1);">&#9654;</A>';
+	echo '<A class=playbutton href="last" onClick="return gotoMove(move_count-1);">&#9654;|</A>';
+	echo '</div>';
 }
 
 /* Render move history and chessmen difference. 
@@ -239,7 +234,7 @@ function renderHistory($list,$diff,$browsing)
 	if ($browsing) {
 		echo '<TR><TD class=textFrameData>';
 		for ($i=0; $i<15; $i++)
-			echo '<IMG name="tslot'.$i.'" src="images/'.$theme.'/sempty.gif">';
+			echo '<IMG height=24 name="tslot'.$i.'" src="images/'.$theme.'/empty.gif">';
 		echo '</TD></TR>';
 	} else if (!empty($diff)) {
 		$names=array('pawn','knight','bishop','rook','queen');
@@ -249,17 +244,17 @@ function renderHistory($list,$diff,$browsing)
 		for ($i=0;$i<5;$i++)
 			if ($diff[$i]>0)
 				for ($j=0;$j<$diff[$i];$j++) {
-					$src='images/'.$theme.'/sw'.$names[$i].'.gif';
-					echo '<IMG src="'.$src.'">';
+					$src='images/'.$theme.'/w'.$names[$i].'.svg';
+					echo '<IMG height=24 src="'.$src.'">';
 				}
 		if ($src != null)
-			echo '<IMG src="images/'.$theme.'/sempty.gif">';
+			echo '<IMG height=24 src="images/'.$theme.'/empty.gif">';
 		/* Black second */
 		for ($i=0;$i<5;$i++)
 			if ($diff[$i]<0)
 				for ($j=0;$j>$diff[$i];$j--) {
-					$src='images/'.$theme.'/sb'.$names[$i].'.gif';
-					echo '<IMG src="'.$src.'">';
+					$src='images/'.$theme.'/b'.$names[$i].'.svg';
+					echo '<IMG height=24 src="'.$src.'">';
 				}
 		echo '</TD></TR>';
 	}
@@ -303,7 +298,7 @@ function renderBoard($board,$pc,$active)
 						$c = chr(96+$x);
 					else
 						$c = chr(96+9-$x);
-					echo '<td class="boardCoord">'.$c.'</td>';
+					echo '<td class="boardCoord"><span class=pconly>'.$c.'</span></td>';
 				} else
 					echo '<td class="boardCoord"></td>';
 			} else if ($x==0) {
@@ -312,7 +307,7 @@ function renderBoard($board,$pc,$active)
 					$i = 8-$y;
 				else
 					$i = $y+1;
-				echo '<td class="boardCoord">'.$i.'</td>';
+				echo '<td class="boardCoord"><span class=pconly>'.$i.'</span></td>';
 			} else {
 				/* normal tile */
 				if ($board) {
@@ -325,7 +320,7 @@ function renderBoard($board,$pc,$active)
 				else
 					$class='boardTileBlack';
 				if ($board==null) {
-					echo '<td class="'.$class.'"><img width=40 height=40 name="b'.$index.'" src="images/'.$theme.'/empty.gif"></td>';
+					echo '<td class="'.$class.'"><img class=figure name="b'.$index.'" src="images/'.$theme.'/empty.gif"></td>';
 				} else if ($name!='empty') {
 					if ($active) {
 						if ($pc!=$color)
@@ -371,7 +366,7 @@ function renderPrivateNotes($uid,$oid)
 	echo '<FORM method="post" name="pnotesForm">';
 	echo '<INPUT type="hidden" name="commentbackup" value="">';
 	echo '<INPUT type="hidden" name="movebackup" value="">';
-	echo 'Notes:<FONT class="warning"> (encrypted)</FONT>&nbsp;';
+	echo 'Private Notes:<span class="warning"> (encrypted)</span>&nbsp;';
 	echo '<INPUT type="button" value=Save onClick="gatherPNotesFormData(); return true;"><BR>';
 	echo '<TEXTAREA class=textinput rows=3 name="privnotes">'.$notes.'</TEXTAREA>';
 	echo '</FORM>';
@@ -382,16 +377,13 @@ function renderPrivateNotes($uid,$oid)
  * $comment: current comment */
 function renderChatter($game, $comment)
 {
-	echo '<div class=textFrameData>';
 	for ($i=count($game['chatter'])-1;$i>=0;$i--)
-		echo '<I>'.$game['chatter'][$i].'</I><BR>';
+		echo '<div class=chatmessage>'.$game['chatter'][$i].'</div>';
 	if ($game['p_maymove']) {
-		echo 'Your Message:<br>';
 		echo '<FORM name="commentForm" method="post">';
 		echo '<TEXTAREA class=textinput rows=3 name="comment">'.$comment.'</TEXTAREA>';
 		echo '</FORM>';
 	}
-	echo '</div>';
 }
 
 ?>
