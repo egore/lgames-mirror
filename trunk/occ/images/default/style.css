@@ -234,6 +234,7 @@ A.head:hover {
 }
 
 a.playbutton {
+	font-size: large;
 	background-color: #999999;
 	border-radius: 3px;
 	color: white;
