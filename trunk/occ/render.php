@@ -190,11 +190,11 @@ function renderBrowserForm($game)
 		echo '<span class=info><b>Game result: '.$res.'</b></span>';
 	}
 	echo '</P><div class=inlineblock>';
-	echo '<A class=playbutton href="first" onClick="return gotoMove(0);">|&#9664;</A>';
-	echo '<A class=playbutton href="prev" onClick="return gotoMove(cur_move-1);">&#9664;</A>';
+	echo '<A class=playbutton href="first" onClick="return gotoMove(0);">&nbsp;|&#9664;&nbsp;</A>';
+	echo '<A class=playbutton href="prev" onClick="return gotoMove(cur_move-1);">&nbsp;&#9664;&nbsp;</A>';
 	echo '<a id=turncounter class=playbutton>0</a>';
-	echo '<A class=playbutton href="next" onClick="return gotoMove(cur_move+1);">&#9654;</A>';
-	echo '<A class=playbutton href="last" onClick="return gotoMove(move_count-1);">&#9654;|</A>';
+	echo '<A class=playbutton href="next" onClick="return gotoMove(cur_move+1);">&nbsp;&#9654;&nbsp;</A>';
+	echo '<A class=playbutton href="last" onClick="return gotoMove(move_count-1);">&nbsp;&#9654;|&nbsp;</A>';
 	echo '</div>';
 }
 
@@ -234,7 +234,7 @@ function renderHistory($list,$diff,$browsing)
 	if ($browsing) {
 		echo '<TR><TD class=textFrameData>';
 		for ($i=0; $i<15; $i++)
-			echo '<IMG height=24 name="tslot'.$i.'" src="images/'.$theme.'/empty.gif">';
+			echo '<IMG height=24 name="tslot'.$i.'" src="images/'.$theme.'/empty.png">';
 		echo '</TD></TR>';
 	} else if (!empty($diff)) {
 		$names=array('pawn','knight','bishop','rook','queen');
@@ -248,7 +248,7 @@ function renderHistory($list,$diff,$browsing)
 					echo '<IMG height=24 src="'.$src.'">';
 				}
 		if ($src != null)
-			echo '<IMG height=24 src="images/'.$theme.'/empty.gif">';
+			echo '<IMG height=24 src="images/'.$theme.'/empty.png">';
 		/* Black second */
 		for ($i=0;$i<5;$i++)
 			if ($diff[$i]<0)
@@ -320,7 +320,7 @@ function renderBoard($board,$pc,$active)
 				else
 					$class='boardTileBlack';
 				if ($board==null) {
-					echo '<td class="'.$class.'"><img class=figure name="b'.$index.'" src="images/'.$theme.'/empty.gif"></td>';
+					echo '<td class="'.$class.'"><img class=figure name="b'.$index.'" src="images/'.$theme.'/empty.png"></td>';
 				} else if ($name!='empty') {
 					if ($active) {
 						if ($pc!=$color)
@@ -333,9 +333,9 @@ function renderBoard($board,$pc,$active)
 				} else {
 					if ($active) {
 						$cmdpart=sprintf('-%s',i2bc($index));
-						echo '<td id="btd'.$index.'" class="'.$class.'"><a href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><img class=figure border=0 src="images/'.$theme.'/empty.gif"></a></td>';
+						echo '<td id="btd'.$index.'" class="'.$class.'"><a href="" onClick="return assembleCmd(\''.$cmdpart.'\');"><img class=figure border=0 src="images/'.$theme.'/empty.png"></a></td>';
 					} else
-						echo '<td class="'.$class.'"><img class=figure src="images/'.$theme.'/empty.gif"></td>';
+						echo '<td class="'.$class.'"><img class=figure src="images/'.$theme.'/empty.png"></td>';
 				}
 				$index += $pos_change;
 			}
