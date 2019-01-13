@@ -170,7 +170,7 @@ function moveBackward()
 function showDiff()
 {
 	for (i=0; i<15; i++)
-		document.images["tslot"+i].src="images/"+theme+"/empty.gif";
+		document.images["tslot"+i].src="images/"+theme+"/empty.png";
 
 	/* Compute chessmen difference */
 	for (i=0; i<5; i++) 
@@ -204,7 +204,7 @@ function showDiff()
 	}
 	/* Have one slot empty for separation */
 	if (slot_id > 0) {
-		document.images["tslot"+slot_id].src="images/"+theme+"/empty.gif";
+		document.images["tslot"+slot_id].src="images/"+theme+"/empty.png";
 		slot_id++;
 	}
 	/* Top player next */
@@ -233,7 +233,7 @@ function renderBoard()
 {
 	for (i=0; i<64; i++) {
 		if (board[i]==0) {
-			document.images["b"+i].src="images/"+theme+"/empty.gif";
+			document.images["b"+i].src="images/"+theme+"/empty.png";
 			continue;
 		}
 		value=board[i];

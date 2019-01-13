@@ -145,9 +145,9 @@ if (count($list)>0) {
 	echo '<TD></TD></TR>';
 	foreach ($list as $info) {
 		if ($info['p_maymove'])
-			$mark='greenmark.gif';
+			$mark='greenmark.png';
 		else
-			$mark='redmark.gif';
+			$mark='redmark.png';
 		$startdate=date('M jS Y H:i',$info['ts_start']);
 		$lastdate=date('M jS Y H:i',$info['ts_last']);
 		echo '<TR><TD><IMG alt="" src="images/'.$theme.'/'.$mark.'"></TD>';
