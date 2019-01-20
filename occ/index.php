@@ -47,7 +47,7 @@ if (empty($uid)) {
 		echo '<b class="warning">'.$errmsg.'</b><br>';
 		echo '<a href="sendpwd.php">Lost your password?</a><br><br>';
 	}
-	echo '<div class=inlineblock><TABLE border=0><TR><TD align="center">';
+	echo '<div class=inlineblock>';
 	echo '<FORM method="POST"><DIV align="right">';
 	echo 'Username: &nbsp;&nbsp;&nbsp;&nbsp;';
 	echo '<INPUT type="text" size=20 name="uid" value=""><BR><BR>';
@@ -55,7 +55,7 @@ if (empty($uid)) {
 	echo '<INPUT type="password" size=20 name="pwd" value="">';
 	echo '</DIV><BR><INPUT type="submit" value="Login"></FORM>';
 	echo '<FONT class="warning">(Cookies must be enabled to login.)</FONT>';
-	echo '</TD></TR></TABLE></div>';
+	echo '</div>';
 	if ($releaseinfo)
 		echo '<P class="releaseInfo">'.$releaseinfo.'</P>';
 	renderPageEnd(null);
@@ -150,7 +150,7 @@ if (count($list)>0) {
 			$mark='redmark.png';
 		$startdate=date('M jS Y H:i',$info['ts_start']);
 		$lastdate=date('M jS Y H:i',$info['ts_last']);
-		echo '<TR><TD><IMG alt="" src="images/'.$theme.'/'.$mark.'"></TD>';
+		echo '<TR><TD class=tdmarker><IMG alt="" class=marker src="images/'.$theme.'/'.$mark.'"></TD>';
 		if ($info['curstate']=='w' || $info['curstate']=='-')
 			echo '<TD><U>'.$info['white'].'</U></TD>';
 		else

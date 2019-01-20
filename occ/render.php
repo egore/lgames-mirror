@@ -59,7 +59,7 @@ function renderPageEnd($credits)
 	if (!empty($credits))
 		echo '<br><br>'.$credits;
 	echo '</div><div class=rightcredits>';
-	echo '&copy; 2003-2018 Michael Speck<br> <A class="tiny" href="http://lgames.sf.net">http://lgames.sf.net</A>';
+	echo '&copy; 2003-2019 Michael Speck<br> <A class="tiny" href="http://lgames.sf.net">http://lgames.sf.net</A>';
 	if (!empty($btstart))
 		echo '<br><br>Build-time: '.sprintf("%.3f",1000*(microtime(true)-$btstart)).' msecs';
 	echo '</div></div>';
@@ -209,10 +209,7 @@ function renderHistory($list,$diff,$browsing)
 	if (count($list)==0)
 		return;
 
-	echo '<P>';
-	echo '<TABLE width=100% border=0 cellpadding=1 cellspacing=1 class=textFrame>';
-
-	echo '<TR><TD class=textFrameData>';
+	echo '<div class=textFrame>';
 	$num=floor((count($list)+1)/2);
 	/* Show only few last moves if not browsing */
 	if (!$browsing && $num>12) {
@@ -221,45 +218,44 @@ function renderHistory($list,$diff,$browsing)
 	} else
 		$start=0;
 	for ($i=1+$start,$j=$start*2;$i<=$num;$i++,$j+=2) {
-		echo '<B>'.$i.'.</B>&nbsp;';
+		echo '<b>'.$i.'.</b>&nbsp;';
 		if ($browsing) {
 			$jspos=$j;
-			echo '<A href="'.$jspos.'" onClick="return gotoMove('.$jspos.');">'.$list[$j].'</A> ';
+			echo '<a href="'.$jspos.'" onClick="return gotoMove('.$jspos.');">'.$list[$j].'</a> ';
 			$jspos++;
-			echo '<A href="'.$jspos.'" onClick="return gotoMove('.$jspos.');">'.$list[$j+1].'</A> ';
+			echo '<a href="'.$jspos.'" onClick="return gotoMove('.$jspos.');">'.$list[$j+1].'</a> ';
 		} else
 			echo $list[$j].' '.$list[1+$j].' ';
 	}
-	echo '</TD></TR>';
+	echo '</div>';
+	
 	if ($browsing) {
-		echo '<TR><TD class=textFrameData>';
+		echo '<div class=textFrame>';
 		for ($i=0; $i<15; $i++)
-			echo '<IMG height=24 name="tslot'.$i.'" src="images/'.$theme.'/empty.png">';
-		echo '</TD></TR>';
+			echo '<img class=lostfigure name="tslot'.$i.'" src="images/'.$theme.'/empty.png">';
+		echo '</div>';
 	} else if (!empty($diff)) {
 		$names=array('pawn','knight','bishop','rook','queen');
-		echo '<TR><TD class=textFrameData>';
+		echo '<div class=textFrame>';
 		/* White first */
 		$src=null;
 		for ($i=0;$i<5;$i++)
 			if ($diff[$i]>0)
 				for ($j=0;$j<$diff[$i];$j++) {
 					$src='images/'.$theme.'/w'.$names[$i].'.svg';
-					echo '<IMG height=24 src="'.$src.'">';
+					echo '<img class=lostfigure src="'.$src.'">';
 				}
 		if ($src != null)
-			echo '<IMG height=24 src="images/'.$theme.'/empty.png">';
+			echo '<img class=lostfigure src="images/'.$theme.'/empty.png">';
 		/* Black second */
 		for ($i=0;$i<5;$i++)
 			if ($diff[$i]<0)
 				for ($j=0;$j>$diff[$i];$j--) {
 					$src='images/'.$theme.'/b'.$names[$i].'.svg';
-					echo '<IMG height=24 src="'.$src.'">';
+					echo '<img class=lostfigure src="'.$src.'">';
 				}
-		echo '</TD></TR>';
+		echo '</div>';
 	}
-	echo '</TABLE>';
-	echo '</P>';
 }
 
 /* Render chess board. 
