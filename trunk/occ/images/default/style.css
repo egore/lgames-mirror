@@ -1,20 +1,28 @@
-body {
+body,textarea,input,select {
 	font-family: Arial;
 	color: #333340;
-	background-color: #ffffff;
-	margin: 0;
 	font-size: normal;
 }
+body {
+	background-color: #ffffff;
+	margin: 0;
+}
 
-form,textarea,input,td,select,option,button {
-	font-family: Arial;
-	color: #333340;
-	font-size: normal;
+/* font-size normal is totally ignored in Firefox so set
+ * large to prevent too small buttons */
+input,select {
+	font-size: large;
 }
 
 .mainwrapper {
 	width: 100%;
 	text-align: center;
+}
+
+.helpwrapper {
+	width: 90%;
+	display: inline-block;
+	text-align: left;
 }
 
 main {
@@ -25,11 +33,11 @@ header {
 	color: #777777;
 	font-size: x-large;
 	font-weight: bold;
-	padding: 3px;
+	padding: 10px;
 }
 
 nav {
-	padding: 3px;
+	padding: 10px;
 }
 
 footer {
@@ -144,22 +152,22 @@ A.head:hover {
 .figure {
 	width: 100%;
 }
+.lostfigure {
+	width: 6%;
+}
+.tdmarker {
+	text-align: right;
+}
+.marker {
+	width:80%;
+}
 
 .textFrame {
-	background-color: #777799;
-}
-
-.textFrameData {
 	background-color: white;
 	border: #333340 solid 1px;
-	padding: 2px;
+	padding: 4px;
 	text-align: left;
-}
-
-.helpwrapper {
-	width: 90%;
-	display: inline-block;
-	text-align: left;
+	border-radius: 4px;
 }
 
 .textBox {
@@ -250,7 +258,7 @@ a.playbutton:hover {
 @media only screen and (min-width: 768px) {
 
 .pconly {
-	display: inline;
+	display: inline-block;
 }
 
 .col50 {
