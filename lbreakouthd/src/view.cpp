@@ -39,6 +39,7 @@ View::View(Config &cfg, ClientGame &_cg)
 	 		SDL_Log("TTF_Init failed: %s\n", SDL_GetError());
 	mixer.open(cfg.channels, cfg.audio_buffer_size);
 	mixer.setVolume(cfg.volume);
+	mixer.setMute(!config.sound);
 
 	/* load theme names */
 	readDir(string(DATADIR)+"/themes", RD_FOLDERS, themeNames);
