@@ -28,7 +28,12 @@ enum {
 
 	/* mixer */
 	MIX_CHANNELNUM = 16,
-	MIX_CUNKSIZE = 2048
+	MIX_CUNKSIZE = 2048,
+
+	/* waitForKey types */
+	WT_ANYKEY = 0,
+	WT_YESNO,
+	WT_PAUSE
 };
 
 class View {
@@ -91,8 +96,8 @@ class View {
 	void renderActiveExtra(int id, int ms, int x, int y);
 	void renderBalls(bool shadow = false);
 	void dim();
-	bool showInfo(const string &line, bool confirm=false);
-	bool showInfo(const vector<string> &text, bool confirm=false);
+	bool showInfo(const string &line, int type=WT_ANYKEY);
+	bool showInfo(const vector<string> &text, int type=WT_ANYKEY);
 	void showHelp();
 	void createParticles(BrickHit *hit);
 	void createSprites();
@@ -103,7 +108,7 @@ class View {
 	void saveGame();
 	int resumeGame();
 	void showFinalHiscores();
-	int waitForKey(bool confirm);
+	int waitForKey(int type);
 	void darkenScreen(int alpha = 32);
 	void initTitleLabel();
 	void updateResumeGameTooltip();
