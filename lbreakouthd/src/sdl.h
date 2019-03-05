@@ -92,6 +92,11 @@ protected:
 	int w, h;
 public:
 	static bool useColorKeyBlack;
+	static int xoff, yoff;
+	static void setDestinationOffset(int xo, int yo) {
+		xoff = xo;
+		yoff = yo;
+	}
 	static int getHeight(const string& fname) {
 		Image img;
 		if (!img.load(fname))

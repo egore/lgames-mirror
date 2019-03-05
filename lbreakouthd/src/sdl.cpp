@@ -20,6 +20,8 @@
 int Geom::sw = 640; /* safe values before MainWindow is called */
 int Geom::sh = 480;
 bool Image::useColorKeyBlack = false; /* workaround for old color key in lbr2 themes */
+int Image::xoff = 0;
+int Image::yoff = 0;
 
 SDL_Renderer *mrc = NULL; /* main window render context, got only one */
 
@@ -39,6 +41,7 @@ MainWindow::MainWindow(const char *title, int _w, int _h, int _full)
 		flags = SDL_WINDOW_FULLSCREEN;
 	w = _w;
 	h = _h;
+	/* TEST  w = 1900; h = 540; flags = 0; */
 	Geom::sw = w;
 	Geom::sh = h;
 	_loginfo("Creating main window with %dx%d, fullscreen=%d\n",w,h,_full);
@@ -48,6 +51,10 @@ MainWindow::MainWindow(const char *title, int _w, int _h, int _full)
 	if ((mr = SDL_CreateRenderer(mw, -1, SDL_RENDERER_ACCELERATED)) == NULL)
 		_logsdlerr();
 	mrc = mr;
+
+	/* back to black */
+	SDL_SetRenderDrawColor(mrc,0,0,0,0);
+	SDL_RenderClear(mrc);
 }
 MainWindow::~MainWindow()
 {
@@ -175,7 +182,7 @@ void Image::copy(int dx, int dy)
 	if (tex == NULL)
 		return;
 
-	SDL_Rect drect = {dx, dy, w, h};
+	SDL_Rect drect = {dx + xoff, dy + yoff, w, h};
 	SDL_RenderCopy(mrc, tex, NULL, &drect);
 }
 void Image::copy(int dx, int dy, int dw, int dh)
@@ -183,7 +190,7 @@ void Image::copy(int dx, int dy, int dw, int dh)
 	if (tex == NULL)
 		return;
 
-	SDL_Rect drect = {dx, dy, dw, dh};
+	SDL_Rect drect = {dx + xoff, dy + yoff, dw, dh};
 	SDL_RenderCopy(mrc, tex, NULL, &drect);
 }
 void Image::copy(int sx, int sy, int sw, int sh, int dx, int dy) {
@@ -191,7 +198,7 @@ void Image::copy(int sx, int sy, int sw, int sh, int dx, int dy) {
 		return;
 
 	SDL_Rect srect = {sx, sy, sw, sh};
-	SDL_Rect drect = {dx, dy, sw, sh};
+	SDL_Rect drect = {dx + xoff, dy + yoff, sw, sh};
 	SDL_RenderCopy(mrc, tex, &srect, &drect);
 }
 
@@ -283,7 +290,7 @@ void GridImage::copy(int gx, int gy, int dx, int dy)
 		return;
 
 	SDL_Rect srect = {gx * gw, gy * gh, gw, gh};
-	SDL_Rect drect = {dx, dy, gw, gh};
+	SDL_Rect drect = {dx + xoff, dy + yoff, gw, gh};
 	SDL_RenderCopy(mrc, tex, &srect, &drect);
 }
 void GridImage::copy(int gx, int gy, int dx, int dy, int dw, int dh)
@@ -292,7 +299,7 @@ void GridImage::copy(int gx, int gy, int dx, int dy, int dw, int dh)
 		return;
 
 	SDL_Rect srect = {gx * gw, gy * gh, gw, gh};
-	SDL_Rect drect = {dx, dy, dw, dh};
+	SDL_Rect drect = {dx + xoff, dy + yoff, dw, dh};
 	SDL_RenderCopy(mrc, tex, &srect, &drect);
 }
 void GridImage::copy(int gx, int gy, int sx, int sy, int sw, int sh, int dx, int dy)
@@ -301,9 +308,8 @@ void GridImage::copy(int gx, int gy, int sx, int sy, int sw, int sh, int dx, int
 		return;
 
 	SDL_Rect srect = {gx * gw + sx, gy * gh + sy, sw, sh};
-	SDL_Rect drect = {dx, dy, sw, sh};
+	SDL_Rect drect = {dx + xoff, dy + yoff, sw, sh};
 	SDL_RenderCopy(mrc, tex, &srect, &drect);
-
 }
 
 
