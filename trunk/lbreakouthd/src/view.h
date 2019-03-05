@@ -42,6 +42,7 @@ class View {
 	Theme theme;
 	Mixer mixer;
 	MainWindow *mw;
+	SDL_Rect viewport; /* used if width not 0 */
 
 	/* menu */
 	unique_ptr<Menu> rootMenu;

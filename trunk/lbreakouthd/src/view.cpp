@@ -63,6 +63,7 @@ View::View(Config &cfg, ClientGame &_cg)
 	MainWindow::getModeNames(modeNames);
 	if ((uint)config.mode >= modeNames.size())
 		config.mode = 0;
+	viewport.x = viewport.y = viewport.w = viewport.h = 0;
 
 	init(themeNames[config.theme_id], MainWindow::getModeResolution(config.mode));
 }
@@ -76,12 +77,28 @@ void View::init(string t, uint r)
 	/* determine resolution and scale factor */
 	int sw, sh;
 	if (r == 0) {
-		/* use window height for resolution */
+		/* fullscreen is tricky... might also be 16:10,4:3,...
+		 * use width to get 16:9 leaving space at bottom */
 		SDL_DisplayMode mode;
 		SDL_GetCurrentDisplayMode(0,&mode);
-		sh = mode.h;
+		/* TEST  mode.w = 1900; mode.h = 540; */
 		sw = mode.w;
-		_loginfo("Using fullscreen resolution %dx%d\n",mode.w,mode.h);
+		sh = mode.w/16*9;
+		if (sh != mode.h) {
+			if (sh < mode.h) { /* e.g. 4:3 */
+				viewport.x = 0;
+				viewport.y = (mode.h - sh)/2;
+			} else { /* e.g. 21:9 */
+				sh = mode.h;
+				sw = sh / 9 * 16;
+				viewport.x = (mode.w - sw)/2;
+				viewport.y = 0;
+			}
+			viewport.w = sw;
+			viewport.h = sh;
+			_loginfo("Fullscreen resolution not 16:9! Using %dx%d\n",sw,sh);
+		} else
+			_loginfo("Using fullscreen resolution %dx%d\n",mode.w,mode.h);
 	} else {
 		sh = r;
 		sw = sh * 16 / 9;
@@ -402,6 +419,14 @@ void View::render()
 	Extra *extra = 0;
 	Shot *shot = 0;
 
+	/* couldn't figure out how this ViewPort stuff works and if it's
+	 * actually the right call aaaaand I was to lazy to write +xoff,+yoff
+	 * everywhere, so let's do it the ugly way,
+	 * and no rendersetcliprect didn't help either */
+	if (viewport.w != 0) {
+		Image::setDestinationOffset(viewport.x,viewport.y);
+	}
+
 	if (cgame.darknessActive()) {
 		SDL_SetRenderDrawColor(mrc,0,0,0,255);
 		SDL_RenderClear(mrc);
@@ -409,7 +434,7 @@ void View::render()
 		theme.shot.setAlpha(128);
 		theme.weapon.setAlpha(128);
 	} else {
-		imgBackground.copy();
+		imgBackground.copy(0,0);
 		imgScore.copy(imgScoreX,imgScoreY);
 		imgExtras.copy(imgExtrasX,imgExtrasY);
 		theme.paddles.clearAlpha();
@@ -558,6 +583,10 @@ void View::render()
 	if (config.show_fps) {
 		theme.fSmall.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
 		theme.fSmall.write(0,0,to_string((int)fps));
+	}
+
+	if (viewport.w) {
+		Image::setDestinationOffset(0,0);
 	}
 }
 
@@ -1304,11 +1333,9 @@ void View::runMenu()
 void View::renderMenu()
 {
 	theme.menuBackground.copy();
-	lblCredits1.copy(theme.menuBackground.getWidth()-2,
-				theme.menuBackground.getHeight(),
+	lblCredits1.copy(mw->getWidth()-2,mw->getHeight(),
 				ALIGN_X_RIGHT | ALIGN_Y_BOTTOM);
-	lblCredits2.copy(theme.menuBackground.getWidth()-2,
-				theme.menuBackground.getHeight() - theme.fSmall.getLineHeight(),
+	lblCredits2.copy(mw->getWidth()-2,mw->getHeight() - theme.fSmall.getLineHeight(),
 				ALIGN_X_RIGHT | ALIGN_Y_BOTTOM);
 	curMenu->render();
 }
