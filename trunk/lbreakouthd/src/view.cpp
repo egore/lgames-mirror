@@ -87,6 +87,7 @@ void View::init(string t, uint r)
 		sw = sh * 16 / 9;
 		_loginfo("Using window resolution %dx%d\n",sw,sh);
 	}
+
 	brickAreaHeight = sh;
 	brickAreaWidth = sh * VG_BRICKAREAWIDTH / VG_BRICKAREAHEIGHT;
 	scaleFactor = brickAreaWidth * 100 / VG_BRICKAREAWIDTH;
@@ -210,7 +211,7 @@ void View::run()
 			if (ev.type == SDL_KEYUP) {
 				switch (ev.key.keysym.scancode) {
 				case SDL_SCANCODE_P:
-					showInfo(_("Pause"));
+					showInfo(_("Pause"),WT_PAUSE);
 					ticks.reset();
 					break;
 				case SDL_SCANCODE_F:
@@ -226,7 +227,7 @@ void View::run()
 					text.clear();
 					text.push_back(_("Quit Game? y/n"));
 					text.push_back(_("(No hiscore entry yet, game can be resumed later.)"));
-					if (showInfo(text,true)) {
+					if (showInfo(text,WT_YESNO)) {
 						leave = true;
 						resumeLater = true;
 					}
@@ -309,7 +310,7 @@ void View::run()
 			text.push_back(cgame.getPlayerMessage());
 			text.push_back(_("Buy Continue? y/n"));
 			text.push_back(_("(Costs ALL of your score.)"));
-			if (showInfo(text,true)) {
+			if (showInfo(text,WT_YESNO)) {
 				cgame.continueGame();
 				/* game is certainly not over so clear flag */
 				flags &= ~CGF_GAMEOVER;
@@ -787,17 +788,17 @@ void View::dim()
 	waitForInputRelease();
 }
 
-bool View::showInfo(const string &line, bool confirm)
+bool View::showInfo(const string &line, int type)
 {
 	vector<string> text;
 	text.push_back(line);
-	return showInfo(text,confirm);
+	return showInfo(text, type);
 }
 
 /* Darken current screen content and show info text.
  * If confirm is false, wait for any key/click.
  * If confirm is true, wait for key y/n and return true false. */
-bool View::showInfo(const vector<string> &text, bool confirm)
+bool View::showInfo(const vector<string> &text, int type)
 {
 	Font &font = theme.fSmall;
 	bool ret = true;
@@ -816,7 +817,7 @@ bool View::showInfo(const vector<string> &text, bool confirm)
 	SDL_RenderPresent(mrc);
 
 	grabInput(0);
-	ret = waitForKey(confirm);
+	ret = waitForKey(type);
 	grabInput(1);
 	return ret;
 }
@@ -1419,7 +1420,7 @@ void View::showFinalHiscores()
 	waitForKey(false);
 }
 
-int View::waitForKey(bool confirm)
+int View::waitForKey(int type)
 {
 	SDL_Event ev;
 	bool ret = true;
@@ -1432,17 +1433,21 @@ int View::waitForKey(bool confirm)
 		if (SDL_WaitEvent(&ev)) {
 			if (ev.type == SDL_QUIT)
 				quitReceived = leave = true;
-			if (!confirm && (ev.type == SDL_KEYUP ||
+			if (type == WT_ANYKEY && (ev.type == SDL_KEYUP ||
 						ev.type == SDL_MOUSEBUTTONUP))
 				leave = true;
-			if (confirm && ev.type == SDL_KEYUP) {
+			else if (ev.type == SDL_KEYUP) {
 				int sc = ev.key.keysym.scancode;
-				if (sc == SDL_SCANCODE_Y || sc == SDL_SCANCODE_Z)
-					ret = leave = true;
-				if (sc == SDL_SCANCODE_N || sc == SDL_SCANCODE_ESCAPE) {
-					ret = false;
-					leave = true;
-				}
+				if (type == WT_YESNO) {
+					if (sc == SDL_SCANCODE_Y || sc == SDL_SCANCODE_Z)
+						ret = leave = true;
+					if (sc == SDL_SCANCODE_N || sc == SDL_SCANCODE_ESCAPE) {
+						ret = false;
+						leave = true;
+					}
+				} else if (type == WT_PAUSE)
+					if (sc == SDL_SCANCODE_P)
+						ret = leave = true;
 			}
 		}
 		SDL_FlushEvent(SDL_MOUSEMOTION);
