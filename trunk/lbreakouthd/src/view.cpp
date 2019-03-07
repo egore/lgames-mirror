@@ -81,7 +81,7 @@ void View::init(string t, uint r)
 		 * use width to get 16:9 leaving space at bottom */
 		SDL_DisplayMode mode;
 		SDL_GetCurrentDisplayMode(0,&mode);
-		/* TEST  mode.w = 1900; mode.h = 540; */
+		/* TEST  */ mode.w = 1200; mode.h = 900;
 		sw = mode.w;
 		sh = mode.w/16*9;
 		if (sh != mode.h) {
@@ -151,7 +151,7 @@ void View::init(string t, uint r)
 	imgExtrasY = 19*brickScreenHeight;
 	imgFloor.create(EDITWIDTH*brickScreenWidth,brickScreenHeight);
 	imgFloorX = brickScreenWidth;
-	imgFloorY = imgBackground.getHeight() - brickScreenHeight;
+	imgFloorY = (MAPHEIGHT-1)*brickScreenHeight;
 	SDL_SetRenderTarget(mrc, imgFloor.getTex());
 	for (int i = 0; i < EDITWIDTH; i++)
 		theme.bricks.copy(1, 0, i*brickScreenWidth, 0);
@@ -419,13 +419,8 @@ void View::render()
 	Extra *extra = 0;
 	Shot *shot = 0;
 
-	/* couldn't figure out how this ViewPort stuff works and if it's
-	 * actually the right call aaaaand I was to lazy to write +xoff,+yoff
-	 * everywhere, so let's do it the ugly way,
-	 * and no rendersetcliprect didn't help either */
-	if (viewport.w != 0) {
-		Image::setDestinationOffset(viewport.x,viewport.y);
-	}
+	if (viewport.w != 0)
+		SDL_RenderSetViewport(mrc,&viewport);
 
 	if (cgame.darknessActive()) {
 		SDL_SetRenderDrawColor(mrc,0,0,0,255);
@@ -585,9 +580,8 @@ void View::render()
 		theme.fSmall.write(0,0,to_string((int)fps));
 	}
 
-	if (viewport.w) {
-		Image::setDestinationOffset(0,0);
-	}
+	if (viewport.w)
+		SDL_RenderSetViewport(mrc, NULL);
 }
 
 /** Take background image, add frame and static hiscore chart */
