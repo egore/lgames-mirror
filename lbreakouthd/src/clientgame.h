@@ -159,6 +159,12 @@ public:
 	int isBonusLevel() {
 		return game->isBonusLevel;
 	}
+	int isBrickAtPosition(int x, int y) {
+		if (game->bricks[x][y].type != MAP_EMPTY &&
+					game->bricks[x][y].id != INVIS_BRICK_ID)
+			return 1;
+		return 0;
+	}
 	const string &getBonusLevelInfo();
 };
 

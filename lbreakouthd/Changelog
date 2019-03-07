@@ -1,3 +1,6 @@
+1.0.4:
+- added shine effect (2019/03/06 MS)
+- fixed computing geometry to work with non 16:9 screen ratio (2019/03/06 MS)
 - fixed crash for non 16:9 resolutions (2019/03/06 MS)
 - wait for p only in pause to allow switching away from window (2019/03/05 MS)
 - properly mute sound on startup if disabled (2019/02/05 MS)

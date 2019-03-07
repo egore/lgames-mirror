@@ -54,6 +54,8 @@ class Theme {
 	uint weaponAnimDelay;
 	uint explFrameNum;
 	uint explAnimDelay;
+	uint shineFrameNum;
+	uint shineAnimDelay;
 	uint menuX, menuY, menuItemWidth, menuItemHeight;
 	string menuFontNormalName, menuFontFocusName;
 	uint menuFontNormalSize, menuFontFocusSize;
@@ -71,6 +73,7 @@ class Theme {
 	GridImage weapon;
 	GridImage explosions;
 	GridImage life;
+	GridImage shine;
 	Image warpIcon;
 	Font fSmall, fNormal;
 	Font fMenuNormal, fMenuFocus;

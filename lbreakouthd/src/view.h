@@ -76,6 +76,9 @@ class View {
 	int imgFloorX, imgFloorY;
 	FrameCounter weaponFrameCounter;
 	FrameCounter shotFrameCounter;
+	FrameCounter shineFrameCounter;
+	Timeout shineDelay;
+	int shineX, shineY; /* map position to shine at, -1 = get new one */
 	SmoothCounter warpIconAlphaCounter;
 	SmoothCounter energyBallAlphaCounter;
 	bool showWarpIcon;
@@ -116,6 +119,7 @@ class View {
 	void renderExtraHelp(GridImage &img, uint gx, uint gy, const string &str, int x, int y);
 	void runBrickDestroyDlg();
 	void waitForInputRelease();
+	void getNewShinePosition();
 public:
 	View(Config &cfg, ClientGame &_cg);
 	~View();

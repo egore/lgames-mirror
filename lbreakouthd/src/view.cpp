@@ -65,6 +65,9 @@ View::View(Config &cfg, ClientGame &_cg)
 		config.mode = 0;
 	viewport.x = viewport.y = viewport.w = viewport.h = 0;
 
+	shineX = -1;
+	shineY = -1;
+
 	init(themeNames[config.theme_id], MainWindow::getModeResolution(config.mode));
 }
 
@@ -123,6 +126,8 @@ void View::init(string t, uint r)
 	theme.load(t, sw, sh, brickScreenWidth, brickScreenHeight, config.antialiasing);
 	weaponFrameCounter.init(theme.weaponFrameNum, theme.weaponAnimDelay);
 	shotFrameCounter.init(theme.shotFrameNum, theme.shotAnimDelay);
+	shineFrameCounter.init(theme.shineFrameNum, theme.shineAnimDelay);
+	shineDelay.set(1000);
 	warpIconAlphaCounter.init(SCT_UPDOWN, 64, 255, 3);
 	showWarpIcon = false;
 	energyBallAlphaCounter.init(SCT_UPDOWN, 32, 255, 2);
@@ -315,6 +320,13 @@ void View::run()
 			if ((*it).get()->update(ms))
 				it = sprites.erase(it);
 		}
+		if (shineX != -1) {
+			if (shineFrameCounter.update(ms)) {
+				shineX = -1;
+				shineDelay.reset();
+			}
+		} else if (shineDelay.update(ms))
+			getNewShinePosition();
 
 		/* update game context */
 		flags = cgame.update(ms, rx, pis);
@@ -520,6 +532,12 @@ void View::render()
 			imgFloor.setAlpha(cgame.getFloorAlpha());
 		imgFloor.copy(imgFloorX,imgFloorY);
 	}
+
+	/* shine effect */
+	if (cgame.isBrickAtPosition(shineX,shineY))
+		theme.shine.copy(shineFrameCounter.get(),0,
+			shineX*brickScreenWidth,
+			shineY*brickScreenHeight);
 
 	/* sprites */
 	if (cgame.darknessActive()) {
@@ -1741,4 +1759,20 @@ void View::waitForInputRelease()
 	}
 	SDL_PumpEvents();
 	SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+}
+
+void View::getNewShinePosition()
+{
+	/* multiple runs possible due to invis bricks */
+	int pos = rand() % (cgame.getGameContext()->bricks_left+1);
+	while (pos >= 0) {
+		for (int i = 1; i <= EDITWIDTH; i++)
+			for (int j = 1; j <= EDITHEIGHT; j++)
+				if (pos >= 0 && cgame.isBrickAtPosition(i,j)) {
+					shineX = i;
+					shineY = j;
+					pos--;
+				}
+		pos--; /* should always terminate but we make sure */
+	}
 }
