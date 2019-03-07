@@ -54,6 +54,8 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	weaponAnimDelay = 200;
 	explFrameNum = 9;
 	explAnimDelay = 50;
+	shineFrameNum = 6;
+	shineAnimDelay = 50;
 	fontSmallName = "fsmall.otf";
 	fontSmallSize = 14;
 	fontNormalName = "fnormal.otf";
@@ -97,6 +99,8 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 		fp.get("weaponAnim.delay",weaponAnimDelay);
 		fp.get("explAnim.frames",explFrameNum);
 		fp.get("explAnim.delay",explAnimDelay);
+		fp.get("shineAnim.frames",shineFrameNum);
+		fp.get("shineAnim.delay",shineAnimDelay);
 		fp.get("menu.centerX",menuX);
 		fp.get("menu.centerY",menuY);
 		fp.get("menu.itemWidth",menuItemWidth);
@@ -335,6 +339,13 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	else
 		life.load(stdPath+ "/life.png",sbfw,sbfh);
 	life.scale(brickScreenWidth,brickScreenHeight);
+
+	/* shine animation is one row of brick size frames */
+	if (fileExists(path + "/shine.png"))
+		shine.load(path + "/shine.png",brickFileWidth,brickFileHeight);
+	else
+		shine.load(stdPath+ "/shine.png",sbfw,sbfh);
+	shine.scale(brickScreenWidth,brickScreenHeight);
 
 	/* warp symbol is brick size */
 	/* ignore old warp icon as it's geometry sucks big time */
