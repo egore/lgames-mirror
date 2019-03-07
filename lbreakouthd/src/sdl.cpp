@@ -39,7 +39,7 @@ MainWindow::MainWindow(const char *title, int _w, int _h, int _full)
 		flags = SDL_WINDOW_FULLSCREEN;
 	w = _w;
 	h = _h;
-	/* TEST */ w = 1200; h = 900; flags = 0;
+	/* TEST  w = 1600; h = 1200; flags = 0; */
 	Geom::sw = w;
 	Geom::sh = h;
 	_loginfo("Creating main window with %dx%d, fullscreen=%d\n",w,h,_full);

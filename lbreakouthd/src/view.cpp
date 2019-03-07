@@ -81,7 +81,7 @@ void View::init(string t, uint r)
 		 * use width to get 16:9 leaving space at bottom */
 		SDL_DisplayMode mode;
 		SDL_GetCurrentDisplayMode(0,&mode);
-		/* TEST  */ mode.w = 1200; mode.h = 900;
+		/* TEST  mode.w = 1600; mode.h = 1200; */
 		sw = mode.w;
 		sh = mode.w/16*9;
 		if (sh != mode.h) {
@@ -105,11 +105,12 @@ void View::init(string t, uint r)
 		_loginfo("Using window resolution %dx%d\n",sw,sh);
 	}
 
-	brickAreaHeight = sh;
-	brickAreaWidth = sh * VG_BRICKAREAWIDTH / VG_BRICKAREAHEIGHT;
-	scaleFactor = brickAreaWidth * 100 / VG_BRICKAREAWIDTH;
+	/* depending on screen ratio we don't fit all of the screen with bricks */
+	brickScreenHeight = sh / MAPHEIGHT;
+	scaleFactor = brickScreenHeight * 100 / VG_BRICKHEIGHT;
 	brickScreenWidth = v2s(VG_BRICKWIDTH);
-	brickScreenHeight = v2s(VG_BRICKHEIGHT);
+	brickAreaWidth = brickScreenWidth * MAPHEIGHT;
+	brickAreaHeight = brickScreenHeight * MAPHEIGHT;
 	_loginfo("Scale factor x100: %d\n",scaleFactor);
 	_loginfo("Brick screen size: %dx%d\n",brickScreenWidth,brickScreenHeight);
 
