@@ -23,6 +23,7 @@
 #include "view.h"
 
 extern SDL_Renderer *mrc;
+extern int last_ball_brick_reflect_x;
 
 View::View(Config &cfg, ClientGame &_cg)
 	: config(cfg), mw(NULL),
@@ -331,7 +332,7 @@ void View::run()
 		/* update game context */
 		flags = cgame.update(ms, rx, pis);
 		if (flags & CGF_LIFELOST) {
-			mixer.play(theme.sLooseLife);
+			mixer.playx(theme.sLooseLife,0);
 			if (config.speech && config.badspeech && (rand()%2))
 				mixer.play((rand()%2)?theme.sDamn:theme.sDammit);
 		}
@@ -994,23 +995,28 @@ void View::playSounds()
 {
 	Game *game = cgame.getGameContext();
 	bool playReflectSound = false;
+	int sx = VG_BRICKAREAWIDTH/2;
+	int paddlesx = game->paddles[0]->x + game->paddles[0]->w/2;
 
 	if (game->mod.brick_reflected_ball_count > 0)
-		if (game->mod.brick_hit_count == 0)
+		if (game->mod.brick_hit_count == 0) {
 			playReflectSound = true;
+			sx = last_ball_brick_reflect_x;
+		}
 	for (int i = 0; i < game->mod.brick_hit_count; i++)
 		if (game->mod.brick_hits[i].type == HT_HIT) {
 			playReflectSound = true;
+			sx = game->mod.brick_hits[i].x * VG_BRICKWIDTH;
 			break;
 		}
 	if (playReflectSound)
-		mixer.play(theme.sReflectBrick);
+		mixer.playx(theme.sReflectBrick,sx);
 	if (game->mod.paddle_reflected_ball_count > 0)
-		mixer.play(theme.sReflectPaddle);
+		mixer.playx(theme.sReflectPaddle,paddlesx);
 	if (game->mod.fired_shot_count > 0)
-		mixer.play(theme.sShot);
+		mixer.playx(theme.sShot,paddlesx);
 	if (game->mod.attached_ball_count > 0)
-		mixer.play(theme.sAttach);
+		mixer.playx(theme.sAttach,paddlesx);
 
 	/* by default brick hit and explosion are the same sound,
 	 * but playing it for an explosion twice makes it louder
@@ -1023,22 +1029,24 @@ void View::playSounds()
 			continue;
 		if (game->mod.brick_hits[i].type != HT_REMOVE)
 			continue;
+		sx = game->mod.brick_hits[i].x * VG_BRICKWIDTH;
 		if (game->mod.brick_hits[i].dest_type == SHR_BY_ENERGY_BALL && !energyPlayed) {
-			mixer.play(theme.sEnergyHit);
+			mixer.playx(theme.sEnergyHit,sx);
 			energyPlayed = true;
 		}
 		if (game->mod.brick_hits[i].dest_type != SHR_BY_ENERGY_BALL && !hitPlayed) {
-			mixer.play(theme.sBrickHit);
+			mixer.playx(theme.sBrickHit,sx);
 			hitPlayed = true;
 		}
 		if (game->mod.brick_hits[i].draw_explosion && !explPlayed) {
-			mixer.play(theme.sExplosion);
+			mixer.playx(theme.sExplosion,sx);
 			explPlayed = true;
 		}
 	}
 
 	for (int i = 0; i < game->mod.collected_extra_count[0]; i++)
-		mixer.play(theme.sExtras[game->mod.collected_extras[0][i]]);
+		mixer.playx(theme.sExtras[game->mod.collected_extras[0][i]],
+								paddlesx);
 }
 
 void View::createMenus()
