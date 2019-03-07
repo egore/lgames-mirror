@@ -117,7 +117,7 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 
 	/* standard board geometry, will be shifted if composed frame is used */
 	boardX = MAPWIDTH * brickScreenWidth;
-	boardWidth = screenWidth - boardX - brickScreenWidth;
+	boardWidth = 4.33 * brickScreenWidth;
 
 	/* load standard values for fallback */
 	FileParser stdSettings(stdPath + "/theme.ini");
