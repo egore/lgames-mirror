@@ -77,6 +77,20 @@ public:
 		if (snd.chunk && opened && !mute)
 			Mix_PlayChannel(c,snd.chunk,0);
 	}
+	void playx(Sound &snd, int x, int c = -1) {
+		if(snd.chunk == NULL || !opened || mute)
+			return;
+		/* XXX must match VG_BRICKWIDTH=40/BRICKAREAWIDTH=640 */
+		x = (x - 40) * 255 / (640 - 2*40);
+		if (x < 0)
+			x = 0;
+		if (x > 255)
+			x = 255;
+		if (c == -1)
+			c = Mix_GroupAvailable(-1);
+		Mix_SetPanning(c, 255 - x, x);
+		Mix_PlayChannel(c, snd.chunk, 0);
+	}
 };
 
 #endif /* MIXER_H_ */

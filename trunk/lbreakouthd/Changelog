@@ -1,4 +1,5 @@
 1.0.4:
+- added stereo sound (2019/03/06 MS)
 - added shine effect (2019/03/06 MS)
 - fixed computing geometry to work with non 16:9 screen ratio (2019/03/06 MS)
 - fixed crash for non 16:9 resolutions (2019/03/06 MS)
