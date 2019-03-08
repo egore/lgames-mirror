@@ -1,6 +1,7 @@
 1.0.4:
-- added stereo sound (2019/03/06 MS)
-- added shine effect (2019/03/06 MS)
+- fixed crash in fps computation (2019/03/08 MS)
+- added stereo sound (2019/03/07 MS)
+- added shine effect (2019/03/07 MS)
 - fixed computing geometry to work with non 16:9 screen ratio (2019/03/06 MS)
 - fixed crash for non 16:9 resolutions (2019/03/06 MS)
 - wait for p only in pause to allow switching away from window (2019/03/05 MS)

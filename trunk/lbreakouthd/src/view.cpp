@@ -394,7 +394,8 @@ void View::run()
 
 		/* stats */
 		fpsCycles++;
-		fps = 1000 * fpsCycles / (SDL_GetTicks() - fpsStart);
+		if (fpsStart < SDL_GetTicks())
+			fps = 1000 * fpsCycles / (SDL_GetTicks() - fpsStart);
 		if (fpsCycles > 100) {
 			fpsCycles = 0;
 			fpsStart = SDL_GetTicks();
