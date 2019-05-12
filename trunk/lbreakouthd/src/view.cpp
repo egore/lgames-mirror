@@ -1084,7 +1084,7 @@ void View::createMenus()
 			AID_STARTCUSTOM));
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemList(_("Difficulty"),
-			_("This affects lives, paddle size and ball speed. For Kids and Easy score is reduced, for Hard a bonus a given."),
+			_("This affects lives, paddle size and ball speed. For Kids and Easy score is reduced, for Hard a bonus is given."),
 			AID_NONE,config.diff,diffNames,4));
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemRange(_("Players"),
