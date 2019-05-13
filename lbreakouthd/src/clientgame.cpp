@@ -20,7 +20,8 @@ using namespace std;
 extern GameDiff diffs[DIFF_COUNT];
 
 ClientGame::ClientGame(Config &cfg) : config(cfg), levelset(0), game(0),
-		curPlayer(0), lastDeadPlayer(NULL), msg(""), extrasActive(false)
+		curPlayer(0), lastDeadPlayer(NULL), msg(""), extrasActive(false),
+		lastpx(-1)
 {
 	extrasUpdateTimeout.set(200);
 }
@@ -149,8 +150,14 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 			px += config.key_speed * (ms << pis.turbo);
 	} else if (config.rel_motion)
 		px += rx;
-	else
-		px = rx;
+	else {
+		/* for absolute position only update if new mouse
+		 * position comes in to allow control by keys */
+		if (rx != lastpx) {
+			px = rx;
+			lastpx = px;
+		}
+	}
 
 	/* check friction if normal paddle has moved */
 	if (!config.convex) {
