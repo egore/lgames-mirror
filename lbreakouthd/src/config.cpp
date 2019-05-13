@@ -52,7 +52,7 @@ Config::Config()
 	random_angle = 1;
 	maxballspeed_int1000 = 900;
 	maxballspeed_float = 0.7;
-	ball_auto_turbo = 1;
+	ball_auto_turbo = 0;
 	/* sounds */
 	sound = 1;
 	volume = 50;
