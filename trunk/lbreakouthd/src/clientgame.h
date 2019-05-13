@@ -106,6 +106,7 @@ class ClientGame {
 	Timeout frictionTimeout;
 	bool extrasActive;
 	Timeout extrasUpdateTimeout;
+	double lastpx;
 
 	ClientPlayer *getNextPlayer();
 	void initLevel(Level *l);
