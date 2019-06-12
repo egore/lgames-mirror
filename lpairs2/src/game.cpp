@@ -14,6 +14,7 @@
 
 #include "tools.h"
 #include "sdl.h"
+#include "sprite.h"
 #include "game.h"
 #include "mixer.h"
 #include "theme.h"
@@ -130,7 +131,7 @@ int Game::handleClick(int cx, int cy)
 				ret = 1;
 			}
 	if (numOpenCards == numMaxOpenCards) {
-		int pid = cards[openCardIds[0]].id;
+		uint pid = cards[openCardIds[0]].id;
 		isMatch = true;
 		for (uint i = 1; i < numOpenCards; i++)
 			if (cards[openCardIds[i]].id != pid) {
@@ -138,7 +139,7 @@ int Game::handleClick(int cx, int cy)
 				break;
 			}
 		if (isMatch)
-			closeTimeout.set(1000);
+			closeTimeout.set(200);
 		else
 			closeTimeout.set(2000);
 	}
@@ -161,6 +162,7 @@ int Game::update(uint ms)
 		if (closeTimeout.update(ms)) {
 			if (isMatch) {
 				for (uint i = 0; i < numOpenCards; i++) {
+					lastMatchIds[i] = openCardIds[i];
 					cards[openCardIds[i]].clear();
 					numCardsLeft--;
 					if (numCardsLeft == 0)
@@ -168,6 +170,7 @@ int Game::update(uint ms)
 				}
 				score++;
 				ret |= GF_SCORECHANGED;
+				ret |= GF_CARDSREMOVED;
 			} else {
 				bool wasKnown = false;
 				for (uint i = 0; i < numOpenCards; i++) {
@@ -179,10 +182,10 @@ int Game::update(uint ms)
 					errors++;
 					ret |= GF_ERRORSCHANGED;
 				}
+				ret |= GF_CARDSCLOSED;
 			}
 			numOpenCards = 0;
 			isMatch = false;
-			ret |= GF_CARDSCLOSED;
 		}
 	return ret;
 }

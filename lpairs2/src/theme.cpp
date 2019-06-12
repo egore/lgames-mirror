@@ -67,6 +67,7 @@ void Theme::load(string name, Renderer &r)
 			_logdebug(1,"  Building %s\n",fnames[i].c_str());
 			pic.load(path + "/" + fnames[i]);
 			cards[numCards].duplicate(cbase);
+			cards[numCards].setBlendMode(1);
 			r.setTarget(cards[numCards]);
 			if (pic.getWidth() > pic.getHeight()) {
 				dw = 0.94 * cbase.getWidth();

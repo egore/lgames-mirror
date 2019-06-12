@@ -16,6 +16,7 @@
 #include "sdl.h"
 #include "mixer.h"
 #include "theme.h"
+#include "sprite.h"
 #include "game.h"
 #include "menu.h"
 #include "view.h"
@@ -106,8 +107,6 @@ void View::run()
 	vector<string> text;
 	string str;
 
-	curWallpaperId = rand() % theme.numWallpapers;
-
 	fpsStart = SDL_GetTicks();
 	fpsCycles = 0;
 
@@ -163,6 +162,10 @@ void View::run()
 		ms = ticks.get();
 
 		/* update animations and particles */
+		for (auto it = begin(sprites); it != end(sprites); ++it) {
+			if ((*it).get()->update(ms))
+				it = sprites.erase(it);
+		}
 
 		/* update game and menu */
 		flags = game.update(ms);
@@ -178,15 +181,23 @@ void View::run()
 			strprintf(str, _("Score: %d"),game.score);
 			lblScore.setText(theme.fNormal, str);
 			mixer.play(theme.sRemove);
-		} else 	if (flags & GF_CARDSCLOSED)
-			mixer.play(theme.sFail);
+		}
 		if (flags & GF_ERRORSCHANGED) {
 			strprintf(str, _("Errors: %d"),game.errors);
 			lblErrors.setText(theme.fNormal, str);
 		}
-
-		/* handle sounds by accessing game->mod */
-		playSounds();
+		if (flags & GF_CARDSCLOSED)
+			mixer.play(theme.sFail);
+		if (flags & GF_CARDSREMOVED) {
+			for (uint i = 0; i < game.numMaxOpenCards; i++) {
+				FadeAnimation *a;
+				Card &c = game.cards[game.lastMatchIds[i]];
+				a = new FadeAnimation(
+					theme.cards[c.id], cxoff+c.x, cyoff+c.y,
+							0, renderer.ry2sy(1), c.w, c.h, 1000);
+				sprites.push_back(unique_ptr<FadeAnimation>(a));
+			}
+		}
 
 		/* render */
 		render();
@@ -221,7 +232,7 @@ void View::render()
 	/* shadows */
 	for (uint i = 0; i < game.numCards; i++) {
 		Card &c = game.cards[i];
-		if (c.id < 0)
+		if (c.removed)
 			continue;
 		/* FIXME shadow should be relative to gap not hardcoded */
 		theme.cardShadow.copy(cxoff + c.x + 0.05*c.w,
@@ -231,11 +242,11 @@ void View::render()
 	/* cards */
 	for (uint i = 0; i < game.numCards; i++) {
 		Card &c = game.cards[i];
-		if (c.id < 0)
+		if (c.removed)
 			continue;
 		if (c.open || noGameYet)
 			theme.cards[c.id].copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
-		else if (c.hasFocus(mcx - cxoff, mcy - cyoff))
+		else if (!menuActive && c.hasFocus(mcx - cxoff, mcy - cyoff))
 			theme.cardFocus.copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
 		else
 			theme.cardBack.copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
@@ -248,9 +259,13 @@ void View::render()
 	lblErrors.copy(renderer.rx2sx(0.99),renderer.ry2sy(0.975),
 			ALIGN_X_RIGHT | ALIGN_Y_CENTER);
 
-	if (game.gameover)
+	if (game.gameover && !menuActive)
 		lblRestart.copy(renderer.rx2sx(0.5),renderer.ry2sy(0.5),
 				ALIGN_X_CENTER | ALIGN_Y_CENTER);
+
+	/* sprites */
+	for (auto& s : sprites)
+		s->render();
 
 	/* menu */
 	if (menuActive) {
@@ -319,10 +334,6 @@ bool View::showInfo(const vector<string> &text, int type)
 
 	ret = waitForKey(type);
 	return ret;
-}
-
-void View::playSounds()
-{
 }
 
 void View::createMenus()
