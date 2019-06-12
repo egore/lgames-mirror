@@ -1,0 +1,6 @@
+# List of source files which contain translatable strings.
+src/main.cpp
+src/view.cpp
+src/menu.cpp
+src/tools.cpp
+src/game.cpp
