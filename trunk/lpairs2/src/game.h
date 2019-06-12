@@ -31,23 +31,27 @@ enum {
 	GF_SCORECHANGED = 1,
 	GF_ERRORSCHANGED = 2,
 	GF_TIMECHANGED = 4,
-	GF_CARDSCLOSED = 8
+	GF_CARDSCLOSED = 8,
+	GF_CARDSREMOVED = 16
 };
 
 class Card {
 	friend View;
 	friend Game;
 
-	int id; /* theme id of card or -1 for none */
+	uint id; /* theme id of card */
 	int x,y,w,h; /* position and size */
 	bool open;
 	bool known;
+	bool removed;
 public:
-	Card() : id(-1), x(0), y(0), w(0), h(0), open(false), known(false) {}
+	Card() : id(0), x(0), y(0), w(0), h(0),
+			open(false), known(false), removed(false) {}
 	void set(int i) {
 		id = i;
 		open = false;
 		known = false;
+		removed = false;
 	}
 	void setGeometry(int _x, int _y, int _w, int _h) {
 		x = _x;
@@ -56,7 +60,7 @@ public:
 		h = _h;
 	}
 	bool hasFocus(int cx, int cy) {
-		if (id < 0 )
+		if (removed)
 			return false;
 		return (cx >= x && cx < x + w && cy >= y && cy < y + h);
 	}
@@ -73,7 +77,7 @@ public:
 		return open;
 	}
 	void clear() {
-		id = -1;
+		removed = true;
 	}
 };
 
@@ -86,6 +90,7 @@ class Game {
 	uint numCardsLeft;
 	uint openCardIds[MAXOPENCARDS];
 	uint numOpenCards;
+	uint lastMatchIds[MAXOPENCARDS]; /* needed for animation */
 	Timeout closeTimeout;
 	bool isMatch;
 

@@ -53,6 +53,7 @@ class View {
 	Label lblScore, lblTime, lblErrors;
 	Label lblRestart;
 	int mcx, mcy; /* mouse cursor position */
+	list<unique_ptr<Sprite>> sprites;
 
 	/* stats */
 	Uint32 fpsCycles, fpsStart;
@@ -64,7 +65,6 @@ class View {
 	void darkenScreen(int alpha = 32);
 	bool showInfo(const string &line, int type);
 	bool showInfo(const vector<string> &text, int type);
-	void playSounds();
 	void dim();
 	void handleMenuEvent(SDL_Event &ev);
 	void startGame();

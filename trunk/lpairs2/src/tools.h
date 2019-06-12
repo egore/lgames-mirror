@@ -191,6 +191,9 @@ public:
 		x /= l;
 		y /= l;
 	}
+	double getLength() {
+		return sqrt(x*x + y*y);
+	}
 	void setLength(double l) {
 		normalize();
 		x *= l;
