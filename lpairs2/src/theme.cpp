@@ -57,10 +57,12 @@ void Theme::load(string name, Renderer &r)
 		numWallpapers = 1;
 	}
 
-	/* cards - no fallback this has to be present */
+	/* base images for cards */
 	cardBack.load(testRc(path,"c_back.png"));
 	cardFocus.load(testRc(path,"c_focus.png"));
 	cbase.load(testRc(path,"c_front.png"));
+
+	/* cards - no fallback this has to be present */
 	numCards = 0;
 	for (uint i = 0; i < fnames.size(); i++) {
 		if (fnames[i].substr(0,2) == "p_") {

@@ -1,0 +1,38 @@
+LPairs2
+-------
+
+Well not much to say here: It's a classic memory game using animal pictures
+as standard theme. Note, that set sizes differ according to whether you run
+in fullscreen or window mode. This is because window mode is 4:3 (assuming
+someone running window mode wants to see something else as well and 16:9 is
+just to broad then). That means if you switch from window to fullscreen while
+playing (menu can be accessed any time by ESC) your current game gets 
+restarted.
+
+Themes
+------
+
+You can create your own themes by adding a new directory in themes named 
+whatever you like. Files starting with ...
+  b_ 		become backgrounds will be stretched to match fullscreen
+  p_		pictures used to build memory cards (can be of any size, square
+		or non-square, will be scaled down)
+  s_		sounds
+  f_		fonts (must be named f_normal.otf and f_bold.otf)
+  c_back.png	closed card
+  c_focus.png	closed card used if mouse hovering
+  c_front.png	opened card (gets pictures added)
+  menu.png	overlay for menu (put on top of running game so should be 
+  		somewhat transparent)
+  		
+Note that c_back/front/focus.png MUST all be square and same sized.
+
+Whatever is missing is taken from Standard theme except for p_* files. Those
+must be present. So, e.g., you can just put p_* files to build a new set that
+uses standard sounds, backgrounds, basic card etc.
+  		
+If you submit own sets please make sure you use properly licensed images and
+state those licenses in a CREDIT file (look at Standard's CREDITS for an example).
+
+Enjoy,
+Michael	
