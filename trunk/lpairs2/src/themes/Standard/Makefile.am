@@ -14,7 +14,7 @@ s_menumotion.wav s_menuclick.wav      menu.png \
 b_0.jpg b_1.jpg b_2.jpg b_3.jpg
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(datdir)/themes/Default
+	$(mkinstalldirs) $(DESTDIR)$(datdir)/themes/Standard
 	@for file in $(EXTRA_DIST); do\
-	  $(INSTALL_DATA) $$file $(DESTDIR)$(datdir)/themes/Default/$$file;\
+	  $(INSTALL_DATA) $$file $(DESTDIR)$(datdir)/themes/Standard/$$file;\
 	done
