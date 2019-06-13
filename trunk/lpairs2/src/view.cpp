@@ -27,6 +27,7 @@ View::View(Renderer &r, Config &cfg, Game &gm)
 	: renderer(r), config(cfg), menuActive(true),
 	  curMenu(NULL), graphicsMenu(NULL),
 	  lblCredits1(true), lblCredits2(true), noGameYet(true),
+	  state(VS_IDLE),
 	  game(gm), quitReceived(false),
 	  lblScore(true), lblTime(true), lblErrors(true),
 	  mcx(-1), mcy(-1),
@@ -92,6 +93,8 @@ void View::init(string t, uint f)
 		startGame();
 	cxoff = renderer.rx2sx(0.00);
 	cyoff = renderer.ry2sy(0.05);
+	/* XXX use size of first card to determine shadow offset */
+	shadowOffset = 0.05 * game.cards[0].w;
 }
 
 /** Main game loop. Handle events, update game and render view.
@@ -106,6 +109,8 @@ void View::run()
 	Uint32 ms;
 	vector<string> text;
 	string str;
+
+	state = VS_IDLE;
 
 	fpsStart = SDL_GetTicks();
 	fpsCycles = 0;
@@ -141,17 +146,21 @@ void View::run()
 						menuActive = !menuActive;
 					break;
 				default:
-					if (!menuActive)
+					if (!menuActive && state == VS_IDLE)
 						game.handleClick(-1, -1);
 					break;
 				}
 			}
 			if (menuActive)
 				handleMenuEvent(ev);
-			else if (ev.type == SDL_MOUSEBUTTONUP) {
-				if (game.handleClick(ev.button.x - cxoff,
-						ev.button.y - cyoff))
+			else if (ev.type == SDL_MOUSEBUTTONUP && state == VS_IDLE) {
+				int cid = game.handleClick(ev.button.x - cxoff,
+							ev.button.y - cyoff);
+				if (cid >= 0 ) {
+					state = VS_OPENINGCARD;
+					startTurningAnimation(cid);
 					mixer.play(theme.sClick);
+				}
 			}
 		}
 
@@ -163,8 +172,11 @@ void View::run()
 
 		/* update animations and particles */
 		for (auto it = begin(sprites); it != end(sprites); ++it) {
-			if ((*it).get()->update(ms))
+			if ((*it).get()->update(ms)) {
+				if (dynamic_cast<TurnAnimation*>((*it).get()))
+					state = VS_IDLE;
 				it = sprites.erase(it);
+			}
 		}
 
 		/* update game and menu */
@@ -186,15 +198,20 @@ void View::run()
 			strprintf(str, _("Errors: %d"),game.errors);
 			lblErrors.setText(theme.fNormal, str);
 		}
-		if (flags & GF_CARDSCLOSED)
+		if (flags & GF_CARDSCLOSED) {
 			mixer.play(theme.sFail);
+			for (uint i = 0; i < game.numMaxOpenCards; i++)
+				startTurningAnimation(game.openCardIds[i]);
+			state = VS_CLOSINGCARDS;
+		}
 		if (flags & GF_CARDSREMOVED) {
 			for (uint i = 0; i < game.numMaxOpenCards; i++) {
 				FadeAnimation *a;
-				Card &c = game.cards[game.lastMatchIds[i]];
+				Card &c = game.cards[game.openCardIds[i]];
 				a = new FadeAnimation(
 					theme.cards[c.id], cxoff+c.x, cyoff+c.y,
-							0, renderer.ry2sy(1), c.w, c.h, 1000);
+							0, renderer.ry2sy(1), c.w, c.h,
+							ANIM_FADEDURATION);
 				sprites.push_back(unique_ptr<FadeAnimation>(a));
 			}
 		}
@@ -234,9 +251,20 @@ void View::render()
 		Card &c = game.cards[i];
 		if (c.removed)
 			continue;
-		/* FIXME shadow should be relative to gap not hardcoded */
-		theme.cardShadow.copy(cxoff + c.x + 0.05*c.w,
-					cyoff + c.y + 0.05*c.h, c.w, c.h);
+		if (state == VS_OPENINGCARD && i == game.openCardIds[game.numOpenCards-1])
+			continue;
+		if (state == VS_CLOSINGCARDS) {
+			bool skip = false;
+			for (uint j = 0; j < game.numMaxOpenCards; j++)
+				if (i == game.openCardIds[j]) {
+					skip = true;
+					break;
+				}
+			if (skip)
+				continue;
+		}
+		theme.cardShadow.copy(cxoff + c.x + shadowOffset,
+					cyoff + c.y + shadowOffset, c.w, c.h);
 	}
 
 	/* cards */
@@ -244,9 +272,22 @@ void View::render()
 		Card &c = game.cards[i];
 		if (c.removed)
 			continue;
+		if (state == VS_OPENINGCARD &&i == game.openCardIds[game.numOpenCards-1])
+			continue;
+		if (state == VS_CLOSINGCARDS) {
+			bool skip = false;
+			for (uint j = 0; j < game.numMaxOpenCards; j++)
+				if (i == game.openCardIds[j]) {
+					skip = true;
+					break;
+				}
+			if (skip)
+				continue;
+		}
 		if (c.open || noGameYet)
 			theme.cards[c.id].copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
-		else if (!menuActive && c.hasFocus(mcx - cxoff, mcy - cyoff))
+		else if (!menuActive && state == VS_IDLE &&
+					c.hasFocus(mcx - cxoff, mcy - cyoff))
 			theme.cardFocus.copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
 		else
 			theme.cardBack.copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
@@ -588,3 +629,25 @@ void View::changeWallpaper()
 	theme.wallpapers[curWallpaperId].copy();
 	renderer.clearTarget();
 }
+
+/** Start turning animation of card id */
+void View::startTurningAnimation(uint cid)
+{
+	Card &c = game.cards[cid];
+	TurnAnimation *ta;
+	ta = new TurnAnimation(theme.cardShadow,theme.cardShadow,
+			cxoff+c.x+c.w/2+shadowOffset,
+			cyoff+c.y+c.h/2+shadowOffset,
+			c.w, c.h, ANIM_TURNDURATION);
+	sprites.push_back(unique_ptr<TurnAnimation>(ta));
+	if (c.open)
+		ta = new TurnAnimation(theme.cardBack, theme.cards[c.id],
+				cxoff+c.x+c.w/2, cyoff+c.y+c.h/2, c.w, c.h,
+				ANIM_TURNDURATION);
+	else
+		ta = new TurnAnimation(theme.cards[c.id], theme.cardBack,
+				cxoff+c.x+c.w/2, cyoff+c.y+c.h/2, c.w, c.h,
+				ANIM_TURNDURATION);
+	sprites.push_back(unique_ptr<TurnAnimation>(ta));
+}
+
