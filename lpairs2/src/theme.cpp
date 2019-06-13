@@ -94,7 +94,7 @@ void Theme::load(string name, Renderer &r)
 	fNormal.load(testRc(path,"f_bold.otf"), r.ry2sy(0.037));
 
 	/* menu */
-	menuX = r.rx2sx(0.14);
+	menuX = r.rx2sx(0.16);
 	menuY = r.ry2sy(0.63);
 	menuItemWidth = r.rx2sx(0.22);
 	menuItemHeight = r.ry2sy(0.037);
