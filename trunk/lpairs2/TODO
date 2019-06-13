@@ -1,2 +1,5 @@
 - multimatch games
 - vs cpu mode
+
+known bugs:
+- view gets into state OPENINGCARD without id in game.openCardIds
