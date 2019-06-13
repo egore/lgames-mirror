@@ -203,20 +203,24 @@ void View::run()
 			lblErrors.setText(theme.fNormal, str);
 		}
 		if (flags & GF_CARDOPENED) {
-			state = VS_OPENINGCARD;
-			startTurningAnimation(game.openCardIds[game.numOpenCards-1]);
 			mixer.play(theme.sClick);
+			if (config.animations) {
+				state = VS_OPENINGCARD;
+				startTurningAnimation(game.openCardIds[game.numOpenCards-1]);
+			}
 		}
 		if (flags & GF_CARDSCLOSED) {
 			mixer.play(theme.sFail);
-			for (uint i = 0; i < game.numMaxOpenCards; i++)
-				startTurningAnimation(game.closedCardIds[i]);
-			if (state == VS_OPENINGCARD)
-				state = VS_OPENINGANDCLOSINGCARDS;
-			else
-				state = VS_CLOSINGCARDS;
+			if (config.animations) {
+				for (uint i = 0; i < game.numMaxOpenCards; i++)
+					startTurningAnimation(game.closedCardIds[i]);
+				if (state == VS_OPENINGCARD)
+					state = VS_OPENINGANDCLOSINGCARDS;
+				else
+					state = VS_CLOSINGCARDS;
+			}
 		}
-		if (flags & GF_CARDSREMOVED) {
+		if ((flags & GF_CARDSREMOVED) && config.animations) {
 			for (uint i = 0; i < game.numMaxOpenCards; i++) {
 				FadeAnimation *a;
 				Card &c = game.cards[game.closedCardIds[i]];
@@ -396,6 +400,9 @@ void View::createMenus()
 	mNewGame->add(new MenuItemList(_("Size"),
 			_("In fullscreen: Small=6x4, Medium=8x4, Large=10x5, Huge=12x6.\nNote that it's slightly different in window mode to match the different ratio."),
 			AID_NONE,config.gamemode,diffNames,4));
+	mNewGame->add(new MenuItemRange(_("Close Delay"),
+			"Time in seconds until opened pair is closed again.",
+			AID_NONE,config.closedelay,1,5,1));
 	mNewGame->add(new MenuItemSep());
 /*	mNewGame->add(new MenuItemRange(_("Players"),
 			_("Number and names of players. Players alternate whenever a life is lost."),
@@ -416,8 +423,10 @@ void View::createMenus()
 	mGraphics->add(new MenuItem(_("Apply Theme&Mode"),
 			_("Apply the above settings."),AID_APPLYTHEMEMODE));
 	mGraphics->add(new MenuItemSep());
+	mGraphics->add(new MenuItemSwitch(_("Animations"),"",AID_NONE,
+			config.animations));
 	mGraphics->add(new MenuItemList(_("Frame Limit"),
-			"Maximum number of frames per second.\nBe careful: The higher the limit the more insensitive your mouse might become to slow movements (because relative motion is used and program cycles are shorter).\n200 FPS should be a good value.",
+			"Maximum number of frames per second.",
 			AID_NONE,config.fps,fpsLimitNames,3));
 	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemBack(mOptions));
@@ -641,9 +650,13 @@ void View::startTurningAnimation(uint cid)
 
 bool View::skipAnimatedCard(uint cid)
 {
+	if (!config.animations)
+		return false;
+
 	if (state == VS_OPENINGCARD || state == VS_OPENINGANDCLOSINGCARDS)
-		if (cid == game.openCardIds[game.numOpenCards-1])
-			return true;
+		if (game.numOpenCards > 0) /* FIXME should not happen but it does when only match gets closed... why??? */
+			if (cid == game.openCardIds[game.numOpenCards-1])
+				return true;
 	if (state == VS_CLOSINGCARDS || state == VS_OPENINGANDCLOSINGCARDS) {
 		bool skip = false;
 		for (uint i = 0; i < game.numMaxOpenCards; i++)

@@ -108,58 +108,6 @@ void Game::init(uint w, uint h, int mode, int fscreen, uint climit)
 	numOpenCards = 0;
 	isMatch = false;
 	closeTimeout.clear();
-	autoClickX = autoClickY = -1;
-}
-
-/** Handle click on card. Return id of opened card or -1 otherwise */
-int Game::handleClick(int cx, int cy)
-{
-	int ret = -1;
-	int cid = -1; /* card to be opened */
-
-	/* reset autoclick so new "real" click will cancel it */
-	autoClick = false;
-
-	/* check if card at cx,cy can be opened and set cid */
-	for (uint i = 0; i < numCards; i++)
-		if (cards[i].hasFocus(cx,cy) && cards[i].isClosed()) {
-			cid = i;
-			break;
-		}
-
-	if (numOpenCards == numMaxOpenCards) {
-		/* close directly */
-		closeTimeout.set(1);
-		if (cid != -1) {
-			autoClick = true;
-			autoClickX = cx;
-			autoClickY = cy;
-		}
-		return -1;
-	}
-
-	if (cid != -1 && numOpenCards < numMaxOpenCards) {
-		cards[cid].toggle();
-		openCardIds[numOpenCards++] = cid;
-		if (!gameStarted)
-			gameStarted = true;
-		ret = cid;
-	}
-	if (numOpenCards == numMaxOpenCards) {
-		uint pid = cards[openCardIds[0]].id;
-		isMatch = true;
-		for (uint i = 1; i < numOpenCards; i++)
-			if (cards[openCardIds[i]].id != pid) {
-				isMatch = false;
-				break;
-			}
-		if (isMatch)
-			closeTimeout.set(ANIM_TURNDURATION+200);
-		else
-			closeTimeout.set(2000);
-	}
-
-	return ret;
 }
 
 int Game::update(uint ms, int button, int bx, int by)
@@ -204,9 +152,10 @@ int Game::update(uint ms, int button, int bx, int by)
 					break;
 				}
 			if (isMatch)
-				closeTimeout.set(ANIM_TURNDURATION+200);
+				closeTimeout.set(
+					config.animations?ANIM_TURNDURATION:0+200);
 			else
-				closeTimeout.set(2000);
+				closeTimeout.set(config.closedelay*1000);
 		}
 	}
 

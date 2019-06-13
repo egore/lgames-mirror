@@ -25,6 +25,7 @@ Config::Config()
 	playernames[3] = "Mr.Z";
 	gamemode = 2;
 	matchsize = 2;
+	closedelay = 2;
 
 	/* sounds */
 	sound = 1;
@@ -34,7 +35,7 @@ Config::Config()
 	channels = 16;
 
 	/* graphics */
-	anim = 2;
+	animations = 1;
 	fullscreen = 0;
 	fps = 1;
 	showfps = 0;
@@ -60,12 +61,13 @@ Config::Config()
 	fp.get( "player3", playernames[3] );
 	fp.get( "gamemode", gamemode );
 	fp.get( "matchsize", matchsize );
+	fp.get( "closedelay", closedelay );
 	fp.get( "sound", sound );
 	fp.get( "volume", volume );
 	fp.get( "speech", speech );
 	fp.get( "audiobuffersize", audiobuffersize );
 	fp.get( "channels", channels );
-	fp.get( "anim", anim );
+	fp.get( "animations", animations );
 	fp.get( "fullscreen", fullscreen );
 	fp.get( "fps", fps );
 	fp.get( "showfps", showfps );
@@ -88,12 +90,13 @@ void Config::save()
 	ofs << "player3=" << playernames[3] << "\n";
 	ofs << "gamemode=" << gamemode << "\n";
 	ofs << "matchsize=" << matchsize << "\n";
+	ofs << "closedelay=" << closedelay << "\n";
 	ofs << "sound=" << sound << "\n";
 	ofs << "volume=" << volume << "\n";
 	ofs << "speech=" << speech << "\n";
 	ofs << "audiobuffersize=" << audiobuffersize << "\n";
 	ofs << "channels=" << channels << "\n";
-	ofs << "anim=" << anim << "\n";
+	ofs << "animations=" << animations << "\n";
 	ofs << "fullscreen=" << fullscreen << "\n";
 	ofs << "fps=" << fps << "\n";
 	ofs << "showfps=" << showfps << "\n";

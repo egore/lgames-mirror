@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 
 	Renderer renderer;
 	Config config;
-	Game game;
+	Game game(config);
 	View view(renderer, config, game);
 	view.run();
 	return 0;
