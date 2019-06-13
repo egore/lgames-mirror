@@ -29,6 +29,7 @@ public:
 	string playernames[MAXCONFIGPLAYERNAMES];
 	int gamemode;
 	int matchsize;
+	int closedelay;
 
 	/* sound */
 	int sound;
@@ -38,7 +39,7 @@ public:
 	int channels; /* number of mix channels */
 
 	/* graphics */
-	int anim;
+	int animations;
 	int fullscreen; /* 0 = window, 1 = fullscreen */
 	int fps; /* frames per second: 0 - no limit, 1 - 100, 2 - 200 */
 	int showfps;

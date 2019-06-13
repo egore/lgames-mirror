@@ -85,6 +85,8 @@ public:
 class Game {
 	friend View;
 
+	Config &config;
+
 	uint numMaxOpenCards;
 	Card cards[MAXCARDS];
 	uint numCards;
@@ -101,19 +103,13 @@ class Game {
 	int score; /* number of pairs collected */
 	int errors; /* misclicks of known cards */
 
-	/* auto click new card after closing cards
-	 * to save one opening click */
-	bool autoClick;
-	int autoClickX, autoClickY;
-	Timeout autoclickTimeout;
-
 	int closeCards();
 public:
-	Game() : numMaxOpenCards(2), numCards(0), numCardsLeft(0),
+	Game(Config &cfg) : config(cfg),
+			numMaxOpenCards(2), numCards(0), numCardsLeft(0),
 			numOpenCards(0), isMatch(false),
 			gameStarted(false), gameover(false),
-			gtime(0), score(0), errors(0),
-			autoClick(false), autoClickX(-1), autoClickY(-1) {}
+			gtime(0), score(0), errors(0) {}
 	void init(uint w, uint h, int mode, int fscreen, uint climit);
 	int update(uint ms, int button, int bx, int by);
 	int handleClick(int cx, int cy);
