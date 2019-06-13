@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lpairs2 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-08 17:20+0200\n"
+"POT-Creation-Date: 2019-06-13 16:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,584 +16,183 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/view.cpp:237
-msgid "Pause"
+#: src/view.cpp:81
+msgid "Press R to restart (or ESC for menu)."
 msgstr ""
 
-#: src/view.cpp:251
-msgid "Quit Game? y/n"
+#: src/view.cpp:191
+#, c-format
+msgid "Time: %d:%02d"
 msgstr ""
 
-#: src/view.cpp:252
-msgid "(No hiscore entry yet, game can be resumed later.)"
+#: src/view.cpp:197
+#, c-format
+msgid "Score: %d"
 msgstr ""
 
-#: src/view.cpp:341
-msgid "Buy Continue? y/n"
+#: src/view.cpp:202
+#, c-format
+msgid "Errors: %d"
 msgstr ""
 
-#: src/view.cpp:342
-msgid "(Costs ALL of your score.)"
+#: src/view.cpp:375
+msgid "Small"
 msgstr ""
 
-#: src/view.cpp:633
-msgid "(Level "
-msgstr ""
-
-#: src/view.cpp:646
-msgid "Active Extras"
-msgstr ""
-
-#: src/view.cpp:664
-msgid "Hiscores"
-msgstr ""
-
-#: src/view.cpp:1055 src/view.cpp:1561
-msgid "Kids"
-msgstr ""
-
-#: src/view.cpp:1055 src/view.cpp:1561
-msgid "Easy"
-msgstr ""
-
-#: src/view.cpp:1055 src/view.cpp:1561
+#: src/view.cpp:375
 msgid "Medium"
 msgstr ""
 
-#: src/view.cpp:1055 src/view.cpp:1561
-msgid "Hard"
+#: src/view.cpp:375
+msgid "Large"
 msgstr ""
 
-#: src/view.cpp:1056
+#: src/view.cpp:375
+msgid "Huge"
+msgstr ""
+
+#: src/view.cpp:376
 msgid "No Limit"
 msgstr ""
 
-#: src/view.cpp:1056
+#: src/view.cpp:376
 msgid "200 FPS"
 msgstr ""
 
-#: src/view.cpp:1056
+#: src/view.cpp:376
 msgid "100 FPS"
 msgstr ""
 
-#: src/view.cpp:1078
-msgid "Start Original Levels"
+#: src/view.cpp:396
+msgid "Start Game"
 msgstr ""
 
-#: src/view.cpp:1079
-msgid "Start level set 'LBreakoutHD'."
+#: src/view.cpp:397
+msgid "Start game."
 msgstr ""
 
-#: src/view.cpp:1081
-msgid "Start Custom Levels"
+#: src/view.cpp:400
+msgid "Size"
 msgstr ""
 
-#: src/view.cpp:1082
-msgid "Select and run a custom level set."
-msgstr ""
-
-#: src/view.cpp:1085
-msgid "Difficulty"
-msgstr ""
-
-#: src/view.cpp:1086
+#: src/view.cpp:401
 msgid ""
-"This affects lives, paddle size and ball speed. For Kids and Easy score is "
-"reduced, for Hard a bonus a given."
+"In fullscreen: Small=6x4, Medium=8x4, Large=10x5, Huge=12x6.\n"
+"Note that it's slightly different in window mode to match the different "
+"ratio."
 msgstr ""
 
-#: src/view.cpp:1089
-msgid "Players"
+#: src/view.cpp:403
+msgid "Close Delay"
 msgstr ""
 
-#: src/view.cpp:1090
-msgid "Number and names of players. Players alternate whenever a life is lost."
-msgstr ""
-
-#: src/view.cpp:1092
-msgid "1st"
-msgstr ""
-
-#: src/view.cpp:1093
-msgid "2nd"
-msgstr ""
-
-#: src/view.cpp:1094
-msgid "3rd"
-msgstr ""
-
-#: src/view.cpp:1095
-msgid "4th"
-msgstr ""
-
-#: src/view.cpp:1099
-msgid "Left"
-msgstr ""
-
-#: src/view.cpp:1100
-msgid "Right"
-msgstr ""
-
-#: src/view.cpp:1101
-msgid "Left Fire"
-msgstr ""
-
-#: src/view.cpp:1102
-msgid ""
-"Fire balls to the left. Ignored if 'Ball Fire Angle' in 'Advanced Settings' "
-"is 'Random'."
-msgstr ""
-
-#: src/view.cpp:1104
-msgid "Right Fire"
-msgstr ""
-
-#: src/view.cpp:1105
-msgid ""
-"Fire balls to the right. Ignored if 'Ball Fire Angle' in 'Advanced Settings' "
-"is 'Random'."
-msgstr ""
-
-#: src/view.cpp:1107
-msgid "Paddle Turbo"
-msgstr ""
-
-#: src/view.cpp:1108
-msgid "Speed up paddle movement."
-msgstr ""
-
-#: src/view.cpp:1110 src/view.cpp:1180
-msgid "Ball Turbo"
-msgstr ""
-
-#: src/view.cpp:1111
-msgid "Speed up balls to limit 'Acc. Ball Speed' in 'Advanced Settings'."
-msgstr ""
-
-#: src/view.cpp:1113
-msgid "Idle Return"
-msgstr ""
-
-#: src/view.cpp:1114
-msgid ""
-"Return all idle balls (no effective brick hits for some time) to the paddle."
-msgstr ""
-
-#: src/view.cpp:1117
-msgid "Key Speed"
-msgstr ""
-
-#: src/view.cpp:1118
-msgid "The higher the value the faster the paddle moves by keys."
-msgstr ""
-
-#: src/view.cpp:1120
-msgid "Mouse Input"
-msgstr ""
-
-#: src/view.cpp:1121
-msgid ""
-"'Absolute' uses absolute mouse position. No fine tuning possible and you "
-"might experience delay (if moving too far to the right you'll need to come "
-"back to the paddle position first) but it will be more accurate for slow "
-"movements.\n"
-"'Relative' allows modifying paddle speed but might get inaccurate for slow "
-"movements with high resolution and high frame rates."
-msgstr ""
-
-#: src/view.cpp:1122
-msgid "Absolute"
-msgstr ""
-
-#: src/view.cpp:1122
-msgid "Relative"
-msgstr ""
-
-#: src/view.cpp:1123
-msgid "Motion Modifier"
-msgstr ""
-
-#: src/view.cpp:1124
-msgid "Adjust mouse sensitivity. (relative motion only)"
-msgstr ""
-
-#: src/view.cpp:1126
-msgid "Invert Motion"
-msgstr ""
-
-#: src/view.cpp:1127
-msgid "Invert mouse motion if needed. (relative motion only)"
-msgstr ""
-
-#: src/view.cpp:1132
+#: src/view.cpp:417
 msgid "Theme"
 msgstr ""
 
-#: src/view.cpp:1133
+#: src/view.cpp:418
 msgid "Select theme. (not applied yet)"
 msgstr ""
 
-#: src/view.cpp:1135
+#: src/view.cpp:420
 msgid "Mode"
 msgstr ""
 
-#: src/view.cpp:1136
+#: src/view.cpp:421
 msgid "Select mode. (not applied yet)"
 msgstr ""
 
-#: src/view.cpp:1138
-msgid "Antialiasing"
+#: src/view.cpp:422
+msgid "Window"
 msgstr ""
 
-#: src/view.cpp:1139
-msgid ""
-"'Auto' means no antialiasing for old LBreakout2 low resolution themes as "
-"this might cause (slight) graphical errors. 'Always' means to use it even "
-"for low resolution themes."
+#: src/view.cpp:422
+msgid "Fullscreen"
 msgstr ""
 
-#: src/view.cpp:1140 src/view.cpp:1182 src/view.cpp:1185
-msgid "Auto"
-msgstr ""
-
-#: src/view.cpp:1140
-msgid "Always"
-msgstr ""
-
-#: src/view.cpp:1141
+#: src/view.cpp:423
 msgid "Apply Theme&Mode"
 msgstr ""
 
-#: src/view.cpp:1142
+#: src/view.cpp:424
 msgid "Apply the above settings."
 msgstr ""
 
-#: src/view.cpp:1144
+#: src/view.cpp:426
+msgid "Animations"
+msgstr ""
+
+#: src/view.cpp:428
 msgid "Frame Limit"
 msgstr ""
 
-#: src/view.cpp:1150
+#: src/view.cpp:434
 msgid "Sound"
 msgstr ""
 
-#: src/view.cpp:1151
+#: src/view.cpp:435
 msgid "Volume"
 msgstr ""
 
-#: src/view.cpp:1152
+#: src/view.cpp:436
 msgid "Speech"
 msgstr ""
 
-#: src/view.cpp:1154
+#: src/view.cpp:438
 msgid "Buffer Size"
 msgstr ""
 
-#: src/view.cpp:1155
+#: src/view.cpp:439
 msgid ""
 "Reduce buffer size if you experience sound delays. Might have more CPU "
 "impact though. (not applied yet)"
 msgstr ""
 
-#: src/view.cpp:1157
+#: src/view.cpp:441
 msgid "Channels"
 msgstr ""
 
-#: src/view.cpp:1158
+#: src/view.cpp:442
 msgid ""
 "More channels gives more sound variety, less channels less (not applied yet)"
 msgstr ""
 
-#: src/view.cpp:1160
+#: src/view.cpp:444
 msgid "Apply Size&Channels"
 msgstr ""
 
-#: src/view.cpp:1161
+#: src/view.cpp:445
 msgid "Apply above settings"
 msgstr ""
 
-#: src/view.cpp:1165
-msgid "Controls"
-msgstr ""
-
-#: src/view.cpp:1166
+#: src/view.cpp:449
 msgid "Graphics"
 msgstr ""
 
-#: src/view.cpp:1167
+#: src/view.cpp:450
 msgid "Audio"
 msgstr ""
 
-#: src/view.cpp:1168
-msgid "Advanced"
-msgstr ""
-
-#: src/view.cpp:1171
-msgid "Paddle Style"
-msgstr ""
-
-#: src/view.cpp:1172
-msgid ""
-"Use 'Convex' for casual play: The paddle is treated as convex allowing easy "
-"aiming.\n"
-"Use 'Normal' for regular behaviour. You will have to aim by using the side "
-"hemispheres or giving balls momentum by moving at the right moment when they "
-"hit the flat part. Only for experienced players."
-msgstr ""
-
-#: src/view.cpp:1173
-msgid "Normal"
-msgstr ""
-
-#: src/view.cpp:1173
-msgid "Convex"
-msgstr ""
-
-#: src/view.cpp:1174
-msgid "Ball Layer"
-msgstr ""
-
-#: src/view.cpp:1175
-msgid ""
-"'Below Extras' is the normal layer. It might get hard with many extras and "
-"effects though, so change to 'Above Extras' to have balls always on top of "
-"everything (looks weird but helps to keep an eye on them)."
-msgstr ""
-
-#: src/view.cpp:1176
-msgid "Below Extras"
-msgstr ""
-
-#: src/view.cpp:1176
-msgid "Above Extras"
-msgstr ""
-
-#: src/view.cpp:1177
-msgid "Ball Fire Angle"
-msgstr ""
-
-#: src/view.cpp:1178
-msgid ""
-"Either 50 degrees to the left/right or random no matter what fire key has "
-"been pressed."
-msgstr ""
-
-#: src/view.cpp:1179 src/view.cpp:1669
-msgid "Random"
-msgstr ""
-
-#: src/view.cpp:1181
-msgid ""
-"'Auto' will automatically speed up your balls (the farther away from the "
-"paddle the more).\n"
-"'Manually' puts them to maximum speed while key is pressed (default key is "
-"c)."
-msgstr ""
-
-#: src/view.cpp:1182 src/view.cpp:1185
-msgid "Manually"
-msgstr ""
-
-#: src/view.cpp:1183
-msgid "Return Balls"
-msgstr ""
-
-#: src/view.cpp:1184
-msgid ""
-"'Auto' returns all idle balls (no effective brick hits) after 10 seconds to "
-"the paddle.\n"
-"'Manually' requires you to press a key (default key is Backspace).\n"
-"'Auto' is more convenient but 'Manually' might be required for (badly "
-"designed) levels where balls need to bounce around a lot."
-msgstr ""
-
-#: src/view.cpp:1186
-msgid "Warp Limit"
-msgstr ""
-
-#: src/view.cpp:1187
-msgid ""
-"If this percentage of bricks is destroyed you can warp to the next level (no "
-"penalties) by pressing 'w'. A small icon at the lower right hand side is "
-"shown when warp is ready."
-msgstr ""
-
-#: src/view.cpp:1189
-msgid "Acc. Ball Speed"
-msgstr ""
-
-#: src/view.cpp:1190
-msgid "Maximum speed of accelerated balls."
-msgstr ""
-
-#: src/view.cpp:1192
-msgid "Bonus Levels"
-msgstr ""
-
-#: src/view.cpp:1196
+#: src/view.cpp:453
 msgid "New Game"
 msgstr ""
 
-#: src/view.cpp:1197
-msgid "Resume Game"
-msgstr ""
-
-#: src/view.cpp:1201
+#: src/view.cpp:455
 msgid "Settings"
 msgstr ""
 
-#: src/view.cpp:1202 src/view.cpp:1628
-msgid "Help"
-msgstr ""
-
-#: src/view.cpp:1204
+#: src/view.cpp:458
 msgid "Quit"
 msgstr ""
 
-#: src/view.cpp:1556
-msgid "No saved game."
+#: src/view.cpp:617
+msgid "Score: 0"
 msgstr ""
 
-#: src/view.cpp:1573
-msgid " player(s)\n"
+#: src/view.cpp:618
+msgid "Time: 0:00"
 msgstr ""
 
-#: src/view.cpp:1584
-msgid "  (Lvl: "
-msgstr ""
-
-#: src/view.cpp:1636
-msgid "Extra Score"
-msgstr ""
-
-#: src/view.cpp:1637
-msgid "Gold Shower"
-msgstr ""
-
-#: src/view.cpp:1639
-msgid "Extra Life"
-msgstr ""
-
-#: src/view.cpp:1640
-msgid "Extra Ball"
-msgstr ""
-
-#: src/view.cpp:1642
-msgid "Expand Paddle"
-msgstr ""
-
-#: src/view.cpp:1643
-msgid "Shrink Paddle"
-msgstr ""
-
-#: src/view.cpp:1645
-msgid "Sticky Paddle"
-msgstr ""
-
-#: src/view.cpp:1646
-msgid "Plasma Weapon"
-msgstr ""
-
-#: src/view.cpp:1648
-msgid "Slow Balls"
-msgstr ""
-
-#: src/view.cpp:1649
-msgid "Fast Balls"
-msgstr ""
-
-#: src/view.cpp:1651
-msgid "Energy Balls"
-msgstr ""
-
-#: src/view.cpp:1652
-msgid "Explosive Balls"
-msgstr ""
-
-#: src/view.cpp:1654
-msgid "Extra Floor"
-msgstr ""
-
-#: src/view.cpp:1655
-msgid "Joker (collect goodies)"
-msgstr ""
-
-#: src/view.cpp:1657
-msgid "Bonus Magnet"
-msgstr ""
-
-#: src/view.cpp:1658
-msgid "Malus Magnet"
-msgstr ""
-
-#: src/view.cpp:1660
-msgid "Chaotic Balls"
-msgstr ""
-
-#: src/view.cpp:1661
-msgid "Weak Balls"
-msgstr ""
-
-#: src/view.cpp:1663
-msgid "Frozen Paddle"
-msgstr ""
-
-#: src/view.cpp:1664
-msgid "Ghost Paddle"
-msgstr ""
-
-#: src/view.cpp:1666
-msgid "Extra Time"
-msgstr ""
-
-#: src/view.cpp:1667
-msgid "Reset"
-msgstr ""
-
-#: src/view.cpp:1670
-msgid "Darkness"
-msgstr ""
-
-#: src/view.cpp:1672
-msgid "Indestructible"
-msgstr ""
-
-#: src/view.cpp:1673
-msgid "Regular Wall"
-msgstr ""
-
-#: src/view.cpp:1675
-msgid "Chaotic Wall"
-msgstr ""
-
-#: src/view.cpp:1676
-msgid "Regular Brick"
-msgstr ""
-
-#: src/view.cpp:1678
-msgid "Multi-hit Brick"
-msgstr ""
-
-#: src/view.cpp:1679
-msgid "Regenerative Brick"
-msgstr ""
-
-#: src/view.cpp:1681
-msgid "Explosive Brick"
-msgstr ""
-
-#: src/view.cpp:1682
-msgid "Growing Brick"
-msgstr ""
-
-#: src/view.cpp:1704
-msgid "Plane of Inner Stability"
-msgstr ""
-
-#: src/view.cpp:1708
-#, c-format
-msgid "Left-click on any brick to destroy it (costs 10% score)."
-msgstr ""
-
-#: src/view.cpp:1711
-msgid "Press any key to cancel selection."
+#: src/view.cpp:619
+msgid "Errors: 0"
 msgstr ""

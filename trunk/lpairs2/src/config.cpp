@@ -25,7 +25,7 @@ Config::Config()
 	playernames[3] = "Mr.Z";
 	gamemode = 2;
 	matchsize = 2;
-	closedelay = 2;
+	closedelay = 3;
 
 	/* sounds */
 	sound = 1;
@@ -36,7 +36,7 @@ Config::Config()
 
 	/* graphics */
 	animations = 1;
-	fullscreen = 0;
+	fullscreen = 1;
 	fps = 1;
 	showfps = 0;
 
