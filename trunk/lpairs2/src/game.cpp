@@ -108,28 +108,43 @@ void Game::init(uint w, uint h, int mode, int fscreen, uint climit)
 	numOpenCards = 0;
 	isMatch = false;
 	closeTimeout.clear();
+	autoClickX = autoClickY = -1;
 }
 
 /** Handle click on card. Return id of opened card or -1 otherwise */
 int Game::handleClick(int cx, int cy)
 {
 	int ret = -1;
+	int cid = -1; /* card to be opened */
+
+	/* reset autoclick so new "real" click will cancel it */
+	autoClick = false;
+
+	/* check if card at cx,cy can be opened and set cid */
+	for (uint i = 0; i < numCards; i++)
+		if (cards[i].hasFocus(cx,cy) && cards[i].isClosed()) {
+			cid = i;
+			break;
+		}
 
 	if (numOpenCards == numMaxOpenCards) {
 		/* close directly */
 		closeTimeout.set(1);
-		return ret;
+		if (cid != -1) {
+			autoClick = true;
+			autoClickX = cx;
+			autoClickY = cy;
+		}
+		return -1;
 	}
 
-	if (numOpenCards < numMaxOpenCards)
-		for (uint i = 0; i < numCards; i++)
-			if (cards[i].hasFocus(cx,cy) && cards[i].isClosed()) {
-				cards[i].toggle();
-				openCardIds[numOpenCards++] = i;
-				if (!gameStarted)
-					gameStarted = true;
-				ret = i;
-			}
+	if (cid != -1 && numOpenCards < numMaxOpenCards) {
+		cards[cid].toggle();
+		openCardIds[numOpenCards++] = cid;
+		if (!gameStarted)
+			gameStarted = true;
+		ret = cid;
+	}
 	if (numOpenCards == numMaxOpenCards) {
 		uint pid = cards[openCardIds[0]].id;
 		isMatch = true;
@@ -147,7 +162,7 @@ int Game::handleClick(int cx, int cy)
 	return ret;
 }
 
-int Game::update(uint ms)
+int Game::update(uint ms, int button, int bx, int by)
 {
 	int ret = GF_NONE;
 
@@ -158,34 +173,82 @@ int Game::update(uint ms)
 			ret |= GF_TIMECHANGED;
 	}
 
-	if (closeTimeout.running())
-		if (closeTimeout.update(ms)) {
-			if (isMatch) {
-				for (uint i = 0; i < numOpenCards; i++) {
-					cards[openCardIds[i]].clear();
-					numCardsLeft--;
-					if (numCardsLeft == 0)
-						gameover = true;
-				}
-				score++;
-				ret |= GF_SCORECHANGED;
-				ret |= GF_CARDSREMOVED;
-			} else {
-				bool wasKnown = false;
-				for (uint i = 0; i < numOpenCards; i++) {
-					if (cards[openCardIds[i]].isKnown())
-						if (i < numOpenCards-1)
-							wasKnown = true;
-					cards[openCardIds[i]].toggle();
-				}
-				if (wasKnown) {
-					errors++;
-					ret |= GF_ERRORSCHANGED;
-				}
-				ret |= GF_CARDSCLOSED;
+	if (button) {
+		int cid = -1;
+
+		for (uint i = 0; i < numCards; i++)
+			if (cards[i].hasFocus(bx,by) && cards[i].isClosed()) {
+				cid = i;
+				break;
 			}
-			numOpenCards = 0;
-			isMatch = false;
+
+		if (numOpenCards == numMaxOpenCards) {
+			ret |= closeCards();
+			closeTimeout.clear();
 		}
+
+		if (cid != -1 && numOpenCards < numMaxOpenCards) {
+			cards[cid].toggle();
+			openCardIds[numOpenCards++] = cid;
+			if (!gameStarted)
+				gameStarted = true;
+			ret |= GF_CARDOPENED;
+		}
+
+		if (numOpenCards == numMaxOpenCards) {
+			uint pid = cards[openCardIds[0]].id;
+			isMatch = true;
+			for (uint i = 1; i < numOpenCards; i++)
+				if (cards[openCardIds[i]].id != pid) {
+					isMatch = false;
+					break;
+				}
+			if (isMatch)
+				closeTimeout.set(ANIM_TURNDURATION+200);
+			else
+				closeTimeout.set(2000);
+		}
+	}
+
+	if (closeTimeout.running() && closeTimeout.update(ms))
+		ret |= closeCards();
+
+	return ret;
+}
+
+int Game::closeCards()
+{
+	int ret = 0;
+
+	for (uint i = 0; i < numOpenCards; i++)
+		closedCardIds[i] = openCardIds[i];
+
+	if (isMatch) {
+		for (uint i = 0; i < numOpenCards; i++) {
+			cards[openCardIds[i]].clear();
+			numCardsLeft--;
+			if (numCardsLeft == 0)
+				gameover = true;
+		}
+		score++;
+		ret |= GF_SCORECHANGED;
+		ret |= GF_CARDSREMOVED;
+	} else {
+		bool wasKnown = false;
+		for (uint i = 0; i < numOpenCards; i++) {
+			if (cards[openCardIds[i]].isKnown())
+				if (i < numOpenCards-1)
+					wasKnown = true;
+			cards[openCardIds[i]].toggle();
+		}
+		if (wasKnown) {
+			errors++;
+			ret |= GF_ERRORSCHANGED;
+		}
+		ret |= GF_CARDSCLOSED;
+	}
+	numOpenCards = 0;
+	isMatch = false;
+
 	return ret;
 }
