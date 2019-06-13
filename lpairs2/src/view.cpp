@@ -109,6 +109,8 @@ void View::run()
 	Uint32 ms;
 	vector<string> text;
 	string str;
+	int button = 0; /* pressed button */
+	int buttonX = 0, buttonY = 0; /* position if pressed */
 
 	state = VS_IDLE;
 
@@ -128,6 +130,7 @@ void View::run()
 		renderTicks.reset();
 
 		/* handle events */
+		button = 0; /* none pressed */
 		if (SDL_PollEvent(&ev)) {
 			if (ev.type == SDL_QUIT)
 				quitReceived = true;
@@ -145,22 +148,23 @@ void View::run()
 					if (!noGameYet)
 						menuActive = !menuActive;
 					break;
+				case SDL_SCANCODE_SPACE:
+					/* fake mouse button pressed */
+					if (!menuActive && state == VS_IDLE) {
+						button = SDL_BUTTON_LEFT;
+						buttonX = buttonY = -1;
+					}
+					break;
 				default:
-					if (!menuActive && state == VS_IDLE)
-						game.handleClick(-1, -1);
 					break;
 				}
 			}
 			if (menuActive)
 				handleMenuEvent(ev);
 			else if (ev.type == SDL_MOUSEBUTTONUP && state == VS_IDLE) {
-				int cid = game.handleClick(ev.button.x - cxoff,
-							ev.button.y - cyoff);
-				if (cid >= 0 ) {
-					state = VS_OPENINGCARD;
-					startTurningAnimation(cid);
-					mixer.play(theme.sClick);
-				}
+				button = ev.button.button;
+				buttonX = ev.button.x;
+				buttonY = ev.button.y;
 			}
 		}
 
@@ -180,7 +184,7 @@ void View::run()
 		}
 
 		/* update game and menu */
-		flags = game.update(ms);
+		flags = game.update(ms, button, buttonX-cxoff, buttonY-cyoff);
 		if (menuActive)
 			curMenu->update(ms);
 		if (flags & GF_TIMECHANGED) {
@@ -198,16 +202,24 @@ void View::run()
 			strprintf(str, _("Errors: %d"),game.errors);
 			lblErrors.setText(theme.fNormal, str);
 		}
+		if (flags & GF_CARDOPENED) {
+			state = VS_OPENINGCARD;
+			startTurningAnimation(game.openCardIds[game.numOpenCards-1]);
+			mixer.play(theme.sClick);
+		}
 		if (flags & GF_CARDSCLOSED) {
 			mixer.play(theme.sFail);
 			for (uint i = 0; i < game.numMaxOpenCards; i++)
-				startTurningAnimation(game.openCardIds[i]);
-			state = VS_CLOSINGCARDS;
+				startTurningAnimation(game.closedCardIds[i]);
+			if (state == VS_OPENINGCARD)
+				state = VS_OPENINGANDCLOSINGCARDS;
+			else
+				state = VS_CLOSINGCARDS;
 		}
 		if (flags & GF_CARDSREMOVED) {
 			for (uint i = 0; i < game.numMaxOpenCards; i++) {
 				FadeAnimation *a;
-				Card &c = game.cards[game.openCardIds[i]];
+				Card &c = game.cards[game.closedCardIds[i]];
 				a = new FadeAnimation(
 					theme.cards[c.id], cxoff+c.x, cyoff+c.y,
 							0, renderer.ry2sy(1), c.w, c.h,
@@ -249,20 +261,8 @@ void View::render()
 	/* shadows */
 	for (uint i = 0; i < game.numCards; i++) {
 		Card &c = game.cards[i];
-		if (c.removed)
+		if (c.removed || skipAnimatedCard(i))
 			continue;
-		if (state == VS_OPENINGCARD && i == game.openCardIds[game.numOpenCards-1])
-			continue;
-		if (state == VS_CLOSINGCARDS) {
-			bool skip = false;
-			for (uint j = 0; j < game.numMaxOpenCards; j++)
-				if (i == game.openCardIds[j]) {
-					skip = true;
-					break;
-				}
-			if (skip)
-				continue;
-		}
 		theme.cardShadow.copy(cxoff + c.x + shadowOffset,
 					cyoff + c.y + shadowOffset, c.w, c.h);
 	}
@@ -270,20 +270,8 @@ void View::render()
 	/* cards */
 	for (uint i = 0; i < game.numCards; i++) {
 		Card &c = game.cards[i];
-		if (c.removed)
+		if (c.removed || skipAnimatedCard(i))
 			continue;
-		if (state == VS_OPENINGCARD &&i == game.openCardIds[game.numOpenCards-1])
-			continue;
-		if (state == VS_CLOSINGCARDS) {
-			bool skip = false;
-			for (uint j = 0; j < game.numMaxOpenCards; j++)
-				if (i == game.openCardIds[j]) {
-					skip = true;
-					break;
-				}
-			if (skip)
-				continue;
-		}
 		if (c.open || noGameYet)
 			theme.cards[c.id].copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
 		else if (!menuActive && state == VS_IDLE &&
@@ -651,3 +639,20 @@ void View::startTurningAnimation(uint cid)
 	sprites.push_back(unique_ptr<TurnAnimation>(ta));
 }
 
+bool View::skipAnimatedCard(uint cid)
+{
+	if (state == VS_OPENINGCARD || state == VS_OPENINGANDCLOSINGCARDS)
+		if (cid == game.openCardIds[game.numOpenCards-1])
+			return true;
+	if (state == VS_CLOSINGCARDS || state == VS_OPENINGANDCLOSINGCARDS) {
+		bool skip = false;
+		for (uint i = 0; i < game.numMaxOpenCards; i++)
+			if (cid == game.closedCardIds[i]) {
+				skip = true;
+				break;
+			}
+		if (skip)
+			return true;
+	}
+	return false;
+}

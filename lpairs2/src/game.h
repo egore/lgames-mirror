@@ -32,7 +32,8 @@ enum {
 	GF_ERRORSCHANGED = 2,
 	GF_TIMECHANGED = 4,
 	GF_CARDSCLOSED = 8,
-	GF_CARDSREMOVED = 16
+	GF_CARDSREMOVED = 16,
+	GF_CARDOPENED = 32
 };
 
 class Card {
@@ -90,6 +91,7 @@ class Game {
 	uint numCardsLeft;
 	uint openCardIds[MAXOPENCARDS];
 	uint numOpenCards;
+	uint closedCardIds[MAXOPENCARDS];
 	Timeout closeTimeout;
 	bool isMatch;
 
@@ -98,13 +100,22 @@ class Game {
 	uint gtime; /* gaming time in ms */
 	int score; /* number of pairs collected */
 	int errors; /* misclicks of known cards */
+
+	/* auto click new card after closing cards
+	 * to save one opening click */
+	bool autoClick;
+	int autoClickX, autoClickY;
+	Timeout autoclickTimeout;
+
+	int closeCards();
 public:
 	Game() : numMaxOpenCards(2), numCards(0), numCardsLeft(0),
 			numOpenCards(0), isMatch(false),
 			gameStarted(false), gameover(false),
-			gtime(0), score(0), errors(0) {}
+			gtime(0), score(0), errors(0),
+			autoClick(false), autoClickX(-1), autoClickY(-1) {}
 	void init(uint w, uint h, int mode, int fscreen, uint climit);
-	int update(uint ms);
+	int update(uint ms, int button, int bx, int by);
 	int handleClick(int cx, int cy);
 };
 

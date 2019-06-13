@@ -23,6 +23,7 @@ enum {
 	VS_IDLE = 0,
 	VS_OPENINGCARD,
 	VS_CLOSINGCARDS,
+	VS_OPENINGANDCLOSINGCARDS,
 
 	/* mixer */
 	MIX_CHANNELNUM = 16,
@@ -81,6 +82,7 @@ class View {
 	void startGame();
 	void changeWallpaper();
 	void startTurningAnimation(uint cid);
+	bool skipAnimatedCard(uint cid);
 
 public:
 	View(Renderer &r, Config &cfg, Game &gm);
