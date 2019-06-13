@@ -90,7 +90,6 @@ class Game {
 	uint numCardsLeft;
 	uint openCardIds[MAXOPENCARDS];
 	uint numOpenCards;
-	uint lastMatchIds[MAXOPENCARDS]; /* needed for animation */
 	Timeout closeTimeout;
 	bool isMatch;
 

@@ -30,7 +30,7 @@ class FadeAnimation : public Sprite {
 	SmoothCounter alphaCounter;
 public:
 	FadeAnimation(Texture &t, double sx, double sy, double dx, double dy,
-					uint dw, uint dh, uint lifetime);
+					uint dw, uint dh, uint duration);
 	int update(uint ms) {
 		pos.add(ms, vel);
 		return alphaCounter.update(ms);
@@ -39,6 +39,32 @@ public:
 		texture.setAlpha(alphaCounter.get());
 		texture.copy(pos.getX(), pos.getY(), w, h);
 		texture.clearAlpha();
+	}
+};
+
+class TurnAnimation : public Sprite {
+	Texture &t1, &t2;
+	int x, y; /* center position */
+	uint w, h;
+	uint duration;
+	Timeout timer;
+public:
+	TurnAnimation(Texture &_t1, Texture &_t2, int dx, int dy,
+					uint dw, uint dh, uint dur);
+	int update(uint ms) {
+		return timer.update(ms);
+	}
+	void render() {
+		uint phasedur = duration/2;
+		if (timer.get() < phasedur) {
+			/* phase 2: collapse first texture */
+			uint dw = w * (phasedur - timer.get()) / phasedur;
+			t2.copy(x - dw/2, y - h/2, dw, h);
+		} else {
+			/* phase 1: unfold second texture */
+			uint dw = w * (timer.get() - phasedur) / phasedur;
+			t1.copy(x - dw/2, y - h/2, dw, h);
+		}
 	}
 };
 

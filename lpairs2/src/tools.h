@@ -63,7 +63,7 @@ enum {
 		fprintf (stderr, __VA_ARGS__);
 
 class Timeout {
-	int cur, max;
+	uint cur, max;
 public:
 	Timeout() : cur(0), max(0) {}
 	Timeout(int ms) : cur(ms), max(ms) {}
@@ -71,14 +71,15 @@ public:
 	void add(int ms) { cur += ms; max += ms; }
 	void clear() { set(0); }
 	void reset() { cur = max; }
-	int getMax() { return max; }
-	int getCur() { return cur; }
-	int running() { return max > 0 && cur > 0; }
-	int expired() { return max > 0 && cur == 0; }
-	int isSet() { return max > 0; }
-	int update(int ms) {
-		cur -= ms;
-		if (cur < 0)
+	uint getMax() { return max; }
+	uint get() { return cur; }
+	bool running() { return max > 0 && cur > 0; }
+	bool expired() { return max > 0 && cur == 0; }
+	bool isSet() { return max > 0; }
+	bool update(uint ms) {
+		if (ms < cur)
+			cur -= ms;
+		else
 			cur = 0;
 		return cur == 0;
 	}

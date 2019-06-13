@@ -110,10 +110,10 @@ void Game::init(uint w, uint h, int mode, int fscreen, uint climit)
 	closeTimeout.clear();
 }
 
-/** Handle click on card. Return 1 if card was opened, 0 otherwise */
+/** Handle click on card. Return id of opened card or -1 otherwise */
 int Game::handleClick(int cx, int cy)
 {
-	int ret = 0;
+	int ret = -1;
 
 	if (numOpenCards == numMaxOpenCards) {
 		/* close directly */
@@ -128,7 +128,7 @@ int Game::handleClick(int cx, int cy)
 				openCardIds[numOpenCards++] = i;
 				if (!gameStarted)
 					gameStarted = true;
-				ret = 1;
+				ret = i;
 			}
 	if (numOpenCards == numMaxOpenCards) {
 		uint pid = cards[openCardIds[0]].id;
@@ -139,7 +139,7 @@ int Game::handleClick(int cx, int cy)
 				break;
 			}
 		if (isMatch)
-			closeTimeout.set(200);
+			closeTimeout.set(ANIM_TURNDURATION+200);
 		else
 			closeTimeout.set(2000);
 	}
@@ -162,7 +162,6 @@ int Game::update(uint ms)
 		if (closeTimeout.update(ms)) {
 			if (isMatch) {
 				for (uint i = 0; i < numOpenCards; i++) {
-					lastMatchIds[i] = openCardIds[i];
 					cards[openCardIds[i]].clear();
 					numCardsLeft--;
 					if (numCardsLeft == 0)
@@ -175,7 +174,8 @@ int Game::update(uint ms)
 				bool wasKnown = false;
 				for (uint i = 0; i < numOpenCards; i++) {
 					if (cards[openCardIds[i]].isKnown())
-						wasKnown = true;
+						if (i < numOpenCards-1)
+							wasKnown = true;
 					cards[openCardIds[i]].toggle();
 				}
 				if (wasKnown) {

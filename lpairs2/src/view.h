@@ -19,6 +19,11 @@ enum {
 	/* general */
 	MAX_PLAYERS = 4,
 
+	/* states */
+	VS_IDLE = 0,
+	VS_OPENINGCARD,
+	VS_CLOSINGCARDS,
+
 	/* mixer */
 	MIX_CHANNELNUM = 16,
 	MIX_CUNKSIZE = 2048,
@@ -26,7 +31,11 @@ enum {
 	/* waitForKey types */
 	WT_ANYKEY = 0,
 	WT_YESNO,
-	WT_PAUSE
+	WT_PAUSE,
+
+	/* animations */
+	ANIM_TURNDURATION = 200,
+	ANIM_FADEDURATION = 1000
 };
 
 class View {
@@ -45,11 +54,13 @@ class View {
 	bool noGameYet;
 
 	/* game */
+	int state;
 	Game &game;
 	bool quitReceived;
 	uint curWallpaperId;
 	Texture imgBackground;
 	int cxoff, cyoff;
+	int shadowOffset; /* shadow offset */
 	Label lblScore, lblTime, lblErrors;
 	Label lblRestart;
 	int mcx, mcy; /* mouse cursor position */
@@ -69,6 +80,7 @@ class View {
 	void handleMenuEvent(SDL_Event &ev);
 	void startGame();
 	void changeWallpaper();
+	void startTurningAnimation(uint cid);
 
 public:
 	View(Renderer &r, Config &cfg, Game &gm);
