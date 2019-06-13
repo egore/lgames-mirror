@@ -3,6 +3,7 @@
 
 known bugs:
 - view gets into state OPENINGCARD without id in game.openCardIds
-- counting errors does not work properly (e.g. 1 zebra known, 2 zebra opened
-  for first time but combined with wrong card: does not count as error, setting
-  known directly does not work as then every pair counts as error)
+- errors not counted properly: e.g. zebra1 known, zebra2 opened for first time and combined
+  with another unknown card = no error, although it is an error because zebra1 was known
+  solution: for FIRST card closed counterparts must be searched and checked for known if
+  one more counterpart was known it is an error

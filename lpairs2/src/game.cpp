@@ -186,8 +186,7 @@ int Game::closeCards()
 		bool wasKnown = false;
 		for (uint i = 0; i < numOpenCards; i++) {
 			if (cards[openCardIds[i]].isKnown())
-				if (i < numOpenCards-1)
-					wasKnown = true;
+				wasKnown = true;
 			cards[openCardIds[i]].toggle();
 		}
 		if (wasKnown) {
