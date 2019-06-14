@@ -183,20 +183,37 @@ int Game::closeCards()
 		ret |= GF_SCORECHANGED;
 		ret |= GF_CARDSREMOVED;
 	} else {
-		bool wasKnown = false;
-		for (uint i = 0; i < numOpenCards; i++) {
-			if (cards[openCardIds[i]].isKnown())
-				wasKnown = true;
-			cards[openCardIds[i]].toggle();
-		}
-		if (wasKnown) {
+		if (checkError()) {
 			errors++;
 			ret |= GF_ERRORSCHANGED;
 		}
+		for (uint i = 0; i < numOpenCards; i++)
+			cards[openCardIds[i]].toggle();
 		ret |= GF_CARDSCLOSED;
 	}
 	numOpenCards = 0;
 	isMatch = false;
 
 	return ret;
+}
+
+/** Check mismatched open cards. Last opened card must be the mismatch
+ * because for more than 2 cards to be matched it stops at a mismatch.
+ *
+ * If last opened card is known it's an error.
+ * If any closed matching card for first card is known it's an error.
+ */
+bool Game::checkError()
+{
+	if (numOpenCards < 2)
+		return false; /* should never happen but make sure */
+	if (cards[openCardIds[numOpenCards-1]].known)
+		return true;
+	for (uint i = 0; i < numCards; i++) {
+		if (cards[i].removed || cards[i].open)
+			continue;
+		if (cards[i].id == cards[openCardIds[0]].id && cards[i].known)
+			return true;
+	}
+	return false;
 }
