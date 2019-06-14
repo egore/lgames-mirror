@@ -104,6 +104,7 @@ class Game {
 	int errors; /* misclicks of known cards */
 
 	int closeCards();
+	bool checkError();
 public:
 	Game(Config &cfg) : config(cfg),
 			numMaxOpenCards(2), numCards(0), numCardsLeft(0),
