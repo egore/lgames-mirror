@@ -194,7 +194,7 @@ void View::run()
 			lblTime.setText(theme.fNormal, str);
 		}
 		if (flags & GF_SCORECHANGED) {
-			strprintf(str, _("Score: %d"),game.score);
+			strprintf(str, _("Pairs: %d/%d"),game.score, game.numCards/2);
 			lblScore.setText(theme.fNormal, str);
 			mixer.play(theme.sRemove);
 		}
@@ -614,7 +614,9 @@ void View::startGame()
 	game.init(renderer.rx2sx(1), renderer.ry2sy(0.90),
 			config.gamemode, config.fullscreen, theme.numCards*2);
 	noGameYet = false;
-	lblScore.setText(theme.fNormal, _("Score: 0"));
+	string s;
+	strprintf(s, _("Pairs: 0/%d"), game.numCards/2);
+	lblScore.setText(theme.fNormal, s);
 	lblTime.setText(theme.fNormal, _("Time: 0:00"));
 	lblErrors.setText(theme.fNormal, _("Errors: 0"));
 }
