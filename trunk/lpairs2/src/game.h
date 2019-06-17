@@ -87,6 +87,7 @@ class Game {
 
 	Config &config;
 
+	uint cgap; /* standard gap between two cards */
 	uint numMaxOpenCards;
 	Card cards[MAXCARDS];
 	uint numCards;
@@ -106,7 +107,7 @@ class Game {
 	int closeCards();
 	bool checkError();
 public:
-	Game(Config &cfg) : config(cfg),
+	Game(Config &cfg) : config(cfg), cgap(0),
 			numMaxOpenCards(2), numCards(0), numCardsLeft(0),
 			numOpenCards(0), isMatch(false),
 			gameStarted(false), gameover(false),

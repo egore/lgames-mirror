@@ -93,8 +93,7 @@ void View::init(string t, uint f)
 		startGame();
 	cxoff = renderer.rx2sx(0.00);
 	cyoff = renderer.ry2sy(0.05);
-	/* XXX use size of first card to determine shadow offset */
-	shadowOffset = 0.05 * game.cards[0].w;
+	shadowOffset = game.cgap / 2;
 }
 
 /** Main game loop. Handle events, update game and render view.
@@ -621,6 +620,7 @@ void View::startGame()
 	lblScore.setText(theme.fNormal, s);
 	lblTime.setText(theme.fNormal, _("Time: 0:00"));
 	lblErrors.setText(theme.fNormal, _("Errors: 0"));
+	shadowOffset = game.cgap / 2;
 }
 
 void View::changeWallpaper()
