@@ -88,7 +88,7 @@ void View::init(string t, uint f)
 	if (noGameYet) {
 		changeWallpaper();
 		game.init(renderer.rx2sx(1), renderer.ry2sy(0.90),
-				GM_HUGE, 2, config.fullscreen, theme.numCards*2);
+				GM_SOLO, GM_HUGE, 2, config.fullscreen, theme.numCards*2);
 	} else
 		startGame();
 	cxoff = renderer.rx2sx(0.00);
@@ -192,14 +192,13 @@ void View::run()
 						(game.gtime/1000)%60);
 			lblTime.setText(theme.fNormal, str);
 		}
-		if (flags & GF_SCORECHANGED) {
-			strprintf(str, _("Matches: %d/%d"),game.score,game.numCards/config.matchsize);
-			lblScore.setText(theme.fNormal, str);
+		if ((flags & GF_SCORECHANGED) || (flags & GF_NEXTPLAYER)) {
+			renderPlayerInfo();
 			mixer.play(theme.sRemove);
 		}
-		if (flags & GF_ERRORSCHANGED) {
-			strprintf(str, _("Errors: %d"),game.errors);
-			lblErrors.setText(theme.fNormal, str);
+		if ((flags & GF_ERRORSCHANGED) || (flags & GF_NEXTPLAYER)) {
+			if (game.numPlayers == 1)
+				renderPlayerInfo();
 		}
 		if (flags & GF_CARDOPENED) {
 			mixer.play(theme.sClick);
@@ -223,9 +222,12 @@ void View::run()
 			for (uint i = 0; i < game.numMaxOpenCards; i++) {
 				FadeAnimation *a;
 				Card &c = game.cards[game.closedCardIds[i]];
+				int dx = 0;
+				if (game.curPlayer == 1)
+					dx = renderer.rx2sx(1) - c.w;
 				a = new FadeAnimation(
 					theme.cards[c.id], cxoff+c.x, cyoff+c.y,
-							0, renderer.ry2sy(1), c.w, c.h,
+							dx, renderer.ry2sy(1), c.w, c.h,
 							ANIM_FADEDURATION);
 				sprites.push_back(unique_ptr<FadeAnimation>(a));
 			}
@@ -375,6 +377,7 @@ void View::createMenus()
 	const char *fpsLimitNames[] = {_("No Limit"),_("200 FPS"),_("100 FPS") } ;
 	const int bufSizes[] = { 256, 512, 1024, 2048, 4096 };
 	const int channelNums[] = { 8, 16, 32 };
+	const char *modeNames[] = {_("Solo"), _("Vs CPU"), _("Vs Human") };
 
 	/* XXX too lazy to set fonts for each and every item...
 	 * use static pointers instead */
@@ -394,9 +397,12 @@ void View::createMenus()
 
 	mNewGame->add(new MenuItem(_("Start Game"),"",AID_STARTGAME));
 	mNewGame->add(new MenuItemSep());
+	mNewGame->add(new MenuItemList(_("Mode"),
+			_("In fullscreen: Small=6x4, Medium=8x4, Large=10x5, Huge=12x6.\nNote that it's slightly different in window mode to match the different ratio."),
+			AID_NONE,config.gamemode,modeNames,3));
 	mNewGame->add(new MenuItemList(_("Set Size"),
 			_("In fullscreen: Small=6x4, Medium=8x4, Large=10x5, Huge=12x6.\nNote that it's slightly different in window mode to match the different ratio."),
-			AID_NONE,config.gamemode,diffNames,4));
+			AID_NONE,config.setsize,diffNames,4));
 	mNewGame->add(new MenuItemRange(_("Match Size"),
 			"2 = Pairs, 3 = Triplets, 4 = Quadruplets\nNote that you always have to turn over that many cards regardless of a mismatch.",
 			AID_NONE,config.matchsize,2,4,1));
@@ -612,14 +618,11 @@ void View::startGame()
 {
 	changeWallpaper();
 	game.init(renderer.rx2sx(1), renderer.ry2sy(0.90),
-			config.gamemode, config.matchsize,
+			config.gamemode, config.setsize, config.matchsize,
 			config.fullscreen, theme.numCards*config.matchsize);
 	noGameYet = false;
-	string s;
-	strprintf(s, _("Matches: 0/%d"), game.numCards/config.matchsize);
-	lblScore.setText(theme.fNormal, s);
 	lblTime.setText(theme.fNormal, _("Time: 0:00"));
-	lblErrors.setText(theme.fNormal, _("Errors: 0"));
+	renderPlayerInfo();
 	shadowOffset = game.cgap / 2;
 }
 
@@ -672,4 +675,33 @@ bool View::skipAnimatedCard(uint cid)
 			return true;
 	}
 	return false;
+}
+
+/** Either render score and errors in solo mode or both scores in two-player */
+void View::renderPlayerInfo()
+{
+	string s;
+	if (game.numPlayers == 1) {
+		strprintf(s, _("Matches: %d/%d"),
+				game.players[0].getScore(),
+				game.numCards/config.matchsize);
+		lblScore.setText(theme.fNormal, s);
+		strprintf(s, _("Errors: %d"), game.players[0].getErrors());
+		lblErrors.setText(theme.fNormal, s);
+
+	} else {
+		/* two-player mode, use errors for second players score */
+		strprintf(s, _("%s: %d"),game.players[0].getName().c_str(),
+				game.players[0].getScore());
+		if (game.curPlayer == 0)
+			lblScore.setText(theme.fNormal, s);
+		else
+			lblScore.setText(theme.fSmall, s);
+		strprintf(s, _("%s: %d"),game.players[1].getName().c_str(),
+				game.players[1].getScore());
+		if (game.curPlayer == 1)
+			lblErrors.setText(theme.fNormal, s);
+		else
+			lblErrors.setText(theme.fSmall, s);
+	}
 }

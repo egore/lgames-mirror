@@ -21,17 +21,34 @@
 #include "menu.h"
 #include "view.h"
 
-extern SDL_Renderer *mrc;
-
 /** Initialize game board of virtual size w,h.
  *  @mode determines layout and number of cards depending in @fscreen
  *  @climit is the maximum number of cards that can be dealt */
-void Game::init(uint w, uint h, uint mode, uint matchsize, int fscreen, uint climit)
+void Game::init(uint w, uint h, uint mode, uint setsize, uint matchsize, int fscreen, uint climit)
 {
 	uint nx = 4, ny = 4;
 
-	/* only regular modes supported for now */
+	/* game mode */
+	curPlayer = 0;
 	switch (mode) {
+	case GM_SOLO:
+		numPlayers = 1;
+		players[0].init("You", PC_HUMAN);
+		break;
+	case GM_VSHUMAN:
+		numPlayers = 2;
+		players[0].init("Player A", PC_HUMAN);
+		players[1].init("Player B", PC_HUMAN);
+		break;
+	case GM_VSCPU:
+		numPlayers = 2;
+		players[0].init("You", PC_HUMAN);
+		players[1].init("CPU", PC_CPU);
+		break;
+	}
+
+	/* only regular modes supported for now */
+	switch (setsize) {
 	case GM_SMALL:
 		nx = 6;
 		ny = 4;
@@ -96,8 +113,6 @@ void Game::init(uint w, uint h, uint mode, uint matchsize, int fscreen, uint cli
 	gameStarted = false;
 	gameover = false;
 	gtime = 0;
-	score = 0;
-	errors = 0;
 	numOpenCards = 0;
 	isMatch = false;
 	closeTimeout.clear();
@@ -123,7 +138,8 @@ int Game::update(uint ms, int button, int bx, int by)
 				break;
 			}
 
-		if (numOpenCards == numMaxOpenCards) {
+		/* quick closing cards is only allowed in solo game */
+		if (numPlayers == 1 && numOpenCards == numMaxOpenCards) {
 			ret |= closeCards();
 			closeTimeout.clear();
 		}
@@ -172,17 +188,25 @@ int Game::closeCards()
 			if (numCardsLeft == 0)
 				gameover = true;
 		}
-		score++;
+		getCurrentPlayer().incScore();
 		ret |= GF_SCORECHANGED;
 		ret |= GF_CARDSREMOVED;
 	} else {
 		if (checkError()) {
-			errors++;
+			getCurrentPlayer().incErrors();
 			ret |= GF_ERRORSCHANGED;
 		}
 		for (uint i = 0; i < numOpenCards; i++)
 			cards[openCardIds[i]].toggle();
 		ret |= GF_CARDSCLOSED;
+
+		/* set next player */
+		if (numPlayers > 1) {
+			curPlayer++;
+			if (curPlayer >= numPlayers)
+				curPlayer = 0;
+			ret |= GF_NEXTPLAYER;
+		}
 	}
 	numOpenCards = 0;
 	isMatch = false;
