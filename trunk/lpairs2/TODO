@@ -1,4 +1,5 @@
-- multimatch games
+- store gap in game for proper shadow
+- auto layout number of cards
 - vs cpu mode
 
 known bugs:
