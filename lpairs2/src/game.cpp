@@ -23,10 +23,10 @@
 
 extern SDL_Renderer *mrc;
 
-/** Initialize game board of size w,h.
+/** Initialize game board of virtual size w,h.
  *  @mode determines layout and number of cards depending in @fscreen
  *  @climit is the maximum number of cards that can be dealt */
-void Game::init(uint w, uint h, int mode, int fscreen, uint climit)
+void Game::init(uint w, uint h, uint mode, uint matchsize, int fscreen, uint climit)
 {
 	uint nx = 4, ny = 4;
 
@@ -58,20 +58,15 @@ void Game::init(uint w, uint h, int mode, int fscreen, uint climit)
 	int cxoff = (w - (nx*sz + (nx-1)*gap)) / 2;
 	int cyoff = (h - (ny*sz + (ny-1)*gap)) / 2;
 	int x = cxoff, y = cyoff;
-	bool skipcenter = ((nx%2) && (ny%2)); /* uneven number of slots? */
 
 	/* layout cards */
-	numCards = 0;
-	for (uint j = 0; j < ny; j++) {
-		if (numCards >= climit)
-			break;
-		for (uint i = 0; i < nx; i++) {
-			if (skipcenter && i==nx/2 && j==ny/2) {
-				x += sz + gap;
-				continue;
-			}
-			cards[numCards].setGeometry(x, y, sz, sz);
-			numCards++;
+	numCards = nx*ny - ((nx*ny)%matchsize);
+	if (numCards > climit)
+		numCards = climit;
+	uint pos = 0;
+	for (uint j = 0; j < ny && pos < numCards; j++) {
+		for (uint i = 0; i < nx && pos < numCards; i++) {
+			cards[pos++].setGeometry(x, y, sz, sz);
 			x += sz + gap;
 		}
 		y += sz + gap;
@@ -83,23 +78,21 @@ void Game::init(uint w, uint h, int mode, int fscreen, uint climit)
 	random_device rd;
 	mt19937 g(rd());
 	vector<int> pids;
-	for (uint i = 0; i < climit/2; i++)
+	for (uint i = 0; i < climit/matchsize; i++)
 		pids.push_back(i);
 	shuffle(pids.begin(), pids.end(), g);
 
 	/* set card ids */
 	vector<int> cids;
-	for (uint i = 0; i < numCards/2; i++)
-		cids.push_back(pids[i]);
-	for (uint i = 0; i < numCards/2; i++)
-		cids.push_back(pids[i]);
+	for (uint j = 0; j < matchsize; j++)
+		for (uint i = 0; i < numCards/matchsize; i++)
+			cids.push_back(pids[i]);
 	shuffle(cids.begin(), cids.end(), g);
 
 	for (uint i = 0; i < numCards; i++)
 		cards[i].set(cids[i]);
 
-	/* TODO fix adjacent pairs because this happens a lot */
-
+	numMaxOpenCards = matchsize;
 	gameStarted = false;
 	gameover = false;
 	gtime = 0;

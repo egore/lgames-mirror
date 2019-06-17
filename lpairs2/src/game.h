@@ -111,7 +111,7 @@ public:
 			numOpenCards(0), isMatch(false),
 			gameStarted(false), gameover(false),
 			gtime(0), score(0), errors(0) {}
-	void init(uint w, uint h, int mode, int fscreen, uint climit);
+	void init(uint w, uint h, uint mode, uint matchsize, int fscreen, uint climit);
 	int update(uint ms, int button, int bx, int by);
 	int handleClick(int cx, int cy);
 };

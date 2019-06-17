@@ -88,7 +88,7 @@ void View::init(string t, uint f)
 	if (noGameYet) {
 		changeWallpaper();
 		game.init(renderer.rx2sx(1), renderer.ry2sy(0.90),
-				GM_HUGE, config.fullscreen, theme.numCards*2);
+				GM_HUGE, 2, config.fullscreen, theme.numCards*2);
 	} else
 		startGame();
 	cxoff = renderer.rx2sx(0.00);
@@ -194,7 +194,7 @@ void View::run()
 			lblTime.setText(theme.fNormal, str);
 		}
 		if (flags & GF_SCORECHANGED) {
-			strprintf(str, _("Pairs: %d/%d"),game.score, game.numCards/2);
+			strprintf(str, _("Matches: %d/%d"),game.score,game.numCards/config.matchsize);
 			lblScore.setText(theme.fNormal, str);
 			mixer.play(theme.sRemove);
 		}
@@ -393,15 +393,16 @@ void View::createMenus()
 	mGraphics = new Menu(theme);
 	graphicsMenu = mGraphics; /* needed to return after mode/theme change */
 
-	mNewGame->add(new MenuItem(_("Start Game"),
-			_("Start game."),
-			AID_STARTGAME));
+	mNewGame->add(new MenuItem(_("Start Game"),"",AID_STARTGAME));
 	mNewGame->add(new MenuItemSep());
-	mNewGame->add(new MenuItemList(_("Size"),
+	mNewGame->add(new MenuItemList(_("Set Size"),
 			_("In fullscreen: Small=6x4, Medium=8x4, Large=10x5, Huge=12x6.\nNote that it's slightly different in window mode to match the different ratio."),
 			AID_NONE,config.gamemode,diffNames,4));
+	mNewGame->add(new MenuItemRange(_("Match Size"),
+			"2 = Pairs, 3 = Triplets, 4 = Quadruplets\nNote that you always have to turn over that many cards regardless of a mismatch.",
+			AID_NONE,config.matchsize,2,4,1));
 	mNewGame->add(new MenuItemRange(_("Close Delay"),
-			"Time in seconds until opened pair is closed again.",
+			"Time in seconds until opened cards are turned over again.",
 			AID_NONE,config.closedelay,1,5,1));
 	mNewGame->add(new MenuItemSep());
 /*	mNewGame->add(new MenuItemRange(_("Players"),
@@ -612,10 +613,11 @@ void View::startGame()
 {
 	changeWallpaper();
 	game.init(renderer.rx2sx(1), renderer.ry2sy(0.90),
-			config.gamemode, config.fullscreen, theme.numCards*2);
+			config.gamemode, config.matchsize,
+			config.fullscreen, theme.numCards*config.matchsize);
 	noGameYet = false;
 	string s;
-	strprintf(s, _("Pairs: 0/%d"), game.numCards/2);
+	strprintf(s, _("Matches: 0/%d"), game.numCards/config.matchsize);
 	lblScore.setText(theme.fNormal, s);
 	lblTime.setText(theme.fNormal, _("Time: 0:00"));
 	lblErrors.setText(theme.fNormal, _("Errors: 0"));
