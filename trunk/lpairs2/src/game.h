@@ -21,6 +21,11 @@ class Game;
 enum {
 	MAXCARDS = 100,
 	MAXOPENCARDS = 4,
+	MAXPLAYERNUM = 2,
+
+	GM_SOLO = 0,
+	GM_VSCPU,
+	GM_VSHUMAN,
 
 	GM_SMALL = 0,
 	GM_MEDIUM,
@@ -33,7 +38,43 @@ enum {
 	GF_TIMECHANGED = 4,
 	GF_CARDSCLOSED = 8,
 	GF_CARDSREMOVED = 16,
-	GF_CARDOPENED = 32
+	GF_CARDOPENED = 32,
+	GF_NEXTPLAYER = 64,
+
+	PC_HUMAN = 0,
+	PC_CPU
+};
+
+class Player {
+	friend View;
+	friend Game;
+
+	string name;
+	uint score; /* number of pairs collected */
+	uint errors; /* misclicks of known cards */
+	uint control;
+public:
+	void init(const string &n, uint ctrl) {
+		name = n;
+		score = 0;
+		errors = 0;
+		control = ctrl;
+	}
+	void incScore() {
+		score++;
+	}
+	void incErrors() {
+		errors++;
+	}
+	uint getScore() {
+		return score;
+	}
+	uint getErrors() {
+		return errors;
+	}
+	const string &getName() {
+		return name;
+	}
 };
 
 class Card {
@@ -87,6 +128,14 @@ class Game {
 
 	Config &config;
 
+	Player players[MAXPLAYERNUM];
+	uint numPlayers;
+	uint curPlayer;
+
+	bool gameStarted; /* first click happened? */
+	bool gameover;
+	uint gtime; /* gaming time in ms */
+
 	uint cgap; /* standard gap between two cards */
 	uint numMaxOpenCards;
 	Card cards[MAXCARDS];
@@ -98,23 +147,19 @@ class Game {
 	Timeout closeTimeout;
 	bool isMatch;
 
-	bool gameStarted; /* first click happened? */
-	bool gameover;
-	uint gtime; /* gaming time in ms */
-	int score; /* number of pairs collected */
-	int errors; /* misclicks of known cards */
-
 	int closeCards();
 	bool checkError();
 public:
-	Game(Config &cfg) : config(cfg), cgap(0),
-			numMaxOpenCards(2), numCards(0), numCardsLeft(0),
-			numOpenCards(0), isMatch(false),
-			gameStarted(false), gameover(false),
-			gtime(0), score(0), errors(0) {}
-	void init(uint w, uint h, uint mode, uint matchsize, int fscreen, uint climit);
+	Game(Config &cfg) : config(cfg), numPlayers(1), curPlayer(0),
+			gameStarted(false), gameover(false), gtime(0),
+			cgap(0), numMaxOpenCards(2), numCards(0), numCardsLeft(0),
+			numOpenCards(0), isMatch(false) {}
+	void init(uint w, uint h, uint mode, uint setsize, uint matchsize, int fscreen, uint climit);
 	int update(uint ms, int button, int bx, int by);
 	int handleClick(int cx, int cy);
+	Player &getCurrentPlayer() {
+		return players[curPlayer];
+	}
 };
 
 #endif /* GAME_H_ */

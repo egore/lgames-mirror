@@ -83,7 +83,7 @@ class View {
 	void changeWallpaper();
 	void startTurningAnimation(uint cid);
 	bool skipAnimatedCard(uint cid);
-
+	void renderPlayerInfo();
 public:
 	View(Renderer &r, Config &cfg, Game &gm);
 	void init(string t, uint f);

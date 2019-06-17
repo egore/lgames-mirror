@@ -172,8 +172,11 @@ protected:
 public:
 	MenuItemRange(const string &c, const string &tt, int aid, int &_val,
 				int _min, int _max, int _step)
-		: MenuItemValue(c,to_string(_val),tt,aid),
-		  min(_min), max(_max), step(_step), val(_val) {}
+			: MenuItemValue(c,to_string(_val),tt,aid),
+			  min(_min), max(_max), step(_step), val(_val) {
+		if (val < min || val > max)
+			val = min;
+	}
 	virtual int handleEvent(const SDL_Event &ev) {
 		int oldval = val;
 		if (ev.type == SDL_MOUSEBUTTONDOWN) {

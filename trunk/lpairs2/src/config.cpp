@@ -23,7 +23,8 @@ Config::Config()
 	playernames[1] = "Mr.X";
 	playernames[2] = "Mr.Y";
 	playernames[3] = "Mr.Z";
-	gamemode = 2;
+	gamemode = 0;
+	setsize = 1;
 	matchsize = 2;
 	closedelay = 3;
 
@@ -60,6 +61,7 @@ Config::Config()
 	fp.get( "player2", playernames[2] );
 	fp.get( "player3", playernames[3] );
 	fp.get( "gamemode", gamemode );
+	fp.get( "setsize", setsize );
 	fp.get( "matchsize", matchsize );
 	fp.get( "closedelay", closedelay );
 	fp.get( "sound", sound );
@@ -89,6 +91,7 @@ void Config::save()
 	ofs << "player2=" << playernames[2] << "\n";
 	ofs << "player3=" << playernames[3] << "\n";
 	ofs << "gamemode=" << gamemode << "\n";
+	ofs << "setsize=" << setsize << "\n";
 	ofs << "matchsize=" << matchsize << "\n";
 	ofs << "closedelay=" << closedelay << "\n";
 	ofs << "sound=" << sound << "\n";

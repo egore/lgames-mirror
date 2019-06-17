@@ -28,6 +28,7 @@ public:
 	int playercount;
 	string playernames[MAXCONFIGPLAYERNAMES];
 	int gamemode;
+	int setsize;
 	int matchsize;
 	int closedelay;
 
