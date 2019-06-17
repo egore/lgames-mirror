@@ -50,13 +50,13 @@ void Game::init(uint w, uint h, uint mode, uint matchsize, int fscreen, uint cli
 		break;
 	}
 
-	double pgap = 0.15;
+	double pgap = 0.1; /* gap in percent of card width */
 	uint maxcw = (double)w/(nx*(1 + pgap));
 	uint maxch = (double)h/(ny*(1 + pgap));
 	uint sz = (maxcw>maxch)?maxch:maxcw;
-	uint gap = pgap * sz;
-	int cxoff = (w - (nx*sz + (nx-1)*gap)) / 2;
-	int cyoff = (h - (ny*sz + (ny-1)*gap)) / 2;
+	cgap = pgap * sz;
+	int cxoff = (w - (nx*sz + (nx-1)*cgap)) / 2;
+	int cyoff = (h - (ny*sz + (ny-1)*cgap)) / 2;
 	int x = cxoff, y = cyoff;
 
 	/* layout cards */
@@ -67,9 +67,9 @@ void Game::init(uint w, uint h, uint mode, uint matchsize, int fscreen, uint cli
 	for (uint j = 0; j < ny && pos < numCards; j++) {
 		for (uint i = 0; i < nx && pos < numCards; i++) {
 			cards[pos++].setGeometry(x, y, sz, sz);
-			x += sz + gap;
+			x += sz + cgap;
 		}
-		y += sz + gap;
+		y += sz + cgap;
 		x = cxoff;
 	}
 	numCardsLeft = numCards;
