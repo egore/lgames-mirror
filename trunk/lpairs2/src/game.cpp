@@ -154,7 +154,7 @@ int Game::update(uint ms, int button, int bx, int by)
 			for (uint i = 0; i < numPlayers; i++)
 				if (players[i].isCPU())
 					players[i].setCPUMemoryCell(cid,
-						getAdjacentCards(cid, NULL));
+						getAdjacentCards(cid, NULL, false));
 		}
 
 		if (numOpenCards == numMaxOpenCards) {
@@ -227,7 +227,7 @@ int Game::closeCards()
 		if (players[i].isCPU()) {
 			for (uint j = 0; j < numCards; j++)
 				players[i].reduceCPUMemoryCell(j,
-						getAdjacentCards(j, NULL));
+						getAdjacentCards(j, NULL, false));
 		}
 
 	return ret;
@@ -255,7 +255,7 @@ bool Game::checkError()
 }
 
 /** Get all cards that are within cw+gap,ch+gap */
-uint Game::getAdjacentCards(uint cid, vector<uint> *adjCards)
+uint Game::getAdjacentCards(uint cid, vector<uint> *adjCards, bool onlyClosed)
 {
 	uint num = 0;
 
@@ -270,7 +270,9 @@ uint Game::getAdjacentCards(uint cid, vector<uint> *adjCards)
 	int dist = cards[cid].w + cgap; /* same for h as cards are square */
 
 	for (uint i = 0; i < numCards; i++) {
-		if (i == cid)
+		if (i == cid || cards[i].removed)
+			continue;
+		if (onlyClosed && cards[i].open)
 			continue;
 		if (abs(cx - cards[i].x) <= dist && abs(cy - cards[i].y) <= dist) {
 			num++;
@@ -386,15 +388,14 @@ uint Game::cpuSelectRandomCard()
 {
 	uint rerolls = 0;
 	uint pos = INVALIDCARDID;
-	uint numClosedCards;
+	uint numClosedCards = 0;
 
-	numClosedCards = numCardsLeft;
 	for (uint i = 0; i < numCards; i++)
-		if (!cards[i].removed && cards[i].open)
-			numClosedCards--;
+		if (!cards[i].removed && !cards[i].open)
+			numClosedCards++;
 
 	if (numClosedCards == 0)
-		return INVALIDCARDID; /* no more cards... */
+		return INVALIDCARDID; /* no more cards??? */
 
 	while (pos == INVALIDCARDID) {
 		/* get random position */
@@ -432,10 +433,10 @@ uint Game::cpuTryCard(uint pos)
 
 	/* reroll up to 3 times for chance on adjacent card */
 	vector<uint> ac;
-	getAdjacentCards(pos, &ac);
+	getAdjacentCards(pos, &ac, true);
 	if (ac.size() == 0)
 		pos = INVALIDCARDID;
-	else do {
+	else if (getCurrentPlayer().canRememberCard(pos)) do {
 		/* okay we have adjacent cards try one */
 		pos = ac[rand() % ac.size()];
 		/* go random if cpu remembers it's not the right one */
