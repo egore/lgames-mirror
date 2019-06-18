@@ -169,6 +169,11 @@ void View::run()
 
 		/* get input state */
 		SDL_GetMouseState(&mcx, &mcy);
+		if (state == VS_IDLE && game.getCurrentPlayer().isCPU()) {
+			game.getNextCPUClick(button, buttonX, buttonY);
+			buttonX += cxoff;
+			buttonY += cyoff;
+		}
 
 		/* get passed time */
 		ms = ticks.get();
@@ -280,7 +285,8 @@ void View::render()
 		if (c.open || noGameYet)
 			theme.cards[c.id].copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
 		else if (!menuActive && state == VS_IDLE &&
-					c.hasFocus(mcx - cxoff, mcy - cyoff))
+				!game.getCurrentPlayer().isCPU() &&
+				c.hasFocus(mcx - cxoff, mcy - cyoff))
 			theme.cardFocus.copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
 		else
 			theme.cardBack.copy(cxoff + c.x,cyoff + c.y,c.w,c.h);

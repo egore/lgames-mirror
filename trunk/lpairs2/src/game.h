@@ -23,6 +23,8 @@ enum {
 	MAXOPENCARDS = 4,
 	MAXPLAYERNUM = 2,
 
+	INVALIDCARDID = MAXCARDS,
+
 	GM_SOLO = 0,
 	GM_VSCPU,
 	GM_VSHUMAN,
@@ -53,12 +55,26 @@ class Player {
 	uint score; /* number of pairs collected */
 	uint errors; /* misclicks of known cards */
 	uint control;
+
+	/* CPU memory settings */
+	double cmMinThreshold;
+	double cmInitKnown;
+	double cmInitLossPerAdjacentCard;
+	double cmTurnLoss;
+	double cmTurnSavePerMissingCard;
+	double cmem[MAXCARDS];
 public:
 	void init(const string &n, uint ctrl) {
 		name = n;
 		score = 0;
 		errors = 0;
 		control = ctrl;
+
+		cmMinThreshold = 0.1;
+		cmInitKnown = 1.2;
+		cmInitLossPerAdjacentCard = 0.05;
+		cmTurnLoss = 0.1;
+		cmTurnSavePerMissingCard = 0.012;
 	}
 	void incScore() {
 		score++;
@@ -74,6 +90,27 @@ public:
 	}
 	const string &getName() {
 		return name;
+	}
+
+	bool isCPU() {
+		return control == PC_CPU;
+	}
+	void setCPUMemoryCell(uint cid, uint numAdjCards) {
+		if (cid >= MAXCARDS)
+			return;
+		cmem[cid] = cmInitKnown - cmInitLossPerAdjacentCard*numAdjCards;
+	}
+	void reduceCPUMemoryCell(uint cid, uint numAdjCards) {
+		if (cid >= MAXCARDS)
+			return;
+		cmem[cid] -= cmTurnLoss - cmTurnSavePerMissingCard*(8-numAdjCards);
+		if (cmem[cid] <= cmMinThreshold)
+			cmem[cid] = 0;
+	}
+	bool canRememberCard(uint cid) {
+		if (cid >= MAXCARDS)
+			return false;
+		return (rand() % 1000) < (cmem[cid]*1000);
 	}
 };
 
@@ -136,30 +173,39 @@ class Game {
 	bool gameover;
 	uint gtime; /* gaming time in ms */
 
-	uint cgap; /* standard gap between two cards */
-	uint numMaxOpenCards;
 	Card cards[MAXCARDS];
 	uint numCards;
 	uint numCardsLeft;
+	uint numMaxOpenCards;
 	uint openCardIds[MAXOPENCARDS];
 	uint numOpenCards;
 	uint closedCardIds[MAXOPENCARDS];
 	Timeout closeTimeout;
+	Timeout cpuSelectTimeout;
+	uint cgap; /* gap between two cards */
 	bool isMatch;
 
 	int closeCards();
 	bool checkError();
+
+	uint cpuFindKnownMatch(uint cid);
+	uint cpuFindBestKnownPairCard();
+	uint cpuSelectRandomCard();
+	uint cpuTryCard(uint cid);
 public:
 	Game(Config &cfg) : config(cfg), numPlayers(1), curPlayer(0),
 			gameStarted(false), gameover(false), gtime(0),
-			cgap(0), numMaxOpenCards(2), numCards(0), numCardsLeft(0),
-			numOpenCards(0), isMatch(false) {}
-	void init(uint w, uint h, uint mode, uint setsize, uint matchsize, int fscreen, uint climit);
+			numCards(0), numCardsLeft(0), numMaxOpenCards(2),
+			numOpenCards(0), cgap(0), isMatch(false) {}
+	void init(uint w, uint h, uint mode, uint setsize,
+				uint matchsize, int fscreen, uint climit);
 	int update(uint ms, int button, int bx, int by);
 	int handleClick(int cx, int cy);
 	Player &getCurrentPlayer() {
 		return players[curPlayer];
 	}
+	uint getAdjacentCards(uint cid, vector<uint> *adjCards);
+	void getNextCPUClick(int &button, int &bx, int &by);
 };
 
 #endif /* GAME_H_ */
