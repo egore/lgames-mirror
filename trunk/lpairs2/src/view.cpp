@@ -209,14 +209,15 @@ void View::run()
 						(game.gtime/1000)%60);
 			lblTime.setText(theme.fNormal, str);
 		}
-		if ((flags & GF_SCORECHANGED) || (flags & GF_NEXTPLAYER)) {
+		if (flags & GF_NEXTPLAYER)
+			renderPlayerInfo();
+		if (flags & GF_SCORECHANGED) {
 			renderPlayerInfo();
 			mixer.play(theme.sRemove);
 		}
-		if ((flags & GF_ERRORSCHANGED) || (flags & GF_NEXTPLAYER)) {
+		if (flags & GF_ERRORSCHANGED)
 			if (game.numPlayers == 1)
 				renderPlayerInfo();
-		}
 		if (flags & GF_CARDOPENED) {
 			mixer.play(theme.sClick);
 			if (config.animations) {
