@@ -207,7 +207,7 @@ public:
 	Player &getCurrentPlayer() {
 		return players[curPlayer];
 	}
-	uint getAdjacentCards(uint cid, vector<uint> *adjCards);
+	uint getAdjacentCards(uint cid, vector<uint> *adjCards, bool onlyClosed);
 	void getNextCPUClick(int &button, int &bx, int &by);
 };
 
