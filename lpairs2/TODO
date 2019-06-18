@@ -1,5 +1,5 @@
-- auto layout number of cards
-- vs cpu mode
+- auto layoutcards
 
 known bugs:
 - view gets into state OPENINGCARD without id in game.openCardIds
+- adjust cpuFindBestKnownPairCard for triplets and quadruplets

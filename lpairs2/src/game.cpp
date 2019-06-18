@@ -145,11 +145,16 @@ int Game::update(uint ms, int button, int bx, int by)
 		}
 
 		if (cid != -1 && numOpenCards < numMaxOpenCards) {
-			cards[cid].toggle();
+			cards[cid].toggle(); /* open card */
 			openCardIds[numOpenCards++] = cid;
 			if (!gameStarted)
 				gameStarted = true;
 			ret |= GF_CARDOPENED;
+
+			for (uint i = 0; i < numPlayers; i++)
+				if (players[i].isCPU())
+					players[i].setCPUMemoryCell(cid,
+						getAdjacentCards(cid, NULL));
 		}
 
 		if (numOpenCards == numMaxOpenCards) {
@@ -170,6 +175,8 @@ int Game::update(uint ms, int button, int bx, int by)
 
 	if (closeTimeout.running() && closeTimeout.update(ms))
 		ret |= closeCards();
+	if (cpuSelectTimeout.running())
+		cpuSelectTimeout.update(ms);
 
 	return ret;
 }
@@ -206,10 +213,21 @@ int Game::closeCards()
 			if (curPlayer >= numPlayers)
 				curPlayer = 0;
 			ret |= GF_NEXTPLAYER;
+			/* as cpu wait with first until closing animation is done */
+			if (players[curPlayer].isCPU())
+				cpuSelectTimeout.set(
+					config.animations?ANIM_TURNDURATION:0+300);
 		}
 	}
 	numOpenCards = 0;
 	isMatch = false;
+
+	for (uint i = 0; i < numPlayers; i++)
+		if (players[i].isCPU()) {
+			for (uint j = 0; j < numCards; j++)
+				players[i].reduceCPUMemoryCell(j,
+						getAdjacentCards(j, NULL));
+		}
 
 	return ret;
 }
@@ -233,4 +251,199 @@ bool Game::checkError()
 			return true;
 	}
 	return false;
+}
+
+/** Get all cards that are within cw+gap,ch+gap */
+uint Game::getAdjacentCards(uint cid, vector<uint> *adjCards)
+{
+	uint num = 0;
+
+	if (adjCards)
+		adjCards->clear();
+
+	if (cid >= numCards)
+		return 0;
+
+	int cx = cards[cid].x;
+	int cy = cards[cid].y;
+	int dist = cards[cid].w + cgap; /* same for h as cards are square */
+
+	for (uint i = 0; i < numCards; i++) {
+		if (i == cid)
+			continue;
+		if (abs(cx - cards[i].x) <= dist && abs(cy - cards[i].y) <= dist) {
+			num++;
+			if (adjCards)
+				adjCards->push_back(i);
+		}
+	}
+	return num;
+}
+
+/** Get next CPU click if select timeout not running.
+ * FIXME should be done by player itself with access to game.
+ */
+void Game::getNextCPUClick(int &button, int &bx, int &by)
+{
+	button = 0;
+
+	if (cpuSelectTimeout.running())
+		return;
+
+	uint pos = INVALIDCARDID;
+
+	if (numOpenCards == 0) {
+		/* select first card */
+		pos = cpuFindBestKnownPairCard();
+		if (pos == INVALIDCARDID)
+			pos = cpuSelectRandomCard();
+		else
+			pos = cpuTryCard(pos);
+		if (pos != INVALIDCARDID) {
+			button = 1;
+			bx = cards[pos].x + cards[pos].w/2;
+			by = cards[pos].y + cards[pos].h/2;
+			cpuSelectTimeout.set(1000);
+		}
+	} else if (numOpenCards < numMaxOpenCards){
+		/* select next card */
+		if ((pos = cpuFindKnownMatch(openCardIds[numOpenCards-1])) != INVALIDCARDID)
+			pos = cpuTryCard(pos);
+		else
+			pos = cpuSelectRandomCard();
+		if (pos != INVALIDCARDID) {
+			button = 1;
+			bx = cards[pos].x + cards[pos].w/2;
+			by = cards[pos].y + cards[pos].h/2;
+			cpuSelectTimeout.set(1000);
+		}
+	}
+}
+
+/** Find matching known card for card at cid.
+ * Return id or INVALIDCARDID if not found.
+ */
+uint Game::cpuFindKnownMatch(uint cid)
+{
+	if (cid >= numCards || cards[cid].removed)
+		return INVALIDCARDID;
+	for (uint i = 0; i < numCards; i++) {
+		if (cid == i)
+			continue;
+		if (cards[i].id != cards[cid].id)
+			continue;
+		if (getCurrentPlayer().cmem[i] > 0)
+			return i;
+	}
+	return INVALIDCARDID;
+}
+/** Get weaker card of best known pair.
+ * Return id or INVALIDCARDID if not found. */
+uint Game::cpuFindBestKnownPairCard()
+{
+	double kp[MAXCARDS];
+	uint match = INVALIDCARDID, mk = 0, mp=0;
+	/* copy player's cmemory to kp */
+	for (uint i = 0; i < numCards; i++)
+		if (cards[i].removed)
+			kp[i] = 0;
+		else
+			kp[i] = getCurrentPlayer().cmem[i];
+	/* find best card of best pair */
+	for (uint i = 0; i < numCards; i++) {
+		if (kp[i] == 0)
+			continue; /* no or unknown card */
+		/* get matching card or drop position if none */
+		if ((match = cpuFindKnownMatch(i)) == INVALIDCARDID) {
+			kp[i] = 0; /* no valid choice */
+			continue;
+		}
+		/* add higher chance to weaker card to try that card
+		 * first to not give away position in case of failure */
+		if (kp[match] < kp[i]) {
+			kp[match] += kp[i];
+			kp[i] = 0;
+		} else {
+			kp[i] += kp[match];
+			kp[match] = 0;
+		}
+	}
+	/* select best card */
+	mk = 0;
+	mp = INVALIDCARDID;
+	for (uint i = 0; i < numCards; i++)
+		if (kp[i] > mk) {
+			mp = i;
+			mk = kp[i];
+		}
+	return mp;
+}
+/** Return position of a random closed card but re-roll up to 5 times
+ * if position has a known card.
+ */
+uint Game::cpuSelectRandomCard()
+{
+	uint rerolls = 0;
+	uint pos = INVALIDCARDID;
+	uint numClosedCards;
+
+	numClosedCards = numCardsLeft;
+	for (uint i = 0; i < numCards; i++)
+		if (!cards[i].removed && cards[i].open)
+			numClosedCards--;
+
+	if (numClosedCards == 0)
+		return INVALIDCARDID; /* no more cards... */
+
+	while (pos == INVALIDCARDID) {
+		/* get random position */
+		pos = rand() % numClosedCards; /* pos in closed cards */
+		for (uint i = 0; i < numCards; i++)
+			if (!cards[i].removed && !cards[i].open)
+				if (pos-- == 0) {
+					pos = i; /* pos in all cards */
+					break;
+				}
+		/* reroll if remembered as known */
+		if (getCurrentPlayer().canRememberCard(pos) && rerolls<5) {
+			pos = INVALIDCARDID;
+			rerolls++;
+		}
+	}
+	return pos;
+}
+/** Try to pick closed card with chance to miss. If successful return correct
+ * position. If missed, reroll:
+ *   If successful try adjacent card.
+ *   Otherwise pick random card.
+ * Return position or INVALIDCARDID.
+ */
+uint Game::cpuTryCard(uint pos)
+{
+	if (pos >= numCards || cards[pos].removed || cards[pos].open)
+		return INVALIDCARDID;
+
+	/* return id if remembered properly */
+	if (getCurrentPlayer().canRememberCard(pos))
+		return pos;
+
+	/* reroll for chance on adjacent card */
+	if (getCurrentPlayer().canRememberCard(pos)) {
+		vector<uint> ac;
+		getAdjacentCards(pos, &ac);
+		if (ac.size() > 0) {
+			/* okay we have adjacent cards try one */
+			pos = ac[rand() % ac.size()];
+			/* go random if cpu remembers it's not the right one */
+			if (getCurrentPlayer().canRememberCard(pos))
+				pos = INVALIDCARDID;
+		} else
+			pos = INVALIDCARDID;
+	}
+
+	/* go for a random card? */
+	if (pos == INVALIDCARDID)
+		pos = cpuSelectRandomCard();
+
+	return pos;
 }

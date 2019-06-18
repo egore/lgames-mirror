@@ -1,3 +1,4 @@
+- added two-player mode and cpu opponent
 - added triplets and quadruplets
 - fixed bug in error counting
 - renamed score to pairs
