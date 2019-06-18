@@ -192,8 +192,10 @@ int Game::closeCards()
 		for (uint i = 0; i < numOpenCards; i++) {
 			cards[openCardIds[i]].clear();
 			numCardsLeft--;
-			if (numCardsLeft == 0)
+			if (numCardsLeft == 0) {
 				gameover = true;
+				ret |= GF_GAMEOVER;
+			}
 		}
 		getCurrentPlayer().incScore();
 		ret |= GF_SCORECHANGED;
@@ -215,8 +217,7 @@ int Game::closeCards()
 			ret |= GF_NEXTPLAYER;
 			/* as cpu wait with first until closing animation is done */
 			if (players[curPlayer].isCPU())
-				cpuSelectTimeout.set(
-					config.animations?ANIM_TURNDURATION:0+300);
+				cpuSelectTimeout.set(500);
 		}
 	}
 	numOpenCards = 0;
@@ -420,6 +421,8 @@ uint Game::cpuSelectRandomCard()
  */
 uint Game::cpuTryCard(uint pos)
 {
+	uint reroll = 0;
+
 	if (pos >= numCards || cards[pos].removed || cards[pos].open)
 		return INVALIDCARDID;
 
@@ -427,19 +430,19 @@ uint Game::cpuTryCard(uint pos)
 	if (getCurrentPlayer().canRememberCard(pos))
 		return pos;
 
-	/* reroll for chance on adjacent card */
-	if (getCurrentPlayer().canRememberCard(pos)) {
-		vector<uint> ac;
-		getAdjacentCards(pos, &ac);
-		if (ac.size() > 0) {
-			/* okay we have adjacent cards try one */
-			pos = ac[rand() % ac.size()];
-			/* go random if cpu remembers it's not the right one */
-			if (getCurrentPlayer().canRememberCard(pos))
-				pos = INVALIDCARDID;
-		} else
+	/* reroll up to 3 times for chance on adjacent card */
+	vector<uint> ac;
+	getAdjacentCards(pos, &ac);
+	if (ac.size() == 0)
+		pos = INVALIDCARDID;
+	else do {
+		/* okay we have adjacent cards try one */
+		pos = ac[rand() % ac.size()];
+		/* go random if cpu remembers it's not the right one */
+		if (getCurrentPlayer().canRememberCard(pos))
 			pos = INVALIDCARDID;
-	}
+		reroll++;
+	} while (pos == INVALIDCARDID && reroll < 3);
 
 	/* go for a random card? */
 	if (pos == INVALIDCARDID)

@@ -42,6 +42,7 @@ enum {
 	GF_CARDSREMOVED = 16,
 	GF_CARDOPENED = 32,
 	GF_NEXTPLAYER = 64,
+	GF_GAMEOVER = 128,
 
 	PC_HUMAN = 0,
 	PC_CPU
@@ -75,6 +76,8 @@ public:
 		cmInitLossPerAdjacentCard = 0.05;
 		cmTurnLoss = 0.1;
 		cmTurnSavePerMissingCard = 0.012;
+		for (uint i = 0; i < MAXCARDS; i++)
+			cmem[i] = 0;
 	}
 	void incScore() {
 		score++;

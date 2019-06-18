@@ -63,7 +63,7 @@ class View {
 	int cxoff, cyoff;
 	int shadowOffset; /* shadow offset */
 	Label lblScore, lblTime, lblErrors;
-	Label lblRestart;
+	Label lblRestart, lblResult;
 	int mcx, mcy; /* mouse cursor position */
 	list<unique_ptr<Sprite>> sprites;
 
