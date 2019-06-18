@@ -1,13 +1,15 @@
 LPairs2
 -------
 
-Well not much to say here: It's a classic memory game using animal pictures
-as standard theme. Note, that set sizes differ according to whether you run
-in fullscreen or window mode. This is because window mode is 4:3 (assuming
-someone running window mode wants to see something else as well and 16:9 is
-just to broad then). That means if you switch from window to fullscreen while
-playing (menu can be accessed any time by ESC) your current game gets 
-restarted.
+LPairs2 is a classic memory game using animal pictures as standard theme.
+Note, that set sizes differ according to whether you run in fullscreen or 
+window mode. This is because window mode is 4:3 (assuming someone running 
+window mode wants to see something else as well and 16:9 is just to broad 
+then). That means if you switch from window to fullscreen while playing 
+(menu can be accessed any time by ESC) your current game gets restarted.
+
+You can also try to match triplets and quadruplets (fun, but hard...) and
+play against a CPU opponent (or another human player). 
 
 Themes
 ------
