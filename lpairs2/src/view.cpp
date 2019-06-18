@@ -191,6 +191,18 @@ void View::run()
 		flags = game.update(ms, button, buttonX-cxoff, buttonY-cyoff);
 		if (menuActive)
 			curMenu->update(ms);
+		if ((flags & GF_GAMEOVER) && game.numPlayers > 1) {
+			string str;
+			if (game.players[0].score == game.players[1].score)
+				str = "It's a draw!";
+			else if (game.players[0].score > game.players[1].score)
+				strprintf(str, "%s won!",
+						game.players[0].name.c_str());
+			else
+				strprintf(str, "%s won!",
+						game.players[1].name.c_str());
+			lblResult.setText(theme.fNormal, str);
+		}
 		if (flags & GF_TIMECHANGED) {
 			strprintf(str, _("Time: %d:%02d"),
 						game.gtime/60000,
@@ -290,6 +302,11 @@ void View::render()
 			theme.cardFocus.copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
 		else
 			theme.cardBack.copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
+
+		/* DEBUG
+		theme.fSmall.setAlign(ALIGN_X_RIGHT | ALIGN_Y_BOTTOM);
+		theme.fSmall.write(cxoff + c.x+c.w, cyoff + c.y+c.h,
+				to_string((int)(100*game.players[1].cmem[i]))); */
 	}
 
 	/* labels */
@@ -299,9 +316,13 @@ void View::render()
 	lblErrors.copy(renderer.rx2sx(0.99),renderer.ry2sy(0.975),
 			ALIGN_X_RIGHT | ALIGN_Y_CENTER);
 
-	if (game.gameover && !menuActive)
+	if (game.gameover && !menuActive) {
 		lblRestart.copy(renderer.rx2sx(0.5),renderer.ry2sy(0.5),
 				ALIGN_X_CENTER | ALIGN_Y_CENTER);
+		if (game.numPlayers > 1)
+			lblResult.copy(renderer.rx2sx(0.5),renderer.ry2sy(0.75),
+					ALIGN_X_CENTER | ALIGN_Y_CENTER);
+	}
 
 	/* sprites */
 	for (auto& s : sprites)
@@ -700,14 +721,14 @@ void View::renderPlayerInfo()
 		strprintf(s, _("%s: %d"),game.players[0].getName().c_str(),
 				game.players[0].getScore());
 		if (game.curPlayer == 0)
-			lblScore.setText(theme.fNormal, s);
+			lblScore.setText(theme.fNormalHighlighted, s);
 		else
-			lblScore.setText(theme.fSmall, s);
+			lblScore.setText(theme.fNormal, s);
 		strprintf(s, _("%s: %d"),game.players[1].getName().c_str(),
 				game.players[1].getScore());
 		if (game.curPlayer == 1)
-			lblErrors.setText(theme.fNormal, s);
+			lblErrors.setText(theme.fNormalHighlighted, s);
 		else
-			lblErrors.setText(theme.fSmall, s);
+			lblErrors.setText(theme.fNormal, s);
 	}
 }

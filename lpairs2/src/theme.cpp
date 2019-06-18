@@ -92,6 +92,8 @@ void Theme::load(string name, Renderer &r)
 	/* fonts */
 	fSmall.load(testRc(path,"f_normal.otf"), r.ry2sy(0.028));
 	fNormal.load(testRc(path,"f_bold.otf"), r.ry2sy(0.037));
+	fNormalHighlighted.load(testRc(path,"f_bold.otf"), r.ry2sy(0.037));
+	fNormalHighlighted.setColor(255,220,0,255);
 
 	/* menu */
 	menuX = r.rx2sx(0.16);

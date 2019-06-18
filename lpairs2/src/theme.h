@@ -39,7 +39,7 @@ class Theme {
 	Texture cards[MAXPICTURES];
 	Texture cardShadow;
 	uint numCards;
-	Font fSmall, fNormal;
+	Font fSmall, fNormal, fNormalHighlighted;
 
 	Sound sClick, sFail, sRemove;
 	Sound sMenuClick, sMenuMotion;
