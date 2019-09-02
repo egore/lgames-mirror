@@ -558,8 +558,8 @@ int main( int argc, char **argv )
   int c;
   
   printf( "BARRAGE v%s\n", VERSION );
-  printf( "Copyright 2003-2011 Michael Speck (http://lgames.sf.net)\n" );
-  printf( "Released under Gnu GPL\n---\n" );
+  printf( "Copyright 2003-2019 Michael Speck (http://lgames.sf.net)\n" );
+  printf( "Released under GNU GPL\n---\n" );
 
   while ( ( c = getopt( argc, argv, "d:ws" ) ) != -1 )
     {

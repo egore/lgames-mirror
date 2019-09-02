@@ -1,3 +1,5 @@
+1.0.5:
+- install hiscores to proper location instead of home dir (2019/09/02 MS)
 - updated desktop file with german comment and keywords (2014/12/01 Markus Koschany)
 
 1.0.4:

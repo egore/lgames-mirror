@@ -8,22 +8,17 @@ rpm: dist
 
 desktopdir = $(datadir)/applications
 desktop_DATA = barrage.desktop
+icondir = $(datadir)/icons
+icon_DATA = barrage48.png
 
 EXTRA_DIST = BUGS README COPYING AUTHORS ChangeLog INSTALL NEWS TODO \
-	$(PACKAGE).spec $(PACKAGE).spec.in barrage.desktop \
-	barrage16.png barrage32.png barrage48.png
+	$(PACKAGE).spec $(PACKAGE).spec.in barrage.desktop.in barrage48.png
 
-install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/icons/hicolor/16x16/apps
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps
-	$(INSTALL_DATA) barrage16.png $(DESTDIR)$(datadir)/icons/hicolor/16x16/apps/barrage.png
-	$(INSTALL_DATA) barrage32.png $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/barrage.png
-	$(INSTALL_DATA) barrage48.png $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/barrage.png
+# We can't use static desktop file because of icon location. Is this 
+# the right way to handle it? At least it works... as long as $datadir
+# does not contain plus signs. :-)
+barrage.desktop:
+	@sed -e "s+Icon=+Icon=$(datadir)/icons/barrage48.png+" \
+	< barrage.desktop.in > barrage.desktop
 
-uninstall-local:
-	rm -f $(DESTDIR)$(datadir)/icons/hicolor/16x16/apps/barrage.png
-	rm -f $(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/barrage.png
-	rm -f $(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/barrage.png
-
-	
+ACLOCAL_AMFLAGS = -I m4
