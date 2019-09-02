@@ -19,7 +19,7 @@ extern SDL_Font *ft_chart_highlight, *ft_chart;
 
 ChartEntry chart[CHART_SIZE+1]; /* extra space for new entry */
 
-#define CHART_FILE ".barrage.hscr"
+#define CHART_FILE "barrage.hscr"
 
 static void chart_reset()
 {
@@ -38,7 +38,7 @@ void chart_load()
 	FILE *file;
 
 	chart_reset();
-	snprintf( buf, 128, "%s/%s", getenv("HOME"), CHART_FILE ); buf[127] = 0;
+	snprintf( buf, 128, "%s/%s", HISCOREDIR, CHART_FILE ); buf[127] = 0;
 	file = fopen( buf, "r" );
 	if ( file == 0 ) {
 		printf( "couldn't read highscore file: %s\n", buf );
@@ -63,7 +63,7 @@ void chart_save()
 	int i;
 	FILE *file;
 
-	snprintf( path, 128, "%s/%s", getenv("HOME"), CHART_FILE ); path[127] = 0;
+	snprintf( path, 128, "%s/%s", HISCOREDIR, CHART_FILE ); path[127] = 0;
 	file = fopen( path, "w" );
 	if ( file == 0 ) {
 		printf( "couldn't open highscore file: %s\n", path );
