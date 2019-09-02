@@ -3,19 +3,19 @@
 # This file is distributed under the same license as the lbreakouthd package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: lbreakouthd 0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-10 12:19+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2019-06-26 10:11+0200\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: Wuzzy <almikes@aol.com>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: libgame/game.c:62 libgame/levels.c:121
 #, c-format
@@ -26,7 +26,7 @@ msgstr "Hampelmann"
 #: libgame/game.c:79 libgame/game.c:83
 #, c-format
 msgid "Bonus Level"
-msgstr "Bonusebene"
+msgstr "Bonuslevel"
 
 #: libgame/game.c:66 libgame/levels.c:124
 #, c-format
@@ -46,7 +46,7 @@ msgstr "Entenjagd"
 #: libgame/game.c:78 libgame/levels.c:133
 #, c-format
 msgid "Hunter"
-msgstr "Jger"
+msgstr "Jäger"
 
 #: libgame/game.c:82
 #, c-format
@@ -56,23 +56,23 @@ msgstr "Verteidiger"
 #: libgame/game.c:86
 #, c-format
 msgid "Unknown Level Type"
-msgstr "Unbekannter Ebenentyp"
+msgstr "Unbekannter Leveltyp"
 
 #: libgame/levels.h:23
 msgid "<CREATE SET>"
-msgstr "<ERSTELLE SATZ>"
+msgstr "<SATZ ERSTELLEN>"
 
 #: libgame/levels.h:24
 msgid "!FREAKOUT!"
-msgstr ""
+msgstr "!FREAKOUT!"
 
 #: libgame/levels.c:136
 msgid "Invaders"
-msgstr ""
+msgstr "Invasoren"
 
 #: libgame/levels.c:139
 msgid "unknown"
-msgstr ""
+msgstr "unbekannt"
 
 #: libgame/levels.c:155
 msgid "!JUMPING_JACK!"
@@ -92,7 +92,7 @@ msgstr "!ENTENJAGD!"
 
 #: libgame/levels.c:163
 msgid "!HUNTER!"
-msgstr "!JGER!"
+msgstr "!JÄGER!"
 
 #: libgame/levels.c:165
 msgid "!INVADERS!"
@@ -100,7 +100,7 @@ msgstr "!EINDRINGLINGE!"
 
 #: src/view.cpp:238
 msgid "Pause"
-msgstr ""
+msgstr "Pause"
 
 #: src/view.cpp:252
 msgid "Quit Game? y/n"
@@ -108,19 +108,19 @@ msgstr "Spiel verlassen? y/n"
 
 #: src/view.cpp:253
 msgid "(No hiscore entry yet, game can be resumed later.)"
-msgstr ""
+msgstr "(Noch kein Bestenlisteneintrag, Spiel kann später fortgesetzt werden.)"
 
 #: src/view.cpp:342
 msgid "Buy Continue? y/n"
-msgstr ""
+msgstr "Fortsetzen kaufen? y/n"
 
 #: src/view.cpp:343
 msgid "(Costs ALL of your score.)"
-msgstr ""
+msgstr "(Kostet 100% der Punkte.)"
 
 #: src/view.cpp:634
 msgid "(Level "
-msgstr "(Ebene "
+msgstr "(Level "
 
 #: src/view.cpp:647
 msgid "Active Extras"
@@ -148,32 +148,31 @@ msgstr "Schwer"
 
 #: src/view.cpp:1057
 msgid "No Limit"
-msgstr ""
+msgstr "Kein Limit"
 
 #: src/view.cpp:1057
 msgid "200 FPS"
-msgstr ""
+msgstr "200 FPS"
 
 #: src/view.cpp:1057
 msgid "100 FPS"
-msgstr ""
+msgstr "100 FPS"
 
 #: src/view.cpp:1079
 msgid "Start Original Levels"
-msgstr "Starte Original Ebenen"
+msgstr "Original-Level starten"
 
 #: src/view.cpp:1080
 msgid "Start level set 'LBreakoutHD'."
-msgstr ""
+msgstr "Levelsatz „LBreakoutHD“ starten."
 
 #: src/view.cpp:1082
 msgid "Start Custom Levels"
-msgstr "Starte Zusatzebenen"
+msgstr "Benutzer-Level starten"
 
 #: src/view.cpp:1083
-#, fuzzy
 msgid "Select and run a custom level set."
-msgstr "Starte Zusatzebenen"
+msgstr "Benutzerdefinierten Levelsatz auswählen und starten."
 
 #: src/view.cpp:1086
 msgid "Difficulty"
@@ -184,6 +183,8 @@ msgid ""
 "This affects lives, paddle size and ball speed. For Kids and Easy score is "
 "reduced, for Hard a bonus a given."
 msgstr ""
+"Dies beeinflusst Leben, Schlägergröße und Balltempo. Bei Kinder und Leicht "
+"wird die Punktzahl reduziert, bei Schwer gibt es einen Bonus."
 
 #: src/view.cpp:1090
 msgid "Players"
@@ -192,6 +193,8 @@ msgstr "Spieler"
 #: src/view.cpp:1091
 msgid "Number and names of players. Players alternate whenever a life is lost."
 msgstr ""
+"Anzahl und Namen der Spieler. Spieler wechseln sich ab, wenn ein Leben "
+"verloren geht."
 
 #: src/view.cpp:1093
 msgid "1st"
@@ -219,31 +222,35 @@ msgstr "Rechts"
 
 #: src/view.cpp:1102
 msgid "Left Fire"
-msgstr "Feuer Links"
+msgstr "Feuer links"
 
 #: src/view.cpp:1103
 msgid ""
 "Fire balls to the left. Ignored if 'Ball Fire Angle' in 'Advanced Settings' "
 "is 'Random'."
 msgstr ""
+"Bälle nach links feuern. Wird ignoriert, wenn „Ballabschusswinkel“ in "
+"„Erweiterte Einstellungen“ auf „Zufällig“ gesetzt wurde."
 
 #: src/view.cpp:1105
 msgid "Right Fire"
-msgstr "Feuer Rechts"
+msgstr "Feuer rechts"
 
 #: src/view.cpp:1106
 msgid ""
 "Fire balls to the right. Ignored if 'Ball Fire Angle' in 'Advanced Settings' "
 "is 'Random'."
 msgstr ""
+"Bälle nach rechts feuern. Wird ignoriert, wenn „Ballstartwinkel“ in "
+"„Erweiterte Einstellungen“ auf „Zufällig“ gesetzt wurde."
 
 #: src/view.cpp:1108
 msgid "Paddle Turbo"
-msgstr "Schlgerturbo"
+msgstr "Schlägerturbo"
 
 #: src/view.cpp:1109
 msgid "Speed up paddle movement."
-msgstr ""
+msgstr "Schlägertempo erhöhen."
 
 #: src/view.cpp:1111 src/view.cpp:1181
 msgid "Ball Turbo"
@@ -252,15 +259,19 @@ msgstr "Ballturbo"
 #: src/view.cpp:1112
 msgid "Speed up balls to limit 'Acc. Ball Speed' in 'Advanced Settings'."
 msgstr ""
+"Balltempo bis zum Limit „Balltempo beschleunigen“ in „Erweiterte "
+"Einstellungen“ beschleunigen"
 
 #: src/view.cpp:1114
 msgid "Idle Return"
-msgstr "Idle zurck"
+msgstr "Nutzlose zurück"
 
 #: src/view.cpp:1115
 msgid ""
 "Return all idle balls (no effective brick hits for some time) to the paddle."
 msgstr ""
+"Alle nutzlosen Bälle (keine wirksamen Ziegeltreffer für einige Zeit) zum "
+"Schläger zurückbringen."
 
 #: src/view.cpp:1118
 msgid "Key Speed"
@@ -269,10 +280,12 @@ msgstr "Tastengeschwindigkeit"
 #: src/view.cpp:1119
 msgid "The higher the value the faster the paddle moves by keys."
 msgstr ""
+"Je höher der Wert ist, desto schneller wird der Schläger von den Tasten "
+"bewegt."
 
 #: src/view.cpp:1121
 msgid "Mouse Input"
-msgstr ""
+msgstr "Mauseingabe"
 
 #: src/view.cpp:1122
 msgid ""
@@ -283,14 +296,21 @@ msgid ""
 "'Relative' allows modifying paddle speed but might get inaccurate for slow "
 "movements with high resolution and high frame rates."
 msgstr ""
+"„Absolut“ benutzt die absolute Mausposition. Es ist keine Feinjustierung "
+"möglich und es könnte zu Verzögerungen kommen (wenn der Mauszeiger zu weit "
+"rechts ist, muss er zuerst zurück zur Schlägerposition bewegt werden) aber "
+"er wird für langsame Bewegungen am genauesten sein.\n"
+"Mit „Relativ” kann die Schlägergeschwindigkeit geändert werden, aber es kann "
+"für langsame Bewegungen unpräzise bei hohen Auflösungen und hohen Bildraten "
+"sein."
 
 #: src/view.cpp:1123
 msgid "Absolute"
-msgstr ""
+msgstr "Absolut"
 
 #: src/view.cpp:1123
 msgid "Relative"
-msgstr ""
+msgstr "Relativ"
 
 #: src/view.cpp:1124
 msgid "Motion Modifier"
@@ -298,15 +318,15 @@ msgstr "Bewegungsfaktor"
 
 #: src/view.cpp:1125
 msgid "Adjust mouse sensitivity. (relative motion only)"
-msgstr ""
+msgstr "Mausempfindlichkeit anpassen (nur für relative Bewegung)."
 
 #: src/view.cpp:1127
 msgid "Invert Motion"
-msgstr "Bewegung Invertieren"
+msgstr "Bewegung invertieren"
 
 #: src/view.cpp:1128
 msgid "Invert mouse motion if needed. (relative motion only)"
-msgstr ""
+msgstr "Mausbewegung invertieren, falls nötig (nur für relative Bewegung)"
 
 #: src/view.cpp:1133
 msgid "Theme"
@@ -314,7 +334,7 @@ msgstr "Thema"
 
 #: src/view.cpp:1134
 msgid "Select theme. (not applied yet)"
-msgstr ""
+msgstr "Thema wählen (im Moment wirkungslos)."
 
 #: src/view.cpp:1136
 msgid "Mode"
@@ -322,11 +342,11 @@ msgstr "Modus"
 
 #: src/view.cpp:1137
 msgid "Select mode. (not applied yet)"
-msgstr ""
+msgstr "Modus auswählen (im Moment wirkungslos)."
 
 #: src/view.cpp:1139
 msgid "Antialiasing"
-msgstr ""
+msgstr "Anti-Aliasing"
 
 #: src/view.cpp:1140
 msgid ""
@@ -334,6 +354,9 @@ msgid ""
 "this might cause (slight) graphical errors. 'Always' means to use it even "
 "for low resolution themes."
 msgstr ""
+"„Auto“ bedeutet, dass es kein Anti-Aliasing für alte niedrigauflösende "
+"LBreakout2-Themen gibt, da es zu (leichten) Grafikfehlern kommen könnte. "
+"„Immer“ bedeutet, dass es auch für niedrigauflösende Themen benutzt wird."
 
 #: src/view.cpp:1141 src/view.cpp:1183 src/view.cpp:1186
 msgid "Auto"
@@ -341,27 +364,27 @@ msgstr "Auto"
 
 #: src/view.cpp:1141
 msgid "Always"
-msgstr ""
+msgstr "Immer"
 
 #: src/view.cpp:1142
 msgid "Apply Theme&Mode"
-msgstr "Thema&Modus anwenden"
+msgstr "Thema u. Modus anwenden"
 
 #: src/view.cpp:1143
 msgid "Apply the above settings."
-msgstr ""
+msgstr "Die obigen Einstellungen anwenden."
 
 #: src/view.cpp:1145
 msgid "Frame Limit"
-msgstr ""
+msgstr "Bildratenbegrenzung"
 
 #: src/view.cpp:1151
 msgid "Sound"
-msgstr "Gerusche"
+msgstr "Ton"
 
 #: src/view.cpp:1152
 msgid "Volume"
-msgstr "Lautstrke"
+msgstr "Lautstärke"
 
 #: src/view.cpp:1153
 msgid "Speech"
@@ -369,34 +392,38 @@ msgstr "Sprache"
 
 #: src/view.cpp:1155
 msgid "Buffer Size"
-msgstr "Puffergre"
+msgstr "Puffergröße"
 
 #: src/view.cpp:1156
 msgid ""
 "Reduce buffer size if you experience sound delays. Might have more CPU "
 "impact though. (not applied yet)"
 msgstr ""
+"Puffergröße reduzieren, falls du Verzögerungen im Ton bemerkst. Könnte "
+"jedoch die CPU-Leistung beeinträchtigen (im Moment wirkungslos)."
 
 #: src/view.cpp:1158
 msgid "Channels"
-msgstr "Kanle"
+msgstr "Kanäle"
 
 #: src/view.cpp:1159
 msgid ""
 "More channels gives more sound variety, less channels less (not applied yet)"
 msgstr ""
+"Mehr Kanäle führen zu einer größeren Vielfalt in den Toneffekten, weniger "
+"Kanäle zu einer geringeren Vielfalt (im Moment wirkungslos)"
 
 #: src/view.cpp:1161
 msgid "Apply Size&Channels"
-msgstr "Gre&Kanle anwenden"
+msgstr "Größe u. Kanäle anwenden"
 
 #: src/view.cpp:1162
 msgid "Apply above settings"
-msgstr ""
+msgstr "Obige Einstellungen anwenden"
 
 #: src/view.cpp:1166
 msgid "Controls"
-msgstr "Kontrollen"
+msgstr "Steuerung"
 
 #: src/view.cpp:1167
 msgid "Graphics"
@@ -412,7 +439,7 @@ msgstr "Erweitert"
 
 #: src/view.cpp:1172
 msgid "Paddle Style"
-msgstr ""
+msgstr "Schlägerstil"
 
 #: src/view.cpp:1173
 msgid ""
@@ -422,19 +449,24 @@ msgid ""
 "hemispheres or giving balls momentum by moving at the right moment when they "
 "hit the flat part. Only for experienced players."
 msgstr ""
+"„Konvex“ benutzen für Anfänger: Der Schläger wird als konvex betrachtet, was "
+"das Zielen vereinfacht.\n"
+"„Normal“ benutzen für reguläres Verhalten. Du musst zielen, indem du die "
+"Ränder benutzt oder die Ballrichtung beeinflusst, indem du den Schläger im "
+"richtigen Moment bewegst, wenn die Bälle den flachen Teil treffen. Nur für "
+"erfahrene Spieler."
 
 #: src/view.cpp:1174
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: src/view.cpp:1174
 msgid "Convex"
-msgstr ""
+msgstr "Konvex"
 
 #: src/view.cpp:1175
-#, fuzzy
 msgid "Ball Layer"
-msgstr "Ballturbo"
+msgstr "Ballebene"
 
 #: src/view.cpp:1176
 msgid ""
@@ -442,30 +474,34 @@ msgid ""
 "effects though, so change to 'Above Extras' to have balls always on top of "
 "everything (looks weird but helps to keep an eye on them)."
 msgstr ""
+"„Unter Extras“ ist die normale Ebene. Es könnte mit vielen Extras und "
+"Effekten schwierig werden, also ändere es zu „Über Extras“, damit Bälle "
+"immer über alles erscheinen (sieht komisch aus, aber hilft dabei, sie im "
+"Blick zu behalten)."
 
 #: src/view.cpp:1177
-#, fuzzy
 msgid "Below Extras"
-msgstr "Aktive Extras"
+msgstr "Unter Extras"
 
 #: src/view.cpp:1177
-#, fuzzy
 msgid "Above Extras"
-msgstr "Aktive Extras"
+msgstr "Über Extras"
 
 #: src/view.cpp:1178
 msgid "Ball Fire Angle"
-msgstr "Ballwinkel"
+msgstr "Ballabschusswinkel"
 
 #: src/view.cpp:1179
 msgid ""
 "Either 50 degrees to the left/right or random no matter what fire key has "
 "been pressed."
 msgstr ""
+"Entweder 50 Grad nach links/rechts oder zufällig, egal, welche Abschusstaste "
+"gedrückt wurde."
 
 #: src/view.cpp:1180 src/view.cpp:1670
 msgid "Random"
-msgstr "Zufall"
+msgstr "Zufällig"
 
 #: src/view.cpp:1182
 msgid ""
@@ -474,14 +510,18 @@ msgid ""
 "'Manually' puts them to maximum speed while key is pressed (default key is "
 "c)."
 msgstr ""
+"„Auto“ wird deine Bälle automatisch beschleunigen (je weiter weg sie vom "
+"Schläger sind, desto stärker).\n"
+"„Manuell“ bringt sie auf die Höchstgeschwindigkeit, während die "
+"entsprechende Taste (Standard: c) gedrückt wird."
 
 #: src/view.cpp:1183 src/view.cpp:1186
 msgid "Manually"
-msgstr ""
+msgstr "Manuell"
 
 #: src/view.cpp:1184
 msgid "Return Balls"
-msgstr "Blle zurck"
+msgstr "Bälle zurück"
 
 #: src/view.cpp:1185
 msgid ""
@@ -491,10 +531,16 @@ msgid ""
 "'Auto' is more convenient but 'Manually' might be required for (badly "
 "designed) levels where balls need to bounce around a lot."
 msgstr ""
+"„Auto“ bringt alle nutzlosen Bälle (keine wirksamen Ziegeltreffer) nach 10 "
+"Sekunden zum Schläger zurück.\n"
+"„Manuell“ erfordert das Drücken einer Taste (Standardtaste ist die "
+"Rücktaste).\n"
+"„Auto“ ist bequemer, aber „Manuell“ könnte für (schlecht gemachte) Levels "
+"nötig sein, in denen Bälle viel herumirren müssen."
 
 #: src/view.cpp:1187
 msgid "Warp Limit"
-msgstr ""
+msgstr "Sprunglimit"
 
 #: src/view.cpp:1188
 msgid ""
@@ -502,37 +548,37 @@ msgid ""
 "penalties) by pressing 'w'. A small icon at the lower right hand side is "
 "shown when warp is ready."
 msgstr ""
+"Wenn dieser Prozentsatz an Ziegeln zerstört wurde, kannst du zum nächsten "
+"Level (ohne Strafe) mit der Taste „w“ springen. Unten rechts wird ein "
+"kleines Symbol erscheinen, wenn gesprungen werden kann."
 
 #: src/view.cpp:1190
 msgid "Acc. Ball Speed"
-msgstr ""
+msgstr "Balltempo beschleunigen"
 
 #: src/view.cpp:1191
 msgid "Maximum speed of accelerated balls."
-msgstr ""
+msgstr "Höchstgeschwindigkeit von beschleunigten Bällen."
 
 #: src/view.cpp:1193
-#, fuzzy
 msgid "Bonus Levels"
-msgstr "Bonusebene"
+msgstr "Bonuslevels"
 
 #: src/view.cpp:1197
 msgid "New Game"
 msgstr "Neues Spiel"
 
 #: src/view.cpp:1198
-#, fuzzy
 msgid "Resume Game"
-msgstr "Neues Spiel"
+msgstr "Spiel fortsetzen"
 
 #: src/view.cpp:1202
-#, fuzzy
 msgid "Settings"
-msgstr "Entenjagd"
+msgstr "Einstellungen"
 
 #: src/view.cpp:1203 src/view.cpp:1629
 msgid "Help"
-msgstr ""
+msgstr "Hilfe"
 
 #: src/view.cpp:1205
 msgid "Quit"
@@ -540,164 +586,158 @@ msgstr "Verlassen"
 
 #: src/view.cpp:1557
 msgid "No saved game."
-msgstr ""
+msgstr "Kein gespeichertes Spiel."
 
 #: src/view.cpp:1574
-#, fuzzy
 msgid " player(s)\n"
-msgstr "Spieler"
+msgstr "Spieler\n"
 
 #: src/view.cpp:1585
 msgid "  (Lvl: "
-msgstr ""
+msgstr "  (Lvl: "
 
 #: src/view.cpp:1637
 msgid "Extra Score"
-msgstr ""
+msgstr "Bonuspunkte"
 
 #: src/view.cpp:1638
 msgid "Gold Shower"
-msgstr ""
+msgstr "Goldregen"
 
 #: src/view.cpp:1640
 msgid "Extra Life"
-msgstr ""
+msgstr "Extraleben"
 
 #: src/view.cpp:1641
-#, fuzzy
 msgid "Extra Ball"
-msgstr "Blle zurck"
+msgstr "Extraball"
 
 #: src/view.cpp:1643
 msgid "Expand Paddle"
-msgstr ""
+msgstr "Schläger vergrößern"
 
 #: src/view.cpp:1644
 msgid "Shrink Paddle"
-msgstr ""
+msgstr "Schläger verkleinern"
 
 #: src/view.cpp:1646
 msgid "Sticky Paddle"
-msgstr ""
+msgstr "Klebeschläger"
 
 #: src/view.cpp:1647
 msgid "Plasma Weapon"
-msgstr ""
+msgstr "Plasmawaffe"
 
 #: src/view.cpp:1649
 msgid "Slow Balls"
-msgstr ""
+msgstr "Langsame Bälle"
 
 #: src/view.cpp:1650
-#, fuzzy
 msgid "Fast Balls"
-msgstr "Blle zurck"
+msgstr "Schnelle Bälle"
 
 #: src/view.cpp:1652
-#, fuzzy
 msgid "Energy Balls"
-msgstr "Blle zurck"
+msgstr "Energiebälle"
 
 #: src/view.cpp:1653
 msgid "Explosive Balls"
-msgstr ""
+msgstr "Explosivbälle"
 
 #: src/view.cpp:1655
 msgid "Extra Floor"
-msgstr ""
+msgstr "Extraboden"
 
 #: src/view.cpp:1656
 msgid "Joker (collect goodies)"
-msgstr ""
+msgstr "Joker (Boni aufsammeln)"
 
 #: src/view.cpp:1658
-#, fuzzy
 msgid "Bonus Magnet"
-msgstr "Bonusebene"
+msgstr "Bonusmagnet"
 
 #: src/view.cpp:1659
-#, fuzzy
 msgid "Malus Magnet"
-msgstr "Bonusebene"
+msgstr "Malusmagnet"
 
 #: src/view.cpp:1661
 msgid "Chaotic Balls"
-msgstr ""
+msgstr "Chaosbälle"
 
 #: src/view.cpp:1662
-#, fuzzy
 msgid "Weak Balls"
-msgstr "Blle zurck"
+msgstr "Schwache Bälle"
 
 #: src/view.cpp:1664
 msgid "Frozen Paddle"
-msgstr ""
+msgstr "Gefrorener Schläger"
 
 #: src/view.cpp:1665
 msgid "Ghost Paddle"
-msgstr ""
+msgstr "Geisterschläger"
 
 #: src/view.cpp:1667
 msgid "Extra Time"
-msgstr ""
+msgstr "Extrazeit"
 
 #: src/view.cpp:1668
 msgid "Reset"
-msgstr ""
+msgstr "Zurücksetzen"
 
 #: src/view.cpp:1671
 msgid "Darkness"
-msgstr ""
+msgstr "Dunkelheit"
 
 #: src/view.cpp:1673
 msgid "Indestructible"
-msgstr ""
+msgstr "Unzerstörbar"
 
 #: src/view.cpp:1674
 msgid "Regular Wall"
-msgstr ""
+msgstr "Reguläre Mauer"
 
 #: src/view.cpp:1676
 msgid "Chaotic Wall"
-msgstr ""
+msgstr "Chaotische Mauer"
 
 #: src/view.cpp:1677
 msgid "Regular Brick"
-msgstr ""
+msgstr "Regulärer Ziegel"
 
 #: src/view.cpp:1679
 msgid "Multi-hit Brick"
-msgstr ""
+msgstr "Mehrtrefferziegel"
 
 #: src/view.cpp:1680
 msgid "Regenerative Brick"
-msgstr ""
+msgstr "Regenerativer Ziegel"
 
 #: src/view.cpp:1682
 msgid "Explosive Brick"
-msgstr ""
+msgstr "Explosivziegel"
 
 #: src/view.cpp:1683
 msgid "Growing Brick"
-msgstr ""
+msgstr "Wachsender Ziegel"
 
 #: src/view.cpp:1705
 msgid "Plane of Inner Stability"
-msgstr ""
+msgstr "Ebene der inneren Stabilität"
 
 #: src/view.cpp:1709
-#, c-format
 msgid "Left-click on any brick to destroy it (costs 10% score)."
 msgstr ""
+"Linksklick auf einen beliebigen Ziegel, um ihn zu zerstören (kostet 10% der "
+"Punkte)."
 
 #: src/view.cpp:1712
 msgid "Press any key to cancel selection."
-msgstr ""
+msgstr "Beliebige Taste drücken, um Auswahl abzubrechen."
 
 #: src/clientgame.cpp:198
 #, c-format
 msgid "Congratulations, %s, you cleared all levels!"
-msgstr "Glckwnsch, %s, du hast alle Ebenen gesubert!"
+msgstr "Glückwunsch, %s, du hast alle Level gesäubert!"
 
 #: src/clientgame.cpp:205
 #, c-format
@@ -707,27 +747,27 @@ msgstr "Spiel vorbei, %s!"
 #: src/clientgame.cpp:299
 #, c-format
 msgid "Level: %d, Size: %d/12"
-msgstr ""
+msgstr "Level: %d, Größe: %d/12"
 
 #: src/clientgame.cpp:303
 #, c-format
 msgid "Total Hits: %d, Current Price: %d"
-msgstr ""
+msgstr "Gesamttreffer: %d, aktuelle Belohnung: %d"
 
 #: src/clientgame.cpp:307
 #, c-format
 msgid "Wave: %d, Invaders: %d/%d"
-msgstr ""
+msgstr "Welle: %d, Invasoren %d/%d"
 
 #: src/clientgame.cpp:312
 #, c-format
 msgid "Wave: %d, Infections: %d/%d, Active: %d/%d"
-msgstr ""
+msgstr "Welle: %d, Infektionen: %d/%d, Aktiv: %d/%d"
 
 #: src/clientgame.cpp:318 src/clientgame.cpp:322
 #, c-format
 msgid "Hits: %d, Current Price: %d, Time: %d secs"
-msgstr ""
+msgstr "Treffer %d, aktuelle Belohnung: %d, Zeit: %d s"
 
 #~ msgid "On Click"
 #~ msgstr "Mit Klick"
