@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT(lbreakouthd, 1.0.4)
+AC_INIT(lbreakouthd, 1.0.5)
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE
