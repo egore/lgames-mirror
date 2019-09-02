@@ -48,10 +48,12 @@ void chart_load()
 		printf( "loading highscores: %s\n", buf );
 	for ( i = 0; i < CHART_SIZE; i++ ) {
 		buf[0] = 0; /* if file is corrupted the name will be empty */
-		fgets( buf, 32, file ); buf[31] = 0;
+		if (fgets( buf, 32, file ) == NULL)
+			break;
 		ptr = strchr( buf, '\n' ); if ( ptr ) ptr[0] = 0; /* kill newline */
 		snprintf( chart[i].name, 19, "%s", buf );
-		fgets( buf, 32, file ); buf[31] = 0;
+		if (fgets( buf, 32, file ) == NULL)
+			break;
 		chart[i].score = atoi( buf );
 	}
 	fclose( file );
