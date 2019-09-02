@@ -1,4 +1,6 @@
 1.0.5:
+- allow quit with Alt+F4 (2019/09/02 MS)
+- fixed compiler warning (2019/09/02 MS)
 - install hiscores to proper location instead of home dir (2019/09/02 MS)
 - updated desktop file with german comment and keywords (2014/12/01 Markus Koschany)
 

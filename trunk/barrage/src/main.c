@@ -383,6 +383,7 @@ static void main_loop()
 	int input_delay = 0; /* while >0 no clicks are accepted */
 	SDLMod modstate = 0;
 	int shot_type;
+	SDL_Event event;
 	
 	frame_time = SDL_GetTicks(); /* for frame rate */
 	memset( empty_keys, 0, sizeof( empty_keys ) ); /* to block input */
@@ -400,6 +401,8 @@ static void main_loop()
 
 		/* gather events in queue and get mouse/keyboard states */
 		SDL_PumpEvents();
+		if (SDL_PollEvent(&event) && event.type == SDL_QUIT)
+			quit = 1;
 		buttonstate = SDL_GetMouseState( &x, &y );
 		keystate = SDL_GetKeyState( 0 );
 		modstate = SDL_GetModState();
