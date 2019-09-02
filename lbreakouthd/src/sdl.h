@@ -206,7 +206,7 @@ public:
 		*w = 0;
 		*h = 0;
 		if (font)
-			return TTF_SizeText(font,str.c_str(),w,h);
+			return TTF_SizeUTF8(font,str.c_str(),w,h);
 		return 0;
 	};
 	int getWrappedTextSize(const string& str, uint maxw, int *w, int *h) {
