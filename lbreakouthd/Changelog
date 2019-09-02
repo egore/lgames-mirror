@@ -1,6 +1,8 @@
+1.0.5:
+- added full german translation (2019/09/02 Wuzzy)
 - automatic ball turbo disabled by default (2019/05/13 MS)
 - fixed bug in input handling (2019/05/13 MS)
-- fixed a type (2019/05/12 Enrico Bella)
+- fixed a typo (2019/05/12 Enrico Bella)
 
 1.0.4:
 - fixed crash in fps computation (2019/03/08 MS)
