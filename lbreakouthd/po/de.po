@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lbreakouthd 0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-10 12:19+0100\n"
+"POT-Creation-Date: 2019-09-02 15:34+0200\n"
 "PO-Revision-Date: 2019-06-26 10:11+0200\n"
+"Last-Translator: Wuzzy <almikes@aol.com>\n"
+"Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: Wuzzy <almikes@aol.com>\n"
-"Language-Team: \n"
 "X-Generator: Poedit 2.2.1\n"
 
 #: libgame/game.c:62 libgame/levels.c:121
@@ -74,27 +74,27 @@ msgstr "Invasoren"
 msgid "unknown"
 msgstr "unbekannt"
 
-#: libgame/levels.c:155
+#: libgame/levels.c:155 src/selectdlg.cpp:125
 msgid "!JUMPING_JACK!"
 msgstr "!HAMPELMANN!"
 
-#: libgame/levels.c:157
+#: libgame/levels.c:157 src/selectdlg.cpp:126
 msgid "!OUTBREAK!"
 msgstr "!AUSBRUCH!"
 
-#: libgame/levels.c:159
+#: libgame/levels.c:159 src/selectdlg.cpp:127
 msgid "!BARRIER!"
 msgstr "!SPERRE!"
 
-#: libgame/levels.c:161
+#: libgame/levels.c:161 src/selectdlg.cpp:128
 msgid "!SITTING_DUCKS!"
 msgstr "!ENTENJAGD!"
 
-#: libgame/levels.c:163
+#: libgame/levels.c:163 src/selectdlg.cpp:129
 msgid "!HUNTER!"
 msgstr "!JÄGER!"
 
-#: libgame/levels.c:165
+#: libgame/levels.c:165 src/selectdlg.cpp:130
 msgid "!INVADERS!"
 msgstr "!EINDRINGLINGE!"
 
@@ -160,28 +160,29 @@ msgstr "100 FPS"
 
 #: src/view.cpp:1079
 msgid "Start Original Levels"
-msgstr "Original-Level starten"
+msgstr "Originalebenen starten"
 
 #: src/view.cpp:1080
 msgid "Start level set 'LBreakoutHD'."
-msgstr "Levelsatz „LBreakoutHD“ starten."
+msgstr "Ebenensatz „LBreakoutHD“ starten."
 
 #: src/view.cpp:1082
 msgid "Start Custom Levels"
-msgstr "Benutzer-Level starten"
+msgstr "Benutzerebenen starten"
 
 #: src/view.cpp:1083
 msgid "Select and run a custom level set."
-msgstr "Benutzerdefinierten Levelsatz auswählen und starten."
+msgstr "Benutzerdefinierten Ebenensatz auswählen und starten."
 
 #: src/view.cpp:1086
 msgid "Difficulty"
 msgstr "Schwierigkeit"
 
 #: src/view.cpp:1087
+#, fuzzy
 msgid ""
 "This affects lives, paddle size and ball speed. For Kids and Easy score is "
-"reduced, for Hard a bonus a given."
+"reduced, for Hard a bonus is given."
 msgstr ""
 "Dies beeinflusst Leben, Schlägergröße und Balltempo. Bei Kinder und Leicht "
 "wird die Punktzahl reduziert, bei Schwer gibt es einen Bonus."
@@ -198,19 +199,19 @@ msgstr ""
 
 #: src/view.cpp:1093
 msgid "1st"
-msgstr "1."
+msgstr "Nr. 1"
 
 #: src/view.cpp:1094
 msgid "2nd"
-msgstr "2."
+msgstr "Nr. 2"
 
 #: src/view.cpp:1095
 msgid "3rd"
-msgstr "3."
+msgstr "Nr. 3"
 
 #: src/view.cpp:1096
 msgid "4th"
-msgstr "4."
+msgstr "Nr. 4"
 
 #: src/view.cpp:1100
 msgid "Left"
@@ -264,13 +265,13 @@ msgstr ""
 
 #: src/view.cpp:1114
 msgid "Idle Return"
-msgstr "Nutzlose zurück"
+msgstr "Rückruf"
 
 #: src/view.cpp:1115
 msgid ""
 "Return all idle balls (no effective brick hits for some time) to the paddle."
 msgstr ""
-"Alle nutzlosen Bälle (keine wirksamen Ziegeltreffer für einige Zeit) zum "
+"Alle Bälle im Leerlauf (keine wirksamen Treffer für einige Zeit) zum "
 "Schläger zurückbringen."
 
 #: src/view.cpp:1118
@@ -334,7 +335,7 @@ msgstr "Thema"
 
 #: src/view.cpp:1134
 msgid "Select theme. (not applied yet)"
-msgstr "Thema wählen (im Moment wirkungslos)."
+msgstr "Thema wählen (noch nicht angewendet)."
 
 #: src/view.cpp:1136
 msgid "Mode"
@@ -342,7 +343,7 @@ msgstr "Modus"
 
 #: src/view.cpp:1137
 msgid "Select mode. (not applied yet)"
-msgstr "Modus auswählen (im Moment wirkungslos)."
+msgstr "Modus auswählen (noch nicht angewendet)."
 
 #: src/view.cpp:1139
 msgid "Antialiasing"
@@ -376,7 +377,20 @@ msgstr "Die obigen Einstellungen anwenden."
 
 #: src/view.cpp:1145
 msgid "Frame Limit"
-msgstr "Bildratenbegrenzung"
+msgstr "Bildrate"
+
+#: src/view.cpp:1146
+msgid ""
+"Maximum number of frames per second.\n"
+"Be careful: The higher the limit the more insensitive your mouse might "
+"become to slow movements (because relative motion is used and program cycles "
+"are shorter).\n"
+"200 FPS should be a good value."
+msgstr ""
+"Maximale Anzahl von Frames pro Sekunde.\n"
+"Vorsicht: Je höher das Limit, desto unsensibler kann die Maus bei langsamen "
+"Bewegungen werden (weil die Programmzyklen kürzer sind).\n"
+"200 FPS sollte ein guter Wert sein."
 
 #: src/view.cpp:1151
 msgid "Sound"
@@ -554,7 +568,7 @@ msgstr ""
 
 #: src/view.cpp:1190
 msgid "Acc. Ball Speed"
-msgstr "Balltempo beschleunigen"
+msgstr "Balltempo"
 
 #: src/view.cpp:1191
 msgid "Maximum speed of accelerated balls."
@@ -562,7 +576,7 @@ msgstr "Höchstgeschwindigkeit von beschleunigten Bällen."
 
 #: src/view.cpp:1193
 msgid "Bonus Levels"
-msgstr "Bonuslevels"
+msgstr "Bonusebenen"
 
 #: src/view.cpp:1197
 msgid "New Game"
@@ -590,11 +604,59 @@ msgstr "Kein gespeichertes Spiel."
 
 #: src/view.cpp:1574
 msgid " player(s)\n"
-msgstr "Spieler\n"
+msgstr " Spieler\n"
 
 #: src/view.cpp:1585
 msgid "  (Lvl: "
 msgstr "  (Lvl: "
+
+#: src/view.cpp:1604
+msgid ""
+"You can control your paddle either with the mouse or keyboard. Destroying "
+"bricks will release extras sometimes. Some are good, some are bad and some "
+"may be good or bad. Some of the bricks take more than one shot, regenerate "
+"over time, explode or grow new bricks (see README for more details). Balls "
+"will get faster (until life is lost) and the difficulty setting will "
+"influence number of lives, ball speed, paddle size and score.\n"
+"\n"
+"While playing you can press\n"
+"  - ESC to leave the game (you'll have to confirm)\n"
+"  - w to warp to next level (if enough bricks were destroyed)\n"
+"  - p to pause/unpause the game\n"
+"  - d to destroy a brick (workaround for bad level design)\n"
+"\n"
+"If you leave a game you can resume it later (no hiscores entry yet).\n"
+"\n"
+"If you loose all lives you can buy a continue (score set to 0, initial "
+"number of lives restored). If you don't buy a continue the game is over "
+"(hiscores entry is checked) and can no longer be resumed. \n"
+"\n"
+"Enjoy the game!\n"
+"          Michael Speck"
+msgstr ""
+"Der Schläger lässt sich mit Maus oder Tastatur kontrollieren. Zerstörte "
+"Steine werden manchmal Extras freigeben. Manche sind gut, manche schlecht "
+"und manche gut oder schlecht. Einige der Steine brauchen mehr als einen "
+"Schuss, regenerieren über die Zeit, explodieren oder erzeugen neue Steine "
+"(siehe README für mehr Details). Bälle werden mit der Zeit schneller und der "
+"Schwierigkeitsgrad beeinflußt die Anzahl an Leben, Ballgeschwindigkeit, "
+"Schlägergröße und Punktezahl.\n"
+"\n"
+"Es gibt folgende Sondertasten im Spiel\n"
+"  - ESC  verlässt das Spiel (muss bestätigt werden)\n"
+"  - w    springt in die nächste Ebene (falls genug Steine zerstört wurden)\n"
+"  - p    pausiert das Spiel\n"
+"  - d    erlaubt Zerstörung einzelner Steine (für schlechtes Leveldesign)\n"
+"\n"
+"Falls du ein Spiel beendest, kannst du es später wieder aufnehmen. Es wird "
+"noch kein Eintrag in die Bestenliste erstellt. Wenn du alle Leben verlierst, "
+"kannst du ein Continue kaufen (Punktzahl wird auf 0 gesetzt, die anfängliche "
+"Anzahl an Leben wird wiederhergestellt). Falls du kein Continue kaufst, ist "
+"das Spiel vorbei (Bestenliste wird geprüft) und kann nicht mehr aufgenommen "
+"werden.\n"
+"\n"
+"Viel Spaß!\n"
+"          Michael Speck"
 
 #: src/view.cpp:1637
 msgid "Extra Score"
@@ -725,6 +787,7 @@ msgid "Plane of Inner Stability"
 msgstr "Ebene der inneren Stabilität"
 
 #: src/view.cpp:1709
+#, fuzzy, c-format
 msgid "Left-click on any brick to destroy it (costs 10% score)."
 msgstr ""
 "Linksklick auf einen beliebigen Ziegel, um ihn zu zerstören (kostet 10% der "
@@ -734,46 +797,108 @@ msgstr ""
 msgid "Press any key to cancel selection."
 msgstr "Beliebige Taste drücken, um Auswahl abzubrechen."
 
-#: src/clientgame.cpp:198
+#: src/clientgame.cpp:205
 #, c-format
 msgid "Congratulations, %s, you cleared all levels!"
 msgstr "Glückwunsch, %s, du hast alle Level gesäubert!"
 
-#: src/clientgame.cpp:205
+#: src/clientgame.cpp:212
 #, c-format
 msgid "Game over, %s!"
 msgstr "Spiel vorbei, %s!"
 
-#: src/clientgame.cpp:299
+#: src/clientgame.cpp:306
 #, c-format
 msgid "Level: %d, Size: %d/12"
 msgstr "Level: %d, Größe: %d/12"
 
-#: src/clientgame.cpp:303
+#: src/clientgame.cpp:310
 #, c-format
 msgid "Total Hits: %d, Current Price: %d"
 msgstr "Gesamttreffer: %d, aktuelle Belohnung: %d"
 
-#: src/clientgame.cpp:307
+#: src/clientgame.cpp:314
 #, c-format
 msgid "Wave: %d, Invaders: %d/%d"
 msgstr "Welle: %d, Invasoren %d/%d"
 
-#: src/clientgame.cpp:312
+#: src/clientgame.cpp:319
 #, c-format
 msgid "Wave: %d, Infections: %d/%d, Active: %d/%d"
 msgstr "Welle: %d, Infektionen: %d/%d, Aktiv: %d/%d"
 
-#: src/clientgame.cpp:318 src/clientgame.cpp:322
+#: src/clientgame.cpp:325 src/clientgame.cpp:329
 #, c-format
 msgid "Hits: %d, Current Price: %d, Time: %d secs"
 msgstr "Treffer %d, aktuelle Belohnung: %d, Zeit: %d s"
+
+#: src/selectdlg.cpp:55
+msgid "Superset with ALL levels"
+msgstr "Superset mit ALLEN Ebenen"
+
+#: src/selectdlg.cpp:57
+msgid "Mini Game"
+msgstr "Minispiel"
+
+#: src/selectdlg.cpp:177
+msgid "Select Levelset (press ESC to exit)"
+msgstr "Wähle Ebenensatz (ESC drücken zum Verlassen)"
+
+#: src/selectdlg.cpp:186
+msgid "<Previous Page>"
+msgstr "<Letze Seite>"
+
+#: src/selectdlg.cpp:201
+msgid "<Next Page>"
+msgstr "<Nächste Seite>"
+
+#: src/selectdlg.cpp:207
+msgid " by "
+msgstr " von "
+
+#: src/selectdlg.cpp:211
+#, fuzzy
+msgid " levels)"
+msgstr " Ebenen) "
+
+#: src/sdl.h:41
+msgid "Fullscreen"
+msgstr "Vollbild"
+
+#: src/sdl.h:42
+msgid "853x480 Window"
+msgstr "853x480 Fenster"
+
+#: src/sdl.h:44
+msgid "1280x720 Window"
+msgstr "1280x720 Fenster"
+
+#: src/sdl.h:46
+msgid "1366x768 Window"
+msgstr "1366x768 Fenster"
+
+#: src/sdl.h:48
+msgid "1920x1080 Window"
+msgstr "1920x1080 Fenster"
+
+#: src/menu.h:167
+msgid "Back"
+msgstr "Zurück"
+
+#: src/menu.h:274
+msgid "Off"
+msgstr "Aus"
+
+#: src/menu.h:274
+msgid "On"
+msgstr "An"
+
+#: src/menu.h:313
+msgid "Enter Name"
+msgstr "Name eingeben"
 
 #~ msgid "On Click"
 #~ msgstr "Mit Klick"
 
 #~ msgid "Options"
 #~ msgstr "Optionen"
-
-#~ msgid "Levelset"
-#~ msgstr "Ebenensatz "

@@ -1143,7 +1143,7 @@ void View::createMenus()
 			_("Apply the above settings."),AID_APPLYTHEMEMODE));
 	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemList(_("Frame Limit"),
-			"Maximum number of frames per second.\nBe careful: The higher the limit the more insensitive your mouse might become to slow movements (because relative motion is used and program cycles are shorter).\n200 FPS should be a good value.",
+			_("Maximum number of frames per second.\nBe careful: The higher the limit the more insensitive your mouse might become to slow movements (because relative motion is used and program cycles are shorter).\n200 FPS should be a good value."),
 			AID_NONE,config.fps,fpsLimitNames,3));
 	mGraphics->add(new MenuItemSep());
 	mGraphics->add(new MenuItemBack(mOptions));
@@ -1600,7 +1600,7 @@ void View::renderExtraHelp(GridImage &img, uint gx, uint gy, const string &str, 
 
 void View::showHelp()
 {
-	string helpText =
+	string helpText = _(
 		"You can control your paddle either with the mouse or keyboard. "
 		"Destroying bricks will release extras sometimes. Some are good, "
 		"some are bad and some may be good or bad. "
@@ -1618,7 +1618,7 @@ void View::showHelp()
 		"If you don't buy a continue the game is over (hiscores entry is checked) and can no longer be resumed. "
 		"\n\nEnjoy the game!\n"
 		"          Michael Speck"
-		;
+		);
 
 	int x = brickScreenWidth, y = brickScreenHeight;
 	uint maxw = brickScreenWidth * 10;
