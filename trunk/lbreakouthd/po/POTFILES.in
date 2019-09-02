@@ -4,3 +4,7 @@ libgame/levels.h
 libgame/levels.c
 src/view.cpp
 src/clientgame.cpp
+src/selectdlg.cpp
+src/sdl.h
+src/menu.h
+

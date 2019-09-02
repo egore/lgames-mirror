@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: lbreakouthd 1.0.4\n"
+"Project-Id-Version: lbreakouthd 1.0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-10 12:19+0100\n"
+"POT-Creation-Date: 2019-09-02 15:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,27 +74,27 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
-#: libgame/levels.c:155
+#: libgame/levels.c:155 src/selectdlg.cpp:125
 msgid "!JUMPING_JACK!"
 msgstr ""
 
-#: libgame/levels.c:157
+#: libgame/levels.c:157 src/selectdlg.cpp:126
 msgid "!OUTBREAK!"
 msgstr ""
 
-#: libgame/levels.c:159
+#: libgame/levels.c:159 src/selectdlg.cpp:127
 msgid "!BARRIER!"
 msgstr ""
 
-#: libgame/levels.c:161
+#: libgame/levels.c:161 src/selectdlg.cpp:128
 msgid "!SITTING_DUCKS!"
 msgstr ""
 
-#: libgame/levels.c:163
+#: libgame/levels.c:163 src/selectdlg.cpp:129
 msgid "!HUNTER!"
 msgstr ""
 
-#: libgame/levels.c:165
+#: libgame/levels.c:165 src/selectdlg.cpp:130
 msgid "!INVADERS!"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgstr ""
 #: src/view.cpp:1087
 msgid ""
 "This affects lives, paddle size and ball speed. For Kids and Easy score is "
-"reduced, for Hard a bonus a given."
+"reduced, for Hard a bonus is given."
 msgstr ""
 
 #: src/view.cpp:1090
@@ -352,6 +352,15 @@ msgstr ""
 
 #: src/view.cpp:1145
 msgid "Frame Limit"
+msgstr ""
+
+#: src/view.cpp:1146
+msgid ""
+"Maximum number of frames per second.\n"
+"Be careful: The higher the limit the more insensitive your mouse might "
+"become to slow movements (because relative motion is used and program cycles "
+"are shorter).\n"
+"200 FPS should be a good value."
 msgstr ""
 
 #: src/view.cpp:1151
@@ -543,6 +552,31 @@ msgstr ""
 msgid "  (Lvl: "
 msgstr ""
 
+#: src/view.cpp:1604
+msgid ""
+"You can control your paddle either with the mouse or keyboard. Destroying "
+"bricks will release extras sometimes. Some are good, some are bad and some "
+"may be good or bad. Some of the bricks take more than one shot, regenerate "
+"over time, explode or grow new bricks (see README for more details). Balls "
+"will get faster (until life is lost) and the difficulty setting will "
+"influence number of lives, ball speed, paddle size and score.\n"
+"\n"
+"While playing you can press\n"
+"  - ESC to leave the game (you'll have to confirm)\n"
+"  - w to warp to next level (if enough bricks were destroyed)\n"
+"  - p to pause/unpause the game\n"
+"  - d to destroy a brick (workaround for bad level design)\n"
+"\n"
+"If you leave a game you can resume it later (no hiscores entry yet).\n"
+"\n"
+"If you loose all lives you can buy a continue (score set to 0, initial "
+"number of lives restored). If you don't buy a continue the game is over "
+"(hiscores entry is checked) and can no longer be resumed. \n"
+"\n"
+"Enjoy the game!\n"
+"          Michael Speck"
+msgstr ""
+
 #: src/view.cpp:1637
 msgid "Extra Score"
 msgstr ""
@@ -680,37 +714,101 @@ msgstr ""
 msgid "Press any key to cancel selection."
 msgstr ""
 
-#: src/clientgame.cpp:198
+#: src/clientgame.cpp:205
 #, c-format
 msgid "Congratulations, %s, you cleared all levels!"
 msgstr ""
 
-#: src/clientgame.cpp:205
+#: src/clientgame.cpp:212
 #, c-format
 msgid "Game over, %s!"
 msgstr ""
 
-#: src/clientgame.cpp:299
+#: src/clientgame.cpp:306
 #, c-format
 msgid "Level: %d, Size: %d/12"
 msgstr ""
 
-#: src/clientgame.cpp:303
+#: src/clientgame.cpp:310
 #, c-format
 msgid "Total Hits: %d, Current Price: %d"
 msgstr ""
 
-#: src/clientgame.cpp:307
+#: src/clientgame.cpp:314
 #, c-format
 msgid "Wave: %d, Invaders: %d/%d"
 msgstr ""
 
-#: src/clientgame.cpp:312
+#: src/clientgame.cpp:319
 #, c-format
 msgid "Wave: %d, Infections: %d/%d, Active: %d/%d"
 msgstr ""
 
-#: src/clientgame.cpp:318 src/clientgame.cpp:322
+#: src/clientgame.cpp:325 src/clientgame.cpp:329
 #, c-format
 msgid "Hits: %d, Current Price: %d, Time: %d secs"
+msgstr ""
+
+#: src/selectdlg.cpp:55
+msgid "Superset with ALL levels"
+msgstr ""
+
+#: src/selectdlg.cpp:57
+msgid "Mini Game"
+msgstr ""
+
+#: src/selectdlg.cpp:177
+msgid "Select Levelset (press ESC to exit)"
+msgstr ""
+
+#: src/selectdlg.cpp:186
+msgid "<Previous Page>"
+msgstr ""
+
+#: src/selectdlg.cpp:201
+msgid "<Next Page>"
+msgstr ""
+
+#: src/selectdlg.cpp:207
+msgid " by "
+msgstr ""
+
+#: src/selectdlg.cpp:211
+msgid " levels)"
+msgstr ""
+
+#: src/sdl.h:41
+msgid "Fullscreen"
+msgstr ""
+
+#: src/sdl.h:42
+msgid "853x480 Window"
+msgstr ""
+
+#: src/sdl.h:44
+msgid "1280x720 Window"
+msgstr ""
+
+#: src/sdl.h:46
+msgid "1366x768 Window"
+msgstr ""
+
+#: src/sdl.h:48
+msgid "1920x1080 Window"
+msgstr ""
+
+#: src/menu.h:167
+msgid "Back"
+msgstr ""
+
+#: src/menu.h:274
+msgid "Off"
+msgstr ""
+
+#: src/menu.h:274
+msgid "On"
+msgstr ""
+
+#: src/menu.h:313
+msgid "Enter Name"
 msgstr ""
