@@ -24,7 +24,13 @@
 #include "bfield.h"
 #include "menu.h"
 
+SDL_Surface *vsurf;
 SDL_Surface *screen;
+int use_shadow_surface = 0;
+int video_scale = 0; /* factors: 0 = 1, 1 = 1.5, 2 = 2 */
+int video_xoff = 0, video_yoff = 0; /* offset of scaled surface in display */
+int video_sw = 0, video_sh = 0; /* size of scaled shadow surface */
+int display_w = 0, display_h = 0; /* original size of display */
 #define BITDEPTH 16
 
 int delay = 0;
@@ -81,6 +87,173 @@ static void set_player_name_from_env()
 	}
 };
 
+static void select_best_video_mode(int *best_w, int *best_h)
+{
+	SDL_Rect **modes;
+	SDL_Rect wanted_mode;
+	int i;
+	int dratio;
+
+	dratio = 100*display_w/display_h;
+	wanted_mode.w = display_w;
+	wanted_mode.h = display_h;
+
+	/* Get available fullscreen/hardware modes */
+	modes=SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
+	/* Check if there are any modes available */
+	if(modes == (SDL_Rect **)0){
+		printf("No modes available!\n");
+		exit(-1);
+	}
+	/* Check if our resolution is restricted */
+	if(modes == (SDL_Rect **)-1){
+		printf("All resolutions available.\n");
+	} else {
+		/* Print valid modes */
+		printf("Available modes: ");
+		for(i=0;modes[i];++i)
+			printf("%d x %d, ", modes[i]->w, modes[i]->h);
+		printf("\n");
+
+		/* select lowest mode with same ratio as display */
+		for(i=0;modes[i];++i)
+			if (100*modes[i]->w/modes[i]->h == dratio) {
+				if (modes[i]->h < wanted_mode.h)
+					wanted_mode = *modes[i];
+			}
+		printf("Best mode: %d x %d\n",wanted_mode.w,wanted_mode.h);
+	}
+
+	*best_w = wanted_mode.w;
+	*best_h = wanted_mode.h;
+}
+
+static void set_video_mode()
+{
+	int w, h;
+	int vflags = (fullscreen?SDL_FULLSCREEN:0) | SDL_HWSURFACE;
+
+	if (use_shadow_surface && screen) {
+		SDL_FreeSurface(screen);
+		screen = NULL;
+		use_shadow_surface = 0;
+	}
+
+	if (!fullscreen) {
+		w = 640;
+		h = 480;
+	} else
+		select_best_video_mode(&w, &h);
+
+	/* for 640x480 no shadow surface is used */
+	video_scale = 0;
+	video_xoff = video_yoff = 0;
+	if (w == 640 && h == 480)
+		vflags |= SDL_DOUBLEBUF; /* use fast double buffering */
+	else {
+		printf("Using shadow surface\n");
+		use_shadow_surface = 1;
+		if (2*480 <= h) {
+			video_scale = 2;
+			video_sw = 2*640;
+			video_sh = 2*480;
+		} else if (3*480/2 <= h) {
+			video_scale = 1;
+			video_sw = 3*640/2;
+			video_sh = 3*480/2;
+		} else {
+			video_sw = 640;
+			video_sh = 480;
+		}
+		printf("Using scale factor %s\n",
+				(video_scale==2)?"2":((video_scale==1)?"1.5":0));
+		video_xoff = (w - video_sw) / 2;
+		video_yoff = (h - video_sh) / 2;
+	}
+
+	if (SDL_SetVideoMode(w, h, BITDEPTH, vflags) < 0 ) {
+		printf( "%s\n", SDL_GetError() );
+		exit(1);
+	}
+
+	/* with no shadow surface screen is doubled buffered video surface */
+	if (!use_shadow_surface) {
+		screen = SDL_GetVideoSurface();
+		return;
+	}
+
+	/* create shadow screen surface as 640x480 */
+	vsurf = SDL_GetVideoSurface();
+	screen = SDL_CreateRGBSurface( SDL_SWSURFACE, 640, 480,
+			vsurf->format->BitsPerPixel,
+			vsurf->format->Rmask, vsurf->format->Bmask,
+			vsurf->format->Gmask, vsurf->format->Amask );
+
+}
+
+static void scale_surface(SDL_Surface *src, SDL_Surface *dst)
+{
+	int i,j;
+	int bpp = src->format->BytesPerPixel; /* should equal dst */
+	int sxoff, syoff, dxoff, dyoff;
+	Uint32 pixel = 0;
+
+	if (bpp != dst->format->BytesPerPixel) {
+		printf("Oops, pixel size does not match, no scaling\n");
+		SDL_BlitSurface(screen, 0, vsurf, 0);
+		return;
+	}
+
+	if (SDL_MUSTLOCK(src))
+		SDL_LockSurface(src);
+	if (SDL_MUSTLOCK(dst))
+		SDL_LockSurface(dst);
+
+	sxoff = syoff = 0;
+	dxoff = video_xoff * bpp;
+	dyoff = video_yoff * dst->pitch;
+	for (j = 0; j < src->h; j++) {
+		for (i = 0; i < src->w; i++) {
+			memcpy(&pixel, src->pixels + syoff + sxoff, bpp);
+			memcpy(dst->pixels + dyoff + dxoff, &pixel, bpp);
+			if (video_scale) {
+				if (video_scale==2 || (i&1))
+					memcpy(dst->pixels + dyoff + dxoff + bpp, &pixel, bpp);
+				if (video_scale==2 || (j&1)) {
+					memcpy(dst->pixels + dyoff + dst->pitch + dxoff, &pixel, bpp);
+					if (video_scale==2 || (i&1))
+						memcpy(dst->pixels + dyoff + dst->pitch + dxoff + bpp, &pixel, bpp);
+				}
+				if (video_scale==2 || (i&1))
+					dxoff += bpp;
+			}
+			sxoff += bpp;
+			dxoff += bpp;
+		}
+		sxoff = 0;
+		syoff += src->pitch;
+		dxoff = video_xoff*bpp;
+		dyoff += dst->pitch;
+		if (video_scale && (video_scale==2 || (j&1)))
+			dyoff += dst->pitch;
+	}
+
+	if (SDL_MUSTLOCK(src))
+		SDL_UnlockSurface(src);
+	if (SDL_MUSTLOCK(dst))
+		SDL_UnlockSurface(dst);
+}
+
+static void refresh_screen()
+{
+	if (!use_shadow_surface)
+		SDL_Flip(screen);
+	else {
+		scale_surface(screen,vsurf);
+		SDL_UpdateRect(vsurf, 0, 0, 0, 0);
+	}
+}
+
 static void fade_screen( int type, int time )
 {
 	SDL_Surface *buffer = 0;
@@ -124,7 +297,7 @@ static void fade_screen( int type, int time )
 		SDL_FillRect( screen, 0, 0x0 );
 		SDL_SetAlpha( buffer, SDL_SRCALPHA | SDL_RLEACCEL, (int)alpha );
 		SDL_BlitSurface( buffer, 0, screen, 0 );
-		SDL_Flip(screen);
+		refresh_screen(screen);
 		if (delay>0) SDL_Delay(10);
 	}
 
@@ -134,7 +307,7 @@ static void fade_screen( int type, int time )
 		SDL_BlitSurface( buffer, 0, screen, 0 );
 	else
 		SDL_FillRect( screen, 0, 0x0 );
-	SDL_Flip(screen);
+	refresh_screen(screen);
 	SDL_FreeSurface( buffer );
 }
 
@@ -352,7 +525,7 @@ static void game_finalize( int check_chart )
 			sprintf( buf, "Topgunner #%i", rank+1 );
 			SDL_WriteTextCenter( ft_chart, screen, 320, 230, buf );
 			SDL_WriteTextCenter( ft_chart, screen, 320, 290, "Sign here:" );
-			SDL_Flip(screen);
+			refresh_screen(screen);
 			SDL_EnterTextCenter( ft_chart, screen, 320, 320, 18, player_name );
 			chart_add_entry( player_name, player_score );
 		}
@@ -361,7 +534,7 @@ static void game_finalize( int check_chart )
 					ft_chart, screen, 320, 290, "Not enough to be a topgunner!" );
 			SDL_WriteTextCenter( 
 					ft_chart, screen, 320, 320, "Go, try again! Dismissed." );
-			SDL_Flip(screen);
+			refresh_screen(screen);
 			wait_for_input();
 		}
 		chart_save();
@@ -406,6 +579,24 @@ static void main_loop()
 		buttonstate = SDL_GetMouseState( &x, &y );
 		keystate = SDL_GetKeyState( 0 );
 		modstate = SDL_GetModState();
+
+		/* translate cursor position if shadow surface is used */
+		if (use_shadow_surface) {
+			//printf("%d x %d ->",x,y);
+			x -= video_xoff;
+			y -= video_yoff;
+			if (x < 0)
+				x = 0;
+			if (y < 0)
+				y = 0;
+			if (x >= video_sw)
+				x = video_sw - 1;
+			if (y >= video_sh)
+				y = video_sh - 1;
+			x = 640 * x / video_sw;
+			y = 480 * y / video_sh;
+			//printf(" %d x %d (w=%d)\n",x,y,video_sw);
+		}
 	
 		/* update the battefield (particles,units,new cannonfodder) */
 		bfield_update( ms );
@@ -440,7 +631,8 @@ static void main_loop()
 		draw_cursor( screen, x, y );
 		
 		/* udpate screen */
-		SDL_Flip(screen); frames++;
+		refresh_screen(screen);
+		frames++;
 
 		/* end game? */
 		if ( state == STATE_GAME )
@@ -534,8 +726,7 @@ static void main_loop()
 		/* switch fullscreen/window anywhere */
 		if ( keystate[SDLK_f] ) {
 			fullscreen = !fullscreen;
-			SDL_SetVideoMode( 640, 480, BITDEPTH, 
-				(fullscreen?SDL_FULLSCREEN:0) | SDL_HWSURFACE | SDL_DOUBLEBUF );
+			set_video_mode();
 			input_delay = INPUT_DELAY;
 		}
 		/* enabe/disable sound anywhere */
@@ -559,7 +750,8 @@ static void main_loop()
 int main( int argc, char **argv )
 {
   int c;
-  
+  const SDL_VideoInfo* info;
+
   printf( "BARRAGE v%s\n", VERSION );
   printf( "Copyright 2003-2019 Michael Speck (http://lgames.sf.net)\n" );
   printf( "Released under GNU GPL\n---\n" );
@@ -588,12 +780,16 @@ int main( int argc, char **argv )
     printf( "Disabling sound and continuing...\n" );
     audio_on = -1;
   }
-  if ( SDL_SetVideoMode( 640, 480, BITDEPTH, 
-			 (fullscreen?SDL_FULLSCREEN:0) | SDL_HWSURFACE | SDL_DOUBLEBUF ) < 0 ) {
-    printf( "%s\n", SDL_GetError() );
-    exit(1);
-  }
-  screen = SDL_GetVideoSurface();
+
+  /* get real display size now because when switching
+   * it becomes wrong window size */
+  info = SDL_GetVideoInfo();
+  printf("Display resolution: %d x %d\n", info->current_w, info->current_h);
+  display_w = info->current_w;
+  display_h = info->current_h;
+
+  set_video_mode();
+
   atexit(SDL_Quit);
   SDL_WM_SetCaption( "LBarrage", 0 );
 	
