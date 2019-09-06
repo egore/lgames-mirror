@@ -1,4 +1,6 @@
 1.0.5:
+- added command line option -r to force a resolution (2019/09/04 MS)
+- fixed fullscreen mode for non-4:3 resolutions (2019/09/04 MS)
 - allow quit with Alt+F4 (2019/09/02 MS)
 - fixed compiler warning (2019/09/02 MS)
 - install hiscores to proper location instead of home dir (2019/09/02 MS)
