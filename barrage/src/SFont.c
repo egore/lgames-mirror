@@ -5,6 +5,8 @@
 
 SFont_FontInfo InternalFont;
 
+extern void refresh_screen();
+
 Uint32 GetPixel(SDL_Surface *Surface, Sint32 X, Sint32 Y)
 {
 
@@ -170,7 +172,8 @@ void SFont_InternalInput( SDL_Surface *Dest, SFont_FontInfo *Font, int x, int y,
     rect.h=Font->Surface->h;
     SDL_BlitSurface(Dest, &rect, Back, NULL);
     XCenteredString2(Dest,Font,/*x,*/y,text);
-    SDL_UpdateRects(Dest, 1, &rect);
+    //SDL_UpdateRects(Dest, 1, &rect);
+    refresh_screen();
         
     // start input
     previous=SDL_EnableUNICODE(1);
@@ -189,7 +192,8 @@ void SFont_InternalInput( SDL_Surface *Dest, SFont_FontInfo *Font, int x, int y,
 			text[PixelWidth/*strlen(text)*/]='\0';
 		SDL_BlitSurface( Back, NULL, Dest, &rect);
 		XCenteredString2(Dest, Font, /*x,*/ y, text);
-		SDL_UpdateRects(Dest, 1, &rect);
+		//SDL_UpdateRects(Dest, 1, &rect);
+		refresh_screen();
 //		printf("%s ## %d\n",text,strlen(text));
 		SDL_WaitEvent(&event);
 	    }
@@ -199,12 +203,14 @@ void SFont_InternalInput( SDL_Surface *Dest, SFont_FontInfo *Font, int x, int y,
 	    blinktimer=SDL_GetTicks()+500;
 	    if (blink) {
 		PutString2(Dest, Font, x+TextWidth2(Font,text)/2, y, "|");
-		SDL_UpdateRects(Dest, 1, &rect);
+		//SDL_UpdateRects(Dest, 1, &rect);
+		refresh_screen();
 //		SDL_UpdateRect(Dest, x+TextWidth2(Font,text), y, TextWidth2(Font,"|"), Font->Surface->h);
 	    } else {
 		SDL_BlitSurface( Back, NULL, Dest, &rect);
 		XCenteredString2(Dest, Font, /*x,*/ y, text);
-		SDL_UpdateRects(Dest, 1, &rect);
+		//SDL_UpdateRects(Dest, 1, &rect);
+		refresh_screen();
 //		SDL_UpdateRect(Dest, x-(Font->CharPos[ofs]-Font->CharPos[ofs-1])/2, y, PixelWidth, Font->Surface->h);
 	    }
 	}
