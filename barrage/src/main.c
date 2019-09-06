@@ -31,6 +31,7 @@ int video_scale = 0; /* factors: 0 = 1, 1 = 1.5, 2 = 2 */
 int video_xoff = 0, video_yoff = 0; /* offset of scaled surface in display */
 int video_sw = 0, video_sh = 0; /* size of scaled shadow surface */
 int display_w = 0, display_h = 0; /* original size of display */
+int video_forced_w = 0, video_forced_h = 0; /* given by command line */
 #define BITDEPTH 16
 
 int delay = 0;
@@ -139,7 +140,10 @@ static void set_video_mode()
 		use_shadow_surface = 0;
 	}
 
-	if (!fullscreen) {
+	if (video_forced_w > 0 && video_forced_h > 0) {
+		w = video_forced_w;
+		h = video_forced_h;
+	} else if (!fullscreen) {
 		w = 640;
 		h = 480;
 	} else
@@ -756,13 +760,18 @@ int main( int argc, char **argv )
   printf( "Copyright 2003-2019 Michael Speck (http://lgames.sf.net)\n" );
   printf( "Released under GNU GPL\n---\n" );
 
-  while ( ( c = getopt( argc, argv, "d:ws" ) ) != -1 )
+  while ( ( c = getopt( argc, argv, "d:wsr:" ) ) != -1 )
     {
       switch (c)
 	{
 	case 'd': delay = atoi(optarg); break;
 	case 'w': fullscreen=0; break;
 	case 's': audio_on = 0; break;
+	case 'r':
+		sscanf(optarg, "%dx%d", &video_forced_w, &video_forced_h);
+		printf("Trying to force resolution %dx%d\n",
+				video_forced_w, video_forced_h);
+		break;
 	}
     }
   printf("main loop delay: %d ms\n",delay);
@@ -787,6 +796,17 @@ int main( int argc, char **argv )
   printf("Display resolution: %d x %d\n", info->current_w, info->current_h);
   display_w = info->current_w;
   display_h = info->current_h;
+  if (video_forced_h > 0) {
+	  if (video_forced_w > display_w || video_forced_h > display_h) {
+		  printf("Forced resolution out of bounds, ignoring it\n");
+		  video_forced_h = video_forced_w = 0;
+	  }
+	  if (video_forced_w < 640 || video_forced_h < 480) {
+		  video_forced_w = 0;
+		  video_forced_h = 0;
+	  }
+  }
+
 
   set_video_mode();
 

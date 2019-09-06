@@ -29,6 +29,8 @@ console:
                   can switch this anytime while playing by pressing 'f'
   -s              play silently, thus don't play any sounds; this can
                   also be switched by pressing 's' while playing
+  -r              force (valid) resolution, can be used to fix bad auto
+                  detection or zoom window mode
 
 -----------
 How To Play
