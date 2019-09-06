@@ -248,7 +248,7 @@ static void scale_surface(SDL_Surface *src, SDL_Surface *dst)
 		SDL_UnlockSurface(dst);
 }
 
-static void refresh_screen()
+void refresh_screen()
 {
 	if (!use_shadow_surface)
 		SDL_Flip(screen);
@@ -602,7 +602,7 @@ static void main_loop()
 			//printf(" %d x %d (w=%d)\n",x,y,video_sw);
 		}
 	
-		/* update the battefield (particles,units,new cannonfodder) */
+		/* update the battlefield (particles,units,new cannonfodder) */
 		bfield_update( ms );
 
 		/* update input_delay */
