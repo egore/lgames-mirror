@@ -151,7 +151,7 @@ void View::run()
 					/* fake mouse button pressed */
 					if (!menuActive && state == VS_IDLE) {
 						button = SDL_BUTTON_LEFT;
-						buttonX = buttonY = -1;
+						SDL_GetMouseState(&buttonX, &buttonY);
 					}
 					break;
 				default:
