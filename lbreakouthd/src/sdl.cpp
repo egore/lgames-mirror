@@ -71,6 +71,8 @@ void MainWindow::refresh()
 
 int Image::create(int w, int h)
 {
+	_logdebug(1,"Creating new texture of size %dx%d\n",w,h);
+
 	if (tex) {
 		SDL_DestroyTexture(tex);
 		tex = NULL;
@@ -104,6 +106,8 @@ int Image::createFromScreen()
 
 int Image::load(const string& fname)
 {
+	_logdebug(1,"Loading texture %s\n",fname.c_str());
+
 	if (tex) {
 		SDL_DestroyTexture(tex);
 		tex = NULL;
@@ -127,6 +131,8 @@ int Image::load(const string& fname)
 }
 int Image::load(SDL_Surface *s)
 {
+	_logdebug(1,"Loading texture from surface %dx%d\n",s->w,s->h);
+
 	if (tex) {
 		SDL_DestroyTexture(tex);
 		tex = NULL;
@@ -142,6 +148,8 @@ int Image::load(SDL_Surface *s)
 }
 int Image::load(Image *s, int x, int y, int w, int h)
 {
+	_logdebug(1,"Loading texture from surface %dx%d\n",s->w,s->h);
+
 	if (tex) {
 		SDL_DestroyTexture(tex);
 		tex = NULL;
@@ -210,6 +218,8 @@ void Image::fill(Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 
 void Image::scale(int nw, int nh)
 {
+	_logdebug(1,"Scaling texture of size %dx%d to %dx%d\n",w,h,nw,nh);
+
 	if (tex == NULL)
 		return;
 	if (nw == w && nh == h)
@@ -238,6 +248,9 @@ void Image::scale(int nw, int nh)
 /** Create shadow image by clearing all r,g,b to 0 and cutting alpha in half. */
 int Image::createShadow(Image &img)
 {
+	_logdebug(1,"Creating shadow of size %dx%d\n",
+				img.getWidth(),img.getHeight());
+
 	/* duplicate first */
 	create(img.getWidth(),img.getHeight());
 	SDL_Texture *oldTarget = SDL_GetRenderTarget(mrc);
@@ -245,7 +258,12 @@ int Image::createShadow(Image &img)
 	img.copy(0,0);
 
 	/* change and apply */
-	Uint32 pixels[w*h];
+	Uint32 *pixels = (Uint32*)calloc(w*h,sizeof(Uint32));
+	if (!pixels) {
+		_logerr("Cannot allocate pixel buffer of size %dx%d\n",w,h);
+		SDL_SetRenderTarget(mrc, oldTarget);
+		return 0;
+	}
 	int pitch = w*sizeof(Uint32);
 	Uint8 r,g,b,a;
 	Uint32 pft = 0;
@@ -253,6 +271,8 @@ int Image::createShadow(Image &img)
 	SDL_PixelFormat* pf = SDL_AllocFormat(pft);
 	if (SDL_RenderReadPixels(mrc, NULL, pft, pixels, pitch) < 0) {
 		_logsdlerr();
+		free(pixels);
+		SDL_SetRenderTarget(mrc, oldTarget);
 		return 0;
 	}
 	for (int i = 0; i < w * h; i++) {
@@ -262,6 +282,7 @@ int Image::createShadow(Image &img)
 	SDL_UpdateTexture(tex, NULL, pixels, pitch);
 	SDL_FreeFormat(pf);
 	SDL_SetRenderTarget(mrc, oldTarget);
+	free(pixels);
 
 	return 1;
 }
