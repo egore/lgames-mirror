@@ -30,6 +30,16 @@ Sdl sdl;
 SDL_Cursor *empty_cursor = 0;
 SDL_Cursor *std_cursor = 0;
 
+/* shadow surface stuff */
+int use_shadow_surface = 0;
+SDL_Surface *video_surface = 0; /* sdl.screen is just regular surface
+				with shadow surface. this is the real screen */
+int video_scale = 0; /* factors: 0 = 1, 1 = 1.5, 2 = 2 */
+int video_xoff = 0, video_yoff = 0; /* offset of scaled surface in display */
+int video_sw = 0, video_sh = 0; /* size of scaled shadow surface */
+int display_w = 0, display_h = 0; /* original size of display */
+int video_forced_w = 0, video_forced_h = 0; /* given by command line */
+
 /*
 ====================================================================
 Default video modes. The first value is the id and indicates
@@ -719,6 +729,7 @@ void init_sdl( int f )
 #endif
 
     sdl.screen = 0;
+    video_surface = 0;
     if (SDL_Init(f) < 0) {
         fprintf(stderr, "ERR: sdl_init: %s\n", SDL_GetError());
         exit(1);
@@ -772,8 +783,12 @@ void init_sdl( int f )
 */
 void quit_sdl()
 {
-    if (sdl.screen) SDL_FreeSurface(sdl.screen);
-    if ( empty_cursor ) SDL_FreeCursor( empty_cursor );
+	if (sdl.screen)
+		SDL_FreeSurface(sdl.screen);
+	if (video_surface)
+		SDL_FreeSurface(video_surface);
+	if ( empty_cursor )
+		SDL_FreeCursor( empty_cursor );
 }
 
 /*
@@ -840,29 +855,126 @@ char** get_mode_names( int *count )
             lines[j++] = strdup( modes[i].name );
     return lines;
 }
+
+/** Find best resolution for shadow surface */
+static void select_best_video_mode(int *best_w, int *best_h)
+{
+	SDL_Rect **modes;
+	SDL_Rect wanted_mode;
+	int i;
+	int dratio;
+
+	dratio = 100*display_w/display_h;
+	wanted_mode.w = display_w;
+	wanted_mode.h = display_h;
+
+	/* Get available fullscreen/hardware modes */
+	modes=SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
+	/* Check if there are any modes available */
+	if(modes == (SDL_Rect **)0){
+		printf("No modes available!\n");
+		exit(-1);
+	}
+	/* Check if our resolution is restricted */
+	if(modes == (SDL_Rect **)-1){
+		printf("All resolutions available.\n");
+	} else {
+		/* Print valid modes */
+		printf("Available modes: ");
+		for(i=0;modes[i];++i)
+			printf("%d x %d, ", modes[i]->w, modes[i]->h);
+		printf("\n");
+
+		/* select lowest mode with same ratio as display */
+		for(i=0;modes[i];++i)
+			if (100*modes[i]->w/modes[i]->h == dratio) {
+				if (modes[i]->h < wanted_mode.h)
+					wanted_mode = *modes[i];
+			}
+		printf("Best mode: %d x %d\n",wanted_mode.w,wanted_mode.h);
+	}
+
+	*best_w = wanted_mode.w;
+	*best_h = wanted_mode.h;
+}
+
 /*
 ====================================================================
 Switch to passed video mode.
+XXX we use 640x480 here directly as it is hardcoded to this
+resolution anyways.
 ====================================================================
 */
-int	set_video_mode( Video_Mode mode )
+int	set_video_mode( int fullscreen )
 {
 #ifdef SDL_DEBUG
     SDL_PixelFormat	*fmt;
 #endif
-	
-    /* free old screen */
-    if (sdl.screen) SDL_FreeSurface( sdl.screen );
+    int w, h;
+    int vflags = (fullscreen?SDL_FULLSCREEN:0) | SDL_HWSURFACE;
 
-    /* check again */
-    mode = video_mode( mode.width, mode.height, mode.depth, mode.flags );
+    /* free old screen */
+    if (sdl.screen) {
+	    SDL_FreeSurface( sdl.screen );
+	    sdl.screen = 0;
+    }
+    if (video_surface) {
+	    SDL_FreeSurface( video_surface );
+	    video_surface = 0;
+    }
+
+    /* determine whether shadow surface is used and resolution */
+    use_shadow_surface = 0;
+    if (video_forced_w > 0 && video_forced_h > 0) {
+	    w = video_forced_w;
+	    h = video_forced_h;
+    } else if (!fullscreen) {
+	    w = 640;
+	    h = 480;
+    } else
+	    select_best_video_mode(&w, &h);
+
+    /* for 640x480 no shadow surface is used */
+    video_scale = 0;
+    video_xoff = video_yoff = 0;
+    if (w != 640 || h != 480) {
+	    printf("Using shadow surface\n");
+	    use_shadow_surface = 1;
+	    if (2*480 <= h) {
+		    video_scale = 2;
+		    video_sw = 2*640;
+		    video_sh = 2*480;
+	    } else if (3*480/2 <= h) {
+		    video_scale = 1;
+		    video_sw = 3*640/2;
+		    video_sh = 3*480/2;
+	    } else {
+		    video_sw = 640;
+		    video_sh = 480;
+	    }
+	    printf("Using scale factor %s\n",
+			    (video_scale==2)?"2":((video_scale==1)?"1.5":0));
+	    video_xoff = (w - video_sw) / 2;
+	    video_yoff = (h - video_sh) / 2;
+    }
+
     /* set as current mode */
-    cur_mode = mode;
+    cur_mode = modes[fullscreen?1:0];
 
     /* set video mode */
-    if ( ( sdl.screen = SDL_SetVideoMode( mode.width, mode.height, mode.depth, mode.flags ) ) == 0 ) {
-        fprintf(stderr, "set_video_mode: cannot allocate screen: %s\n", SDL_GetError());
-        return 1;
+    if (!use_shadow_surface) {
+	    if ( ( sdl.screen = SDL_SetVideoMode( 640, 480, BITDEPTH, vflags ) ) == 0 ) {
+		fprintf(stderr, "set_video_mode: cannot allocate screen: %s\n", SDL_GetError());
+		return 1;
+	    }
+	    video_surface = 0;
+    } else {
+	    if ((video_surface = SDL_SetVideoMode(w,h,BITDEPTH,vflags)) == 0) {
+		fprintf(stderr, "set_video_mode: cannot allocate screen: %s\n", SDL_GetError());
+		return 1;
+	    }
+	    sdl.screen = create_surf(640, 480, SDL_SWSURFACE);
+	    SDL_SetColorKey(sdl.screen, 0, 0);
     }
 
 #ifdef SDL_DEBUG				
@@ -902,11 +1014,81 @@ void hardware_cap()
     printf("------\n");
 }
 
+/** Scale src to dst. Only works with factors 1,1.5,2 */
+static void scale_surface(SDL_Surface *src, SDL_Surface *dst)
+{
+	int i,j;
+	int bpp = src->format->BytesPerPixel; /* should equal dst */
+	int sxoff, syoff, dxoff, dyoff;
+	Uint32 pixel = 0;
+
+	if (bpp != dst->format->BytesPerPixel) {
+		printf("Oops, pixel size does not match, no scaling\n");
+		SDL_BlitSurface(sdl.screen, 0, video_surface, 0);
+		return;
+	}
+
+	if (SDL_MUSTLOCK(src))
+		SDL_LockSurface(src);
+	if (SDL_MUSTLOCK(dst))
+		SDL_LockSurface(dst);
+
+	sxoff = syoff = 0;
+	dxoff = video_xoff * bpp;
+	dyoff = video_yoff * dst->pitch;
+	for (j = 0; j < src->h; j++) {
+		for (i = 0; i < src->w; i++) {
+			memcpy(&pixel, src->pixels + syoff + sxoff, bpp);
+			memcpy(dst->pixels + dyoff + dxoff, &pixel, bpp);
+			if (video_scale) {
+				if (video_scale==2 || (i&1))
+					memcpy(dst->pixels + dyoff + dxoff + bpp, &pixel, bpp);
+				if (video_scale==2 || (j&1)) {
+					memcpy(dst->pixels + dyoff + dst->pitch + dxoff, &pixel, bpp);
+					if (video_scale==2 || (i&1))
+						memcpy(dst->pixels + dyoff + dst->pitch + dxoff + bpp, &pixel, bpp);
+				}
+				if (video_scale==2 || (i&1))
+					dxoff += bpp;
+			}
+			sxoff += bpp;
+			dxoff += bpp;
+		}
+		sxoff = 0;
+		syoff += src->pitch;
+		dxoff = video_xoff*bpp;
+		dyoff += dst->pitch;
+		if (video_scale && (video_scale==2 || (j&1)))
+			dyoff += dst->pitch;
+	}
+
+	if (SDL_MUSTLOCK(src))
+		SDL_UnlockSurface(src);
+	if (SDL_MUSTLOCK(dst))
+		SDL_UnlockSurface(dst);
+}
+
+/** Render shadow surface sdl.screen to sdl.real_screen with zoom. */
+void render_shadow_surface() {
+	if (!use_shadow_surface)
+		return;
+	if (!video_surface)
+		return;
+
+	scale_surface(sdl.screen,video_surface);
+	SDL_UpdateRect(video_surface,0,0,0,0);
+}
+
 /*
     update rectangle (0,0,0,0)->fullscreen
 */
 void refresh_screen(int x, int y, int w, int h)
 {
+	if (use_shadow_surface) {
+		render_shadow_surface();
+		return;
+	}
+
     SDL_UpdateRect(sdl.screen, x, y, w, h);
 }
 
@@ -915,6 +1097,12 @@ void refresh_screen(int x, int y, int w, int h)
 */
 void refresh_rects()
 {
+	if (use_shadow_surface) {
+		render_shadow_surface();
+		sdl.rect_count = 0;
+		return;
+	}
+
     if (sdl.rect_count == RECT_LIMIT)
         SDL_UpdateRect(sdl.screen, 0, 0, sdl.screen->w, sdl.screen->h);
     else

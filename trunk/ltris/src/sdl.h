@@ -130,7 +130,7 @@ Video_Mode std_video_mode( int id );
 Video_Mode video_mode( int width, int height, int depth, int flags );
 Video_Mode* cur_video_mode();
 char** get_mode_names( int *count );
-int  set_video_mode( Video_Mode mode );
+int  set_video_mode( int fullscreen );
 void hardware_cap();
 void refresh_screen( int x, int y, int w, int h );
 void refresh_rects();
