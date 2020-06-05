@@ -55,6 +55,7 @@ Item *item_levelset, *item_set;
 extern List *charts;
 int chart_id = 0; /* current chart displayed */
 extern char gametype_names[8][64];
+extern int motion_x, motion_y; /* current position of mouse */
 
 /*
 ====================================================================
@@ -505,15 +506,15 @@ int manager_run()
 				if ( event.type == SDL_KEYUP )
 					if ( event.key.keysym.sym == SDLK_f ) {
 						config.fullscreen = !config.fullscreen;
-						set_video_mode( std_video_mode( config.fullscreen ) );
+						set_video_mode( config.fullscreen );
 						FULL_DEST( sdl.screen ); FULL_SOURCE( mbkgnd ); blit_surf();
 					    chart_show( chart_set_query_id( chart_id ), cx, cy, cw, ch );
 						refresh_screen( 0, 0 ,0, 0 );
 					}
 			/* check if clicked on highscore */
 			if ( event.type == SDL_MOUSEBUTTONUP ) 
-				if ( event.button.x >= cx && event.button.y >= cy )
-					if ( event.button.x < cx + cw && event.button.y < cy + ch ) {
+				if ( motion_x >= cx && motion_y >= cy )
+					if ( motion_x < cx + cw && motion_y < cy + ch ) {
 #ifdef SOUND
 						sound_play( wav_menu_click );
 #endif
@@ -568,7 +569,7 @@ Update screen without menu itself as this is shown next frame.
 */
 void manager_show()
 {
-    set_video_mode( std_video_mode( config.fullscreen ) );
+    set_video_mode( config.fullscreen );
     FULL_DEST( sdl.screen ); FULL_SOURCE( mbkgnd ); blit_surf();
     chart_show( chart_set_query_id( chart_id ), cx, cy, cw, ch );
     add_refresh_rect( 0, 0, sdl.screen->w, sdl.screen->h );

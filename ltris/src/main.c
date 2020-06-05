@@ -32,10 +32,13 @@ extern Config config;
 extern char gametype_names[8][64];
 extern char gametype_ids[8][64];
 
+extern int display_w, display_h, video_forced_w, video_forced_h;
+
 int main(int argc, char *argv[])
 {
     int result = ACTION_NONE;
     int leave = 0;
+    const SDL_VideoInfo* info;
 
     /* i18n */
 #ifdef ENABLE_NLS
@@ -74,7 +77,24 @@ int main(int argc, char *argv[])
     config_load();
 
     init_sdl( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER );
-    set_video_mode( std_video_mode( config.fullscreen ) );
+
+    info = SDL_GetVideoInfo();
+    printf("Display resolution: %d x %d\n", info->current_w, info->current_h);
+    display_w = info->current_w;
+    display_h = info->current_h;
+    if (video_forced_h > 0) {
+  	  if (video_forced_w > display_w || video_forced_h > display_h) {
+  		  printf("Forced resolution out of bounds, ignoring it\n");
+  		  video_forced_h = video_forced_w = 0;
+  	  }
+  	  if (video_forced_w < 640 || video_forced_h < 480) {
+  		  video_forced_w = 0;
+  		  video_forced_h = 0;
+  	  }
+    }
+
+    set_video_mode( config.fullscreen );
+
     SDL_WM_SetCaption( "LTris", 0 );
     sdl.fade = config.fade;
     SDL_SetEventFilter( event_filter );

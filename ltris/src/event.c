@@ -38,6 +38,8 @@ int intern_motion_last_x, intern_motion_last_y = 0;
 int intern_motion_button = 0;
 int intern_block_motion = 0;
 
+extern int use_shadow_surface, video_sw, video_sh, video_xoff, video_yoff;
+
 /*
 ====================================================================
 Event filter used to get motion x.
@@ -63,6 +65,28 @@ int event_filter( const SDL_Event *event )
         intern_motion_x = event->motion.x;
         intern_motion_y = event->motion.y;
         intern_motion_button = event->motion.state;
+
+	/* translate cursor position if shadow surface is used */
+	if (use_shadow_surface) {
+		int x = intern_motion_x, y = intern_motion_y;
+		//printf("%d x %d ->",x,y);
+		x -= video_xoff;
+		y -= video_yoff;
+		if (x < 0)
+			x = 0;
+		if (y < 0)
+			y = 0;
+		if (x >= video_sw)
+			x = video_sw - 1;
+		if (y >= video_sh)
+			y = video_sh - 1;
+		x = 640 * x / video_sw;
+		y = 480 * y / video_sh;
+		intern_motion_x = x;
+		intern_motion_y = y;
+		//printf(" %d x %d (w=%d)\n",x,y,video_sw);
+	}
+
         return 0;
     }
     return 1;

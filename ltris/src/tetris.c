@@ -110,7 +110,7 @@ int confirm( Font *font, char *str, int type )
 					else
 					if ( event.key.keysym.sym == SDLK_f ) {
 						config.fullscreen = !config.fullscreen;
-						set_video_mode( std_video_mode( config.fullscreen ) );
+						set_video_mode( config.fullscreen );
 						draw_confirm_screen( font, buffer, str );
 						refresh_screen( 0, 0, 0, 0 );
 					}
@@ -390,7 +390,7 @@ void tetris_run()
                          case SDLK_f:
                              /* switch fullscreen */
                             config.fullscreen = !config.fullscreen;
-                            set_video_mode( std_video_mode( config.fullscreen ) );
+                            set_video_mode( config.fullscreen );
                             FULL_DEST( sdl.screen ); FULL_SOURCE( offscreen ); blit_surf();
                             refresh_screen( 0, 0, 0, 0 );
                         case SDLK_TAB:
@@ -438,7 +438,9 @@ void tetris_run()
             if ( bowls[i] )
                 bowl_show( bowls[i] );
         shrapnells_show();
+
         refresh_rects();
+
         /* check if game's over */
         if ( !game_over ) {
             /* count number of finished bowls */

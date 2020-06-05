@@ -1,0 +1,3 @@
+update configure.in to ac
+fix fullscreen->window->fullscreen mouse motion cap
+xdg support
