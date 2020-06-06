@@ -1,18 +1,18 @@
-dnl Process this file with autoconf to produce a configure script.
-AC_INIT(Makefile.am)
-
+AC_PREREQ([2.69])
+AC_INIT(ltris,1.1.0)
+AC_CONFIG_SRCDIR([src/main.c])
+AC_CONFIG_HEADERS([config.h])
 AC_CANONICAL_TARGET
+AM_INIT_AUTOMAKE
 
-AM_CONFIG_HEADER(config.h)
-
-AM_INIT_AUTOMAKE(ltris,1.0.19)
+AC_USE_SYSTEM_EXTENSIONS
 
 dnl Checks for programs.
 AM_GNU_GETTEXT
 AC_PROG_CC
 AC_PROG_RANLIB
 
-CFLAGS="$CFLAGS -Wall"
+CFLAGS="$CFLAGS -Wall -Wno-int-conversion -Wno-format -Wno-implicit-function-declaration"
 
 dnl Check Zarus install
 AC_ARG_ENABLE( zaurus,
