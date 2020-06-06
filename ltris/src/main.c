@@ -19,6 +19,7 @@
 #include "../config.h"
 #endif
 
+#include <unistd.h>
 #include "ltris.h"
 #include "event.h"
 #include "chart.h"
@@ -36,6 +37,7 @@ extern int display_w, display_h, video_forced_w, video_forced_h;
 
 int main(int argc, char *argv[])
 {
+	int c;
     int result = ACTION_NONE;
     int leave = 0;
     const SDL_VideoInfo* info;
@@ -48,7 +50,7 @@ int main(int argc, char *argv[])
 #endif
     
     /* ltris info */
-    printf( "LTris %s\nCopyright 2002-2011 Michael Speck\nPublished under GNU GPL\n---\n", VERSION );
+    printf( "LTris %s\nCopyright 2002-2020 Michael Speck\nPublished under GNU GPL\n---\n", VERSION );
     printf( "Looking up data in: %s\n", SRC_DIR );
 #ifndef SOUND
     printf( "Compiled without sound and music\n" );
@@ -75,6 +77,19 @@ int main(int argc, char *argv[])
     strcpy(gametype_names[6],_("Vs Human&CPU"));
     strcpy(gametype_names[7],_("Vs CPU&CPU"));
     config_load();
+
+    while ( ( c = getopt( argc, argv, "wr:" ) ) != -1 )
+      {
+        switch (c)
+  	{
+  	case 'w': config.fullscreen=0; break;
+  	case 'r':
+  		sscanf(optarg, "%dx%d", &video_forced_w, &video_forced_h);
+  		printf("Trying to force resolution %dx%d\n",
+  				video_forced_w, video_forced_h);
+  		break;
+  	}
+      }
 
     init_sdl( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER );
 
