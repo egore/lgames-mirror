@@ -459,7 +459,7 @@ void draw_3dframe( SDL_Surface *surf, int cx, int cy, int w, int h, int border )
     }
     DEST( surf, cx - border, cy - border, w + border * 2, h + border * 2 );
     SOURCE( frame, 0, 0 );
-    alpha_blit_surf( 48 );
+    alpha_blit_surf( 64 );
     /* bright part */
     FULL_DEST( frame ); fill_surf ( 0xff0000 );
     DEST( frame, w + border, border, border, h + border ); fill_surf( 0xffffff );
@@ -485,7 +485,7 @@ void draw_3dframe( SDL_Surface *surf, int cx, int cy, int w, int h, int border )
     FULL_DEST( contents ); fill_surf( 0x0 );
     DEST( surf, cx, cy, w, h );
     SOURCE( contents, 0, 0 );
-    alpha_blit_surf( 96 );
+    alpha_blit_surf( 32 );
 
     SDL_FreeSurface( contents );
     SDL_FreeSurface( frame ); 

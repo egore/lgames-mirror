@@ -1,4 +1,4 @@
-1.1:
+1.0.20:
 - updated configure.in to configure.ac (2020/06/05 MS)
 - added wide screen support (2020/06/05 MS)
 - removed all inline keywords to work with GCC 5 (2015/05/16 MS)
