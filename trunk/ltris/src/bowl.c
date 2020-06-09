@@ -39,10 +39,6 @@ Block_Mask block_masks[BLOCK_COUNT];
 extern Bowl *bowls[BOWL_COUNT];
 extern int  *next_blocks, next_blocks_size;
 
-#define BOWL_DOWN_VEL_START    0.025
-#define BOWL_DOWN_VEL_END      0.32
-#define BOWL_DOWN_PERC_CHANGE  0.085
-
 /*
 ====================================================================
 Locals
@@ -56,14 +52,17 @@ Get speed according to level of bowl.
 */
 void bowl_set_vert_block_vel( Bowl *bowl )
 {
-    int i;
-    /* ranges from BOWL_DOWN_VEL_START to BOWL_DOWN_VEL_END within twenty levels */
-    bowl->block_vert_vel = BOWL_DOWN_VEL_START;
-    for ( i = 0; i < bowl->level; i++ ) {
-//        printf( "Level %2i: %2.5f\n", i, bowl->block_vert_vel );
-        bowl->block_vert_vel += ( BOWL_DOWN_VEL_END - bowl->block_vert_vel ) * BOWL_DOWN_PERC_CHANGE;
-    }
-    /* set add action info */
+	int i;
+
+	int base60[] = { 48,43,38,33,28,23,18,13,8,6,5,5,5,4,4,4,3,3,3,
+			2,2,2,2,2,2,2,2,2,2,1 };
+	float ms = 1000.0 / 60.0; /* milliseconds per grid cell */
+	if (bowl->level < 29)
+		ms = 1000.0 * (float)(base60[bowl->level]) / 60.0;
+	bowl->block_vert_vel = (float)(bowl->block_size) / ms;
+	printf( "Level %2i: %2.5f\n", i, bowl->block_vert_vel );
+
+    /* set add action info for game mode figure (2) */
     if ( config.gametype == 2 ) {
         bowl->dismantle_saves = 1;
         /* 7 - 12 single tiles */

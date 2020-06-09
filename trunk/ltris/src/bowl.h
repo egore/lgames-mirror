@@ -55,7 +55,7 @@ typedef struct {
     SDL_Surface *unknown_preview; /* if preview's unknown this is displaye */
     char name[32]; /* player's name playing at this bowl */
     Counter score; /* score gained by this player */
-    int level; /* level to which player has played */
+    int level; /* level to which player has played (starts at 0) */
     int lines;
     int use_figures; /* draw a figure each new level? */
     int add_lines, add_tiles; /* add lines or tiles after time out? */
