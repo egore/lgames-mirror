@@ -414,7 +414,8 @@ void manager_create()
     menu_add( cont, item_create_link( _("Player3"), HINT_CONTROLS, cont_player3 ) );
     menu_add( cont, item_create_separator( "" ) );
     menu_add( cont, item_create_range( _("Horizontal Delay:"),  HINT_HORIDEL,&config.hori_delay, 0, 9, 1 ) );
-    menu_add( cont, item_create_range( _("Vertical Delay:"),  HINT_VERTDEL,&config.vert_delay, 0, 9, 1 ) );
+    // vertical delay no fixed to 0.6 = 1/2G */
+    //menu_add( cont, item_create_range( _("Vertical Delay:"),  HINT_VERTDEL,&config.vert_delay, 0, 9, 1 ) );
     menu_add( cont, pause_key );
     menu_add( cont, item_create_separator( "" ) );
     menu_add( cont, item_create_link( _("Back"), HINT_, _main ) );
