@@ -1055,8 +1055,8 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->preview_center_sx = preview_x;
     bowl->preview_center_sy = preview_y;
     bowl_select_next_block( bowl );
-    bowl->help_alpha_change = -0.9;
-    bowl->help_alpha = 255;
+    bowl->help_alpha_change = 0.9;
+    bowl->help_alpha = 0;
     bowl->preview_alpha_change = 0.4;
     bowl->font = load_fixed_font( "f_small_white.bmp", 32, 96, 8 );
 #ifdef SOUND
@@ -1441,7 +1441,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                 bowl_add_tile( bowl );
         }
     }
-    /* HELP ALPHA */
+    /* HELP ALPHA
     bowl->help_alpha += bowl->help_alpha_change * ms;
     if ( bowl->help_alpha_change > 0 ) {
         if ( bowl->help_alpha > 255 ) {
@@ -1454,7 +1454,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
             bowl->help_alpha_change = -bowl->help_alpha_change;
             bowl->help_alpha = 64;
         }
-    }
+    } */
     /* PREVIEW ALPHA */
     bowl->preview_alpha += bowl->preview_alpha_change * ms;
     if ( bowl->preview_alpha_change > 0 ) {
