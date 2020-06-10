@@ -163,7 +163,7 @@ void config_load( )
     if (config.starting_level > 9 || config.starting_level < 0) {
 	    config.starting_level = 0;
     }
-    parser_get_int( pd, "preview", &config.preview );
+    //parser_get_int( pd, "preview", &config.preview );
     parser_get_int( pd, "help", &config.help );
     parser_get_int( pd, "expert", &config.expert );
     parser_get_int( pd, "center_preview", &config.center_preview );
@@ -231,7 +231,7 @@ void config_save( )
         fprintf( file, "@\n" );
         fprintf( file, "gametype=%i\n", config.gametype );
         fprintf( file, "starting_level=%i\n", config.starting_level );
-        fprintf( file, "preview=%i\n", config.preview );
+        //fprintf( file, "preview=%i\n", config.preview );
         fprintf( file, "help=%i\n", config.help );
         fprintf( file, "expert=%i\n", config.expert );
         fprintf( file, "center_preview=%i\n", config.center_preview );

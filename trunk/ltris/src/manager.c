@@ -64,7 +64,7 @@ Hint strings for the menu.
 */
 #define HINT_ 0
 #define HINT_QHELP _("Enable/disable these quick hints.")
-#define HINT_CTRLS _("Set player controls and horizontal speed.")
+#define HINT_CTRLS _("Set player controls.")
 #define HINT_GFX   _("Here you may customize the graphical appearance of LTris.")
 #define HINT_AUDIO _("Audio Settings.")
 #define HINT_QUIT _("Get back to nasty work.")
@@ -352,7 +352,7 @@ void manager_create()
     menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_switch_x( _("Game:"), HINT_GAME, &config.gametype, lc_gametype_names, 8 ) );
     menu_add( game, item_create_range( _("Starting Level:"), HINT_STARTLEVEL, &config.starting_level, 0, 9, 1 ) );
-    menu_add( game, item_create_switch( _("Preview:"), HINT_PREVIEW, &config.preview, _("Off"), _("On") ) );
+    //menu_add( game, item_create_switch( _("Preview:"), HINT_PREVIEW, &config.preview, _("Off"), _("On") ) );
     menu_add( game, item_create_switch_x( _("Help:"), HINT_HELP, &config.help, str_help, 3 ) );
     menu_add( game, item_create_switch( _("Expert Mode:"), HINT_EXPERT, &config.expert, _("Off"), _("On") ) );
 #ifdef _1    
