@@ -586,6 +586,17 @@ void bowl_finish_game( Bowl *bowl )
     DPRINTF("Final score with bonuses: %d\n", (int)counter_get(bowl->score));
 }
 
+/** Adjust bowl->score if lc lines have been cleared in current level. */
+void bowl_add_score(Bowl *bowl, int lc)
+{
+	int base[4] = {0,40,100,300,1200};
+	if (lc < 0)
+		lc = 0;
+	if (lc > 4)
+		lc = 4; /* should not be possible */
+	counter_add(&bowl->score, base[lc] * (bowl->level + 1));
+}
+
 /*
 ====================================================================
 Actually insert block and remove a line if needed, 
@@ -663,12 +674,6 @@ void bowl_insert_block( Bowl *bowl )
   if ( line_count > 0 )
     if ( !bowl->mute ) sound_play( bowl->wav_explosion );
 #endif    
-  /* add score */
-  line_score = 100 * ( bowl->level + 1 );
-  for ( i = 0; i < line_count; i++ ) {
-    counter_add( &bowl->score, line_score );
-    line_score *= 2;
-  }
   /* line and level update */
   old_level = bowl->lines / 10;
   bowl->lines += line_count;
@@ -684,6 +689,8 @@ void bowl_insert_block( Bowl *bowl )
       bowl_reset_contents( bowl );
     }
   }
+  /* add score */
+  bowl_add_score(bowl, line_count);
   /* reset delay of add_line/tile */
   if ( line_count && ( bowl->add_lines || bowl->add_tiles ) && bowl->dismantle_saves )
     delay_reset( &bowl->add_delay );
