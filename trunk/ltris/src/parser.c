@@ -483,14 +483,14 @@ static int parser_read_file_compact( PData *section )
                 /* read values as subsection */
                 pd = calloc( 1, sizeof( PData ) );
                 /* check name */
-                if ( ( cur = strchr( line, '»' ) ) == 0 ) {
-                    sprintf( parser_sub_error, "parse error: use '»' for assignment or '<' for section" );
+                if ( ( cur = strchr( line, '=' ) ) == 0 ) {
+                    sprintf( parser_sub_error, "parse error: use '=' for assignment or '<' for section" );
                     return 0;
                 }
                 cur[0] = 0; cur++;
                 pd->name = strdup( line );
                 /* get values */
-                pd->values = parser_explode_string( cur, '°' );
+                pd->values = parser_explode_string( cur, '=' );
                 /* add to section */
                 list_add( section->entries, pd );
                 break;

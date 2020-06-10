@@ -125,7 +125,7 @@ void config_reset()
     config.keep_bkgnd = 0;
     config.clear_keystate = 1;
     config.center_preview = 0;
-    config.async_col_check = 0;
+    config.async_col_check = 1;
 }
 
 /* load config */
@@ -190,7 +190,7 @@ void config_load( )
     parser_get_int( pd, "fps", &config.fps );
     parser_get_int( pd, "background", &config.bkgnd );
     parser_get_int( pd, "static_background", &config.keep_bkgnd );
-    parser_get_int( pd, "smooth_hori", &config.smooth_hori );
+    //parser_get_int( pd, "smooth_hori", &config.smooth_hori );
     parser_get_int( pd, "hori_delay", &config.hori_delay );
     parser_get_int( pd, "vert_delay", &config.vert_delay );
     parser_get_int( pd, "pause_key", &config.pause_key );
@@ -200,7 +200,7 @@ void config_load( )
     parser_get_int( pd, "grap_input", &config.grab );
     parser_get_int( pd, "invert_mouse", &config.invert );
     parser_get_int( pd, "quick_help", &config.quick_help );
-    parser_get_int( pd, "async_collision_check", &config.async_col_check );
+    //parser_get_int( pd, "async_collision_check", &config.async_col_check );
     parser_free( &pd );
 }
 
@@ -208,14 +208,14 @@ void config_load( )
 static void print_player( FILE *file, int i, Player *player )
 {
     fprintf( file, "<player%i\n", i );
-    fprintf( file, "name»%s\n", player->name );
+    fprintf( file, "name=%s\n", player->name );
     fprintf( file, "<controls\n" );
-    fprintf( file, "left»%i\n", player->controls.left );
-    fprintf( file, "right»%i\n", player->controls.right );
-    fprintf( file, "rot_left»%i\n", player->controls.rot_left );
-    fprintf( file, "rot_right»%i\n", player->controls.rot_right );
-    fprintf( file, "down»%i\n", player->controls.down );
-    fprintf( file, "drop»%i\n", player->controls.drop );
+    fprintf( file, "left=%i\n", player->controls.left );
+    fprintf( file, "right=%i\n", player->controls.right );
+    fprintf( file, "rot_left=%i\n", player->controls.rot_left );
+    fprintf( file, "rot_right=%i\n", player->controls.rot_right );
+    fprintf( file, "down=%i\n", player->controls.down );
+    fprintf( file, "drop=%i\n", player->controls.drop );
     fprintf( file, ">\n" );
     fprintf( file, ">\n" );
 }
@@ -229,42 +229,42 @@ void config_save( )
         fprintf( stderr, "Cannot access config file '%s' to save settings\n", file_name );
     else {
         fprintf( file, "@\n" );
-        fprintf( file, "gametype»%i\n", config.gametype );
-        fprintf( file, "starting_level»%i\n", config.starting_level );
-        fprintf( file, "preview»%i\n", config.preview );
-        fprintf( file, "help»%i\n", config.help );
-        fprintf( file, "expert»%i\n", config.expert );
-        fprintf( file, "center_preview»%i\n", config.center_preview );
-        fprintf( file, "holes»%i\n", config.holes );
-        fprintf( file, "rand_holes»%i\n", config.rand_holes );
-        fprintf( file, "send_all»%i\n", config.send_all );
-        fprintf( file, "send_tetris»%i\n", config.send_tetris );
+        fprintf( file, "gametype=%i\n", config.gametype );
+        fprintf( file, "starting_level=%i\n", config.starting_level );
+        fprintf( file, "preview=%i\n", config.preview );
+        fprintf( file, "help=%i\n", config.help );
+        fprintf( file, "expert=%i\n", config.expert );
+        fprintf( file, "center_preview=%i\n", config.center_preview );
+        fprintf( file, "holes=%i\n", config.holes );
+        fprintf( file, "rand_holes=%i\n", config.rand_holes );
+        fprintf( file, "send_all=%i\n", config.send_all );
+        fprintf( file, "send_tetris=%i\n", config.send_tetris );
         print_player( file, 1, &config.player1 );
         print_player( file, 2, &config.player2 );
         print_player( file, 3, &config.player3 );
-        fprintf( file, "clear_keystate»%i\n", config.clear_keystate );
-        fprintf( file, "cpu_aggr»%i\n", config.cpu_aggr );
-        fprintf( file, "cpu_delay»%i\n", config.cpu_delay );
-        fprintf( file, "cpu_rot_delay»%i\n", config.cpu_rot_delay );
-        fprintf( file, "sound»%i\n", config.sound );
-        fprintf( file, "volume»%i\n", config.volume );
-        fprintf( file, "transparency»%i\n", config.trp );
-        fprintf( file, "animations»%i\n", config.anim );
-        fprintf( file, "fullscreen»%i\n", config.fullscreen );
-        fprintf( file, "fading»%i\n", config.fade );
-        fprintf( file, "fps»%i\n", config.fps );
-        fprintf( file, "background»%i\n", config.bkgnd );
-        fprintf( file, "static_background»%i\n", config.keep_bkgnd );
-        fprintf( file, "smooth_hori»%i\n", config.smooth_hori );
-        fprintf( file, "hori_delay»%i\n", config.hori_delay );
-        fprintf( file, "vert_delay»%i\n", config.vert_delay );
-        fprintf( file, "pause_key»%i\n", config.pause_key );
-        fprintf( file, "block_by_block»%i\n", config.block_by_block );
-        fprintf( file, "motion_mod»%i\n", config.motion_mod );
-        fprintf( file, "relative_motion»%i\n", config.rel_motion );
-        fprintf( file, "grab_input»%i\n", config.grab );
-        fprintf( file, "invert_mouse»%i\n", config.invert );
-        fprintf( file, "quick_help»%i\n", config.quick_help );
-        fprintf( file, "async_collision_check»%i\n", config.async_col_check );
+        fprintf( file, "clear_keystate=%i\n", config.clear_keystate );
+        fprintf( file, "cpu_aggr=%i\n", config.cpu_aggr );
+        fprintf( file, "cpu_delay=%i\n", config.cpu_delay );
+        fprintf( file, "cpu_rot_delay=%i\n", config.cpu_rot_delay );
+        fprintf( file, "sound=%i\n", config.sound );
+        fprintf( file, "volume=%i\n", config.volume );
+        fprintf( file, "transparency=%i\n", config.trp );
+        fprintf( file, "animations=%i\n", config.anim );
+        fprintf( file, "fullscreen=%i\n", config.fullscreen );
+        fprintf( file, "fading=%i\n", config.fade );
+        fprintf( file, "fps=%i\n", config.fps );
+        fprintf( file, "background=%i\n", config.bkgnd );
+        fprintf( file, "static_background=%i\n", config.keep_bkgnd );
+        //fprintf( file, "smooth_hori=%i\n", config.smooth_hori );
+        fprintf( file, "hori_delay=%i\n", config.hori_delay );
+        fprintf( file, "vert_delay=%i\n", config.vert_delay );
+        fprintf( file, "pause_key=%i\n", config.pause_key );
+        fprintf( file, "block_by_block=%i\n", config.block_by_block );
+        fprintf( file, "motion_mod=%i\n", config.motion_mod );
+        fprintf( file, "relative_motion=%i\n", config.rel_motion );
+        fprintf( file, "grab_input=%i\n", config.grab );
+        fprintf( file, "invert_mouse=%i\n", config.invert );
+        fprintf( file, "quick_help=%i\n", config.quick_help );
+        //fprintf( file, "async_collision_check=%i\n", config.async_col_check );
     }
 }
