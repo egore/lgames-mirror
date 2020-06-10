@@ -60,7 +60,7 @@ void bowl_set_vert_block_vel( Bowl *bowl )
 	if (bowl->level < 29)
 		ms = 1000.0 * (float)(base60[bowl->level]) / 60.0;
 	bowl->block_vert_vel = (float)(bowl->block_size) / ms;
-	printf( "Level %2i: %2.5f\n", i, bowl->block_vert_vel );
+	//printf( "Level %2i: %2.5f\n", i, bowl->block_vert_vel );
 
     /* set add action info for game mode figure (2) */
     if ( config.gametype == 2 ) {
@@ -1038,11 +1038,11 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->stored_key = -1;
     bowl_reset_contents( bowl );
     bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
-    delay_set( &bowl->block_hori_delay, config.hori_delay * 12 + 63 );
+    delay_set( &bowl->block_hori_delay, 100/*config.hori_delay * 12 + 63*/ );
     bowl->block_hori_vel = (float)bowl->block_size / bowl->block_hori_delay.limit;
     /* translate config option vert_delay into drop_vel to avoid unnecessary
      * changes in the code. the lower the delay the higher the velocity. */
-    bowl->block_drop_vel = 0.6; // 0.8 - config.vert_delay*0.07;
+    bowl->block_drop_vel = 0.6; // fixed to 0.6; 0.8 - config.vert_delay*0.07;
     bowl_set_vert_block_vel( bowl );
     bowl->help_sw = bowl->help_sh = bowl->block_size * 4;
     bowl->preview_center_sx = preview_x;

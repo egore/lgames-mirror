@@ -333,7 +333,7 @@ void manager_create()
 #endif
     /* gfx */
     menu_add( gfx, item_create_switch( _("Animations:"), HINT_ANIM, &config.anim, _("Off"), _("On") ) );
-    menu_add( gfx, item_create_switch( _("Move:"), HINT_SMOOTHHORI, &config.smooth_hori, _("Tile By Tile"), _("Smooth") ) );
+    //menu_add( gfx, item_create_switch( _("Move:"), HINT_SMOOTHHORI, &config.smooth_hori, _("Tile By Tile"), _("Smooth") ) );
     menu_add( gfx, item_create_switch( _("Drop:"), HINT_SMOOTHVERT, &config.block_by_block, _("Smooth"), _("Tile By Tile") ) );
     menu_add( gfx, item_create_switch( _("Change Background:"), HINT_BKGND, &config.keep_bkgnd, _("Yes"), _("No") ) );
     menu_add( gfx, item_create_separator( "" ) );
@@ -413,8 +413,7 @@ void manager_create()
     menu_add( cont, item_create_link( _("Player2"), HINT_CONTROLS, cont_player2 ) );
     menu_add( cont, item_create_link( _("Player3"), HINT_CONTROLS, cont_player3 ) );
     menu_add( cont, item_create_separator( "" ) );
-    menu_add( cont, item_create_range( _("Horizontal Delay:"),  HINT_HORIDEL,&config.hori_delay, 0, 9, 1 ) );
-    // vertical delay no fixed to 0.6 = 1/2G */
+    //menu_add( cont, item_create_range( _("Horizontal Delay:"),  HINT_HORIDEL,&config.hori_delay, 0, 9, 1 ) );
     //menu_add( cont, item_create_range( _("Vertical Delay:"),  HINT_VERTDEL,&config.vert_delay, 0, 9, 1 ) );
     menu_add( cont, pause_key );
     menu_add( cont, item_create_separator( "" ) );
@@ -440,7 +439,7 @@ void manager_create()
     menu_add( adv, item );
     menu_add( adv, item_create_switch_x( _("Clear Keystate:"), HINT_KEYSTATE, &config.clear_keystate, keystate_names, 3 ) );
     menu_add( adv, item_create_switch  ( _("Center Preview:"), HINT_CENTERPREVIEW, &config.center_preview, _("Off"), _("On") ) );
-    menu_add( adv, item_create_switch  ( _("Collision Check:"), HINT_COL_CHECK, &config.async_col_check, _("Sync"), _("Async") ) );
+    //menu_add( adv, item_create_switch  ( _("Collision Check:"), HINT_COL_CHECK, &config.async_col_check, _("Sync"), _("Async") ) );
 #ifdef DEVELOPMENT    
     menu_add( adv, item_create_separator( "" ) );
     menu_add( adv, item_create_action( _("Test CPU Algorithm"), HINT_CPUALG, ACTION_MAKE_STAT ) );
