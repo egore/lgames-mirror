@@ -52,8 +52,6 @@ Get speed according to level of bowl.
 */
 void bowl_set_vert_block_vel( Bowl *bowl )
 {
-	int i;
-
 	int base60[] = { 48,43,38,33,28,23,18,13,8,6,5,5,5,4,4,4,3,3,3,
 			2,2,2,2,2,2,2,2,2,2,1 };
 	float ms = 1000.0 / 60.0; /* milliseconds per grid cell */
@@ -589,7 +587,7 @@ void bowl_finish_game( Bowl *bowl )
 /** Adjust bowl->score if lc lines have been cleared in current level. */
 void bowl_add_score(Bowl *bowl, int lc)
 {
-	int base[4] = {0,40,100,300,1200};
+	int base[5] = {0,40,100,300,1200};
 	if (lc < 0)
 		lc = 0;
 	if (lc > 4)
@@ -608,7 +606,6 @@ void bowl_insert_block( Bowl *bowl )
   int i, j, k, l;
   int line_y[4];
   int line_count;
-  int line_score;
   int full;
   int old_level;
   int send_count;
@@ -854,7 +851,9 @@ void bowl_load_figures() {
                 fprintf( stderr, "Unexpected end of file when trying to read line %i of figure %i in '%s'.\n", j, i, path );
                 return;
             }
-            fread( buf, sizeof( char ), BOWL_WIDTH + 1, file ); buf[BOWL_WIDTH] = 0;
+            if (fread(buf, sizeof(char), BOWL_WIDTH+1, file) != BOWL_WIDTH+1)
+        	    fprintf(stderr,"%s:%d: Error reading figures\n",__FILE__,__LINE__);
+            buf[BOWL_WIDTH] = 0;
             for ( k = 0; k < BOWL_WIDTH; k++ ) {
                 if ( buf[k] == 32 )
                     figures[i][k][j] = -1;
@@ -1072,11 +1071,21 @@ void bowl_delete( Bowl *bowl )
 {
     free_font( &bowl->font );
 #ifdef SOUND
-    if ( bowl->wav_excellent ) sound_chunk_free( bowl->wav_excellent ); bowl->wav_excellent = 0;
-    if ( bowl->wav_nextlevel ) sound_chunk_free( bowl->wav_nextlevel ); bowl->wav_nextlevel = 0;
-    if ( bowl->wav_stop ) sound_chunk_free( bowl->wav_stop ); bowl->wav_stop = 0;
-    if ( bowl->wav_leftright ) sound_chunk_free( bowl->wav_leftright ); bowl->wav_leftright = 0;
-    if ( bowl->wav_explosion ) sound_chunk_free( bowl->wav_explosion ); bowl->wav_explosion = 0;
+    if ( bowl->wav_excellent )
+	    sound_chunk_free( bowl->wav_excellent );
+    bowl->wav_excellent = 0;
+    if ( bowl->wav_nextlevel )
+	    sound_chunk_free( bowl->wav_nextlevel );
+    bowl->wav_nextlevel = 0;
+    if ( bowl->wav_stop )
+	    sound_chunk_free( bowl->wav_stop );
+    bowl->wav_stop = 0;
+    if ( bowl->wav_leftright )
+	    sound_chunk_free( bowl->wav_leftright );
+    bowl->wav_leftright = 0;
+    if ( bowl->wav_explosion )
+	    sound_chunk_free( bowl->wav_explosion );
+    bowl->wav_explosion = 0;
 #endif
     free( bowl );
 }

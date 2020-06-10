@@ -232,15 +232,27 @@ void tetris_create()
 }
 void tetris_delete()
 {
-    if ( logo ) SDL_FreeSurface( logo ); logo = 0;
-    if ( blocks ) SDL_FreeSurface( blocks ); blocks = 0;
-    if ( qmark ) SDL_FreeSurface( qmark ); qmark = 0;
+    if ( logo )
+	    SDL_FreeSurface( logo );
+    logo = 0;
+    if ( blocks )
+	    SDL_FreeSurface( blocks );
+    blocks = 0;
+    if ( qmark )
+	    SDL_FreeSurface( qmark );
+    qmark = 0;
     free_font( &font );
     free_font( &large_font );
-    if ( offscreen ) SDL_FreeSurface( offscreen ); offscreen = 0;
-    if ( bkgnd ) SDL_FreeSurface( bkgnd ); bkgnd = 0;
+    if ( offscreen )
+	    SDL_FreeSurface( offscreen );
+    offscreen = 0;
+    if ( bkgnd )
+	    SDL_FreeSurface( bkgnd );
+    bkgnd = 0;
 #ifdef SOUND        
-    if ( wav_click ) sound_chunk_free( wav_click ); wav_click = 0;
+    if ( wav_click )
+	    sound_chunk_free( wav_click );
+    wav_click = 0;
 #endif        
 }
 

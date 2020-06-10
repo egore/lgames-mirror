@@ -247,8 +247,12 @@ void exps_clear()
 }
 void exp_delete()
 {
-    if ( exp_pic ) SDL_FreeSurface( exp_pic ); exp_pic = 0;
-    if ( exps ) list_delete( exps ); exps = 0;
+    if ( exp_pic )
+	    SDL_FreeSurface( exp_pic );
+    exp_pic = 0;
+    if ( exps )
+	    list_delete( exps );
+    exps = 0;
 }
 void exp_create( int x, int y )
 {
