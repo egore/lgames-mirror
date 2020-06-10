@@ -92,11 +92,17 @@ void chart_read_entries( FILE *file, char *file_name, Set_Chart *chart )
                      file_name, i );
             break;
         }
-        fgets( buffer, 128, file ); buffer[strlen(buffer) - 1] = 0; /* remove newline */
+        if (!fgets( buffer, 128, file ))
+		fprintf(stderr,"%s:%d: Error reading file %s\n",__FILE__,__LINE__,file_name);
+       	buffer[strlen(buffer) - 1] = 0; /* remove newline */
         strcpy( chart->entries[i].name, buffer );
-        fgets( buffer, 128, file ); buffer[strlen(buffer) - 1] = 0; /* remove newline */
+        if (!fgets( buffer, 128, file ))
+		fprintf(stderr,"%s:%d: Error reading file %s\n",__FILE__,__LINE__,file_name);
+        buffer[strlen(buffer) - 1] = 0; /* remove newline */
         chart->entries[i].level = atoi( buffer );
-        fgets( buffer, 128, file ); buffer[strlen(buffer) - 1] = 0; /* remove newline */
+        if (!fgets( buffer, 128, file ))
+		fprintf(stderr,"%s:%d: Error reading file %s\n",__FILE__,__LINE__,file_name);
+        buffer[strlen(buffer) - 1] = 0; /* remove newline */
         chart->entries[i].score = strtod( buffer, 0 );
     }
 }
@@ -123,19 +129,24 @@ int chart_load_from_path( char *path )
     file = fopen( file_name, "r" );
     if ( file ) {
 		/* test if it's new format or old one. */
-		fread( aux, sizeof( char ), 3, file ); aux[3] = 0;
+		if (fread(aux, sizeof( char ), 3, file) != 3)
+			fprintf(stderr,"%s:%d: Error reading file %s\n",__FILE__,__LINE__,file_name);
+		aux[3] = 0;
 		fseek( file, 0, SEEK_SET );
 		if ( strequal( ">>>", aux ) ) {
 			/* new format: load all set charts */
 			while( !feof( file ) ) {
 				/* check if next sign is an '>' else skip reading */
 				aux[0] = 0;
-				fread( aux, sizeof( char ), 1, file );
-				fseek( file, -1, SEEK_CUR );
+				/* XXX this fails sometimes don't know why so just
+				 * give no error but only fseek on success */
+				if (fread(aux, sizeof( char ), 1, file) == 1)
+					fseek( file, -1, SEEK_CUR );
 				if ( aux[0] != '>' ) break;
 				chart = calloc( 1, sizeof( Set_Chart ) );
 				/* get name: >>>name */
-				fscanf( file, ">>>%1023s\n", setname );
+				if (fscanf( file, ">>>%1023s\n", setname ) != 1)
+					fprintf(stderr,"%s:%d: Error reading file %s\n",__FILE__,__LINE__,file_name);
 				chart->name = strdup( setname );
 				/* entries */
 				chart_read_entries( file, file_name, chart );
@@ -186,7 +197,9 @@ void chart_load()
     /* HACK: not sure whether this comes really first to any chart usage??? */
     strcpy(cheader, _("Name      Level    Score")); 
 	/* create list */
-	if ( charts ) list_delete( charts ); charts = 0;
+	if ( charts )
+		list_delete( charts );
+	charts = 0;
 	charts = list_create( LIST_AUTO_DELETE, chart_set_delete );
     /* load highscore */
     if ( !chart_load_from_path( HI_DIR ) ) {
@@ -221,7 +234,9 @@ void chart_delete()
     free_font( &cfont );
     free_font( &chfont );
     free_font( &ccfont );
-	if ( charts ) list_delete( charts ); charts = 0;
+	if ( charts )
+		list_delete( charts );
+	charts = 0;
 }
 /*
 ====================================================================

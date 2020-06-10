@@ -252,7 +252,7 @@ void cpu_analyze_bowl( CPU_Data *cpu_data, CPU_Dest *dest )
     /* height difference to the neighbored tiles */
     for ( i = 1; i < BOWL_WIDTH - 1; i++ ) {
         diff = abs( cpu_get_alt( cpu_data, i ) - cpu_get_alt( cpu_data, i - 1 ) ) + abs( cpu_get_alt( cpu_data, i ) - cpu_get_alt( cpu_data, i + 1 ) );
-        dest->steep_mod += CPU_SCORE_STEEP;
+        dest->steep_mod += CPU_SCORE_STEEP*diff;
     }
 
     /* ABYSS */

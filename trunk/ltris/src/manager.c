@@ -475,8 +475,12 @@ void manager_delete()
     free_font( &mhfont );
     free_font( &mcfont );
 #ifdef SOUND
-    if ( wav_menu_click ) sound_chunk_free( wav_menu_click ); wav_menu_click = 0;
-    if ( wav_menu_motion ) sound_chunk_free( wav_menu_motion ); wav_menu_motion = 0;
+    if ( wav_menu_click )
+	    sound_chunk_free( wav_menu_click );
+    wav_menu_click = 0;
+    if ( wav_menu_motion )
+	    sound_chunk_free( wav_menu_motion );
+    wav_menu_motion = 0;
 #endif
 }
 /*
