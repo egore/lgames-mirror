@@ -71,7 +71,7 @@ Hint strings for the menu.
 #define HINT_NEWGAME _("Setup and run a cool game!")
 #define HINT_ANIM _("If animations disturb you you may turn them off.")
 #define HINT_DISPLAY _("You may play LTris either in window of fullscreen mode.")
-#define HINT_FPS _("If you don't want LTris to consume all of your CPU limit the frame rate.")
+#define HINT_FPS _("Change frames per second.")
 #define HINT_SMOOTHHORI _("Horizontally move block either tile-by-tile or smooth. This is just eye-candy and doesn't effect the moving speed at all.")
 #define HINT_SMOOTHVERT _("Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you to move a block below a tile multiple times you'll only be able to do so one time when choosing 'smooth'!#See 'Advanced Options/Collision Check' to improve this.")
 #define HINT_HORIDEL _("The less delay you take the faster the block will horizontally move and the more sensitive the input is handled.")
@@ -210,7 +210,7 @@ void manager_create()
     Item *item;
     int filter[SDLK_LAST]; /* key filter */
     /* constant contence of switches */
-    char *str_fps[] = { _("No Limit"), _("50 FPS"), _("100 FPS"), _("200 FPS") ,};
+    char *str_fps[] = { _("60 FPS"), _("50 FPS") };
     char *str_cpu_aggr[] = { _("Defensive"), _("Normal"), _("Aggressive"), _("Kamikaze") ,};
     char *str_help[] = { _("Off"), _("Shadow"), _("Lines") ,};
     char *keystate_names[] = { _("None"), _("Down"), _("All") ,};
@@ -340,7 +340,7 @@ void manager_create()
     item = item_create_switch( _("Display:"), HINT_DISPLAY, &config.fullscreen, _("Window"), _("Fullscreen") );
     item->callback = cb_fullscreen;
     menu_add( gfx, item );
-    menu_add( gfx, item_create_switch_x( _("Frame Rate:"), HINT_FPS, &config.fps, str_fps, 4 ) );
+    menu_add( gfx, item_create_switch_x( _("Frame Rate:"), HINT_FPS, &config.fps, str_fps, 2 ) );
     menu_add( gfx, item_create_separator( "" ) );
     menu_add( gfx, item_create_link( _("Back"), HINT_, _main ) );
     /* game */

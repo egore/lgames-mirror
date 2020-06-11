@@ -110,7 +110,7 @@ void config_reset()
     config.anim = 1;
     config.fullscreen = 0;
     config.fade = 1;
-    config.fps = 0; /* frames per second: 0 - no limit, 1 - 50, 2 - 100, 3 - 200 */
+    config.fps = 0; /* frames per second: 0 - 60Hz, 1 - 50Hz */
     config.bkgnd = 0;
     config.smooth_hori = 0;
     config.block_by_block = 0;
