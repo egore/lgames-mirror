@@ -572,10 +572,6 @@ void bowl_finish_game( Bowl *bowl )
         score_mod += 0.15;
         DPRINTF("Bonus for no preview, current score mod = %1.2g\n",score_mod);
     }
-    if ( config.gametype != 2 && config.starting_level > 0) {
-        score_mod += 0.015 * config.starting_level;
-        DPRINTF("Bonus for higher starting level, current score mod = %1.2g\n",score_mod);
-    }
     if ( config.expert && (config.gametype == 1 || config.gametype == 2) ) {
 	score_mod += 0.5;
         DPRINTF("Bonus for expert mode, current score mod = %1.2g\n",score_mod);
@@ -1345,12 +1341,13 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                     else if (ret == POSINVAL_RIGHT)
                         hori_mod--;
                     else {
-                        if (ret == 0)
+                        if (ret == POSVALID)
                             bowl->block.rot_id = new_rot;
                         break;
                     }
                 } while (abs(hori_mod) < 3);
-                if (ret == 0 && hori_mod) {
+                /* wall kick, don't rotate above if not allowed */
+                if (ret == POSVALID && hori_mod) {
                     bowl->block.x += hori_mod;
                     hori_movement = 1;
                     if ( config.smooth_hori ) {
@@ -1412,7 +1409,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         else
             bowl->block.cur_y += bowl->block_vert_vel * ms;
         /* update vertical bowl position */
-        bowl->block.y = (int)bowl->block.cur_y / bowl->block_size;
+        bowl->block.y = (int)(bowl->block.cur_y / bowl->block_size);
         /* update check y */
         if ( config.block_by_block || config.async_col_check )
             bowl->block.check_y = bowl->block.y * bowl->block_size;
@@ -1428,7 +1425,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
             /* to allow horizontal movement after the block touched
                the ground we allow moving into the next block. this shouldn't be
                seen, of course */
-            if ( !config.async_col_check || bowl_validate_block_pos( bowl, bowl->block.x, (int)bowl->block.cur_y, bowl->block.rot_id, 0) == 0 )
+            if ( !config.async_col_check || bowl_validate_block_pos( bowl, bowl->block.x, (int)bowl->block.cur_y, bowl->block.rot_id, 0) == POSVALID )
                 bowl->block.sy = (int)bowl->block.cur_y + bowl->sy;
             else
                 bowl->block.sy = bowl->block.y * bowl->block_size + bowl->sy;
