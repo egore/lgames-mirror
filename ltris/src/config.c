@@ -160,7 +160,7 @@ void config_load( )
     /* parse config */
     parser_get_int( pd, "gametype", &config.gametype );
     parser_get_int( pd, "starting_level", &config.starting_level );
-    if (config.starting_level > 9 || config.starting_level < 0) {
+    if (config.starting_level > 19 || config.starting_level < 0) {
 	    config.starting_level = 0;
     }
     //parser_get_int( pd, "preview", &config.preview );

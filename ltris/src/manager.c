@@ -80,7 +80,7 @@ Hint strings for the menu.
 #define HINT_PAUSEKEY _("Key used to pause and unpause a game.")
 #define HINT_START _("Let's get it on!!!!")
 #define HINT_NAME _("Human player names. If you play against CPU it will be named as CPU-x.")
-#define HINT_STARTLEVEL _("This is your starting level which will be ignored for game 'Figures' (you'll always start at level 0 there).##Each starting level up adds you 1.5% score in the end!")
+#define HINT_STARTLEVEL _("This is your starting level which will be ignored for mode 'Figures' (always start at level 0).##The first played level will require the more lines to be cleared for level up the higher it is.")
 #define HINT_PREVIEW _("Enable/Disable block preview.##If disabled you'll gain 15% score in the end!")
 #define HINT_HELP _("Shows guiding lines or a shadow of the currently dropping block so you see where it'll hit the ground.##This option has no penalty/bonus.")
 #define HINT_MPMENU _("Some multiplayer and CPU settings.")
@@ -351,7 +351,7 @@ void manager_create()
     menu_add( game, item_create_edit( _("3rd Player:"), HINT_NAME, config.player3.name, 12 ) );
     menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_switch_x( _("Game:"), HINT_GAME, &config.gametype, lc_gametype_names, 8 ) );
-    menu_add( game, item_create_range( _("Starting Level:"), HINT_STARTLEVEL, &config.starting_level, 0, 9, 1 ) );
+    menu_add( game, item_create_range( _("Starting Level:"), HINT_STARTLEVEL, &config.starting_level, 0, 19, 1 ) );
     //menu_add( game, item_create_switch( _("Preview:"), HINT_PREVIEW, &config.preview, _("Off"), _("On") ) );
     menu_add( game, item_create_switch_x( _("Help:"), HINT_HELP, &config.help, str_help, 3 ) );
     menu_add( game, item_create_switch( _("Expert Mode:"), HINT_EXPERT, &config.expert, _("Off"), _("On") ) );
