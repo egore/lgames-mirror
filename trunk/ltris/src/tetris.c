@@ -336,6 +336,11 @@ void tetris_clear()
     shrapnells_delete();
 }
 
+/** Display FPS in console */
+void show_fps(int fps) {
+	//printf("FPS: %d\n",fps); //DEBUG
+}
+
 /*
 ====================================================================
 Run a successfully initated game.
@@ -346,7 +351,6 @@ void tetris_run()
     SDL_Event event;
     int leave = 0;
     int i;
-    int fps_delay = 0;
     int ms;
     int request_pause = 0;
     int game_over = 0;
@@ -356,6 +360,9 @@ void tetris_run()
     int screenshot_id = 0;
     int gain_multiplayer_bonus = 0;
     int escape = 0;
+    int fps = 0, fpsStart, fpsCycles;
+    int maxDelay;
+    Uint32 cycle_start, delay;
     
     /* count number of bowls */
     bowl_count = 0;
@@ -364,18 +371,21 @@ void tetris_run()
             bowl_count++;
     
     SDL_ShowCursor( 0 );
-    /* delay */
-    switch ( config.fps ) {
-        case 1: fps_delay = 20; break;
-        case 2: fps_delay = 10; break;
-        case 3: fps_delay = 5; break;
-    }
+
+	fpsStart = SDL_GetTicks();
+	fpsCycles = 0;
+	if (config.fps == 1)
+		maxDelay = 20;
+	else
+		maxDelay = 17;
+
     /* main loop */
     fade_screen( FADE_IN, FADE_DEF_TIME );
     reset_timer();
     event_reset();
     while ( !leave && !term_game ) {
-        if ( config.fps ) SDL_Delay( fps_delay );
+	    cycle_start = SDL_GetTicks();
+
         if ( event_poll( &event ) ) {
             switch ( event.type ) {
 		case SDL_QUIT:
@@ -474,6 +484,24 @@ void tetris_run()
                 if ( bowls[i] && !bowls[i]->game_over )
                     counter_add( &bowls[i]->score, 50000 );
         }
+
+	/* stats */
+	fpsCycles++;
+	if (fpsStart < SDL_GetTicks())
+		fps = 1000 * fpsCycles / (SDL_GetTicks() - fpsStart);
+	if (fpsCycles > 100) {
+		fpsCycles = 0;
+		fpsStart = SDL_GetTicks();
+		show_fps(fps);
+	}
+
+	/* limit frame rate */
+	delay = maxDelay - (SDL_GetTicks() - cycle_start);
+	if (delay < 1)
+		delay = 1;
+	if (delay > maxDelay)
+		delay = maxDelay;
+	SDL_Delay(delay);
     }
     fade_screen( FADE_OUT, FADE_DEF_TIME );
     /* highscore entries */
