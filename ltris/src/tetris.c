@@ -338,7 +338,18 @@ void tetris_clear()
 
 /** Display FPS in console */
 void show_fps(int fps) {
-	//printf("FPS: %d\n",fps); //DEBUG
+	SDL_Rect r = {0,0,40,20};
+	char str[32];
+	sprintf(str,"%d",fps);
+	if (bowls[0]->font && sdl.screen) {
+		DEST( sdl.screen, r.x, r.y , r.w, r.h );
+		SOURCE( offscreen, r.x, r.y );
+		blit_surf();
+
+		bowls[0]->font->align = ALIGN_X_LEFT | ALIGN_Y_TOP;
+		write_text( bowls[0]->font, sdl.screen, 4, 4, str, OPAQUE );
+		add_refresh_rect(r.x,r.y,r.w,r.h); /* XXX fixed size */
+	}
 }
 
 /*
@@ -492,8 +503,8 @@ void tetris_run()
 	if (fpsCycles > 100) {
 		fpsCycles = 0;
 		fpsStart = SDL_GetTicks();
-		show_fps(fps);
 	}
+	show_fps(fps);
 
 	/* limit frame rate */
 	delay = maxDelay - (SDL_GetTicks() - cycle_start);
