@@ -1,5 +1,6 @@
 - in block by block drop delay in 3d row?
 - start block with flat side down
+- adjust score mod at end of game
 
 Known Bugs:
 SDL does not properly get cursor position if switching from 
