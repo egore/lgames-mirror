@@ -50,6 +50,9 @@ typedef struct {
     int w, h; /* measurements in blocks */
     int block_size; /* blocksize in pixels */
     Controls *controls; /* reacts to these controls */
+    int das_charge; /* current charge in ms */
+    int das_maxcharge; /* maximum charge in ms */
+    int das_drop; /* das charge drop if shifting piece */
     int stored_key; /* key that was stored this programme cycle */
     SDL_Surface *blocks; /* pointer to the block graphics */
     SDL_Surface *unknown_preview; /* if preview's unknown this is displaye */

@@ -1061,6 +1061,12 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->wav_nextlevel = sound_chunk_load( "nextlevel.wav" );
     bowl->wav_excellent = sound_chunk_load( "excellent.wav" );
 #endif
+
+    /* das charge */
+    bowl->das_maxcharge = 267;
+    bowl->das_charge = 0;
+    bowl->das_drop = 100;
+
     return bowl;
 }
 void bowl_delete( Bowl *bowl )
@@ -1314,12 +1320,22 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         switch ( bowl->stored_key ) {
             case KEY_LEFT:
             case KEY_RIGHT:
-                /* 
-                * horizontal movement has a delay which is nullified by pressing 
-                * left or right key. bowl::block::x is set directly and bowl::block::cur_x
-                * do only approach this position if smooth movement is set.
-                */
-                delay_force_time_out( &bowl->block_hori_delay );
+        	    /* try to instantly move and reset das charge.
+        	     * if shifting not possible, charge to the max */
+        	    bowl->das_charge = 0;
+        	    if (bowl->stored_key == KEY_LEFT)
+        		    hori_mod = -1;
+        	    else
+        		    hori_mod = 1;
+       		    if (bowl_validate_block_pos(bowl,
+        				    bowl->block.x + hori_mod,
+					    bowl->block.check_y,
+					    bowl->block.rot_id, 0) != POSVALID)
+       			    bowl->das_charge = bowl->das_maxcharge;
+       		    else {
+       			    bowl->block.x += hori_mod;
+       			    hori_movement = 1;
+       		    }
                 break;
             case KEY_ROT_LEFT:
             case KEY_ROT_RIGHT:
@@ -1362,26 +1378,50 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                 break;
         }
         /* update horizontal bowl position */
-        if ( delay_timed_out( &bowl->block_hori_delay, ms ) ) {
-            if ( ( bowl->controls && keystate[bowl->controls->left] ) || ( !bowl->controls && bowl->cpu_dest_x < bowl->block.x ) ) 
-                if ( bowl_validate_block_pos( bowl, bowl->block.x - 1, bowl->block.check_y, bowl->block.rot_id, 2 ) == 0 ) {
-                    bowl->block.x--;
-                    hori_movement = 1;
+        int lshift = 0, rshift = 0;
+        /* check if left or right shift requested */
+        if ((bowl->controls && keystate[bowl->controls->left]) ||
+        		( !bowl->controls && bowl->cpu_dest_x < bowl->block.x))
+        	lshift = 1;
+        if ((bowl->controls && keystate[bowl->controls->right]) ||
+        		( !bowl->controls && bowl->cpu_dest_x > bowl->block.x))
+        	rshift = 1;
+        if (lshift || rshift) {
+                /* charge das */
+        	if (bowl->das_charge < bowl->das_maxcharge) {
+        		bowl->das_charge += ms;
+        		if (bowl->das_charge > bowl->das_maxcharge)
+        			bowl->das_charge = bowl->das_maxcharge;
+        	}
+                /* perform auto shift */
+                if (bowl->das_charge == bowl->das_maxcharge) {
+                	if (lshift)
+                		hori_mod = -1;
+                	else
+                		hori_mod = 1;
+                	if (bowl_validate_block_pos(bowl,
+                			bowl->block.x + hori_mod,
+					bowl->block.check_y,
+					bowl->block.rot_id, 0) != POSVALID)
+                		bowl->das_charge = bowl->das_maxcharge;
+                	else {
+                		bowl->block.x += hori_mod;
+                		hori_movement = 1;
+                        	bowl->das_charge -= bowl->das_drop;
+                	}
                 }
-            if ( ( bowl->controls && keystate[bowl->controls->right] ) || ( !bowl->controls && bowl->cpu_dest_x > bowl->block.x ) ) 
-                if ( bowl_validate_block_pos( bowl, bowl->block.x + 1, bowl->block.check_y, bowl->block.rot_id , 2) == 0 ) {
-                    bowl->block.x++;
-                    hori_movement = 1;
-                }
-            if ( hori_movement ) {
-                bowl_compute_help_pos( bowl );
-#ifdef SOUND
-                //if ( !bowl->mute ) sound_play( bowl->wav_leftright );
-#endif    
-            }
         }
+        if ( hori_movement ) {
+        	bowl_compute_help_pos( bowl );
+#ifdef SOUND
+        	//if ( !bowl->mute ) sound_play( bowl->wav_leftright );
+#endif    
+        }
+
         /* update horizontal float&screen position */
         if ( config.smooth_hori ) {
+        	/* cur_x smoothly approaches block.x. block.x is set
+        	 * directly to right position */
             target_x = bowl->block.x * bowl->block_size;
             if ( target_x != (int)bowl->block.cur_x ) {
                 if ( (int)bowl->block.cur_x > target_x ) {
