@@ -52,8 +52,10 @@ Get speed according to level of bowl.
 */
 void bowl_set_vert_block_vel( Bowl *bowl )
 {
-	int base60[] = { 48,43,38,33,28,23,18,13,8,6,5,5,5,4,4,4,3,3,3,
-			2,2,2,2,2,2,2,2,2,2,1 };
+	int base60[] = {
+		48,43,38,33,28,23,18,13,8,6,
+		5,5,5,4,4,4,3,3,3,2,
+		2,2,2,2,2,2,2,2,2,1 };
 	float ms = 1000.0 / 60.0; /* milliseconds per grid cell */
 	if (bowl->level < 29)
 		ms = 1000.0 * (float)(base60[bowl->level]) / 60.0;
@@ -591,6 +593,38 @@ void bowl_add_score(Bowl *bowl, int lc)
 	counter_add(&bowl->score, base[lc] * (bowl->level + 1));
 }
 
+/** Add lines to counter and check if new level has been entered. */
+void bowl_add_lines( Bowl *bowl, int cleared)
+{
+	int levelup = 0;
+
+	/* check level up date, first level might need more than 10
+	 * if higher starting level was chosen */
+	if (bowl->lines < bowl->firstlevelup_lines) {
+		if (bowl->lines + cleared >= bowl->firstlevelup_lines)
+			levelup = 1;
+	} else {
+		int l = bowl->lines - bowl->firstlevelup_lines;
+		if (l / 10 != (l + cleared) / 10)
+			levelup = 1;
+	}
+	if (levelup) {
+		bowl->level = config.starting_level + 1 +
+				(bowl->lines - bowl->firstlevelup_lines) / 10;
+		bowl_set_vert_block_vel( bowl );
+		/* in game figures reset bowl contents */
+		if ( config.gametype == 2 )
+			bowl_reset_contents( bowl );
+#ifdef SOUND
+		if (!bowl->mute)
+			sound_play( bowl->wav_nextlevel );
+#endif
+	}
+
+	/* increase lines count */
+	bowl->lines += cleared;
+}
+
 /*
 ====================================================================
 Actually insert block and remove a line if needed, 
@@ -603,7 +637,6 @@ void bowl_insert_block( Bowl *bowl )
   int line_y[4];
   int line_count;
   int full;
-  int old_level;
   int send_count;
   int shr_type;
   int py;
@@ -667,26 +700,17 @@ void bowl_insert_block( Bowl *bowl )
   if ( line_count > 0 )
     if ( !bowl->mute ) sound_play( bowl->wav_explosion );
 #endif    
-  /* line and level update */
-  old_level = bowl->lines / 10;
-  bowl->lines += line_count;
-  if ( old_level != bowl->lines / 10 ) {
-#ifdef SOUND
-    if ( !bowl->mute ) sound_play( bowl->wav_nextlevel );
-#endif    
-    /* new level */
-    bowl->level++;
-    bowl_set_vert_block_vel( bowl );
-    /* in advanced game reset bowl contents */
-    if ( config.gametype == 2 ) {
-      bowl_reset_contents( bowl );
-    }
-  }
+
+  /* add lines and check level update */
+  bowl_add_lines(bowl, line_count);
+
   /* add score */
   bowl_add_score(bowl, line_count);
+
   /* reset delay of add_line/tile */
   if ( line_count && ( bowl->add_lines || bowl->add_tiles ) && bowl->dismantle_saves )
     delay_reset( &bowl->add_delay );
+
   /* update offscreen&screen */
   bowl->draw_contents = 1;
   /* send completed lines to all other bowls */
@@ -1036,7 +1060,25 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     strcpy( bowl->name, name );
     bowl->controls = controls;
     bowl->use_figures = ( config.gametype == 2 );
-    bowl->level = (config.gametype == 2 ) ? 0 : config.starting_level;
+
+    /* starting level computes as min((sl+1)*10,max(100,sl*10-50)) */
+    if (config.gametype == 2) {
+	    bowl->firstlevelup_lines = 10;
+	    bowl->level = 0;
+    } else {
+	    int a = (config.starting_level+1) * 10;
+	    int b = config.starting_level*10 - 50;
+	    if (b < 100)
+		    b = 100;
+	    if (a < b)
+		    bowl->firstlevelup_lines = a;
+	    else
+		    bowl->firstlevelup_lines = b;
+	    bowl->level = config.starting_level;
+    }
+    printf("First level %d requires %d lines.\n",
+		    	    bowl->level,bowl->firstlevelup_lines);
+
     bowl->stored_key = -1;
     bowl_reset_contents( bowl );
     bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
