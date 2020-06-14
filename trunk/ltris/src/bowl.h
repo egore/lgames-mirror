@@ -55,11 +55,12 @@ typedef struct {
     int das_drop; /* das charge drop if shifting piece */
     int stored_key; /* key that was stored this programme cycle */
     SDL_Surface *blocks; /* pointer to the block graphics */
-    SDL_Surface *unknown_preview; /* if preview's unknown this is displaye */
-    char name[32]; /* player's name playing at this bowl */
+    SDL_Surface *unknown_preview; /* if preview's unknown this is displayed */
+    char name[32]; /* player's name for this bowl */
     Counter score; /* score gained by this player */
     int level; /* level to which player has played (starts at 0) */
-    int lines;
+    int firstlevelup_lines; /* number of lines needed for first level up */
+    int lines; /* number of cleared lines in total */
     int use_figures; /* draw a figure each new level? */
     int add_lines, add_tiles; /* add lines or tiles after time out? */
     int add_line_holes; /* number of holes in added line */
