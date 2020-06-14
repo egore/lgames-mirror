@@ -53,6 +53,7 @@ typedef struct {
     int das_charge; /* current charge in ms */
     int das_maxcharge; /* maximum charge in ms */
     int das_drop; /* das charge drop if shifting piece */
+    int are; /* in ms, if > 0 next piece is blocked until delay times out */
     int stored_key; /* key that was stored this programme cycle */
     SDL_Surface *blocks; /* pointer to the block graphics */
     SDL_Surface *unknown_preview; /* if preview's unknown this is displayed */
@@ -61,6 +62,8 @@ typedef struct {
     int level; /* level to which player has played (starts at 0) */
     int firstlevelup_lines; /* number of lines needed for first level up */
     int lines; /* number of cleared lines in total */
+    int cleared_line_y[4]; /* line indices of cleared lines for last insertion */
+    int cleared_line_count; /* how many lines where cleared */
     int use_figures; /* draw a figure each new level? */
     int add_lines, add_tiles; /* add lines or tiles after time out? */
     int add_line_holes; /* number of holes in added line */
