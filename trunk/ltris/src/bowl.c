@@ -608,6 +608,9 @@ void bowl_add_lines( Bowl *bowl, int cleared)
 		if (l / 10 != (l + cleared) / 10)
 			levelup = 1;
 	}
+
+	bowl->lines += cleared; /* increase lines count */
+
 	if (levelup) {
 		bowl->level = config.starting_level + 1 +
 				(bowl->lines - bowl->firstlevelup_lines) / 10;
@@ -620,9 +623,20 @@ void bowl_add_lines( Bowl *bowl, int cleared)
 			sound_play( bowl->wav_nextlevel );
 #endif
 	}
+}
 
-	/* increase lines count */
-	bowl->lines += cleared;
+/** collapse bowl so entirely empty lines are removed */
+void bowl_collapse(Bowl *bowl)
+{
+	int i,j,l;
+	for (j = 0; j < bowl->cleared_line_count; j++)
+		for (i = 0; i < bowl->w; i++) {
+			for (l = bowl->cleared_line_y[j]; l > 0; l--)
+				bowl_set_tile(bowl, i, l,
+						bowl->contents[i][l - 1]);
+			bowl_set_tile(bowl, i, 0, -1);
+		}
+	bowl->cleared_line_count = 0;
 }
 
 /*
@@ -634,19 +648,21 @@ create shrapnells, give score etc
 void bowl_insert_block( Bowl *bowl )
 {
   int i, j, k, l;
-  int line_y[4];
-  int line_count;
   int full;
   int send_count;
   int shr_type;
   int py;
   int *hole_pos = 0;
+  int max_y; /* lowest block position in tiles */
+
   /* move block y up so it gets to the first free place */
   py = bowl->block.y * bowl->block_size;
   while ( bowl_validate_block_pos( bowl, bowl->block.x, py, bowl->block.rot_id, 0 ) < 0 )
     py -= bowl->block_size;
   bowl->block.y = py / bowl->block_size;
+
   /* insert and check if block is out of screen */
+  max_y = bowl->block.y;
   for ( i = 0; i < 4; i++ ) {
     for ( j = 0; j < 4; j++ ) {
       if ( block_masks[bowl->block.id].mask[bowl->block.rot_id][i][j] ) {
@@ -654,21 +670,39 @@ void bowl_insert_block( Bowl *bowl )
 	if ( bowl->block.x + i >= 0 && bowl->block.x + i < bowl->w )
 	  if ( bowl->block.y + j >= 0 && bowl->block.y + j < bowl->h )
 	    bowl_set_tile( bowl, bowl->block.x + i, bowl->block.y + j, bowl->block.id );
+	if (max_y < bowl->block.y+j)
+		max_y = bowl->block.y+j;
       }
     }
   }
+
+  /* compute base are which is 10/60 s for rows 18,19
+   * and +4/60 for each four rows less */
+  if (max_y >= 18)
+	  bowl->are = 10;
+  else if (max_y >= 14)
+	  bowl->are = 12;
+  else if (max_y >= 10)
+	  bowl->are = 14;
+  else if (max_y >= 6)
+	  bowl->are = 16;
+  else
+	  bowl->are = 18;
+
   /* draw block to offscreen for shrapnells */
   bowl_draw_contents( bowl );
 #ifdef SOUND
   if ( !bowl->mute ) sound_play( bowl->wav_stop );
 #endif    
+
   /* if game over just explode everything and return */
   if ( bowl->game_over ) {  
     bowl_finish_game( bowl );
     return;
   }
+
   /* check for completed lines */
-  line_count = 0;
+  bowl->cleared_line_count = 0;
   for ( j = 0; j < bowl->h; j++ ) {
     full = 1;
     for ( i = 0; i < bowl->w; i++ ) {
@@ -678,48 +712,56 @@ void bowl_insert_block( Bowl *bowl )
       }
     }
     if ( full )
-      line_y[line_count++] = j;
+      bowl->cleared_line_y[bowl->cleared_line_count++] = j;
   }
-  for ( j = 0; j < line_count; j++ )
-    for ( i = 0; i < bowl->w; i++ ) {
-      for ( l = line_y[j]; l > 0; l-- )
-	bowl_set_tile( bowl, i, l, bowl->contents[i][l - 1] );
-      bowl_set_tile( bowl, i, 0, -1 );
-    }
+
+  /* empty completed lines */
+  for ( j = 0; j < bowl->cleared_line_count; j++)
+    for ( i = 0; i < bowl->w; i++ )
+      bowl_set_tile(bowl, i, bowl->cleared_line_y[j], -1);
+
   /* tetris? tell him! */
 #ifdef SOUND
-  if ( line_count == 4 )
+  if ( bowl->cleared_line_count == 4 )
     if ( !bowl->mute ) sound_play( bowl->wav_excellent );
 #endif
+
   /* create shrapnells */
   shr_type = rand() % SHR_TYPE_COUNT;
   if ( !bowl->blind )
-    for ( j = 0; j < line_count; j++ ) 
-      shrapnells_create( bowl->sx, bowl->sy + line_y[j] * bowl->block_size, bowl->sw, bowl->block_size, shr_type );
+    for ( j = 0; j < bowl->cleared_line_count; j++ )
+      shrapnells_create( bowl->sx, bowl->sy + bowl->cleared_line_y[j] * bowl->block_size, bowl->sw, bowl->block_size, shr_type );
 #ifdef SOUND
-  if ( line_count > 0 )
+  if ( bowl->cleared_line_count > 0 )
     if ( !bowl->mute ) sound_play( bowl->wav_explosion );
-#endif    
+#endif
+
+  /* animation adds 18/60 to are */
+  if (bowl->cleared_line_count > 0)
+    bowl->are += 18;
+  /* translate are to ms */
+  bowl->are = 1000 * bowl->are / 60;
 
   /* add lines and check level update */
-  bowl_add_lines(bowl, line_count);
+  bowl_add_lines(bowl, bowl->cleared_line_count);
 
   /* add score */
-  bowl_add_score(bowl, line_count);
+  bowl_add_score(bowl, bowl->cleared_line_count);
 
   /* reset delay of add_line/tile */
-  if ( line_count && ( bowl->add_lines || bowl->add_tiles ) && bowl->dismantle_saves )
+  if ( bowl->cleared_line_count && ( bowl->add_lines || bowl->add_tiles ) && bowl->dismantle_saves )
     delay_reset( &bowl->add_delay );
 
   /* update offscreen&screen */
   bowl->draw_contents = 1;
+
   /* send completed lines to all other bowls */
-  if ( line_count > 1 )
+  if ( bowl->cleared_line_count > 1 )
     {
-      send_count = line_count;
+      send_count = bowl->cleared_line_count;
       if ( !config.send_all )
 	send_count--;
-      if ( line_count == 4 && config.send_tetris )
+      if ( bowl->cleared_line_count == 4 && config.send_tetris )
 	send_count = 4;
 
       for ( i = 0; i < BOWL_COUNT; i++ )
@@ -755,8 +797,6 @@ void bowl_insert_block( Bowl *bowl )
 	    hole_pos = 0;
 	  }
     }
-  /* get next block */
-  bowl_select_next_block( bowl );
 }
 /*
 ====================================================================
@@ -1061,11 +1101,12 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->controls = controls;
     bowl->use_figures = ( config.gametype == 2 );
 
-    /* starting level computes as min((sl+1)*10,max(100,sl*10-50)) */
     if (config.gametype == 2) {
 	    bowl->firstlevelup_lines = 10;
 	    bowl->level = 0;
     } else {
+	    /* starting lines to be cleared computes as
+	     * min((slevel+1)*10,max(100,slevel*10-50)) */
 	    int a = (config.starting_level+1) * 10;
 	    int b = config.starting_level*10 - 50;
 	    if (b < 100)
@@ -1259,17 +1300,19 @@ void bowl_show( Bowl *bowl )
                 }
                 if ( block_masks[bowl->block.id].mask[bowl->block.rot_id][i][j] ) {
                     /* help */
-                    if ( config.help == 1 ) {
+                    if ( config.help == 1 && bowl->are == 0) {
                         DEST( sdl.screen, bowl->help_sx + tile_x, bowl->help_sy + tile_y, bowl->block_size, bowl->block_size );
                         SOURCE( bowl->blocks, 10 * bowl->block_size, 0 );
                         alpha_blit_surf( bowl->help_alpha );
                         add_refresh_rect( bowl->help_sx + tile_x, bowl->help_sy + tile_y, bowl->block_size, bowl->block_size );
                     }
                     /* block */
-                    DEST( sdl.screen, x, y, bowl->block_size, bowl->block_size );
-                    SOURCE( bowl->blocks, bowl->block.id * bowl->block_size, 0 );
-                    blit_surf();
-                    add_refresh_rect( x, y, bowl->block_size, bowl->block_size );
+                    if (bowl->are == 0) {
+			    DEST( sdl.screen, x, y, bowl->block_size, bowl->block_size );
+			    SOURCE( bowl->blocks, bowl->block.id * bowl->block_size, 0 );
+			    blit_surf();
+			    add_refresh_rect( x, y, bowl->block_size, bowl->block_size );
+                    }
                     /* update helpline coordinates */
                     if ( i <= left_x ) {
                         left_x = i;
@@ -1349,8 +1392,23 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
     /* SCORE */
     counter_update( &bowl->score, ms );
     if ( game_over ) return;
+    /* ARE */
+    if (bowl->are > 0) {
+	    bowl->are -= ms;
+	    if (bowl->are < 0) {
+		    bowl->are = 0;
+		    if (bowl->stored_key == KEY_LEFT ||
+				    bowl->stored_key == KEY_RIGHT)
+			    bowl->stored_key = -1; /* kill input to keep das */
+		    /* running are means block was inserted. when expired
+		     * remove empty lines and get next block */
+		    bowl_collapse(bowl);
+		    bowl_select_next_block( bowl );
+		    bowl->draw_contents = 1;
+	    }
+    }
     /* BLOCK */
-    if ( !bowl->hide_block ) {
+    if ( !bowl->hide_block && bowl->are == 0) {
         /* fake a key event to rotate with cpu */
         if ( !bowl->controls && bowl->cpu_dest_rot != bowl->block.rot_id ) 
             if ( delay_timed_out( &bowl->cpu_rot_delay, ms ) )
