@@ -1395,7 +1395,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
     /* ARE */
     if (bowl->are > 0) {
 	    bowl->are -= ms;
-	    if (bowl->are < 0) {
+	    if (bowl->are <= 0) {
 		    bowl->are = 0;
 		    if (bowl->stored_key == KEY_LEFT ||
 				    bowl->stored_key == KEY_RIGHT)
