@@ -199,7 +199,7 @@ void bowl_compute_cpu_dest( Bowl *bowl )
 }
 /*
 ====================================================================
-Initate next block. Set bowl::block::id to preview and get id of next 
+Initiate next block. Set bowl::block::id to preview and get id of next
 block to be dealt to bowl::next_block_id.
 ====================================================================
 */
@@ -303,11 +303,11 @@ void bowl_select_next_block( Bowl *bowl )
 	}
     
 	/* init rest of block structure */
-	bowl->block.x = 3;
-	bowl->block.y = -3;
+	bowl->block.x = 5 - block_masks[bowl->block.id].rx;
+	bowl->block.y = 0 - block_masks[bowl->block.id].ry;
 	bowl->block.sx = bowl->sx + bowl->block_size * bowl->block.x;
 	bowl->block.sy = bowl->sy + bowl->block_size * bowl->block.y;
-	bowl->block.rot_id = 0;
+	bowl->block.rot_id = block_masks[bowl->block.id].rstart;
 	bowl->block.sw = bowl->block.sh = 4 * bowl->block_size;
 	bowl->block.cur_x = bowl->block.x * bowl->block_size;
 	bowl->block.cur_y = bowl->block.y * bowl->block_size;
@@ -932,152 +932,168 @@ void bowl_init_block_masks()
 {
 	int masksize = sizeof(block_masks[0].mask); // same for all
 
-	block_masks[0].rx = 0;
-	block_masks[0].ry = 0;
-	block_masks[0].id = 0;
-	memset(block_masks[0].mask, 0, masksize );
-	block_masks[0].mask[0][1][1] = 1;
+	for (int i = 0; i < 7; i++) {
+		block_masks[i].rx = 2;
+		block_masks[i].ry = 2;
+		memset(block_masks[i].mask, 0, masksize );
+	}
+
+	/* T */
+	block_masks[0].rstart = 2;
+	/* Tu */
 	block_masks[0].mask[0][2][1] = 1;
 	block_masks[0].mask[0][1][2] = 1;
 	block_masks[0].mask[0][2][2] = 1;
-	block_masks[0].mask[1][1][1] = 1;
+	block_masks[0].mask[0][3][2] = 1;
+	/* Tr */
 	block_masks[0].mask[1][2][1] = 1;
-	block_masks[0].mask[1][1][2] = 1;
 	block_masks[0].mask[1][2][2] = 1;
-	block_masks[0].mask[2][1][1] = 1;
-	block_masks[0].mask[2][2][1] = 1;
+	block_masks[0].mask[1][3][2] = 1;
+	block_masks[0].mask[1][2][3] = 1;
+	/* Td */
 	block_masks[0].mask[2][1][2] = 1;
 	block_masks[0].mask[2][2][2] = 1;
-	block_masks[0].mask[3][1][1] = 1;
+	block_masks[0].mask[2][3][2] = 1;
+	block_masks[0].mask[2][2][3] = 1;
+	/* Tl */
 	block_masks[0].mask[3][2][1] = 1;
 	block_masks[0].mask[3][1][2] = 1;
 	block_masks[0].mask[3][2][2] = 1;
+	block_masks[0].mask[3][2][3] = 1;
 	
-	block_masks[1].rx = 0;
-	block_masks[1].ry = 0;
-	block_masks[1].id = 1;
-	memset(block_masks[1].mask, 0, masksize );
-	block_masks[1].mask[0][0][2] = 1;
-	block_masks[1].mask[0][1][2] = 1;
+	/* J */
+	block_masks[1].rstart = 3;
+	/* Jl */
+	block_masks[1].mask[0][2][1] = 1;
 	block_masks[1].mask[0][2][2] = 1;
-	block_masks[1].mask[0][3][2] = 1;
-	block_masks[1].mask[1][1][0] = 1;
+	block_masks[1].mask[0][1][3] = 1;
+	block_masks[1].mask[0][2][3] = 1;
+	/* Ju */
 	block_masks[1].mask[1][1][1] = 1;
 	block_masks[1].mask[1][1][2] = 1;
-	block_masks[1].mask[1][1][3] = 1;
-	block_masks[1].mask[2][0][2] = 1;
-	block_masks[1].mask[2][1][2] = 1;
+	block_masks[1].mask[1][2][2] = 1;
+	block_masks[1].mask[1][3][2] = 1;
+	/* Jr */
+	block_masks[1].mask[2][2][1] = 1;
+	block_masks[1].mask[2][3][1] = 1;
 	block_masks[1].mask[2][2][2] = 1;
-	block_masks[1].mask[2][3][2] = 1;
-	block_masks[1].mask[3][1][0] = 1;
-	block_masks[1].mask[3][1][1] = 1;
+	block_masks[1].mask[2][2][3] = 1;
+	/* Jd */
 	block_masks[1].mask[3][1][2] = 1;
-	block_masks[1].mask[3][1][3] = 1;
+	block_masks[1].mask[3][2][2] = 1;
+	block_masks[1].mask[3][3][2] = 1;
+	block_masks[1].mask[3][3][3] = 1;
 	
-	block_masks[2].rx = 0;
-	block_masks[2].ry = 1;
-	block_masks[2].id = 2;
-	memset(block_masks[2].mask, 0, masksize );
-	block_masks[2].mask[0][0][1] = 1;
-	block_masks[2].mask[0][1][1] = 1;
-	block_masks[2].mask[0][2][1] = 1;
+	/* Z */
+	block_masks[2].rstart = 0;
+	/* Zh */
 	block_masks[2].mask[0][1][2] = 1;
-	block_masks[2].mask[1][1][0] = 1;
-	block_masks[2].mask[1][1][1] = 1;
-	block_masks[2].mask[1][1][2] = 1;
-	block_masks[2].mask[1][0][1] = 1;
-	block_masks[2].mask[2][0][1] = 1;
-	block_masks[2].mask[2][1][0] = 1;
-	block_masks[2].mask[2][1][1] = 1;
-	block_masks[2].mask[2][2][1] = 1;
-	block_masks[2].mask[3][1][0] = 1;
-	block_masks[2].mask[3][1][1] = 1;
-	block_masks[2].mask[3][1][2] = 1;
-	block_masks[2].mask[3][2][1] = 1;
+	block_masks[2].mask[0][2][2] = 1;
+	block_masks[2].mask[0][2][3] = 1;
+	block_masks[2].mask[0][3][3] = 1;
+	/* Zv */
+	block_masks[2].mask[1][3][1] = 1;
+	block_masks[2].mask[1][2][2] = 1;
+	block_masks[2].mask[1][3][2] = 1;
+	block_masks[2].mask[1][2][3] = 1;
+	/* Zh */
+	block_masks[2].mask[2][1][2] = 1;
+	block_masks[2].mask[2][2][2] = 1;
+	block_masks[2].mask[2][2][3] = 1;
+	block_masks[2].mask[2][3][3] = 1;
+	/* Zv */
+	block_masks[2].mask[3][3][1] = 1;
+	block_masks[2].mask[3][2][2] = 1;
+	block_masks[2].mask[3][3][2] = 1;
+	block_masks[2].mask[3][2][3] = 1;
 	
-	block_masks[3].rx = 0;
-	block_masks[3].ry = 1;
-	block_masks[3].id = 3;
-	memset(block_masks[3].mask, 0, masksize );
-	block_masks[3].mask[0][0][2] = 1;
-	block_masks[3].mask[0][1][1] = 1;
+	/* O */
+	block_masks[3].rstart = 0;
 	block_masks[3].mask[0][1][2] = 1;
-	block_masks[3].mask[0][2][1] = 1;
-	block_masks[3].mask[1][0][1] = 1;
-	block_masks[3].mask[1][0][2] = 1;
+	block_masks[3].mask[0][2][2] = 1;
+	block_masks[3].mask[0][1][3] = 1;
+	block_masks[3].mask[0][2][3] = 1;
 	block_masks[3].mask[1][1][2] = 1;
+	block_masks[3].mask[1][2][2] = 1;
 	block_masks[3].mask[1][1][3] = 1;
-	block_masks[3].mask[2][0][2] = 1;
-	block_masks[3].mask[2][1][1] = 1;
+	block_masks[3].mask[1][2][3] = 1;
 	block_masks[3].mask[2][1][2] = 1;
-	block_masks[3].mask[2][2][1] = 1;
-	block_masks[3].mask[3][0][1] = 1;
-	block_masks[3].mask[3][0][2] = 1;
+	block_masks[3].mask[2][2][2] = 1;
+	block_masks[3].mask[2][1][3] = 1;
+	block_masks[3].mask[2][2][3] = 1;
 	block_masks[3].mask[3][1][2] = 1;
+	block_masks[3].mask[3][2][2] = 1;
 	block_masks[3].mask[3][1][3] = 1;
+	block_masks[3].mask[3][2][3] = 1;
 	
-	block_masks[4].rx = 0;
-	block_masks[4].ry = 1;
-	block_masks[4].id = 4;
-	memset(block_masks[4].mask, 0, masksize );
-	block_masks[4].mask[0][0][1] = 1;
-	block_masks[4].mask[0][1][1] = 1;
-	block_masks[4].mask[0][1][2] = 1;
+	/* S */
+	block_masks[4].rstart = 0;
+	/* Sh */
 	block_masks[4].mask[0][2][2] = 1;
-	block_masks[4].mask[1][1][1] = 1;
-	block_masks[4].mask[1][1][2] = 1;
-	block_masks[4].mask[1][0][2] = 1;
-	block_masks[4].mask[1][0][3] = 1;
-	block_masks[4].mask[2][0][1] = 1;
-	block_masks[4].mask[2][1][1] = 1;
-	block_masks[4].mask[2][1][2] = 1;
+	block_masks[4].mask[0][3][2] = 1;
+	block_masks[4].mask[0][1][3] = 1;
+	block_masks[4].mask[0][2][3] = 1;
+	/* Sv */
+	block_masks[4].mask[1][2][1] = 1;
+	block_masks[4].mask[1][2][2] = 1;
+	block_masks[4].mask[1][3][2] = 1;
+	block_masks[4].mask[1][3][3] = 1;
+	/* Sh */
 	block_masks[4].mask[2][2][2] = 1;
-	block_masks[4].mask[3][1][1] = 1;
-	block_masks[4].mask[3][1][2] = 1;
-	block_masks[4].mask[3][0][2] = 1;
-	block_masks[4].mask[3][0][3] = 1;
+	block_masks[4].mask[2][3][2] = 1;
+	block_masks[4].mask[2][1][3] = 1;
+	block_masks[4].mask[2][2][3] = 1;
+	/* Sv */
+	block_masks[4].mask[3][2][1] = 1;
+	block_masks[4].mask[3][2][2] = 1;
+	block_masks[4].mask[3][3][2] = 1;
+	block_masks[4].mask[3][3][3] = 1;
 	
-	block_masks[5].rx = 0;
-	block_masks[5].ry = 1;
-	block_masks[5].id = 5;
-	memset(block_masks[5].mask, 0, masksize );
-	block_masks[5].mask[0][0][1] = 1;
-	block_masks[5].mask[0][1][1] = 1;
+	/* L */
+	block_masks[5].rstart = 1;
+	/* Lr */
 	block_masks[5].mask[0][2][1] = 1;
-	block_masks[5].mask[0][0][2] = 1;
-	block_masks[5].mask[1][0][0] = 1;
-	block_masks[5].mask[1][1][0] = 1;
-	block_masks[5].mask[1][1][1] = 1;
+	block_masks[5].mask[0][2][2] = 1;
+	block_masks[5].mask[0][2][3] = 1;
+	block_masks[5].mask[0][3][3] = 1;
+	/* Ld */
 	block_masks[5].mask[1][1][2] = 1;
-	block_masks[5].mask[2][0][1] = 1;
+	block_masks[5].mask[1][2][2] = 1;
+	block_masks[5].mask[1][3][2] = 1;
+	block_masks[5].mask[1][1][3] = 1;
+	/* Ll */
 	block_masks[5].mask[2][1][1] = 1;
 	block_masks[5].mask[2][2][1] = 1;
-	block_masks[5].mask[2][2][0] = 1;
-	block_masks[5].mask[3][1][0] = 1;
-	block_masks[5].mask[3][1][1] = 1;
+	block_masks[5].mask[2][2][2] = 1;
+	block_masks[5].mask[2][2][3] = 1;
+	/* Lu */
+	block_masks[5].mask[3][3][1] = 1;
 	block_masks[5].mask[3][1][2] = 1;
 	block_masks[5].mask[3][2][2] = 1;
+	block_masks[5].mask[3][3][2] = 1;
 	
-	block_masks[6].rx = 0;
-	block_masks[6].ry = 1;
-	block_masks[6].id = 6;
-	memset(block_masks[6].mask, 0, masksize );
-	block_masks[6].mask[0][2][2] = 1;
-	block_masks[6].mask[0][0][1] = 1;
-	block_masks[6].mask[0][1][1] = 1;
+	/* I */
+	block_masks[6].rstart = 1;
+	/* Iv */
+	block_masks[6].mask[0][2][0] = 1;
 	block_masks[6].mask[0][2][1] = 1;
+	block_masks[6].mask[0][2][2] = 1;
+	block_masks[6].mask[0][2][3] = 1;
+	/* Ih */
 	block_masks[6].mask[1][0][2] = 1;
-	block_masks[6].mask[1][1][0] = 1;
-	block_masks[6].mask[1][1][1] = 1;
 	block_masks[6].mask[1][1][2] = 1;
-	block_masks[6].mask[2][0][0] = 1;
-	block_masks[6].mask[2][0][1] = 1;
-	block_masks[6].mask[2][1][1] = 1;
+	block_masks[6].mask[1][2][2] = 1;
+	block_masks[6].mask[1][3][2] = 1;
+	/* Iv */
+	block_masks[6].mask[2][2][0] = 1;
 	block_masks[6].mask[2][2][1] = 1;
-	block_masks[6].mask[3][1][0] = 1;
-	block_masks[6].mask[3][1][1] = 1;
+	block_masks[6].mask[2][2][2] = 1;
+	block_masks[6].mask[2][2][3] = 1;
+	/* Ih */
+	block_masks[6].mask[3][0][2] = 1;
 	block_masks[6].mask[3][1][2] = 1;
-	block_masks[6].mask[3][2][0] = 1;
+	block_masks[6].mask[3][2][2] = 1;
+	block_masks[6].mask[3][3][2] = 1;
 }
 
 /*
@@ -1269,13 +1285,14 @@ void bowl_hide( Bowl *bowl )
         add_refresh_rect( right, bowl->sy, 1, bowl->sh );
     }
 }
+
 void bowl_show( Bowl *bowl )
 {
     int i, j;
     int x = bowl->block.sx, y = bowl->block.sy;
     int tile_x = 0, tile_y = 0;
     char aux[24];
-    /* start blocks for left and right helplines */
+    /* start blocks for left and right help lines */
     int left_x = 3;
     int left_y = 0;
     int right_x = 0;
@@ -1313,7 +1330,7 @@ void bowl_show( Bowl *bowl )
 			    blit_surf();
 			    add_refresh_rect( x, y, bowl->block_size, bowl->block_size );
                     }
-                    /* update helpline coordinates */
+                    /* update help line coordinates */
                     if ( i <= left_x ) {
                         left_x = i;
                         left_y = j;
@@ -1383,12 +1400,26 @@ void bowl_show( Bowl *bowl )
     sprintf( aux, _("%i Lvl: %i"), bowl->lines, bowl->level );
     write_text( bowl->font, sdl.screen, bowl->score_sx + bowl->score_sw - 4, bowl->score_sy + bowl->score_sh, aux, OPAQUE );
 }
+
+/** Convert cur_y to y, for negative cur_y this means to subtract 1
+ * because, e.g., pixels -1 to -20 means -1
+ */
+int bowl_convert_cury2y(Bowl *bowl)
+{
+	int y = (int)bowl->block.cur_y / bowl->block_size;
+	if (bowl->block.cur_y < 0)
+		if ( (((int)bowl->block.cur_y) % bowl->block_size) != 0)
+			y -= 1;
+	return y;
+}
+
 void bowl_update( Bowl *bowl, int ms, int game_over )
 {
-    int old_bottom_y = ( (int)bowl->block.cur_y + bowl->block_size - 1 ) / bowl->block_size;
+    int old_y = bowl_convert_cury2y(bowl);
     int target_x; /* target screen position within bowl */
     int hori_movement = 0;
     int new_rot, hori_mod, ret;
+    float vy;
     /* SCORE */
     counter_update( &bowl->score, ms );
     if ( game_over ) return;
@@ -1405,6 +1436,14 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
 		    bowl_collapse(bowl);
 		    bowl_select_next_block( bowl );
 		    bowl->draw_contents = 1;
+		    /* for simple modern version charge das if shift pressed */
+		    if ((bowl->controls && keystate[bowl->controls->left]) ||
+				    ( !bowl->controls && bowl->cpu_dest_x < bowl->block.x))
+			    bowl->das_charge = bowl->das_maxcharge;
+		    if ((bowl->controls && keystate[bowl->controls->right]) ||
+				    ( !bowl->controls && bowl->cpu_dest_x > bowl->block.x))
+			    bowl->das_charge = bowl->das_maxcharge;
+
 	    }
     }
     /* BLOCK */
@@ -1540,23 +1579,28 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         else
             if ( hori_movement )
                 bowl->block.sx = bowl->block.x * bowl->block_size + bowl->sx;
+
         /* update vertical float position */
         if ( !bowl->controls && !bowl->cpu_down )
             if ( delay_timed_out( &bowl->cpu_delay, ms ) )
                 bowl->cpu_down = 1;
-        if ( ( bowl->controls && keystate[bowl->controls->down] ) || bowl_cpu_may_move_down( bowl ) )
-            bowl->block.cur_y += bowl->block_drop_vel * ms;
-        else
-            bowl->block.cur_y += bowl->block_vert_vel * ms;
+        vy = bowl->block_vert_vel;
+        if ((bowl->controls && keystate[bowl->controls->down]) ||
+        				bowl_cpu_may_move_down(bowl))
+        	if (bowl->block_drop_vel > vy)
+        		//if (!lshift && !rshift)
+        			vy = bowl->block_drop_vel;
+        bowl->block.cur_y += vy * ms;
+
         /* update vertical bowl position */
-        bowl->block.y = (int)(bowl->block.cur_y / bowl->block_size);
+        bowl->block.y = bowl_convert_cury2y(bowl);
         /* update check y */
         if ( config.block_by_block || config.async_col_check )
             bowl->block.check_y = bowl->block.y * bowl->block_size;
         else
             bowl->block.check_y = (int)bowl->block.cur_y;
         /* if we entered a new tile check if block stops */
-        if ( old_bottom_y != ( bowl->block.cur_y + bowl->block_size - 1 ) / bowl->block_size )
+        if (old_y != bowl->block.y)
             bowl_check_block_insertion( bowl );
         /* update vertical screen position */
         if ( config.block_by_block )
