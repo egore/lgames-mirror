@@ -2,6 +2,11 @@
 - start block with flat side down
 - adjust score mod at end of game
 - remove pixel content
+- simple/fancy animations
+- no spawn ends game
+- no soft drop for level 29+
+- no shift during soft drop
+- ghost block inserted?
 
 Known Bugs:
 SDL does not properly get cursor position if switching from 

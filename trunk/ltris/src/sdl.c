@@ -1341,7 +1341,7 @@ int get_time()
 */
 void reset_timer()
 {
-    last_time = SDL_GetTicks();
+	cur_time = last_time = SDL_GetTicks();
 }
 
 void fade_screen( int type, int length )

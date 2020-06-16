@@ -61,9 +61,9 @@ enum {
 
 /* block mask for the block types */
 typedef struct {
-    int rx, ry;
-    int id;
-    int mask[4][4][4];
+    int rx, ry; /* center of rotation */
+    int rstart; /* start rotation */
+    int mask[4][4][4]; /* r,x,y */
 } Block_Mask;
 
 //#define DEBUG
