@@ -63,6 +63,7 @@ enum {
 typedef struct {
     int rx, ry; /* center of rotation */
     int rstart; /* start rotation */
+    int blockid; /* block id for display */
     int mask[4][4][4]; /* r,x,y */
 } Block_Mask;
 
