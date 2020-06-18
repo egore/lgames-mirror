@@ -123,13 +123,15 @@ void bowl_compute_preview_pos( Bowl *bowl )
 {
     int i, j;
     int x1, y1, x2, y2; /* corners of the tile */
+    int w, h;
+    Block_Mask *bm = &block_masks[bowl->next_block_id];
     if ( bowl->preview_center_sx == -1 ) 
         return;
     /* first tile */
     x1 = y1 = -1;
     for ( j = 0; j < 4; j++ ) {
         for ( i = 0; i < 4; i++ ) {
-            if ( block_masks[bowl->next_block_id].mask[0][i][j] ) {
+            if ( bm->mask[bm->rstart][i][j] ) {
                 y1 = j;
                 break;
             }
@@ -138,7 +140,7 @@ void bowl_compute_preview_pos( Bowl *bowl )
     }
     for ( i = 0; i < 4; i++ ) {
         for ( j = 0; j < 4; j++ ) {
-            if ( block_masks[bowl->next_block_id].mask[0][i][j] ) {
+            if ( bm->mask[bm->rstart][i][j] ) {
                 x1 = i;
                 break;
             }
@@ -149,7 +151,7 @@ void bowl_compute_preview_pos( Bowl *bowl )
     x2 = y2 = -1;
     for ( j = 3; j >= 0; j-- ) {
         for ( i = 3; i >= 0; i-- ) {
-            if ( block_masks[bowl->next_block_id].mask[0][i][j] ) {
+            if ( bm->mask[bm->rstart][i][j] ) {
                 y2 = j;
                 break;
             }
@@ -158,7 +160,7 @@ void bowl_compute_preview_pos( Bowl *bowl )
     }
     for ( i = 3; i >= 0; i-- ) {
         for ( j = 3; j >= 0; j-- ) {
-            if ( block_masks[bowl->next_block_id].mask[0][i][j] ) {
+            if ( bm->mask[bm->rstart][i][j] ) {
                 x2 = i;
                 break;
             }
@@ -166,8 +168,10 @@ void bowl_compute_preview_pos( Bowl *bowl )
         if ( x2 != -1 ) break;
     }
     /* preview position */
-    bowl->preview_sx = bowl->preview_center_sx - ( x1 * bowl->block_size + ( ( ( x2 - x1 + 1 ) * bowl->block_size ) >> 1 ) );
-    bowl->preview_sy = bowl->preview_center_sy - ( y1 * bowl->block_size + ( ( ( y2 - y1 + 1 ) * bowl->block_size ) >> 1 ) );
+    w = (x2 - x1 + 1) * bowl->block_size;
+    h = (y2 - y1 + 1) * bowl->block_size;
+    bowl->preview_sx = bowl->preview_center_sx - x1*bowl->block_size - w/2;
+    bowl->preview_sy = bowl->preview_center_sy - y1*bowl->block_size - h/2;
 }
 
 /*
@@ -669,7 +673,8 @@ void bowl_insert_block( Bowl *bowl )
 	if ( bowl->block.y + j < 0 ) bowl->game_over = 1;
 	if ( bowl->block.x + i >= 0 && bowl->block.x + i < bowl->w )
 	  if ( bowl->block.y + j >= 0 && bowl->block.y + j < bowl->h )
-	    bowl_set_tile( bowl, bowl->block.x + i, bowl->block.y + j, bowl->block.id );
+	    bowl_set_tile( bowl, bowl->block.x + i, bowl->block.y + j,
+			    block_masks[bowl->block.id].blockid );
 	if (max_y < bowl->block.y+j)
 		max_y = bowl->block.y+j;
       }
@@ -940,6 +945,7 @@ void bowl_init_block_masks()
 
 	/* T */
 	block_masks[0].rstart = 2;
+	block_masks[0].blockid = 2;
 	/* Tu */
 	block_masks[0].mask[0][2][1] = 1;
 	block_masks[0].mask[0][1][2] = 1;
@@ -963,6 +969,7 @@ void bowl_init_block_masks()
 	
 	/* J */
 	block_masks[1].rstart = 3;
+	block_masks[1].blockid = 6;
 	/* Jl */
 	block_masks[1].mask[0][2][1] = 1;
 	block_masks[1].mask[0][2][2] = 1;
@@ -986,6 +993,7 @@ void bowl_init_block_masks()
 	
 	/* Z */
 	block_masks[2].rstart = 0;
+	block_masks[2].blockid = 4;
 	/* Zh */
 	block_masks[2].mask[0][1][2] = 1;
 	block_masks[2].mask[0][2][2] = 1;
@@ -1009,6 +1017,7 @@ void bowl_init_block_masks()
 	
 	/* O */
 	block_masks[3].rstart = 0;
+	block_masks[3].blockid = 0;
 	block_masks[3].mask[0][1][2] = 1;
 	block_masks[3].mask[0][2][2] = 1;
 	block_masks[3].mask[0][1][3] = 1;
@@ -1028,6 +1037,7 @@ void bowl_init_block_masks()
 	
 	/* S */
 	block_masks[4].rstart = 0;
+	block_masks[4].blockid = 3;
 	/* Sh */
 	block_masks[4].mask[0][2][2] = 1;
 	block_masks[4].mask[0][3][2] = 1;
@@ -1051,6 +1061,7 @@ void bowl_init_block_masks()
 	
 	/* L */
 	block_masks[5].rstart = 1;
+	block_masks[5].blockid = 5;
 	/* Lr */
 	block_masks[5].mask[0][2][1] = 1;
 	block_masks[5].mask[0][2][2] = 1;
@@ -1074,6 +1085,7 @@ void bowl_init_block_masks()
 	
 	/* I */
 	block_masks[6].rstart = 1;
+	block_masks[6].blockid = 1;
 	/* Iv */
 	block_masks[6].mask[0][2][0] = 1;
 	block_masks[6].mask[0][2][1] = 1;
@@ -1306,11 +1318,13 @@ void bowl_show( Bowl *bowl )
     if ( !bowl->hide_block ) {
         for ( j = 0; j < 4; j++ ) {
             for ( i = 0; i < 4; i++ ) {
-                if ( block_masks[bowl->next_block_id].mask[0][i][j] ) {
+                if ( block_masks[bowl->next_block_id].mask[block_masks[bowl->next_block_id].rstart][i][j] ) {
                     /* preview */
                     if ( config.preview &&  bowl->preview_center_sx != -1 ) {
                         DEST( sdl.screen, bowl->preview_sx + tile_x, bowl->preview_sy + tile_y, bowl->block_size, bowl->block_size );
-                        SOURCE( bowl->blocks, bowl->next_block_id * bowl->block_size, 0 );
+                        SOURCE( bowl->blocks,
+                        	block_masks[bowl->next_block_id].blockid
+				* bowl->block_size, 0 );
                         blit_surf();
                         add_refresh_rect( bowl->preview_sx + tile_x, bowl->preview_sy + tile_y, bowl->block_size, bowl->block_size );
                     }
@@ -1326,7 +1340,9 @@ void bowl_show( Bowl *bowl )
                     /* block */
                     if (bowl->are == 0) {
 			    DEST( sdl.screen, x, y, bowl->block_size, bowl->block_size );
-			    SOURCE( bowl->blocks, bowl->block.id * bowl->block_size, 0 );
+			    SOURCE( bowl->blocks,
+					    block_masks[bowl->block.id].blockid
+					    * bowl->block_size, 0 );
 			    blit_surf();
 			    add_refresh_rect( x, y, bowl->block_size, bowl->block_size );
                     }
