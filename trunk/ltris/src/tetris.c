@@ -369,8 +369,6 @@ void tetris_run()
     int bowl_count; /* number of active bowls */
     char sshot_str[128];
     int screenshot_id = 0;
-    int gain_multiplayer_bonus = 0;
-    int escape = 0;
     int fps = 0, fpsStart, fpsCycles;
     int maxDelay;
     Uint32 cycle_start, delay;
@@ -414,7 +412,6 @@ void tetris_run()
                         request_pause = 1;
                     else switch ( event.key.keysym.sym ) {
                         case SDLK_ESCAPE: 
-                            escape = 1;
                             if ( confirm( large_font, _("End Game? y/n"), CONFIRM_YES_NO ) ) 
                                 for ( i = 0; i < BOWL_COUNT; i++ )
                                     if ( bowls[i] && !bowls[i]->game_over )
@@ -485,15 +482,6 @@ void tetris_run()
                 game_over = 1;
             else
                 game_over = 0;
-            if ( game_over && bowl_count > 1 && !escape )
-                gain_multiplayer_bonus = 1;
-        }
-        /* the last bowl in multiplayer gains additional 100,000 score */
-        if ( gain_multiplayer_bonus ) {
-            gain_multiplayer_bonus = 0;
-            for ( i = 0; i < BOWL_COUNT; i++ )
-                if ( bowls[i] && !bowls[i]->game_over )
-                    counter_add( &bowls[i]->score, 50000 );
         }
 
 	/* stats */
@@ -519,7 +507,9 @@ void tetris_run()
     chart_clear_new_entries();
     for ( i = 0; i < BOWL_COUNT; i++ )
         if ( bowls[i] ) 
-            chart_add( chart_set_query( gametype_ids[config.gametype] ), bowls[i]->name, bowls[i]->level, counter_get( bowls[i]->score ) );
+            chart_add( chart_set_query( gametype_ids[config.gametype] ),
+        		    bowls[i]->name, bowls[i]->level,
+			    counter_get( bowls[i]->score ) );
     SDL_ShowCursor( 1 );
 }
 

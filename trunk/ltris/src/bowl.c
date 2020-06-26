@@ -215,58 +215,6 @@ void bowl_select_next_block( Bowl *bowl )
 	/* set preview as current block id */
 	bowl->block.id = bowl->next_block_id;
 	
-	/* in expert mode (only for single player as we will alter the bags!)
-	 * test remaining pieces in current bag and swap worst piece to 
-	 * beginning of queue. */
-	if (config.expert && (config.gametype == 1 || config.gametype == 2)) {
-		int num_test_blocks;
-		int j, savedblockid; 
-		struct { int block, score, next_blocks_pos; } tmp, 
-			scores[BLOCK_COUNT];
-
-		/* determine number of remaining blocks in current bag */
-		num_test_blocks = BLOCK_COUNT - (bowl->next_blocks_pos % BLOCK_COUNT);
-		if (num_test_blocks > next_blocks_size - bowl->next_blocks_pos)
-			num_test_blocks = next_blocks_size - bowl->next_blocks_pos;
-		DPRINTF("Expert mode: Testing %d pieces\n", num_test_blocks);
-
-		/* backup current block id, we need field for cpu algorithm */
-		savedblockid = bowl->block.id;
-
-		/* let cpu algorithm compute score for all pieces */
-		for (i = 0; i < num_test_blocks; i++) {
-			bowl->block.id = next_blocks[bowl->next_blocks_pos + i];
-			bowl_compute_cpu_dest( bowl );
-			scores[i].block = bowl->block.id;
-			scores[i].next_blocks_pos = bowl->next_blocks_pos + i;
-			scores[i].score = bowl->cpu_dest_score;
-			DPRINTF("  type = %d, score = %d\n",scores[i].block, 
-					scores[i].score);
-		}
-
-		/* bubblesort scores */
-		for ( i = 0; i < num_test_blocks - 1; i++ ) {
-			for ( j = i + 1; j < num_test_blocks; j++ ) {
-				if ( scores[j].score < scores[i].score ) {
-					tmp = scores[i];
-					scores[i] = scores[j];
-					scores[j] = tmp;
-				}
-			}
-		}
-
-		/* for now always deal worst block */
-		i = next_blocks[scores[0].next_blocks_pos];
-		next_blocks[scores[0].next_blocks_pos] = 
-			next_blocks[bowl->next_blocks_pos];
-		next_blocks[bowl->next_blocks_pos] = i;
-		DPRINTF("Dealing type %d next\n", 
-				next_blocks[bowl->next_blocks_pos]);
-
-		/* restore current block id */
-		bowl->block.id = savedblockid;
-	}
-	
 	/* set new preview from next_blocks and fill more bags if end of
 	 * buffer reached */
 	bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
@@ -559,7 +507,6 @@ Finish game and set game over.
 */
 void bowl_finish_game( Bowl *bowl )
 {
-    float score_mod = 0;
     bowl->game_over = 1;
     bowl->hide_block = 1;
     bowl_final_animation( bowl );
@@ -572,29 +519,24 @@ void bowl_finish_game( Bowl *bowl )
 #ifdef SOUND
     if ( !bowl->mute ) sound_play( bowl->wav_explosion );
 #endif    
-    /* gain the bonus score */
-    DPRINTF("Basic score before bonuses: %d\n", (int)counter_get(bowl->score));
-    if ( !config.preview || bowl->preview_center_sx == -1 ) {
-        score_mod += 0.15;
-        DPRINTF("Bonus for no preview, current score mod = %1.2g\n",score_mod);
-    }
-    if ( config.expert && (config.gametype == 1 || config.gametype == 2) ) {
-	score_mod += 0.5;
-        DPRINTF("Bonus for expert mode, current score mod = %1.2g\n",score_mod);
-    }
-    counter_add( &bowl->score, (int)( score_mod * counter_get( bowl->score )) );
-    DPRINTF("Final score with bonuses: %d\n", (int)counter_get(bowl->score));
 }
 
 /** Adjust bowl->score if lc lines have been cleared in current level. */
 void bowl_add_score(Bowl *bowl, int lc)
 {
+	int score = 0;
 	int base[5] = {0,40,100,300,1200};
 	if (lc < 0)
 		lc = 0;
 	if (lc > 4)
 		lc = 4; /* should not be possible */
-	counter_add(&bowl->score, base[lc] * (bowl->level + 1));
+	score = base[lc] * (bowl->level + 1);
+
+	/* add 20% if no preview */
+	if ( !config.preview || bowl->preview_center_sx == -1 )
+		score = 20 * score / 100;
+
+	counter_add(&bowl->score, score);
 }
 
 /** Add lines to counter and check if new level has been entered. */

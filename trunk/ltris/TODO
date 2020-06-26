@@ -1,9 +1,9 @@
-- adjust score mod at end of game
 - remove pixel content
 - simple/fancy animations
 - no spawn ends game
 - no shift during soft drop (for modern)
 - modern (bag, das chare during are, wallkick, ghost piece, drop+shift)
+- soft drop score
 
 
 Known Bugs:
