@@ -70,8 +70,6 @@ void config_reset()
     strcpy( config.player3.name, "Thomas" );
     config.expert = 0;
     config.modern = 1;
-    /* enable modern options, will be updated on game start */
-    config.help = 1;
     /* multiplayer */
     config.holes = 2;
     config.rand_holes = 1;
@@ -165,7 +163,6 @@ void config_load( )
 	    config.starting_level = 0;
     }
     //parser_get_int( pd, "preview", &config.preview );
-    parser_get_int( pd, "help", &config.help );
     parser_get_int( pd, "modern", &config.modern );
     parser_get_int( pd, "center_preview", &config.center_preview );
     parser_get_int( pd, "holes", &config.holes );
@@ -233,7 +230,6 @@ void config_save( )
         fprintf( file, "gametype=%i\n", config.gametype );
         fprintf( file, "starting_level=%i\n", config.starting_level );
         //fprintf( file, "preview=%i\n", config.preview );
-        fprintf( file, "help=%i\n", config.help );
         fprintf( file, "modern=%i\n", config.modern );
         fprintf( file, "center_preview=%i\n", config.center_preview );
         fprintf( file, "holes=%i\n", config.holes );
