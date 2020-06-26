@@ -1182,7 +1182,7 @@ void bowl_hide( Bowl *bowl )
         add_refresh_rect( bowl->block.sx, bowl->block.sy, bowl->block.sw, bowl->block.sh );
     }        
     /* help */
-    if ( config.help ) {
+    if ( config.modern ) {
         DEST( sdl.screen, bowl->help_sx, bowl->help_sy, bowl->help_sw, bowl->help_sh );
         SOURCE( offscreen, bowl->help_sx, bowl->help_sy );
         blit_surf();
@@ -1205,39 +1205,6 @@ void bowl_hide( Bowl *bowl )
     SOURCE( offscreen, bowl->score_sx, bowl->score_sy );
     blit_surf();
     add_refresh_rect( bowl->score_sx, bowl->score_sy, bowl->score_sw, bowl->score_sh );
-
-    /* remove help lines */
-    if ( !bowl->hide_block && (config.help == 2) ) {
-        int i, j;
-        int x = bowl->block.sx, y = bowl->block.sy;
-        int tile_x = 0, tile_y = 0;
-        int left = bowl->block.sx + bowl->block.sw - 1;
-        int right = bowl->block.sx; /* left and right borders of current block */
-        for ( j = 0; j < 4; j++ ) {
-            for ( i = 0; i < 4; i++ ) {
-                if ( block_masks[bowl->block.id].mask[bowl->block.rot_id][i][j] ) {
-                    if ( x < left )
-                        left = x;
-                    if ( x + bowl->block_size - 1 > right )
-                        right = x + bowl->block_size - 1;
-                }
-                x += bowl->block_size;
-                tile_x += bowl->block_size;
-            }
-            y += bowl->block_size;
-            x = bowl->block.sx;
-            tile_x = 0;
-            tile_y += bowl->block_size;
-        }
-        DEST( sdl.screen, left, bowl->sy, 1, bowl->sh );
-        SOURCE( offscreen, left, bowl->sy );
-        blit_surf();
-        add_refresh_rect( left, bowl->sy, 1, bowl->sh );
-        DEST( sdl.screen, right, bowl->sy, 1, bowl->sh );
-        SOURCE( offscreen, right, bowl->sy );
-        blit_surf();
-        add_refresh_rect( right, bowl->sy, 1, bowl->sh );
-    }
 }
 
 void bowl_show( Bowl *bowl )
@@ -1246,11 +1213,6 @@ void bowl_show( Bowl *bowl )
     int x = bowl->block.sx, y = bowl->block.sy;
     int tile_x = 0, tile_y = 0;
     char aux[24];
-    /* start blocks for left and right help lines */
-    int left_x = 3;
-    int left_y = 0;
-    int right_x = 0;
-    int right_y = 0;
     /* draw contents? */
     if ( bowl->draw_contents ) {
         bowl->draw_contents = 0;
@@ -1273,7 +1235,7 @@ void bowl_show( Bowl *bowl )
                 }
                 if ( block_masks[bowl->block.id].mask[bowl->block.rot_id][i][j] ) {
                     /* help */
-                    if ( config.help == 1 && bowl->are == 0) {
+                    if ( config.modern && bowl->are == 0) {
                         DEST( sdl.screen, bowl->help_sx + tile_x, bowl->help_sy + tile_y, bowl->block_size, bowl->block_size );
                         SOURCE( bowl->blocks, 10 * bowl->block_size, 0 );
                         alpha_blit_surf( bowl->help_alpha );
@@ -1288,16 +1250,7 @@ void bowl_show( Bowl *bowl )
 			    blit_surf();
 			    add_refresh_rect( x, y, bowl->block_size, bowl->block_size );
                     }
-                    /* update help line coordinates */
-                    if ( i <= left_x ) {
-                        left_x = i;
-                        left_y = j;
-                    }
-                    if ( i >= right_x ) {
-                        right_x = i;
-                        right_y = j;
-                    }
-                }
+               }
                 x += bowl->block_size;
                 tile_x += bowl->block_size;
             }
@@ -1305,38 +1258,6 @@ void bowl_show( Bowl *bowl )
             x = bowl->block.sx;
             tile_x = 0;
             tile_y += bowl->block_size;
-        }
-        if ( config.help == 2 ) { /* draw help lines */
-            int i, x, y, y1, y2;
-            int red = SDL_MapRGB( sdl.screen->format, 64, 192, 64 );
-            /* left help line */
-            x = bowl->block.sx + left_x * bowl->block_size;
-            y1 = bowl->block.sy + (left_y+1) * bowl->block_size;
-            i = bowl->block.y + left_y;
-            if ( i < 0 )
-                i = 0;
-            while ( i < bowl->h && bowl->contents[bowl->block.x + left_x][i] == -1 )
-                i++;
-            y2 = bowl->sy + i * bowl->block_size - 1;
-            if ( y1 < bowl->sy )
-                y1 = bowl->sy;
-            for ( y = y1; y <= y2; y++ )
-                set_pixel( sdl.screen, x, y, red );
-            add_refresh_rect( x, y1, 1, y2-y1+1 );
-            /* right help line */
-            x = bowl->block.sx + (right_x+1) * bowl->block_size - 1;
-            y1 = bowl->block.sy + (right_y+1) * bowl->block_size;
-            i = bowl->block.y + right_y;
-            if ( i < 0 )
-                i = 0;
-            while ( i < bowl->h && bowl->contents[bowl->block.x + right_x][i] == -1 )
-                i++;
-            y2 = bowl->sy + i * bowl->block_size - 1;
-            if ( y1 < bowl->sy )
-                y1 = bowl->sy;
-            for ( y = y1; y <= y2; y++ )
-                set_pixel( sdl.screen, x, y, red );
-            add_refresh_rect( x, y1, 1, y2-y1+1 );
         }
     }
     /* check if question mark must be displayed */
