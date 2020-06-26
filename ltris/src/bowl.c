@@ -1104,7 +1104,7 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->preview_center_sy = preview_y;
     bowl_select_next_block( bowl );
     bowl->help_alpha_change = 0.9;
-    bowl->help_alpha = 0;
+    bowl->help_alpha = 160;
     bowl->preview_alpha_change = 0.4;
     bowl->font = load_fixed_font( "f_small_white.bmp", 32, 96, 8 );
 #ifdef SOUND
@@ -1237,7 +1237,7 @@ void bowl_show( Bowl *bowl )
                     /* help */
                     if ( config.modern && bowl->are == 0) {
                         DEST( sdl.screen, bowl->help_sx + tile_x, bowl->help_sy + tile_y, bowl->block_size, bowl->block_size );
-                        SOURCE( bowl->blocks, 10 * bowl->block_size, 0 );
+                        SOURCE( bowl->blocks, block_masks[bowl->block.id].blockid * bowl->block_size, 0 );
                         alpha_blit_surf( bowl->help_alpha );
                         add_refresh_rect( bowl->help_sx + tile_x, bowl->help_sy + tile_y, bowl->block_size, bowl->block_size );
                     }
