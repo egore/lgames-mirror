@@ -34,6 +34,7 @@ Sound_Chunk *wav_click = 0;
 #endif
 Bowl *bowls[BOWL_COUNT]; /* all bowls */
 int  *next_blocks = NULL, next_blocks_size = 0; /* all receive same blocks */
+int last_generated_block = -1; /* block id of last block generated when filling bag */
 
 extern Sdl sdl;
 extern Config config;
@@ -267,9 +268,10 @@ int  tetris_init()
 {
 	/* create block buffer with several bags each containing all 7 
 	 * tetrominoes permuted randomly */
+	last_generated_block = -1;
 	next_blocks_size = BLOCK_BAG_COUNT * BLOCK_COUNT;
 	next_blocks = calloc( next_blocks_size, sizeof(int) );
-	fill_random_block_bags( next_blocks, BLOCK_BAG_COUNT );
+	fill_random_block_bags( next_blocks, BLOCK_BAG_COUNT, config.modern );
 
     /* create bowls according to the gametype */
     switch ( config.gametype ) {

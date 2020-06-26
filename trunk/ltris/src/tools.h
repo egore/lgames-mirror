@@ -110,6 +110,6 @@ void counter_update( Counter *counter, int ms );
 void fill_int_array_rand( int *array, int start, int count, 
                                       int low, int high );
 
-void fill_random_block_bags( int *bag, int bag_count );
+void fill_random_block_bags( int *bag, int bag_count, int modern );
 
 #endif

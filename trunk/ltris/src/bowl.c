@@ -251,7 +251,7 @@ void bowl_select_next_block( Bowl *bowl )
 			
 		/* fill new bags */
 		fill_random_block_bags( next_blocks + num_old_blocks, 
-							BLOCK_BAG_COUNT );
+						BLOCK_BAG_COUNT, config.modern );
 	}
     
 	/* init rest of block structure */
