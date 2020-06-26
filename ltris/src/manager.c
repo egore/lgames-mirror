@@ -212,7 +212,7 @@ void manager_create()
     /* constant contence of switches */
     char *str_fps[] = { _("60 FPS"), _("50 FPS") };
     char *str_cpu_aggr[] = { _("Defensive"), _("Normal"), _("Aggressive"), _("Kamikaze") ,};
-    char *str_help[] = { _("Off"), _("Shadow"), _("Lines") ,};
+    //char *str_help[] = { _("Off"), _("Shadow"), _("Lines") ,};
     char *keystate_names[] = { _("None"), _("Down"), _("All") ,};
 
     char aux[128];
@@ -350,14 +350,10 @@ void manager_create()
     menu_add( game, item_create_edit( _("2nd Player:"), HINT_NAME, config.player2.name, 12 ) );
     menu_add( game, item_create_edit( _("3rd Player:"), HINT_NAME, config.player3.name, 12 ) );
     menu_add( game, item_create_separator( "" ) );
-    menu_add( game, item_create_switch_x( _("Game:"), HINT_GAME, &config.gametype, lc_gametype_names, 8 ) );
+    menu_add( game, item_create_switch( _("Game Style:"), HINT_EXPERT, &config.modern, _("Classic"), _("Modern") ) );
+    menu_add( game, item_create_switch_x( _("Game Mode:"), HINT_GAME, &config.gametype, lc_gametype_names, 8 ) );
     menu_add( game, item_create_range( _("Starting Level:"), HINT_STARTLEVEL, &config.starting_level, 0, 19, 1 ) );
     //menu_add( game, item_create_switch( _("Preview:"), HINT_PREVIEW, &config.preview, _("Off"), _("On") ) );
-    menu_add( game, item_create_switch_x( _("Help:"), HINT_HELP, &config.help, str_help, 3 ) );
-    menu_add( game, item_create_switch( _("Expert Mode:"), HINT_EXPERT, &config.expert, _("Off"), _("On") ) );
-#ifdef _1    
-    menu_add( game, item_create_switch( _("Slow:"), HINT_, &config.slow, _("Off"), _("On") ) );
-#endif    
     //menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_link( _("Multiplayer Options"), HINT_MPMENU, twoplayer ) );
     menu_add( game, item_create_separator( "" ) );

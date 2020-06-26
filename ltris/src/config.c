@@ -65,12 +65,13 @@ void config_reset()
     config.gametype = GAME_DEMO;
     config.starting_level = 0;
     config.preview = 1;
-    config.help = 1;
-    config.slow = 0;
     strcpy( config.player1.name, "Michael" );
     strcpy( config.player2.name, "Sabine" );
     strcpy( config.player3.name, "Thomas" );
     config.expert = 0;
+    config.modern = 1;
+    /* enable modern options, will be updated on game start */
+    config.help = 1;
     /* multiplayer */
     config.holes = 2;
     config.rand_holes = 1;
@@ -165,7 +166,7 @@ void config_load( )
     }
     //parser_get_int( pd, "preview", &config.preview );
     parser_get_int( pd, "help", &config.help );
-    parser_get_int( pd, "expert", &config.expert );
+    parser_get_int( pd, "modern", &config.modern );
     parser_get_int( pd, "center_preview", &config.center_preview );
     parser_get_int( pd, "holes", &config.holes );
     parser_get_int( pd, "rand_holes", &config.rand_holes );
@@ -233,7 +234,7 @@ void config_save( )
         fprintf( file, "starting_level=%i\n", config.starting_level );
         //fprintf( file, "preview=%i\n", config.preview );
         fprintf( file, "help=%i\n", config.help );
-        fprintf( file, "expert=%i\n", config.expert );
+        fprintf( file, "modern=%i\n", config.modern );
         fprintf( file, "center_preview=%i\n", config.center_preview );
         fprintf( file, "holes=%i\n", config.holes );
         fprintf( file, "rand_holes=%i\n", config.rand_holes );

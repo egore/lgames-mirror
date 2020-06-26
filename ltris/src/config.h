@@ -53,12 +53,12 @@ typedef struct {
     int gametype;
     int starting_level;
     int preview;
+    int modern;
     int expert;
     Player player1;
     Player player2;
     Player player3;
     int help;
-    int slow;
     /* multiplayer */
     int holes;
     int rand_holes;
