@@ -1316,13 +1316,14 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
 		    bowl_select_next_block( bowl );
 		    bowl->draw_contents = 1;
 		    /* for simple modern version charge das if shift pressed */
-		    if ((bowl->controls && keystate[bowl->controls->left]) ||
-				    ( !bowl->controls && bowl->cpu_dest_x < bowl->block.x))
-			    bowl->das_charge = bowl->das_maxcharge;
-		    if ((bowl->controls && keystate[bowl->controls->right]) ||
-				    ( !bowl->controls && bowl->cpu_dest_x > bowl->block.x))
-			    bowl->das_charge = bowl->das_maxcharge;
-
+		    if (config.modern) {
+			    if ((bowl->controls && keystate[bowl->controls->left]) ||
+					    ( !bowl->controls && bowl->cpu_dest_x < bowl->block.x))
+				    bowl->das_charge = bowl->das_maxcharge;
+			    if ((bowl->controls && keystate[bowl->controls->right]) ||
+					    ( !bowl->controls && bowl->cpu_dest_x > bowl->block.x))
+				    bowl->das_charge = bowl->das_maxcharge;
+		    }
 	    }
     }
     /* BLOCK */
@@ -1357,6 +1358,8 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                 break;
             case KEY_ROT_LEFT:
             case KEY_ROT_RIGHT:
+        	    /* test if we actually can rotate
+        	     * if not shift block if modern and rotate anyways */
                 if (bowl->stored_key == KEY_ROT_LEFT) {
                     new_rot = bowl->block.rot_id - 1;
                     if ( new_rot < 0 )
@@ -1375,13 +1378,12 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                     else if (ret == POSINVAL_RIGHT)
                         hori_mod--;
                     else {
-                        if (ret == POSVALID)
+                        if (ret == POSVALID && (config.modern || hori_mod == 0))
                             bowl->block.rot_id = new_rot;
                         break;
                     }
                 } while (abs(hori_mod) < 3);
-                /* wall kick, don't rotate above if not allowed */
-                if (ret == POSVALID && hori_mod) {
+                if (ret == POSVALID && hori_mod && config.modern) {
                     bowl->block.x += hori_mod;
                     hori_movement = 1;
                     if ( config.smooth_hori ) {
