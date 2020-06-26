@@ -2,8 +2,9 @@
 - simple/fancy animations
 - no spawn ends game
 - no shift during soft drop (for modern)
-- modern (bag, das chare during are, wallkick, ghost piece, drop+shift)
+- modern (bag, drop+shift)
 - soft drop score
+- lock delay
 
 
 Known Bugs:

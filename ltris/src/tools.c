@@ -22,6 +22,8 @@
 #include "tools.h"
 #include "ltris.h"
 
+extern int last_generated_block;
+
 /* compares to strings and returns true if their first strlen(str1) chars are equal */
 int strequal( char *str1, char *str2 )
 {
@@ -370,11 +372,26 @@ void fill_int_array_rand( int *array, int start, int count,
 
 
 /** Fill integer array @bag sequentially with @bag_count bags of tetrominoes.
- * Each bag contains all tetrominoes (BLOCK_COUNT = 7) randomly permuted. */
-void fill_random_block_bags( int *bag, int bag_count )
+ * Each bag contains all tetrominoes (BLOCK_COUNT = 7) randomly permuted.
+ * For classic go fully random except for preventing same piece twice in a row. */
+void fill_random_block_bags( int *bag, int bag_count, int modern )
 {
 	int i, k, l;
 	
+	if (!modern) {
+		int block;
+
+		for (i = 0; i < bag_count * BLOCK_COUNT; i++) {
+			do {
+				block = RANDOM(0, BLOCK_COUNT-1);
+			} while (last_generated_block != -1 && block == last_generated_block);
+			last_generated_block = block;
+			bag[i] = block;
+		}
+
+		return;
+	}
+
 	DPRINTF("Filling %d bags of 7 tetrominoes each\n", bag_count);
 	for( k = 0; k < bag_count; ++k)	{
 		for (i = 0; i < BLOCK_COUNT; i++ )
