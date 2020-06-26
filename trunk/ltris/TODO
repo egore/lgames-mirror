@@ -1,10 +1,11 @@
-- remove pixel content
+- remove pixel content und check_y, always check block.y
 - simple/fancy animations
 - no spawn ends game
 - no shift during soft drop (for modern)
-- modern (bag, drop+shift)
+- modern (drop+shift)
 - soft drop score
 - lock delay
+- das options for modern: 16/6, 12/5 10/4, 8/8, 6/6
 
 
 Known Bugs:

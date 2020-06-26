@@ -1469,7 +1469,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         if ((bowl->controls && keystate[bowl->controls->down]) ||
         				bowl_cpu_may_move_down(bowl))
         	if (bowl->block_drop_vel > vy)
-        		//if (!lshift && !rshift)
+        		if (config.modern || (!lshift && !rshift))
         			vy = bowl->block_drop_vel;
         bowl->block.cur_y += vy * ms;
 
