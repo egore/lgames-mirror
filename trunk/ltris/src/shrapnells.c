@@ -191,7 +191,7 @@ void shrapnells_show()
         y = (int)shr->y;
         DEST(sdl.screen, x, y, shr->pic->w, shr->pic->h);
         SOURCE(shr->pic, 0, 0);
-        if (!config.trp || shr->alpha == 0)
+        if (shr->alpha == 0)
             blit_surf();
         else
             alpha_blit_surf((int)shr->alpha);
@@ -284,10 +284,7 @@ void exps_show()
     while ( ( exp = list_next( exps ) ) ) {
         DEST( sdl.screen, exp->x, exp->y, exp_w, exp_h );
         SOURCE( exp_pic, (int)exp->cur * exp_w, 0 );
-        if ( config.trp )
-            alpha_blit_surf( exp->alpha );
-        else
-            blit_surf();
+        alpha_blit_surf( exp->alpha );
     }
 }
 void exps_update( int ms )

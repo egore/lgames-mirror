@@ -75,14 +75,12 @@ typedef struct {
     int sound;
     int volume; /* 1 - 8 */
     /* graphics */
-    int trp;
     int anim;
     int fullscreen;
     int fade;
     int fps; /* frames per second: 0 - no limit, 1 - 50, 2 - 100, 3 - 200 */
-	int bkgnd;
-	int smooth_hori;
-	int block_by_block;
+    int bkgnd;
+    int block_by_block;
     /* lbreakout2 event data */
     int motion_mod;
     int rel_motion;
@@ -93,7 +91,6 @@ typedef struct {
     int visualize; /* compute stats hidden? */
     int keep_bkgnd;
     int center_preview;
-    int async_col_check;
 } Config;
 
 /* config directory name in home directory */
