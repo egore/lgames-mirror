@@ -120,6 +120,7 @@ Hint strings for the menu.
 			"piece bag (at max 12 pieces before getting same piece again).##"\
 			"Classic doesn't give you any of this making the game "\
 			"really hard but also very interesting.")
+#define HINT_SHIFTSOUND _("Enable/Disable piece shift sound.")
                        
 /*
 ====================================================================
@@ -335,6 +336,7 @@ void manager_create()
     item = item_create_range( _("Volume:"), HINT_, &config.volume, 1, 8, 1 );
     item->callback = cb_volume;
     menu_add( audio, item );
+    menu_add(audio, item_create_switch( _("Shift Sound:"), HINT_SHIFTSOUND, &config.shiftsound, _("Off"), _("On") ));
     menu_add( audio, item_create_separator( "" ) );
     menu_add( audio, item_create_link( _("Back"), HINT_, _main ) );
 #endif

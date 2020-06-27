@@ -1364,7 +1364,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         if (hori_movement) {
         	bowl_compute_help_pos( bowl );
 #ifdef SOUND
-        	if ( !bowl->mute )
+        	if (!bowl->mute && config.shiftsound)
         		sound_play( bowl->wav_leftright );
 #endif    
         }
