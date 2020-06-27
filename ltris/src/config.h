@@ -74,6 +74,7 @@ typedef struct {
     /* sound */
     int sound;
     int volume; /* 1 - 8 */
+    int shiftsound;
     /* graphics */
     int anim;
     int fullscreen;

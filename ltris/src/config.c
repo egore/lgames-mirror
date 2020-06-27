@@ -104,6 +104,7 @@ void config_reset()
     /* sound */
     config.sound = 1;
     config.volume = 6; /* 1 - 8 */
+    config.shiftsound = 1;
     /* graphics */
     config.anim = 1;
     config.fullscreen = 0;
@@ -176,6 +177,7 @@ void config_load( )
     parser_get_int( pd, "cpu_rot_delay", &config.cpu_rot_delay );
     parser_get_int( pd, "sound", &config.sound );
     parser_get_int( pd, "volume", &config.volume );
+    parser_get_int( pd, "shiftsound", &config.shiftsound );
     parser_get_int( pd, "animations", &config.anim );
     parser_get_int( pd, "fullscreen", &config.fullscreen );
     parser_get_int( pd, "fading", &config.fade );
@@ -236,6 +238,7 @@ void config_save( )
         fprintf( file, "cpu_rot_delay=%i\n", config.cpu_rot_delay );
         fprintf( file, "sound=%i\n", config.sound );
         fprintf( file, "volume=%i\n", config.volume );
+        fprintf( file, "shiftsound=%i\n", config.shiftsound );
         fprintf( file, "animations=%i\n", config.anim );
         fprintf( file, "fullscreen=%i\n", config.fullscreen );
         fprintf( file, "fading=%i\n", config.fade );
