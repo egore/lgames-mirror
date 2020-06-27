@@ -96,8 +96,8 @@ Hint strings for the menu.
 #define HINT_ADV _("Some advanced options.")
 #define HINT_CPUALG _("Test the CPU analyze algorithm in cpu.c and give an average score for a number of games.")
 #define HINT_VIS _("If you turn visualization off the results will be computed faster. If you turn them on you can see a general game behaviour and judge the algorithm by this behaviour.")
-#define HINT_GAMEMODE _("There are basically three different game types:##CLASSIC:#The classic tetris game. Starts with an empty bowl and goes "\
-                  "as long as you make it.#FIGURES:#Each level a nice figure will be added to the ground of you bowl. From level "\
+#define HINT_GAMEMODE _("There are basically three different game types:##NORMAL:#Starts with an empty bowl and goes "\
+                  "as long as you can make it.#FIGURES:#Each level a nice figure will be added to the ground of you bowl. From level "\
                   "7-12 there will be randomly appearing single tiles and from level 13-... there will be whole lines appearing at the "\
                   "bottom of your bowl. Fun!#TWO/THREE-PLAYER:#Either play against other humans or CPU. If you complete multiple lines they'll "\
                   "be send to your opponents according to the multiplayer settings you made.##"\

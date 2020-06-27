@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     strcpy(gametype_ids[7],"vscpucpu");
     /* game names - translated for display */
     strcpy(gametype_names[0],_("Demo"));
-    strcpy(gametype_names[1],_("Classic"));
+    strcpy(gametype_names[1],_("Normal"));
     strcpy(gametype_names[2],_("Figures"));
     strcpy(gametype_names[3],_("Vs Human"));
     strcpy(gametype_names[4],_("Vs CPU"));
