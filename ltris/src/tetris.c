@@ -158,7 +158,7 @@ Id == -1 means to use a random background.
 Copy result to offscreen and screen. Draws bowl contents.
 ====================================================================
 */
-enum { BACK_COUNT = 5 };
+enum { BACK_COUNT = 4 };
 void tetris_recreate_bkgnd( int id )
 {
     SDL_Surface *pic = 0;
