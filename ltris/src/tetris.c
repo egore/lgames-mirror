@@ -190,9 +190,9 @@ void tetris_recreate_bkgnd( int id )
             bowl_draw_frames( bowls[i] );
     /* draw to offscreen */
     FULL_DEST( offscreen ); FULL_SOURCE( bkgnd ); blit_surf();
-    /* add logo if place */
+    /* add logo if place
     if ( config.gametype <= 2 )
-        tetris_draw_logo();
+        tetris_draw_logo(); */
     /* draw bowl contents */
     for ( i = 0; i < BOWL_COUNT; i++ )
         if ( bowls[i] )
@@ -276,11 +276,11 @@ int  tetris_init()
     /* create bowls according to the gametype */
     switch ( config.gametype ) {
         case GAME_DEMO:
-            bowls[0] = bowl_create( 70, 0, 460, 300, blocks, qmark, "Demo", 0 );
+            bowls[0] = bowl_create( 220, 0, 530, 200, blocks, qmark, "Demo", 0 );
             break;
         case GAME_CLASSIC:
         case GAME_FIGURES:
-            bowls[0] = bowl_create( 70, 0, 460, 300, blocks, qmark, config.player1.name, &config.player1.controls );
+            bowls[0] = bowl_create( 220, 0, 530, 200, blocks, qmark, config.player1.name, &config.player1.controls );
             break;
         case GAME_VS_HUMAN:
         case GAME_VS_CPU:
