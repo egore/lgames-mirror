@@ -779,6 +779,7 @@ int bowl_check_block_insertion( Bowl *bowl )
         if ( collision ) break;
     }
     if ( !collision ) return 0;
+    bowl->stored_key = -1;
     /* insert, gain score bla bla bla */
     bowl_insert_block( bowl );
     return 1;
