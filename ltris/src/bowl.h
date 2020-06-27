@@ -31,11 +31,10 @@ enum {
 };
 
 typedef struct {
-    float cur_x, cur_y; /* float position IN bowl */
-    int check_y; /* block y IN BOWL that is used to check insertion/validate position/etc */
     int sx, sy; /* screen position */
     int sw, sh; /* tile size in pixels */
     int x, y; /* map position */
+    float cur_y; /* float pixel y position IN bowl */
     int id; /* picture&structure id */
     int rot_id; /* 0 - 3 rotation positions */
 } Block;
@@ -71,8 +70,6 @@ typedef struct {
     int dismantle_saves; /* if a line was removed the delay is reset */
     Delay add_delay; /* delay until next add action */
     int contents[BOWL_WIDTH][BOWL_HEIGHT]; /* indices of blocks or -1 */
-    int pixel_contents[BOWL_WIDTH][BOWL_HEIGHT * BOWL_BLOCK_SIZE]; /* width is always discret but vertical movement 
-                                                                      smooth needs all pixels of a row for a fast check */
     Block block;/* current block */
     Delay block_hori_delay; /* horizontal movement delay */
     int next_block_id; /* id of next block */
@@ -87,12 +84,8 @@ typedef struct {
     int paused;
     int draw_contents; /* set if bowl needs a full redraw next bowl_show() */
     int help_sx, help_sy, help_sw, help_sh; /* position of helping shadow */
-    float help_alpha;
-    float help_alpha_change;
     int preview_center_sx, preview_center_sy; /* preview is centered here if preview_center_x != -1  */
     int preview_sx, preview_sy; /* actuall preview is drawn here */
-    float preview_alpha;
-    float preview_alpha_change;
     int cpu_dest_x; /* move block to this position (computed in bowl_select_next_block() */
     int cpu_dest_rot; /* destination rotation */
     int cpu_dest_score; /* AI score */

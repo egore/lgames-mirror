@@ -28,8 +28,6 @@ extern SDL_Surface *offscreen;
 extern SDL_Surface *bkgnd;
 extern int keystate[SDLK_LAST];
 extern Bowl *bowls[BOWL_COUNT];
-extern int cpu_original_bowl[BOWL_WIDTH][BOWL_HEIGHT];
-extern Block_Mask *cpu_block;
 
 enum { FIGURE_COUNT = 21 };
 int figures[FIGURE_COUNT][BOWL_WIDTH][BOWL_HEIGHT];
@@ -261,9 +259,7 @@ void bowl_select_next_block( Bowl *bowl )
 	bowl->block.sy = bowl->sy + bowl->block_size * bowl->block.y;
 	bowl->block.rot_id = block_masks[bowl->block.id].rstart;
 	bowl->block.sw = bowl->block.sh = 4 * bowl->block_size;
-	bowl->block.cur_x = bowl->block.x * bowl->block_size;
 	bowl->block.cur_y = bowl->block.y * bowl->block_size;
-	bowl->block.check_y = (int)bowl->block.cur_y;
 	bowl_compute_help_pos( bowl );
 	bowl_compute_preview_pos( bowl );
 
@@ -286,10 +282,7 @@ Set a tile contents and pixel contents.
 */
 void bowl_set_tile( Bowl *bowl, int x, int y, int tile_id )
 {
-    int i, j = y * bowl->block_size;
     bowl->contents[x][y] = tile_id;
-    for ( i = 0; i < bowl->block_size; i++ )
-        bowl->pixel_contents[x][j + i] = tile_id;
 }
 
 /*
@@ -348,53 +341,6 @@ int bowl_check_piece_position(Bowl *bowl, int x, int y, int r)
 
 /*
 ====================================================================
-Check if the passed pixel position by rotation is a valid one
-for bowl::block.
-NOTE: py is a pixel value and x is a bowl map value.
-The tolerance value moves the checked corners into the middle
-of the brick opening a small 'window' to move though it's blocked.
-Useful when config::block_by_block is disabled.
-If position is valid, 0 is returned. Other return values:
-  POSINVAL_LEFT (out of left boundary)
-  POSINVAL_RIGHT (out of right boundary)
-  POSINVAL invalid for other reasons
-====================================================================
-*/
-int bowl_validate_block_pos( Bowl *bowl, int x, int py, int rot, int tol )
-{
-    int i, j;
-    int tile_y = 0;
-    for ( j = 0; j < 4; j++ ) {
-        for ( i = 0; i < 4; i++ ) {
-            if ( block_masks[bowl->block.id].mask[rot][i][j] ) {
-                if ( x + i < 0 )
-                    return POSINVAL_LEFT;
-                if ( x + i >= bowl->w ) 
-                    return POSINVAL_RIGHT;
-                if ( py + tile_y >= bowl->sh )
-                    return POSINVAL;
-                /* if it doesn't fit the screen from above it's okay */
-                if ( py + tile_y < 0 )
-                    continue;
-                /* bowl pixel contents */
-                if ( bowl->pixel_contents[i + x][py + tile_y + tol]!= -1 )
-                    return POSINVAL;
-                if ( bowl->pixel_contents[i + x][py + tile_y + bowl->block_size - 1 - tol] != -1 )
-                    return POSINVAL;
-                /* if the bowl bottom is hit it is a collision as well */
-                if ( py + tile_y + tol >= bowl->sh )
-                    return POSINVAL;
-                if ( py + tile_y + bowl->block_size - 1 - tol >= bowl->sh )
-                    return POSINVAL;
-            }
-        }
-        tile_y += bowl->block_size;
-    }
-    return POSVALID;
-}
-
-/*
-====================================================================
 Draw block to offscreen.
 ====================================================================
 */
@@ -446,7 +392,9 @@ void bowl_add_tile( Bowl *bowl )
             j++;
         /* add tile and test if this hits the block if so remove and try another one */
         bowl_set_tile( bowl, i, j, 9 );
-        if ( bowl_validate_block_pos( bowl, bowl->block.x, bowl->block.check_y, bowl->block.rot_id, 0 ) < 0) {
+        if (bowl_check_piece_position(bowl,
+        		bowl->block.x, bowl->block.y,
+			bowl->block.rot_id) != POSVALID) {
             bowl_set_tile( bowl, i, j, -1 );
             continue;
         }
@@ -506,10 +454,11 @@ int bowl_add_line( Bowl * bowl, int wanted_holes, int *holes_pos)
         }
     }
     /* check if block position became invalid */
-    if ( bowl_validate_block_pos( bowl, bowl->block.x, bowl->block.check_y, bowl->block.rot_id, 0 ) < 0 ) {
-        bowl->block.y = bowl->block.check_y / bowl->block_size - 1;
-        bowl->block.check_y = bowl->block.y * bowl->block_size;
-        bowl->block.cur_y = bowl->block.check_y;
+    if (bowl_check_piece_position(bowl,
+		    bowl->block.x, bowl->block.y,
+		    bowl->block.rot_id) != POSVALID) {
+        bowl->block.y -= 1;
+        bowl->block.cur_y = bowl->block.y * bowl->block_size;
     }
     /* update helping shadow */
     bowl_compute_help_pos( bowl );
@@ -783,13 +732,7 @@ void bowl_drop_block( Bowl *bowl )
 		    bowl->block.rot_id) == POSVALID) {
         bowl->block.cur_y += bowl->block_size;
         bowl->block.y = (int)bowl->block.cur_y / bowl->block_size;
-        /* update check y */
-        if ( config.block_by_block )
-            bowl->block.check_y = bowl->block.y * bowl->block_size;
-        else
-            bowl->block.check_y = (int)bowl->block.cur_y;
     }
-    bowl->stored_key = -1;
 }
 
 /*
@@ -1082,9 +1025,6 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->preview_center_sx = preview_x;
     bowl->preview_center_sy = preview_y;
     bowl_select_next_block( bowl );
-    bowl->help_alpha_change = 0.9;
-    bowl->help_alpha = 160;
-    bowl->preview_alpha_change = 0.4;
     bowl->font = load_fixed_font( "f_small_white.bmp", 32, 96, 8 );
 #ifdef SOUND
     bowl->wav_leftright = sound_chunk_load( "leftright.wav" );
@@ -1217,7 +1157,7 @@ void bowl_show( Bowl *bowl )
                     if ( config.modern && bowl->are == 0) {
                         DEST( sdl.screen, bowl->help_sx + tile_x, bowl->help_sy + tile_y, bowl->block_size, bowl->block_size );
                         SOURCE( bowl->blocks, block_masks[bowl->block.id].blockid * bowl->block_size, 0 );
-                        alpha_blit_surf( bowl->help_alpha );
+                        alpha_blit_surf(160);
                         add_refresh_rect( bowl->help_sx + tile_x, bowl->help_sy + tile_y, bowl->block_size, bowl->block_size );
                     }
                     /* block */
@@ -1245,7 +1185,7 @@ void bowl_show( Bowl *bowl )
                           bowl->preview_center_sy - bowl->unknown_preview->h / 2, 
                           bowl->unknown_preview->w, bowl->unknown_preview->h );
         SOURCE( bowl->unknown_preview, 0, 0 );
-        alpha_blit_surf( bowl->preview_alpha );
+        blit_surf();
         add_refresh_rect( bowl->preview_center_sx - bowl->unknown_preview->w / 2, 
                           bowl->preview_center_sy - bowl->unknown_preview->h / 2, 
                           bowl->unknown_preview->w, bowl->unknown_preview->h  );
@@ -1274,7 +1214,6 @@ int bowl_convert_cury2y(Bowl *bowl)
 void bowl_update( Bowl *bowl, int ms, int game_over )
 {
     int old_y = bowl_convert_cury2y(bowl);
-    int target_x; /* target screen position within bowl */
     int hori_movement = 0;
     int new_rot, hori_mod, ret;
     float vy;
@@ -1369,10 +1308,6 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                 if (ret == POSVALID && hori_mod && config.modern) {
                     bowl->block.x += hori_mod;
                     hori_movement = 1;
-                    if ( config.smooth_hori ) {
-                        bowl->block.cur_x = bowl->block.x * bowl->block_size;
-                        bowl->block.sx = (int)bowl->block.cur_x + bowl->sx;
-                    }
                 }
                 bowl_compute_help_pos( bowl );
                 break;
@@ -1422,26 +1357,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         }
 
         /* update horizontal float&screen position */
-        if ( config.smooth_hori ) {
-        	/* cur_x smoothly approaches block.x. block.x is set
-        	 * directly to right position */
-            target_x = bowl->block.x * bowl->block_size;
-            if ( target_x != (int)bowl->block.cur_x ) {
-                if ( (int)bowl->block.cur_x > target_x ) {
-                    bowl->block.cur_x -= bowl->block_hori_vel * ms;
-                    if ( (int)bowl->block.cur_x < target_x  )
-                        bowl->block.cur_x = target_x;
-                }
-                else {
-                    bowl->block.cur_x += bowl->block_hori_vel * ms; 
-                    if ( (int)bowl->block.cur_x > target_x )
-                        bowl->block.cur_x = target_x;
-                }
-                bowl->block.sx = (int)bowl->block.cur_x + bowl->sx;
-            }
-        }
-        else if ( hori_movement )
-            bowl->block.sx = bowl->block.x * bowl->block_size + bowl->sx;
+        bowl->block.sx = bowl->block.x * bowl->block_size + bowl->sx;
 
         /* update vertical float position */
         if ( !bowl->controls && !bowl->cpu_down )
@@ -1457,12 +1373,6 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
 
         /* update vertical bowl position */
         bowl->block.y = bowl_convert_cury2y(bowl);
-
-        /* update check y */
-        if ( config.block_by_block || config.async_col_check )
-            bowl->block.check_y = bowl->block.y * bowl->block_size;
-        else
-            bowl->block.check_y = (int)bowl->block.cur_y;
 
         /* if we entered a new tile check if block stops */
         if (old_y != bowl->block.y) {

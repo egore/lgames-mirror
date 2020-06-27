@@ -105,13 +105,11 @@ void config_reset()
     config.sound = 1;
     config.volume = 6; /* 1 - 8 */
     /* graphics */
-    config.trp = 1;
     config.anim = 1;
     config.fullscreen = 0;
     config.fade = 1;
     config.fps = 0; /* frames per second: 0 - 60Hz, 1 - 50Hz */
     config.bkgnd = 0;
-    config.smooth_hori = 0;
     config.block_by_block = 0;
     /* lbreakout2 event data */
     config.rel_motion = 0;
@@ -123,7 +121,6 @@ void config_reset()
     config.visualize = 0;
     config.keep_bkgnd = 0;
     config.center_preview = 0;
-    config.async_col_check = 1;
 }
 
 /* load config */
@@ -179,14 +176,12 @@ void config_load( )
     parser_get_int( pd, "cpu_rot_delay", &config.cpu_rot_delay );
     parser_get_int( pd, "sound", &config.sound );
     parser_get_int( pd, "volume", &config.volume );
-    parser_get_int( pd, "transparency", &config.trp );
     parser_get_int( pd, "animations", &config.anim );
     parser_get_int( pd, "fullscreen", &config.fullscreen );
     parser_get_int( pd, "fading", &config.fade );
     parser_get_int( pd, "fps", &config.fps );
     parser_get_int( pd, "background", &config.bkgnd );
     parser_get_int( pd, "static_background", &config.keep_bkgnd );
-    //parser_get_int( pd, "smooth_hori", &config.smooth_hori );
     parser_get_int( pd, "hori_delay", &config.hori_delay );
     parser_get_int( pd, "vert_delay", &config.vert_delay );
     parser_get_int( pd, "pause_key", &config.pause_key );
@@ -196,7 +191,6 @@ void config_load( )
     parser_get_int( pd, "grap_input", &config.grab );
     parser_get_int( pd, "invert_mouse", &config.invert );
     parser_get_int( pd, "quick_help", &config.quick_help );
-    //parser_get_int( pd, "async_collision_check", &config.async_col_check );
     parser_free( &pd );
 }
 
@@ -242,14 +236,12 @@ void config_save( )
         fprintf( file, "cpu_rot_delay=%i\n", config.cpu_rot_delay );
         fprintf( file, "sound=%i\n", config.sound );
         fprintf( file, "volume=%i\n", config.volume );
-        fprintf( file, "transparency=%i\n", config.trp );
         fprintf( file, "animations=%i\n", config.anim );
         fprintf( file, "fullscreen=%i\n", config.fullscreen );
         fprintf( file, "fading=%i\n", config.fade );
         fprintf( file, "fps=%i\n", config.fps );
         fprintf( file, "background=%i\n", config.bkgnd );
         fprintf( file, "static_background=%i\n", config.keep_bkgnd );
-        //fprintf( file, "smooth_hori=%i\n", config.smooth_hori );
         fprintf( file, "hori_delay=%i\n", config.hori_delay );
         fprintf( file, "vert_delay=%i\n", config.vert_delay );
         fprintf( file, "pause_key=%i\n", config.pause_key );
@@ -259,6 +251,5 @@ void config_save( )
         fprintf( file, "grab_input=%i\n", config.grab );
         fprintf( file, "invert_mouse=%i\n", config.invert );
         fprintf( file, "quick_help=%i\n", config.quick_help );
-        //fprintf( file, "async_collision_check=%i\n", config.async_col_check );
     }
 }
