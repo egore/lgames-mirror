@@ -212,8 +212,6 @@ void manager_create()
     /* constant contence of switches */
     char *str_fps[] = { _("60 FPS"), _("50 FPS") };
     char *str_cpu_aggr[] = { _("Defensive"), _("Normal"), _("Aggressive"), _("Kamikaze") ,};
-    //char *str_help[] = { _("Off"), _("Shadow"), _("Lines") ,};
-    char *keystate_names[] = { _("None"), _("Down"), _("All") ,};
 
     char aux[128];
     int i, j, k, l;
@@ -433,7 +431,6 @@ void manager_create()
     item = item_create_switch  ( _("Quick Help:"), HINT_QHELP, &config.quick_help, _("Off"), _("On") );
     item->callback = cb_hints;
     menu_add( adv, item );
-    menu_add( adv, item_create_switch_x( _("Clear Keystate:"), HINT_KEYSTATE, &config.clear_keystate, keystate_names, 3 ) );
     menu_add( adv, item_create_switch  ( _("Center Preview:"), HINT_CENTERPREVIEW, &config.center_preview, _("Off"), _("On") ) );
     //menu_add( adv, item_create_switch  ( _("Collision Check:"), HINT_COL_CHECK, &config.async_col_check, _("Sync"), _("Async") ) );
 #ifdef DEVELOPMENT    

@@ -779,17 +779,6 @@ int bowl_check_block_insertion( Bowl *bowl )
         if ( collision ) break;
     }
     if ( !collision ) return 0;
-    /* clear the down key so we don't move the next block too far */
-    if ( bowl->controls && config.clear_keystate ) {
-        keystate[bowl->controls->down] = 0;
-	if ( config.clear_keystate == 2 ) {
-	    keystate[bowl->controls->left] = 0;
-	    keystate[bowl->controls->right] = 0;
-	    keystate[bowl->controls->rot_left] = 0;
-	    keystate[bowl->controls->rot_right] = 0;
-	    keystate[bowl->controls->drop] = 0;
-	}
-    }
     /* insert, gain score bla bla bla */
     bowl_insert_block( bowl );
     return 1;
