@@ -54,6 +54,7 @@ typedef struct {
     int das_maxcharge; /* maximum charge in ms */
     int das_drop; /* das charge drop if shifting piece */
     int are; /* in ms, if > 0 next piece is blocked until delay times out */
+    int lock_delay; /* time on collision until piece is inserted */
     int stored_key; /* key that was stored this programme cycle */
     SDL_Surface *blocks; /* pointer to the block graphics */
     SDL_Surface *unknown_preview; /* if preview's unknown this is displayed */
