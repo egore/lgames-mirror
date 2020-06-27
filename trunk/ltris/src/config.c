@@ -122,7 +122,6 @@ void config_reset()
     config.quick_help = 1;
     config.visualize = 0;
     config.keep_bkgnd = 0;
-    config.clear_keystate = 1;
     config.center_preview = 0;
     config.async_col_check = 1;
 }
@@ -175,7 +174,6 @@ void config_load( )
         parse_player( sub, &config.player2 );
     if ( parser_get_pdata( pd, "player3", &sub ) )
         parse_player( sub, &config.player3 );
-    parser_get_int( pd, "clear_keystate", &config.clear_keystate );
     parser_get_int( pd, "cpu_aggr", &config.cpu_aggr );
     parser_get_int( pd, "cpu_delay", &config.cpu_delay );
     parser_get_int( pd, "cpu_rot_delay", &config.cpu_rot_delay );
@@ -239,7 +237,6 @@ void config_save( )
         print_player( file, 1, &config.player1 );
         print_player( file, 2, &config.player2 );
         print_player( file, 3, &config.player3 );
-        fprintf( file, "clear_keystate=%i\n", config.clear_keystate );
         fprintf( file, "cpu_aggr=%i\n", config.cpu_aggr );
         fprintf( file, "cpu_delay=%i\n", config.cpu_delay );
         fprintf( file, "cpu_rot_delay=%i\n", config.cpu_rot_delay );

@@ -92,7 +92,6 @@ typedef struct {
     int quick_help;
     int visualize; /* compute stats hidden? */
     int keep_bkgnd;
-    int clear_keystate;
     int center_preview;
     int async_col_check;
 } Config;
