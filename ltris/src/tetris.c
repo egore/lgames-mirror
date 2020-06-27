@@ -489,7 +489,7 @@ void tetris_run()
 	/* stats */
 	fpsCycles++;
 	if (fpsStart < SDL_GetTicks())
-		fps = 1000 * fpsCycles / (SDL_GetTicks() - fpsStart);
+		fps = ((10000 * fpsCycles / (SDL_GetTicks() - fpsStart))+5)/10;
 	if (fpsCycles > 100) {
 		fpsCycles = 0;
 		fpsStart = SDL_GetTicks();

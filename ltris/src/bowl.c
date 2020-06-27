@@ -516,7 +516,7 @@ void bowl_add_score(Bowl *bowl, int lc)
 
 	/* add 20% if no preview */
 	if ( !config.preview || bowl->preview_center_sx == -1 )
-		score = 20 * score / 100;
+		score += 20 * score / 100;
 
 	counter_add(&bowl->score, score);
 }
@@ -1241,6 +1241,8 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
 		    if (bowl->stored_key == KEY_LEFT ||
 				    bowl->stored_key == KEY_RIGHT)
 			    bowl->stored_key = -1; /* kill input to keep das */
+		    if (bowl->stored_key == KEY_DROP)
+			    bowl->stored_key = -1; /* prevent accidental drop */
 		    /* running are means block was inserted. when expired
 		     * remove empty lines and get next block */
 		    bowl_collapse(bowl);
