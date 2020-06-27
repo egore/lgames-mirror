@@ -20,9 +20,6 @@
 Create high_res or low_res shrapnells.
 ====================================================================
 */
-enum {
-    SHR_TYPE_COUNT = 7
-};
 
 typedef struct {
     float x, y;
@@ -56,7 +53,7 @@ Create shrapnells from position in offscreen with the size
 of bricks
 ====================================================================
 */
-void shrapnells_create( int x, int y, int w, int h, int type );
+void shrapnells_create( int x, int y, int w, int h );
 /*
 ====================================================================
 Remove all shrapnells

@@ -485,7 +485,7 @@ void draw_3dframe( SDL_Surface *surf, int cx, int cy, int w, int h, int border )
     FULL_DEST( contents ); fill_surf( 0x0 );
     DEST( surf, cx, cy, w, h );
     SOURCE( contents, 0, 0 );
-    alpha_blit_surf( 32 );
+    alpha_blit_surf( 48 );
 
     SDL_FreeSurface( contents );
     SDL_FreeSurface( frame ); 
