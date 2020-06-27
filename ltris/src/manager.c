@@ -80,7 +80,10 @@ Hint strings for the menu.
 #define HINT_PAUSEKEY _("Key used to pause and unpause a game.")
 #define HINT_START _("Let's get it on!!!!")
 #define HINT_NAME _("Human player names. If you play against CPU it will be named as CPU-x.")
-#define HINT_STARTLEVEL _("This is your starting level which will be ignored for mode 'Figures' (always start at level 0).##The first played level will require the more lines to be cleared for level up the higher it is.")
+#define HINT_STARTLEVEL _("This is your starting level which will be ignored "\
+			"for mode 'Figures' (always start at level 0).##"\
+			"If not 0 the first level transition will require more lines to be cleared "\
+			"(the higher the starting level the more lines).")
 #define HINT_PREVIEW _("Enable/Disable block preview.##If disabled you'll gain 15% score in the end!")
 #define HINT_HELP _("Shows guiding lines or a shadow of the currently dropping block so you see where it'll hit the ground.##This option has no penalty/bonus.")
 #define HINT_MPMENU _("Some multiplayer and CPU settings.")
@@ -93,7 +96,7 @@ Hint strings for the menu.
 #define HINT_ADV _("Some advanced options.")
 #define HINT_CPUALG _("Test the CPU analyze algorithm in cpu.c and give an average score for a number of games.")
 #define HINT_VIS _("If you turn visualization off the results will be computed faster. If you turn them on you can see a general game behaviour and judge the algorithm by this behaviour.")
-#define HINT_GAME _("There are basically three different game types:##CLASSIC:#The classic tetris game. Starts with an empty bowl and goes "\
+#define HINT_GAMEMODE _("There are basically three different game types:##CLASSIC:#The classic tetris game. Starts with an empty bowl and goes "\
                   "as long as you make it.#FIGURES:#Each level a nice figure will be added to the ground of you bowl. From level "\
                   "7-12 there will be randomly appearing single tiles and from level 13-... there will be whole lines appearing at the "\
                   "bottom of your bowl. Fun!#TWO/THREE-PLAYER:#Either play against other humans or CPU. If you complete multiple lines they'll "\
@@ -111,6 +114,12 @@ Hint strings for the menu.
 			"current bag (a bag is a set of all 7 randomly sorted basic pieces) "\
 			"is dealt out next. This option only works for single player. "\
 			"There is a 50% score bonus in the end.")
+#define HINT_GAMESTYLE _("Modern enables all that stuff that makes tetris "\
+			"casual like piece shadow, wall-kicks, "\
+			"DAS charge during ARE (allows to shift next piece faster), "\
+			"piece bag (at max 12 pieces before getting same piece again).##"\
+			"Classic doesn't give you any of this making the game "\
+			"really hard but also very interesting.")
                        
 /*
 ====================================================================
@@ -306,8 +315,8 @@ void manager_create()
     menu_add( _main, item_create_separator  ( _("Audio") ) );
 #endif
     menu_add( _main, item_create_separator  ( "" ) );
-    menu_add( _main, item_create_link       ( _("Advanced Options"), HINT_ADV, adv ) );
-    menu_add( _main, item_create_separator  ( "" ) );
+    //menu_add( _main, item_create_link       ( _("Advanced Options"), HINT_ADV, adv ) );
+    //menu_add( _main, item_create_separator  ( "" ) );
     menu_add( _main, item_create_action     ( _("Quit"), HINT_QUIT, ACTION_QUIT ) );
 #ifdef _1
     /* options */
@@ -333,7 +342,10 @@ void manager_create()
     menu_add( gfx, item_create_switch( _("Animations:"), HINT_ANIM, &config.anim, _("Off"), _("On") ) );
     //menu_add( gfx, item_create_switch( _("Move:"), HINT_SMOOTHHORI, &config.smooth_hori, _("Tile By Tile"), _("Smooth") ) );
     menu_add( gfx, item_create_switch( _("Drop:"), HINT_SMOOTHVERT, &config.block_by_block, _("Smooth"), _("Tile By Tile") ) );
-    menu_add( gfx, item_create_switch( _("Change Background:"), HINT_BKGND, &config.keep_bkgnd, _("Yes"), _("No") ) );
+    //menu_add( gfx, item_create_switch( _("Change Background:"), HINT_BKGND, &config.keep_bkgnd, _("Yes"), _("No") ) );
+    item = item_create_switch  ( _("Quick Help:"), HINT_QHELP, &config.quick_help, _("Off"), _("On") );
+    item->callback = cb_hints;
+    menu_add( gfx, item );
     menu_add( gfx, item_create_separator( "" ) );
     item = item_create_switch( _("Display:"), HINT_DISPLAY, &config.fullscreen, _("Window"), _("Fullscreen") );
     item->callback = cb_fullscreen;
@@ -348,11 +360,11 @@ void manager_create()
     menu_add( game, item_create_edit( _("2nd Player:"), HINT_NAME, config.player2.name, 12 ) );
     menu_add( game, item_create_edit( _("3rd Player:"), HINT_NAME, config.player3.name, 12 ) );
     menu_add( game, item_create_separator( "" ) );
-    menu_add( game, item_create_switch( _("Game Style:"), HINT_EXPERT, &config.modern, _("Classic"), _("Modern") ) );
-    menu_add( game, item_create_switch_x( _("Game Mode:"), HINT_GAME, &config.gametype, lc_gametype_names, 8 ) );
+    menu_add( game, item_create_switch( _("Game Style:"), HINT_GAMESTYLE, &config.modern, _("Classic"), _("Modern") ) );
+    menu_add( game, item_create_switch_x( _("Game Mode:"), HINT_GAMEMODE, &config.gametype, lc_gametype_names, 8 ) );
     menu_add( game, item_create_range( _("Starting Level:"), HINT_STARTLEVEL, &config.starting_level, 0, 19, 1 ) );
     //menu_add( game, item_create_switch( _("Preview:"), HINT_PREVIEW, &config.preview, _("Off"), _("On") ) );
-    //menu_add( game, item_create_separator( "" ) );
+    menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_link( _("Multiplayer Options"), HINT_MPMENU, twoplayer ) );
     menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_link( _("Back"), HINT_, _main ) );
@@ -362,6 +374,8 @@ void manager_create()
     menu_add( twoplayer, item_create_switch( _("Random Holes:"), HINT_RANDHOLES, &config.rand_holes, _("Off"), _("On") ) );
     menu_add( twoplayer, item_create_switch( _("Send All Lines:"), HINT_SENDALL, &config.send_all, _("Off"), _("On") ) );
     menu_add( twoplayer, item_create_switch( _("Always Send Tetris:"), HINT_SENDTETRIS, &config.send_tetris, _("Off"), _("On") ) );
+    menu_add( twoplayer, item_create_separator( "" ) );
+    menu_add( twoplayer, item_create_switch  ( _("Center Preview:"), HINT_CENTERPREVIEW, &config.center_preview, _("Off"), _("On") ) );
     menu_add( twoplayer, item_create_separator( "" ) );
     menu_add( twoplayer, item_create_switch_x( _("CPU Style:"), HINT_CPUAGGR, &config.cpu_aggr, str_cpu_aggr, 4 ) );
     menu_add( twoplayer, item_create_range( _("CPU Drop Delay:"), HINT_CPUDROP, &config.cpu_delay, 0, 2000, 100 ) );
@@ -428,11 +442,6 @@ void manager_create()
     menu_add( cont_player3, item_create_separator( "" ) );
     menu_add( cont_player3, item_create_link( _("Back"), HINT_, cont ) );
     /* advanced options */
-    item = item_create_switch  ( _("Quick Help:"), HINT_QHELP, &config.quick_help, _("Off"), _("On") );
-    item->callback = cb_hints;
-    menu_add( adv, item );
-    menu_add( adv, item_create_switch  ( _("Center Preview:"), HINT_CENTERPREVIEW, &config.center_preview, _("Off"), _("On") ) );
-    //menu_add( adv, item_create_switch  ( _("Collision Check:"), HINT_COL_CHECK, &config.async_col_check, _("Sync"), _("Async") ) );
 #ifdef DEVELOPMENT    
     menu_add( adv, item_create_separator( "" ) );
     menu_add( adv, item_create_action( _("Test CPU Algorithm"), HINT_CPUALG, ACTION_MAKE_STAT ) );
