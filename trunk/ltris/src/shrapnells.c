@@ -86,65 +86,69 @@ void shrapnells_delete()
 }
 /*
 ====================================================================
-Create shrapnells from position in offscreen
+Create shrapnells from position in offscreen for one line of blocks.
 ====================================================================
 */
-void shrapnells_create( int x, int y, int w, int h, int type )
+void shrapnells_create( int x, int y, int w, int h )
 {
-    int i, j;
-    int shr_w, shr_h;
-    
-    /* no animations? */
-    if (!config.anim) return;
+	int type, i, j;
+	int shr_w = BOWL_BLOCK_SIZE, shr_h = h;
+	float vx;
 
-    /* create shrapnells */
-    switch (type) {
-        case 0:
-        case 1:
-            shr_w = BOWL_BLOCK_SIZE;
-            shr_h = h;
-            for ( i = 0, j = 1; i < w; i += shr_w, j++ ) {
-                if ( type == 0 )
-                    shrapnell_create(x + i, y, shr_w, shr_h, 0, ( 11 - j ) * -0.015, 0, 0.0002 );
-                else
-                    shrapnell_create(x + i, y, shr_w, shr_h, 0, j * -0.015, 0, 0.0002 );
-            }
-            break;
-        case 2:
-        case 3:
-            shr_w = BOWL_BLOCK_SIZE;
-            shr_h = h;
-            for ( i = 0, j = 1; i < w / 2; i += shr_w, j++ ) {
-                if ( type == 2 ) {
-                    shrapnell_create( x + i, y, shr_w, shr_h, 0, j * -0.016, 0, 0.0002 );
-                    shrapnell_create( x + w - i - shr_w, y, shr_w, shr_h, 0, j * -0.016, 0, 0.0002 );
-                }
-                else {
-                    shrapnell_create( x + i, y, shr_w, shr_h, 0, ( 6 - j ) * -0.016, 0, 0.0002 );
-                    shrapnell_create( x + w - i - shr_w, y, shr_w, shr_h, 0, ( 6 - j ) * -0.016, 0, 0.0002 );
-                }
-            }
-            break;
-        case 4:
-/*            shr_w = BOWL_BLOCK_SIZE;
-            shr_h = h;
-            for ( i = 0, j = 1; i < w / 2; i += shr_w, j++ ) {
-                shrapnell_create( x + i, y, shr_w, shr_h, ( 6 - j ) * 0.02, 0, 0, 0 );
-                shrapnell_create( x + w - i - shr_w, y, shr_w, shr_h, ( 6 - j ) * -0.02, 0, 0, 0 );
-            }
-            break;*/
-        case 5:
-        case 6:
-            shr_w = BOWL_BLOCK_SIZE;
-            shr_h = h;
-            for ( i = 0, j = 1; i < w; i += shr_w, j++ ) {
-                if ( type == 5 )
-                    shrapnell_create( x + i, y, shr_w, shr_h, j * -0.02, ( 11 - j ) * -0.01, 0, 0.0002 );
-                else
-                    shrapnell_create( x + i, y, shr_w, shr_h, ( 11 - j ) * 0.02, ( 11 - j ) * -0.01, 0, 0.0002 );
-            }
-            break;
-    }
+	type = rand() % 8;
+	if (config.anim == 0)
+		type = 0;
+
+	/* create shrapnells */
+	switch (type) {
+	case 0:
+		/* simple sideways animation */
+		for ( i = 0, j = 1; i < w; i += shr_w, j++ ) {
+			if (j <= 5)
+				vx = (j-1) * -0.0667;
+			else
+				vx = (10 - j) * 0.0667;
+			shrapnell_create(x + i, y, shr_w, shr_h, vx, 0, 0, 0);
+		}
+		break;
+	case 1:
+	case 2:
+		for ( i = 0, j = 1; i < w; i += shr_w, j++ ) {
+			if ( type == 1 )
+				shrapnell_create(x + i, y, shr_w, shr_h, 0, ( 11 - j ) * -0.015, 0, 0.0002 );
+			else
+				shrapnell_create(x + i, y, shr_w, shr_h, 0, j * -0.015, 0, 0.0002 );
+		}
+		break;
+	case 3:
+	case 4:
+		for ( i = 0, j = 1; i < w / 2; i += shr_w, j++ ) {
+			if ( type == 3 ) {
+				shrapnell_create( x + i, y, shr_w, shr_h, 0, j * -0.016, 0, 0.0002 );
+				shrapnell_create( x + w - i - shr_w, y, shr_w, shr_h, 0, j * -0.016, 0, 0.0002 );
+			}
+			else {
+				shrapnell_create( x + i, y, shr_w, shr_h, 0, ( 6 - j ) * -0.016, 0, 0.0002 );
+				shrapnell_create( x + w - i - shr_w, y, shr_w, shr_h, 0, ( 6 - j ) * -0.016, 0, 0.0002 );
+			}
+		}
+		break;
+	case 5:
+		for ( i = 0, j = 1; i < w / 2; i += shr_w, j++ ) {
+			shrapnell_create( x + i, y, shr_w, shr_h, ( 6 - j ) * 0.02, 0, 0, 0 );
+			shrapnell_create( x + w - i - shr_w, y, shr_w, shr_h, ( 6 - j ) * -0.02, 0, 0, 0 );
+		}
+		break;
+	case 6:
+	case 7:
+		for ( i = 0, j = 1; i < w; i += shr_w, j++ ) {
+			if ( type == 6 )
+				shrapnell_create( x + i, y, shr_w, shr_h, j * -0.02, ( 11 - j ) * -0.01, 0, 0.0002 );
+			else
+				shrapnell_create( x + i, y, shr_w, shr_h, ( 11 - j ) * 0.02, ( 11 - j ) * -0.01, 0, 0.0002 );
+		}
+		break;
+	}
 }
 /*
 ====================================================================
@@ -211,9 +215,9 @@ void shrapnells_update( int ms )
         shr->x += shr->v.x * ms;
         shr->y += shr->v.y * ms;
         if (shr->alpha < 255)
-            shr->alpha += 0.20 * ms;
+            shr->alpha += 0.64 * ms;
         entry = entry->next;
-        if (shr->alpha > 255 || shr->x + shr->pic->w < 0 || shr->y + shr->pic->h < 0 || shr->x > sdl.screen->w || shr->y > sdl.screen->h)
+        if (shr->alpha >= 255 || shr->x + shr->pic->w < 0 || shr->y + shr->pic->h < 0 || shr->x > sdl.screen->w || shr->y > sdl.screen->h)
             list_delete_entry( shrapnells, entry->prev );
     }
 }

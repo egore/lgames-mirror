@@ -596,7 +596,6 @@ void bowl_insert_block( Bowl *bowl )
   int i, j, k, l;
   int full;
   int send_count;
-  int shr_type;
   int py;
   int *hole_pos = 0;
   int max_y; /* lowest block position in tiles */
@@ -674,10 +673,9 @@ void bowl_insert_block( Bowl *bowl )
 #endif
 
   /* create shrapnells */
-  shr_type = rand() % SHR_TYPE_COUNT;
   if ( !bowl->blind )
     for ( j = 0; j < bowl->cleared_line_count; j++ )
-      shrapnells_create( bowl->sx, bowl->sy + bowl->cleared_line_y[j] * bowl->block_size, bowl->sw, bowl->block_size, shr_type );
+      shrapnells_create( bowl->sx, bowl->sy + bowl->cleared_line_y[j] * bowl->block_size, bowl->sw, bowl->block_size );
 #ifdef SOUND
   if ( bowl->cleared_line_count > 0 )
     if ( !bowl->mute ) sound_play( bowl->wav_explosion );

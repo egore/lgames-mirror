@@ -69,7 +69,7 @@ Hint strings for the menu.
 #define HINT_AUDIO _("Audio Settings.")
 #define HINT_QUIT _("Get back to nasty work.")
 #define HINT_NEWGAME _("Setup and run a cool game!")
-#define HINT_ANIM _("If animations disturb you you may turn them off.")
+#define HINT_ANIM _("Simple will remove pieces sideways while Normal is a bit more fancy but might block the view.")
 #define HINT_DISPLAY _("You may play LTris either in window of fullscreen mode.")
 #define HINT_FPS _("Change frames per second.")
 #define HINT_SMOOTHHORI _("Horizontally move block either tile-by-tile or smooth. This is just eye-candy and doesn't effect the moving speed at all.")
@@ -339,7 +339,7 @@ void manager_create()
     menu_add( audio, item_create_link( _("Back"), HINT_, _main ) );
 #endif
     /* gfx */
-    menu_add( gfx, item_create_switch( _("Animations:"), HINT_ANIM, &config.anim, _("Off"), _("On") ) );
+    menu_add( gfx, item_create_switch( _("Animations:"), HINT_ANIM, &config.anim, _("Simple"), _("Normal") ) );
     //menu_add( gfx, item_create_switch( _("Move:"), HINT_SMOOTHHORI, &config.smooth_hori, _("Tile By Tile"), _("Smooth") ) );
     menu_add( gfx, item_create_switch( _("Drop:"), HINT_SMOOTHVERT, &config.block_by_block, _("Smooth"), _("Tile By Tile") ) );
     //menu_add( gfx, item_create_switch( _("Change Background:"), HINT_BKGND, &config.keep_bkgnd, _("Yes"), _("No") ) );
