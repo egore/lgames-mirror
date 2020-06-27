@@ -84,7 +84,7 @@ Hint strings for the menu.
 			"for mode 'Figures' (always start at level 0).##"\
 			"If not 0 the first level transition will require more lines to be cleared "\
 			"(the higher the starting level the more lines).")
-#define HINT_PREVIEW _("Enable/Disable block preview.##If disabled you'll gain 15% score in the end!")
+#define HINT_PREVIEW _("Enable/Disable piece preview.##If disabled you'll instantly gain 20% score when clearing lines.")
 #define HINT_HELP _("Shows guiding lines or a shadow of the currently dropping block so you see where it'll hit the ground.##This option has no penalty/bonus.")
 #define HINT_MPMENU _("Some multiplayer and CPU settings.")
 #define HINT_HOLES _("A line send to your opponent's bowl will have this number of holes in it. The more holes the harder it will be to remove this line so you should choose a low value (e.g. 1 or 2) for long multiplayer games.")
@@ -363,7 +363,7 @@ void manager_create()
     menu_add( game, item_create_switch( _("Game Style:"), HINT_GAMESTYLE, &config.modern, _("Classic"), _("Modern") ) );
     menu_add( game, item_create_switch_x( _("Game Mode:"), HINT_GAMEMODE, &config.gametype, lc_gametype_names, 8 ) );
     menu_add( game, item_create_range( _("Starting Level:"), HINT_STARTLEVEL, &config.starting_level, 0, 19, 1 ) );
-    //menu_add( game, item_create_switch( _("Preview:"), HINT_PREVIEW, &config.preview, _("Off"), _("On") ) );
+    menu_add( game, item_create_switch( _("Preview:"), HINT_PREVIEW, &config.preview, _("Off"), _("On") ) );
     menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_link( _("Multiplayer Options"), HINT_MPMENU, twoplayer ) );
     menu_add( game, item_create_separator( "" ) );
