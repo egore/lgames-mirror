@@ -1,4 +1,5 @@
 - lock delay
+- allow rotate in modern even if y-correction nescessary 
 - soft drop score
 - das options for modern: 16/6, 12/5 10/4, 8/8, 6/6
 

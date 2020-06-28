@@ -40,6 +40,17 @@ typedef struct {
 } Block;
 
 typedef struct {
+	int transition; /* lines until first transition */
+	int pieces; /* pieces placed */
+	int i_pieces; /* how many i pieces */
+	int cleared[4]; /* singles, doubles, triples, tetris */
+	int tetris_rate; /* how many lines in tetrises */
+	int droughts; /* number of droughts */
+	int max_drought; /* max length of droughts */
+	int sum_droughts; /* sum of all droughts for average */
+} BowlStats;
+
+typedef struct {
     int mute; /* if mute no sounds are played */
     int blind; /* if this is true all graphical stuff called in a function not 
                   ending with hide/show is disabled. */
@@ -102,6 +113,8 @@ typedef struct {
 
     /* statistics */
     int stats_x, stats_y, stats_w, stats_h;
+    BowlStats stats;
+    int drought; /* current drought: pieces since last i piece */
 } Bowl;
 
 /*
@@ -195,5 +208,6 @@ If game is over only insert block.
 */
 void bowl_insert_block( Bowl *bowl );
 
+void bowl_draw_stats(Bowl *bowl);
 
 #endif

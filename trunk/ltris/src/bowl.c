@@ -272,6 +272,20 @@ void bowl_select_next_block( Bowl *bowl )
 	bowl_compute_help_pos( bowl );
 	bowl_compute_preview_pos( bowl );
 
+	/* count i pieces for drought and stats */
+	if (bowl->block.id == 6) {
+		/* check if this ends a drought */
+		if (bowl->drought > 12) {
+			bowl->stats.droughts++;
+			if (bowl->drought > bowl->stats.max_drought)
+				bowl->stats.max_drought = bowl->drought;
+			bowl->stats.sum_droughts += bowl->drought;
+		}
+		bowl->stats.i_pieces++;
+		bowl->drought = 0;
+	} else
+		bowl->drought++;
+
 	/* if CPU is in control get destination row & other stuff */
 	if ( !bowl->controls ) {
 		/* destination */
@@ -611,6 +625,7 @@ void bowl_insert_block( Bowl *bowl )
 			  max_y = ty;
 	  }
   }
+  bowl->stats.pieces++;
 
   if (bowl->game_over)
 	  return;
@@ -647,6 +662,8 @@ void bowl_insert_block( Bowl *bowl )
     if ( full )
       bowl->cleared_line_y[bowl->cleared_line_count++] = j;
   }
+  if (bowl->cleared_line_count > 0)
+	  bowl->stats.cleared[bowl->cleared_line_count-1]++;
 
   /* empty completed lines */
   for ( j = 0; j < bowl->cleared_line_count; j++)
@@ -1144,6 +1161,13 @@ void bowl_hide( Bowl *bowl )
     SOURCE( offscreen, bowl->score_sx, bowl->score_sy );
     blit_surf();
     add_refresh_rect( bowl->score_sx, bowl->score_sy, bowl->score_sw, bowl->score_sh );
+    /* stats */
+    if (bowl->stats_w > 0) {
+	    DEST(sdl.screen, bowl->stats_x, bowl->stats_y, bowl->stats_w, bowl->stats_h);
+	    SOURCE(offscreen, bowl->stats_x, bowl->stats_y);
+	    blit_surf();
+	    add_refresh_rect(bowl->stats_x, bowl->stats_y, bowl->stats_w, bowl->stats_h);
+    }
 }
 
 void bowl_show( Bowl *bowl )
@@ -1152,11 +1176,13 @@ void bowl_show( Bowl *bowl )
     int x = bowl->block.sx, y = bowl->block.sy;
     int tile_x = 0, tile_y = 0;
     char aux[24];
+
     /* draw contents? */
     if ( bowl->draw_contents ) {
         bowl->draw_contents = 0;
         bowl_draw_contents( bowl );
     }
+
     /* block&help */
     if ( !bowl->hide_block ) {
         for ( j = 0; j < 4; j++ ) {
@@ -1199,6 +1225,7 @@ void bowl_show( Bowl *bowl )
             tile_y += bowl->block_size;
         }
     }
+
     /* check if question mark must be displayed */
     if ( bowl->preview_center_sx != -1 && !config.preview ) {
         DEST( sdl.screen, bowl->preview_center_sx - bowl->unknown_preview->w / 2, 
@@ -1210,6 +1237,7 @@ void bowl_show( Bowl *bowl )
                           bowl->preview_center_sy - bowl->unknown_preview->h / 2, 
                           bowl->unknown_preview->w, bowl->unknown_preview->h  );
     }
+
     /* score, lines, level */
     bowl->font->align = ALIGN_X_RIGHT | ALIGN_Y_TOP;
     sprintf( aux, "%.0f", counter_get_approach( bowl->score ) );
@@ -1217,6 +1245,10 @@ void bowl_show( Bowl *bowl )
     bowl->font->align = ALIGN_X_RIGHT | ALIGN_Y_BOTTOM;
     sprintf( aux, _("%i Lvl: %i"), bowl->lines, bowl->level );
     write_text( bowl->font, sdl.screen, bowl->score_sx + bowl->score_sw - 4, bowl->score_sy + bowl->score_sh, aux, OPAQUE );
+
+    /* stats */
+    if (bowl->stats_w > 0)
+	    bowl_draw_stats(bowl);
 }
 
 /** Convert cur_y to y, for negative cur_y this means to subtract 1
@@ -1661,4 +1693,65 @@ void bowl_quick_game( Bowl *bowl, int aggr )
             bowl_set_vert_block_vel( bowl );
         }
     }
+}
+
+/** Draw statistics */
+void write_stat_line(Bowl *bowl, const char *name, int val, int x, int *y)
+{
+	char str[32];
+	if (val < 0)
+		snprintf(str, 32, "%s -", name );
+	else
+		snprintf(str, 32, "%s %d", name, val );
+	write_text(bowl->font, sdl.screen, x, *y, str, OPAQUE );
+	*y += bowl->font->height + 2;
+}
+void bowl_draw_stats(Bowl *bowl)
+{
+	BowlStats *s = &bowl->stats;
+	int x = bowl->stats_x + 5, y = bowl->stats_y + 10;
+	int trate, avg, dc, trans;
+
+	bowl->font->align = ALIGN_X_LEFT | ALIGN_Y_TOP;
+
+	write_stat_line(bowl, _("Pieces Placed:"), s->pieces, x, &y);
+	write_stat_line(bowl, _("I-Pieces:     "), s->i_pieces, x, &y);
+	y += bowl->font->height + 2;
+
+	write_stat_line(bowl, _("Singles: "), s->cleared[0], x, &y);
+	write_stat_line(bowl, _("Doubles: "), s->cleared[1], x, &y);
+	write_stat_line(bowl, _("Triples: "), s->cleared[2], x, &y);
+	write_stat_line(bowl, _("Tetrises:"), s->cleared[3], x, &y);
+	y += bowl->font->height + 2;
+
+	trate = s->cleared[0] + s->cleared[1]*2 +
+			s->cleared[2]*3 + s->cleared[3]*4;
+	if (trate > 0)
+		trate = ((1000 * (s->cleared[3]*4) / trate) + 5) / 10;
+	else
+		trate = -1;
+	write_stat_line(bowl, "Tetris Rate:", trate, x, &y);
+	y += bowl->font->height + 2;
+
+	write_stat_line(bowl, _("Droughts:   "), s->droughts, x, &y);
+	write_stat_line(bowl, _("Drought Max:"), s->max_drought, x, &y);
+	if (s->droughts > 0)
+		avg = ((10 * s->sum_droughts / s->droughts) + 5) / 10;
+	else
+		avg = -1;
+	write_stat_line(bowl, _("Drought Avg:"), avg, x, &y);
+	y += bowl->font->height + 2;
+
+	if (bowl->lines < bowl->firstlevelup_lines)
+		trans = bowl->firstlevelup_lines - bowl->lines;
+	else
+		trans = -1;
+	write_stat_line(bowl, _("Transition:"), trans, x, &y);
+	dc = ((1000 * bowl->das_charge / bowl->das_maxcharge) + 5) / 10;
+	write_stat_line(bowl, _("DAS Charge:"), dc, x, &y);
+	if (bowl->drought > 12)
+		dc = bowl->drought;
+	else
+		dc = -1;
+	write_stat_line(bowl, _("Drought:   "), dc, x, &y);
 }
