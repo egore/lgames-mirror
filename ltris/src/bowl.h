@@ -99,6 +99,9 @@ typedef struct {
     Sound_Chunk *wav_nextlevel;
     Sound_Chunk *wav_excellent;
 #endif
+
+    /* statistics */
+    int stats_x, stats_y, stats_w, stats_h;
 } Bowl;
 
 /*
@@ -182,5 +185,15 @@ Play an optimized mute game. (used for stats)
 ====================================================================
 */
 void bowl_quick_game( Bowl *bowl, int aggr );
+
+/*
+====================================================================
+Actually insert block and remove a line if needed,
+create shrapnells, give score etc
+If game is over only insert block.
+====================================================================
+*/
+void bowl_insert_block( Bowl *bowl );
+
 
 #endif
