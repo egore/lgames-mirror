@@ -1,13 +1,8 @@
-- remove pixel content und check_y, always check block.y
-- simple/fancy animations
-- no spawn ends game
-- no shift during soft drop (for modern)
-- modern (drop+shift)
-- soft drop score
+- fix game over: game ends if next piece cannot be placed
 - lock delay
+- soft drop score
 - das options for modern: 16/6, 12/5 10/4, 8/8, 6/6
-- hard drop does not work properly
-
+- game over not displayed in second game
 
 Known Bugs:
 SDL does not properly get cursor position if switching from 
