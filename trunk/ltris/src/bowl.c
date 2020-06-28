@@ -29,6 +29,14 @@ extern SDL_Surface *bkgnd;
 extern int keystate[SDLK_LAST];
 extern Bowl *bowls[BOWL_COUNT];
 
+enum {
+	POSVALID = 0,
+	POSINVAL = -1,
+	POSINVAL_LEFT = -2,
+	POSINVAL_RIGHT = -3,
+	POSINVAL_BOTTOM = -4,
+};
+
 enum { FIGURE_COUNT = 21 };
 int figures[FIGURE_COUNT][BOWL_WIDTH][BOWL_HEIGHT];
 
@@ -199,6 +207,7 @@ void bowl_compute_cpu_dest( Bowl *bowl )
     bowl->cpu_dest_rot = cpu_data.dest_rot;
     bowl->cpu_dest_score = cpu_data.dest_score;
 }
+
 /*
 ====================================================================
 Initiate next block. Set bowl::block::id to preview and get id of next
@@ -273,6 +282,12 @@ void bowl_select_next_block( Bowl *bowl )
 		bowl->cpu_down = 0;
 		delay_set( &bowl->cpu_rot_delay, config.cpu_rot_delay );
 	}
+
+	/* check game over */
+	if (bowl_check_piece_position(bowl,
+			bowl->block.x, bowl->block.y,
+			bowl->block.rot_id) != POSVALID)
+		bowl_finish_game(bowl);
 }
 
 /*
@@ -301,14 +316,6 @@ void bowl_reset_contents( Bowl *bowl )
             for ( j = 0; j < bowl->h; j++ )
                 bowl_set_tile( bowl, i, j, figures[bowl->level][i][j] );
 }
-
-enum {
-	POSVALID = 0,
-	POSINVAL = -1,
-	POSINVAL_LEFT = -2,
-	POSINVAL_RIGHT = -3,
-	POSINVAL_BOTTOM = -4,
-};
 
 /** Check if current piece fits at position x,y with rotation rot.
  * Return whether position is valid, invalid or invalid because
@@ -493,11 +500,11 @@ void bowl_finish_game( Bowl *bowl )
     bowl->hide_block = 1;
     bowl_final_animation( bowl );
     bowl->use_figures = 0;
+    bowl->font->align = ALIGN_X_CENTER | ALIGN_Y_CENTER;
+    write_text( bowl->font,  bkgnd, bowl->sx + bowl->sw / 2, bowl->sy + bowl->sh / 2, _("Game Over"), OPAQUE );
+    write_text( bowl->font, sdl.screen, bowl->sx + bowl->sw / 2, bowl->sy + bowl->sh / 2, _("Game Over"), OPAQUE );
     bowl_reset_contents( bowl );
     bowl_draw_contents( bowl );
-    bowl->font->align = ALIGN_X_CENTER | ALIGN_Y_CENTER;
-    write_text( bowl->font,  offscreen, bowl->sx + bowl->sw / 2, bowl->sy + bowl->sh / 2, _("Game Over"), OPAQUE );
-    write_text( bowl->font, sdl.screen, bowl->sx + bowl->sw / 2, bowl->sy + bowl->sh / 2, _("Game Over"), OPAQUE );
 #ifdef SOUND
     if ( !bowl->mute ) sound_play( bowl->wav_explosion );
 #endif    
@@ -571,6 +578,7 @@ void bowl_collapse(Bowl *bowl)
 ====================================================================
 Actually insert block and remove a line if needed, 
 create shrapnells, give score etc
+If game is over only insert block.
 ====================================================================
 */
 void bowl_insert_block( Bowl *bowl )
@@ -581,7 +589,7 @@ void bowl_insert_block( Bowl *bowl )
   int *hole_pos = 0;
   int max_y; /* lowest block position in tiles */
 
-  /* insert and check if block is out of screen */
+  /* insert block */
   max_y = bowl->block.y;
   for ( i = 0; i < 4; i++ ) {
 	  for ( j = 0; j < 4; j++ ) {
@@ -589,14 +597,8 @@ void bowl_insert_block( Bowl *bowl )
 		  int ty = bowl->block.y + j;
 		  if (!block_masks[bowl->block.id].mask[bowl->block.rot_id][i][j])
 			  continue;
-		  if (ty < 0) {
-			  /* FIXME a tile may be over bowl
-			   * actual game over condition is: next piece
-			   * cannot be placed
-			   */
-			  bowl->game_over = 1;
-			  continue;
-		  }
+		  if (ty < 0)
+			  continue; /* may happen but does not end game */
 		  if (tx < 0)
 			  continue; /* should never happen */
 		  if (tx >= bowl->w)
@@ -609,6 +611,9 @@ void bowl_insert_block( Bowl *bowl )
 			  max_y = ty;
 	  }
   }
+
+  if (bowl->game_over)
+	  return;
 
   /* compute base are which is 10/60 s for rows 18,19
    * and +4/60 for each four rows less */
@@ -628,12 +633,6 @@ void bowl_insert_block( Bowl *bowl )
 #ifdef SOUND
   if ( !bowl->mute ) sound_play( bowl->wav_stop );
 #endif    
-
-  /* if game over just explode everything and return */
-  if ( bowl->game_over ) {  
-    bowl_finish_game( bowl );
-    return;
-  }
 
   /* check for completed lines */
   bowl->cleared_line_count = 0;
@@ -1052,6 +1051,14 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->das_charge = 0;
     bowl->das_drop = 100;
 
+    /* stats are only display for demo, normal and figures */
+    if (config.gametype <= 2) {
+	    bowl->stats_x = 30;
+	    bowl->stats_y = 60;
+	    bowl->stats_w = 160;
+	    bowl->stats_h = 280;
+    }
+
     return bowl;
 }
 void bowl_delete( Bowl *bowl )
@@ -1233,7 +1240,9 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
 
     /* SCORE */
     counter_update( &bowl->score, ms );
-    if ( game_over ) return;
+
+    if ( game_over )
+	    return;
 
     /* ARE */
     if (bowl->are > 0) {
@@ -1248,7 +1257,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
 		    /* running are means block was inserted. when expired
 		     * remove empty lines and get next block */
 		    bowl_collapse(bowl);
-		    bowl_select_next_block( bowl );
+		    bowl_select_next_block(bowl);
 		    bowl->draw_contents = 1;
 		    /* for simple modern version charge das if shift pressed */
 		    if (config.modern) {
@@ -1533,6 +1542,9 @@ void bowl_draw_frames( Bowl *bowl )
     bowl->score_sy = dy + bowl->font->height + 4;
     bowl->score_sw = dw / 2 + 36;
     bowl->score_sh = dh - bowl->font->height - 8;
+    /* stats */
+    if (bowl->stats_w > 0)
+	    draw_3dframe(bkgnd, bowl->stats_x, bowl->stats_y, bowl->stats_w, bowl->stats_h, 4);
 }
 
 /*

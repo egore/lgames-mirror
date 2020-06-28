@@ -1,8 +1,6 @@
-- fix game over: game ends if next piece cannot be placed
 - lock delay
 - soft drop score
 - das options for modern: 16/6, 12/5 10/4, 8/8, 6/6
-- game over not displayed in second game
 
 Known Bugs:
 SDL does not properly get cursor position if switching from 
