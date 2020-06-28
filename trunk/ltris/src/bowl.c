@@ -589,20 +589,22 @@ void bowl_insert_block( Bowl *bowl )
 		  int ty = bowl->block.y + j;
 		  if (!block_masks[bowl->block.id].mask[bowl->block.rot_id][i][j])
 			  continue;
-		  /* game over condition is: tile cannot be placed WITHIN bowl */
-		  if (ty < 0)
+		  if (ty < 0) {
+			  /* FIXME a tile may be over bowl
+			   * actual game over condition is: next piece
+			   * cannot be placed
+			   */
+			  bowl->game_over = 1;
 			  continue;
+		  }
 		  if (tx < 0)
 			  continue; /* should never happen */
 		  if (tx >= bowl->w)
 			  continue; /* should never happen */
 		  if (ty >= bowl->h)
 			  continue; /* should never happen */
-		  if (bowl->contents[tx][ty] != -1)
-			  bowl->game_over = 1;
-		  else
-			  bowl_set_tile( bowl, tx, ty,
-					  block_masks[bowl->block.id].blockid );
+		  bowl_set_tile( bowl, tx, ty,
+				  block_masks[bowl->block.id].blockid );
 		  if (max_y < ty)
 			  max_y = ty;
 	  }
