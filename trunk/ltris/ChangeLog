@@ -1,4 +1,13 @@
-- fixed compiler warnings (2020/06/10 MS)
+- added zero gravity mode (left ctrl)  (2020/07/01 MS) 
+
+1.2: 
+- added classic game style: (2020/06/28 MS) 
+  no wall-kicks, random pieces, no shadow piece, ...
+- added auto-delay shift (das) and are (entry delay) 
+- menu simplified
+- code cleanups
+- statistics for single player mode
+- fixed compiler warnings
 
 1.0.20:
 - updated configure.in to configure.ac (2020/06/05 MS)

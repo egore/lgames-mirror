@@ -115,6 +115,9 @@ typedef struct {
     int stats_x, stats_y, stats_w, stats_h;
     BowlStats stats;
     int drought; /* current drought: pieces since last i piece */
+
+    /* training */
+    int zero_gravity;
 } Bowl;
 
 /*
@@ -209,5 +212,7 @@ If game is over only insert block.
 void bowl_insert_block( Bowl *bowl );
 
 void bowl_draw_stats(Bowl *bowl);
+
+void bowl_toggle_gravity(Bowl *bowl);
 
 #endif
