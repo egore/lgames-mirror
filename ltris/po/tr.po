@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ltris\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2020-06-06 19:39+0200\n"
+"POT-Creation-Date: 2020-06-28 20:24+0200\n"
 "PO-Revision-Date: 2006-02-05 15:08+0200\n"
 "Last-Translator: Server Acim <sacim@kde.org.tr>\n"
 "Language-Team: Turkce <yerellestirme@kde.org.tr>\n"
@@ -22,7 +22,8 @@ msgid "Enable/disable these quick hints."
 msgstr "Bu hızlı ip uclarını etkinlestir/etkisizlestir."
 
 #: src/manager.c:67
-msgid "Set player controls and horizontal speed."
+#, fuzzy
+msgid "Set player controls."
 msgstr "Oyuncu kontrollerini ve yatay hızı ayarla."
 
 #: src/manager.c:68
@@ -42,19 +43,18 @@ msgid "Setup and run a cool game!"
 msgstr "Ayarla ve harika bir oyun calıstır."
 
 #: src/manager.c:72
-msgid "If animations disturb you you may turn them off."
-msgstr "Eger animasyonlar seni rahatsız ederse onları kapatabilirsin."
+msgid ""
+"Simple will remove pieces sideways while Normal is a bit more fancy but "
+"might block the view."
+msgstr ""
 
 #: src/manager.c:73
 msgid "You may play LTris either in window of fullscreen mode."
 msgstr "LTris'i tam ekran modundaki pencerede de oynayabilirsin."
 
 #: src/manager.c:74
-msgid ""
-"If you don't want LTris to consume all of your CPU limit the frame rate."
+msgid "Change frames per second."
 msgstr ""
-"Eger LTris'in CPU'nun tumunu harcamasını istemiyorsan cerceve oranını "
-"sınırla."
 
 #: src/manager.c:75
 msgid ""
@@ -113,23 +113,24 @@ msgstr ""
 "adlandırılacaktır."
 
 #: src/manager.c:83
-#, fuzzy, c-format
+#, fuzzy
 msgid ""
-"This is your starting level which will be ignored for game 'Figures' (you'll "
-"always start at level 0 there).##Each starting level up adds you 1.5% score "
-"in the end!"
+"This is your starting level which will be ignored for mode 'Figures' (always "
+"start at level 0).##If not 0 the first level transition will require more "
+"lines to be cleared (the higher the starting level the more lines)."
 msgstr ""
 "Bu sizin oyun dısı tutulacak olan baslangıc seviyenizdir.Burada daima 0 "
 "seviyesinde baslayacaksınız. ##Her baslangıc seviyesi oyun sonunda puanınıza "
 "yuzde 1.5 oranında eklenecektir."
 
-#: src/manager.c:84
+#: src/manager.c:87
 #, fuzzy, c-format
 msgid ""
-"Enable/Disable block preview.##If disabled you'll gain 15% score in the end!"
+"Enable/Disable piece preview.##If disabled you'll instantly gain 20% score "
+"when clearing lines."
 msgstr "Obek onizlemesini Etkinlestir/Etkisizlestir."
 
-#: src/manager.c:85
+#: src/manager.c:88
 msgid ""
 "Shows guiding lines or a shadow of the currently dropping block so you see "
 "where it'll hit the ground.##This option has no penalty/bonus."
@@ -137,11 +138,11 @@ msgstr ""
 "Rehber satırları veya su anda dusen obegi gosterir boylece nerede yere "
 "dustugunu gorursun. $$Bu secenegin bonusu yoktur."
 
-#: src/manager.c:86
+#: src/manager.c:89
 msgid "Some multiplayer and CPU settings."
 msgstr "Bazı coklu oyuncular ve islemci ayarları."
 
-#: src/manager.c:87
+#: src/manager.c:90
 msgid ""
 "A line send to your opponent's bowl will have this number of holes in it. "
 "The more holes the harder it will be to remove this line so you should "
@@ -152,7 +153,7 @@ msgstr ""
 "zorunda kalacaktır, iste bu yuzden coklu oyuncu secilen oyunlarda 1 veya 2  "
 "gibi daha dusuk bir deger secmelisiniz."
 
-#: src/manager.c:88
+#: src/manager.c:91
 msgid ""
 "This option controls how the holes in the lines are created when more than "
 "one line is sent. If the option is on, the holes will appear randomly for "
@@ -164,7 +165,7 @@ msgstr ""
 "delikler rastgele gozukecektir. Eger bu secenek kapalıysa, tek basına "
 "gonderilen tum hatlar aynı lekedeki hatları alacaklardır."
 
-#: src/manager.c:89
+#: src/manager.c:92
 msgid ""
 "You'll have to complete more than one line to send any lines to your "
 "opponent. If this option is enabled all lines will be send else one will be "
@@ -177,7 +178,7 @@ msgstr ""
 "Hat gonderildi -> 2 hat alındı##eger etkinlestirilmis ise: #3 hatlar "
 "gonderildi -> 3 hat alındı"
 
-#: src/manager.c:90
+#: src/manager.c:93
 msgid ""
 "If this option is enabled your opponent will receive all four lines of your "
 "tetris ignoring the 'Send All' setting."
@@ -185,14 +186,14 @@ msgstr ""
 "Eger bu secenek etkinlestirilmis ise rakibiniz tetris'in 'Hepsini Gonder' "
 "ayarını  yok saydıgı tum dort hattı da alacaktır."
 
-#: src/manager.c:91
+#: src/manager.c:94
 msgid ""
 "This is the delay in milliseconds the CPU waits before dropping a block."
 msgstr ""
 "Islemcinin bir obegi bırakmadan once bekletmesinden kaynaklanan milisaniye "
 "oranındaki bir gecikmedir."
 
-#: src/manager.c:92
+#: src/manager.c:95
 msgid ""
 "The more aggressive the style is the more priority is put on completing "
 "multiple lines at the expense of a balanced bowl contents."
@@ -200,11 +201,11 @@ msgstr ""
 "Tarz ne kadar gerilirse, dengeli hat iceriklerinin saglıklı bir sekilde "
 "coklu hatların tamamlanmasındaki oncelik  de o kadar artar."
 
-#: src/manager.c:93
+#: src/manager.c:96
 msgid "Some advanced options."
 msgstr "Bazı gelismis secenekler."
 
-#: src/manager.c:94
+#: src/manager.c:97
 msgid ""
 "Test the CPU analyze algorithm in cpu.c and give an average score for a "
 "number of games."
@@ -212,7 +213,7 @@ msgstr ""
 "cpu . c'deki Islemci analiz cozum yolunu test edin. ve oyun sayıları icin "
 "aritmetik ortalama puanı verin."
 
-#: src/manager.c:95
+#: src/manager.c:98
 msgid ""
 "If you turn visualization off the results will be computed faster. If you "
 "turn them on you can see a general game behaviour and judge the algorithm by "
@@ -222,17 +223,17 @@ msgstr ""
 "acarsanız genel bir oyun davranısı gorebilir ve cozum yolunu bu davranısa "
 "gore yargılayabilirsiniz."
 
-#: src/manager.c:96
+#: src/manager.c:99
+#, fuzzy
 msgid ""
-"There are basically three different game types:##CLASSIC:#The classic tetris "
-"game. Starts with an empty bowl and goes as long as you make it.#FIGURES:"
-"#Each level a nice figure will be added to the ground of you bowl. From "
-"level 7-12 there will be randomly appearing single tiles and from level "
-"13-... there will be whole lines appearing at the bottom of your bowl. Fun!"
-"#TWO/THREE-PLAYER:#Either play against other humans or CPU. If you complete "
-"multiple lines they'll be send to your opponents according to the "
-"multiplayer settings you made.##And in DEMO you can see your CPU do the "
-"work. So relax! ;-)"
+"There are basically three different game types:##NORMAL:#Starts with an "
+"empty bowl and goes as long as you can make it.#FIGURES:#Each level a nice "
+"figure will be added to the ground of you bowl. From level 7-12 there will "
+"be randomly appearing single tiles and from level 13-... there will be whole "
+"lines appearing at the bottom of your bowl. Fun!#TWO/THREE-PLAYER:#Either "
+"play against other humans or CPU. If you complete multiple lines they'll be "
+"send to your opponents according to the multiplayer settings you made.##And "
+"in DEMO you can see your CPU do the work. So relax! ;-)"
 msgstr ""
 "Temel olarak uc farklı oyun turu vardır:##KLASIK:#Klasik tetris oyunu. Bos "
 "bir kase ile baslar ve siz oyunu surdurdukce bu kase dolar.#SEKILLER:#Her "
@@ -244,7 +245,7 @@ msgstr ""
 "rakibinize gonderilecektir.##Ve DEMO'da islemcinizin oynadıgını "
 "goreceksiniz. Bu yuzden, rahat olun! -)"
 
-#: src/manager.c:102
+#: src/manager.c:105
 msgid ""
 "If you turn this on the background will change every level else it's always "
 "the same."
@@ -252,7 +253,7 @@ msgstr ""
 "Eger bunu acarsanız arkaplanınız her seviyede degisecek, eger acmazsanız "
 "aynı kalacaktır."
 
-#: src/manager.c:103
+#: src/manager.c:106
 msgid ""
 "If you enable this option the keystate of either the 'Down' key or all the "
 "keys are cleared so you can't accidently move the next block."
@@ -260,7 +261,7 @@ msgstr ""
 "Eger bu secenegi etkinlestirirseniz ya 'Asagı' tusunuz veya tum tus "
 "takımınız temizlenecek boylece kazara bir sonraki blogu oynatamayacaksınız."
 
-#: src/manager.c:104
+#: src/manager.c:107
 msgid ""
 "If this is enabled the preview in Two-Player is centered in the middle of "
 "the screen instead that one is drawn at the bottom and one at the top."
@@ -269,7 +270,7 @@ msgstr ""
 "altta, digerinin ustte gosterilmesi yerine, onizleme gorunumu ekranın "
 "ortasında olacaktır."
 
-#: src/manager.c:105
+#: src/manager.c:108
 msgid ""
 "This option is only useful when 'Graphics/Drop' is 'Smooth'#(In opposite to "
 "'Tile-By-Tile' the block is inserted as soon as it hits the ground giving no "
@@ -283,7 +284,7 @@ msgstr ""
 "kucuk gorsel hataları goze almak pahasına blogu asagıya hareket "
 "ettirebilirsiniz."
 
-#: src/manager.c:110
+#: src/manager.c:113
 #, c-format
 msgid ""
 "In expert mode the most unsuitable piece of the current bag (a bag is a set "
@@ -291,368 +292,370 @@ msgid ""
 "works for single player. There is a 50% score bonus in the end."
 msgstr ""
 
-#: src/manager.c:142 src/manager.c:143
+#: src/manager.c:117
+msgid ""
+"Modern enables all that stuff that makes tetris casual like piece shadow, "
+"wall-kicks, DAS charge during ARE (allows to shift next piece faster), piece "
+"bag (at max 12 pieces before getting same piece again).##Classic doesn't "
+"give you any of this making the game really hard but also very interesting."
+msgstr ""
+
+#: src/manager.c:123
+#, fuzzy
+msgid "Enable/Disable piece shift sound."
+msgstr "Bu hızlı ip uclarını etkinlestir/etkisizlestir."
+
+#: src/manager.c:152 src/manager.c:153
 msgid "<CREATE SET>"
 msgstr "<SET YARAT>"
 
-#: src/manager.c:143
+#: src/manager.c:153
 #, c-format
 msgid "You cannot delete '%s'!\n"
 msgstr "Bunu silemezsiniz %s !\n"
 
-#: src/manager.c:213
-msgid "No Limit"
-msgstr "Sınır yok"
+#: src/manager.c:223
+#, fuzzy
+msgid "60 FPS"
+msgstr "50 FPS"
 
-#: src/manager.c:213
+#: src/manager.c:223
 msgid "50 FPS"
 msgstr "50 FPS"
 
-#: src/manager.c:213
-msgid "100 FPS"
-msgstr "100 FPS"
-
-#: src/manager.c:213
-msgid "200 FPS"
-msgstr "200 FPS"
-
-#: src/manager.c:214
+#: src/manager.c:224
 msgid "Defensive"
 msgstr "Savunmalı"
 
-#: src/manager.c:214
+#: src/manager.c:224 src/manager.c:344 src/main.c:72
 msgid "Normal"
 msgstr "Normal"
 
-#: src/manager.c:214
+#: src/manager.c:224
 msgid "Aggressive"
 msgstr "Gergin"
 
-#: src/manager.c:214
+#: src/manager.c:224
 msgid "Kamikaze"
 msgstr "Kamikaze"
 
-#: src/manager.c:215 src/manager.c:325 src/manager.c:335 src/manager.c:355
-#: src/manager.c:357 src/manager.c:359 src/manager.c:368 src/manager.c:369
-#: src/manager.c:370 src/manager.c:437 src/manager.c:441 src/manager.c:446
-msgid "Off"
-msgstr "Kapalı"
-
-#: src/manager.c:215
-msgid "Shadow"
-msgstr "Golge"
-
-#: src/manager.c:215
-msgid "Lines"
-msgstr "Hatlar"
-
-#: src/manager.c:216
-msgid "None"
-msgstr "Hicbiri"
-
-#: src/manager.c:216 src/value.c:44
-msgid "Down"
-msgstr "Asagı"
-
-#: src/manager.c:216
-msgid "All"
-msgstr "Hepsi"
-
-#: src/manager.c:281
+#: src/manager.c:289
 msgid "Menu"
 msgstr "Menu"
 
-#: src/manager.c:282 src/manager.c:304 src/manager.c:317
+#: src/manager.c:290 src/manager.c:312 src/manager.c:325
 msgid "Graphics"
 msgstr "Cizgeleme"
 
-#: src/manager.c:283 src/manager.c:298
+#: src/manager.c:291 src/manager.c:306
 msgid "New Game"
 msgstr "Yeni Oyun"
 
-#: src/manager.c:284 src/manager.c:303 src/manager.c:316
+#: src/manager.c:292 src/manager.c:311 src/manager.c:324
 msgid "Controls"
 msgstr "Denetimler"
 
-#: src/manager.c:285 src/manager.c:412
+#: src/manager.c:293 src/manager.c:422
 msgid "Player1"
 msgstr "Oyuncu1"
 
-#: src/manager.c:286 src/manager.c:413
+#: src/manager.c:294 src/manager.c:423
 msgid "Player2"
 msgstr "Oyuncu2"
 
-#: src/manager.c:287 src/manager.c:414
+#: src/manager.c:295 src/manager.c:424
 msgid "Player3"
 msgstr "Oyuncu3"
 
-#: src/manager.c:288 src/manager.c:362
+#: src/manager.c:296 src/manager.c:370
 msgid "Multiplayer Options"
 msgstr "Cok Oyunculu Secenekler"
 
-#: src/manager.c:289 src/manager.c:311
+#: src/manager.c:297
 msgid "Advanced Options"
 msgstr "Gelismis Secenekler"
 
-#: src/manager.c:291 src/manager.c:301
+#: src/manager.c:299 src/manager.c:309
 msgid "Options"
 msgstr "Secenekler"
 
-#: src/manager.c:294 src/manager.c:306 src/manager.c:308 src/manager.c:318
-#: src/manager.c:319
+#: src/manager.c:302 src/manager.c:314 src/manager.c:316 src/manager.c:326
+#: src/manager.c:327
 msgid "Audio"
 msgstr "Ses"
 
-#: src/manager.c:313 src/menu.c:171
+#: src/manager.c:321 src/menu.c:171
 msgid "Quit"
 msgstr "Cık"
 
-#: src/manager.c:321 src/manager.c:332 src/manager.c:345 src/manager.c:364
-#: src/manager.c:375 src/manager.c:420 src/manager.c:425 src/manager.c:430
-#: src/manager.c:435 src/manager.c:449 src/menu.c:168
+#: src/manager.c:329 src/manager.c:341 src/manager.c:357 src/manager.c:372
+#: src/manager.c:385 src/manager.c:430 src/manager.c:435 src/manager.c:440
+#: src/manager.c:445 src/manager.c:453 src/menu.c:168
 msgid "Back"
 msgstr "Geri"
 
-#: src/manager.c:325
+#: src/manager.c:333
 msgid "Sound:"
 msgstr "Ses:"
 
-#: src/manager.c:325 src/manager.c:335 src/manager.c:355 src/manager.c:357
-#: src/manager.c:359 src/manager.c:368 src/manager.c:369 src/manager.c:370
-#: src/manager.c:437 src/manager.c:441 src/manager.c:446
+#: src/manager.c:333 src/manager.c:339 src/manager.c:348 src/manager.c:368
+#: src/manager.c:376 src/manager.c:377 src/manager.c:378 src/manager.c:380
+#: src/manager.c:450
+msgid "Off"
+msgstr "Kapalı"
+
+#: src/manager.c:333 src/manager.c:339 src/manager.c:348 src/manager.c:368
+#: src/manager.c:376 src/manager.c:377 src/manager.c:378 src/manager.c:380
+#: src/manager.c:450
 msgid "On"
 msgstr "Acık"
 
-#: src/manager.c:328
+#: src/manager.c:336
 msgid "Volume:"
 msgstr "Ses Duzeyi:"
 
-#: src/manager.c:335
+#: src/manager.c:339
+#, fuzzy
+msgid "Shift Sound:"
+msgstr "Ses:"
+
+#: src/manager.c:344
 msgid "Animations:"
 msgstr "Canlandırmalar:"
 
-#: src/manager.c:336
-msgid "Move:"
-msgstr "Tası:"
+#: src/manager.c:344
+msgid "Simple"
+msgstr ""
 
-#: src/manager.c:336 src/manager.c:337
-msgid "Tile By Tile"
-msgstr "Doseye-Doseye"
-
-#: src/manager.c:336 src/manager.c:337
-msgid "Smooth"
-msgstr "Duzgun"
-
-#: src/manager.c:337 src/manager.c:383 src/manager.c:389 src/manager.c:395
+#: src/manager.c:346 src/manager.c:393 src/manager.c:399 src/manager.c:405
 msgid "Drop:"
 msgstr "Bırak:"
 
-#: src/manager.c:338
-msgid "Change Background:"
-msgstr "Artalanı Degistir:"
+#: src/manager.c:346
+msgid "Smooth"
+msgstr "Duzgun"
 
-#: src/manager.c:338
-msgid "Yes"
-msgstr "Evet"
+#: src/manager.c:346
+msgid "Tile By Tile"
+msgstr "Doseye-Doseye"
 
-#: src/manager.c:338
-msgid "No"
-msgstr "Hayır"
-
-#: src/manager.c:340
-msgid "Display:"
-msgstr "Goruntule:"
-
-#: src/manager.c:340
-msgid "Window"
-msgstr "Pencere"
-
-#: src/manager.c:340
-msgid "Fullscreen"
-msgstr "Tam Ekran"
-
-#: src/manager.c:343
-msgid "Frame Rate:"
-msgstr "Cerceve Oranı:"
-
-#: src/manager.c:347
-msgid "Start Game"
-msgstr "Oyuna Basla"
-
-#: src/manager.c:349
-msgid "1st Player:"
-msgstr "Birinci Oyuncu:"
-
-#: src/manager.c:350
-msgid "2nd Player:"
-msgstr "Ikinci Oyuncu:"
-
-#: src/manager.c:351
-msgid "3rd Player:"
-msgstr "Ucuncu Oyuncu:"
-
-#: src/manager.c:353
-msgid "Game:"
-msgstr "Oyun:"
-
-#: src/manager.c:354
-msgid "Starting Level:"
-msgstr "Baslama Duzeyi:"
-
-#: src/manager.c:355
-msgid "Preview:"
-msgstr "Onizleme:"
-
-#: src/manager.c:356
-msgid "Help:"
-msgstr "Yardım:"
-
-#: src/manager.c:357
-msgid "Expert Mode:"
-msgstr "Uzman Kipi:"
-
-#: src/manager.c:359
-msgid "Slow:"
-msgstr "Yavas:"
-
-#: src/manager.c:367
-msgid "Holes:"
-msgstr "Delikler:"
-
-#: src/manager.c:368
-msgid "Random Holes:"
-msgstr "Rasgele Delikler:"
-
-#: src/manager.c:369
-msgid "Send All Lines:"
-msgstr "Butun Hatları Gonder:"
-
-#: src/manager.c:370
-msgid "Always Send Tetris:"
-msgstr "Her zaman Tetris'i Gonder:"
-
-#: src/manager.c:372
-msgid "CPU Style:"
-msgstr "Islemci Tarzı:"
-
-#: src/manager.c:373
-msgid "CPU Drop Delay:"
-msgstr "Islemci Bırakma Gecikmesi:"
-
-#: src/manager.c:377
-msgid "Pause Key:"
-msgstr ""
-
-#: src/manager.c:378 src/manager.c:384 src/manager.c:390
-msgid "Left:"
-msgstr "Sol:"
-
-#: src/manager.c:379 src/manager.c:385 src/manager.c:391
-msgid "Right:"
-msgstr "Sag:"
-
-#: src/manager.c:380 src/manager.c:386 src/manager.c:392
-msgid "Rotate Left:"
-msgstr "Sola Dondur:"
-
-#: src/manager.c:381 src/manager.c:387 src/manager.c:393
-msgid "Rotate Right:"
-msgstr "Saga Dondur:"
-
-#: src/manager.c:382 src/manager.c:388 src/manager.c:394
-msgid "Down:"
-msgstr "Asagı:"
-
-#: src/manager.c:416
-msgid "Horizontal Delay:"
-msgstr "Yatay Gecikme:"
-
-#: src/manager.c:417
-#, fuzzy
-msgid "Vertical Delay:"
-msgstr "Yatay Gecikme:"
-
-#: src/manager.c:437
+#: src/manager.c:348
 msgid "Quick Help:"
 msgstr "Hızlı Yardım:"
 
-#: src/manager.c:440
-msgid "Clear Keystate:"
-msgstr "Tusdurumunu Temizle:"
+#: src/manager.c:352
+msgid "Display:"
+msgstr "Goruntule:"
 
-#: src/manager.c:441
+#: src/manager.c:352
+msgid "Window"
+msgstr "Pencere"
+
+#: src/manager.c:352
+msgid "Fullscreen"
+msgstr "Tam Ekran"
+
+#: src/manager.c:355
+msgid "Frame Rate:"
+msgstr "Cerceve Oranı:"
+
+#: src/manager.c:359
+msgid "Start Game"
+msgstr "Oyuna Basla"
+
+#: src/manager.c:361
+msgid "1st Player:"
+msgstr "Birinci Oyuncu:"
+
+#: src/manager.c:362
+msgid "2nd Player:"
+msgstr "Ikinci Oyuncu:"
+
+#: src/manager.c:363
+msgid "3rd Player:"
+msgstr "Ucuncu Oyuncu:"
+
+#: src/manager.c:365
+#, fuzzy
+msgid "Game Style:"
+msgstr "Islemci Tarzı:"
+
+#: src/manager.c:365
+msgid "Classic"
+msgstr "Klasik"
+
+#: src/manager.c:365
+msgid "Modern"
+msgstr ""
+
+#: src/manager.c:366
+#, fuzzy
+msgid "Game Mode:"
+msgstr "Oyun:"
+
+#: src/manager.c:367
+msgid "Starting Level:"
+msgstr "Baslama Duzeyi:"
+
+#: src/manager.c:368
+msgid "Preview:"
+msgstr "Onizleme:"
+
+#: src/manager.c:375
+msgid "Holes:"
+msgstr "Delikler:"
+
+#: src/manager.c:376
+msgid "Random Holes:"
+msgstr "Rasgele Delikler:"
+
+#: src/manager.c:377
+msgid "Send All Lines:"
+msgstr "Butun Hatları Gonder:"
+
+#: src/manager.c:378
+msgid "Always Send Tetris:"
+msgstr "Her zaman Tetris'i Gonder:"
+
+#: src/manager.c:380
 msgid "Center Preview:"
 msgstr "Ortada Onizle:"
 
-#: src/manager.c:442
-msgid "Collision Check:"
-msgstr "Carpısma Denetimi:"
+#: src/manager.c:382
+msgid "CPU Style:"
+msgstr "Islemci Tarzı:"
 
-#: src/manager.c:442
-msgid "Sync"
-msgstr "Senkronizasyon"
+#: src/manager.c:383
+msgid "CPU Drop Delay:"
+msgstr "Islemci Bırakma Gecikmesi:"
 
-#: src/manager.c:442
-msgid "Async"
-msgstr "Asenkronizasyon"
+#: src/manager.c:387
+msgid "Pause Key:"
+msgstr ""
 
-#: src/manager.c:445
+#: src/manager.c:388 src/manager.c:394 src/manager.c:400
+msgid "Left:"
+msgstr "Sol:"
+
+#: src/manager.c:389 src/manager.c:395 src/manager.c:401
+msgid "Right:"
+msgstr "Sag:"
+
+#: src/manager.c:390 src/manager.c:396 src/manager.c:402
+msgid "Rotate Left:"
+msgstr "Sola Dondur:"
+
+#: src/manager.c:391 src/manager.c:397 src/manager.c:403
+msgid "Rotate Right:"
+msgstr "Saga Dondur:"
+
+#: src/manager.c:392 src/manager.c:398 src/manager.c:404
+msgid "Down:"
+msgstr "Asagı:"
+
+#: src/manager.c:449
 msgid "Test CPU Algorithm"
 msgstr "Islemci Algoritmasını Sına"
 
-#: src/manager.c:446
+#: src/manager.c:450
 msgid "Visualization"
 msgstr "Gorsellestirme"
 
-#: src/tetris.c:126
+#: src/tetris.c:127
 msgid "y"
 msgstr ""
 
-#: src/tetris.c:127
+#: src/tetris.c:128
 #, fuzzy
 msgid "n"
 msgstr "Acık"
 
-#: src/tetris.c:385
+#: src/tetris.c:417
 msgid "End Game? y/n"
 msgstr "Oyun Bitsin mi? e/h"
 
-#: src/bowl.c:567 src/bowl.c:568
+#: src/bowl.c:518 src/bowl.c:519
 msgid "Game Over"
 msgstr "Oyun Bitti"
 
-#: src/bowl.c:1281
+#: src/bowl.c:1246
 #, c-format
 msgid "%i Lvl: %i"
 msgstr "%i Lvl: %i"
 
-#: src/bowl.c:1548
+#: src/bowl.c:1559
 msgid "Player:"
 msgstr "Oyuncu:"
 
-#: src/bowl.c:1552
+#: src/bowl.c:1563
 msgid "Score:"
 msgstr "Sonuc:"
 
-#: src/bowl.c:1554
+#: src/bowl.c:1565
 msgid "Lines:"
 msgstr "Hatlar:"
 
-#: src/chart.c:187
+#: src/bowl.c:1717
+msgid "Pieces Placed:"
+msgstr ""
+
+#: src/bowl.c:1718
+msgid "I-Pieces:     "
+msgstr ""
+
+#: src/bowl.c:1721
+msgid "Singles: "
+msgstr ""
+
+#: src/bowl.c:1722
+#, fuzzy
+msgid "Doubles: "
+msgstr "Delikler:"
+
+#: src/bowl.c:1723
+msgid "Triples: "
+msgstr ""
+
+#: src/bowl.c:1724
+msgid "Tetrises:"
+msgstr ""
+
+#: src/bowl.c:1736
+msgid "Droughts:   "
+msgstr ""
+
+#: src/bowl.c:1737
+msgid "Drought Max:"
+msgstr ""
+
+#: src/bowl.c:1742
+msgid "Drought Avg:"
+msgstr ""
+
+#: src/bowl.c:1749
+#, fuzzy
+msgid "Transition:"
+msgstr "Canlandırmalar:"
+
+#: src/bowl.c:1751
+msgid "DAS Charge:"
+msgstr ""
+
+#: src/bowl.c:1756
+msgid "Drought:   "
+msgstr ""
+
+#: src/chart.c:198
 msgid "Name      Level    Score"
 msgstr "Isim''''''''''''Seviye''''''''''''Sonuc"
 
-#: src/chart.c:212
+#: src/chart.c:225
 msgid "Level"
 msgstr "Seviye"
 
 #: src/main.c:71
 msgid "Demo"
 msgstr "Demo"
-
-#: src/main.c:72
-msgid "Classic"
-msgstr "Klasik"
 
 #: src/main.c:73
 msgid "Figures"
@@ -693,6 +696,10 @@ msgstr "Sag"
 #: src/value.c:43
 msgid "Up"
 msgstr "Yukarı"
+
+#: src/value.c:44
+msgid "Down"
+msgstr "Asagı"
 
 #: src/value.c:45
 msgid "Right Shift"
@@ -737,6 +744,76 @@ msgstr "Asagı Sayfa"
 #: src/value.c:55
 msgid "Home"
 msgstr "Baslangıc"
+
+#~ msgid "If animations disturb you you may turn them off."
+#~ msgstr "Eger animasyonlar seni rahatsız ederse onları kapatabilirsin."
+
+#~ msgid ""
+#~ "If you don't want LTris to consume all of your CPU limit the frame rate."
+#~ msgstr ""
+#~ "Eger LTris'in CPU'nun tumunu harcamasını istemiyorsan cerceve oranını "
+#~ "sınırla."
+
+#~ msgid "No Limit"
+#~ msgstr "Sınır yok"
+
+#~ msgid "100 FPS"
+#~ msgstr "100 FPS"
+
+#~ msgid "200 FPS"
+#~ msgstr "200 FPS"
+
+#~ msgid "Shadow"
+#~ msgstr "Golge"
+
+#~ msgid "Lines"
+#~ msgstr "Hatlar"
+
+#~ msgid "None"
+#~ msgstr "Hicbiri"
+
+#~ msgid "All"
+#~ msgstr "Hepsi"
+
+#~ msgid "Move:"
+#~ msgstr "Tası:"
+
+#~ msgid "Change Background:"
+#~ msgstr "Artalanı Degistir:"
+
+#~ msgid "Yes"
+#~ msgstr "Evet"
+
+#~ msgid "No"
+#~ msgstr "Hayır"
+
+#~ msgid "Help:"
+#~ msgstr "Yardım:"
+
+#~ msgid "Expert Mode:"
+#~ msgstr "Uzman Kipi:"
+
+#~ msgid "Slow:"
+#~ msgstr "Yavas:"
+
+#~ msgid "Horizontal Delay:"
+#~ msgstr "Yatay Gecikme:"
+
+#, fuzzy
+#~ msgid "Vertical Delay:"
+#~ msgstr "Yatay Gecikme:"
+
+#~ msgid "Clear Keystate:"
+#~ msgstr "Tusdurumunu Temizle:"
+
+#~ msgid "Collision Check:"
+#~ msgstr "Carpısma Denetimi:"
+
+#~ msgid "Sync"
+#~ msgstr "Senkronizasyon"
+
+#~ msgid "Async"
+#~ msgstr "Asenkronizasyon"
 
 #~ msgid ""
 #~ "In expert mode the propabilities for the next blocks are uneven to give a "

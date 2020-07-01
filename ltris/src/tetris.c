@@ -412,7 +412,10 @@ void tetris_run()
                         leave = 1;
                     else if (event.key.keysym.sym == config.pause_key)
                         request_pause = 1;
-                    else switch ( event.key.keysym.sym ) {
+                    else if (event.key.keysym.sym == SDLK_LCTRL) {
+                	    for ( i = 0; i < BOWL_COUNT; i++ )
+                		    bowl_toggle_gravity(bowls[i]);
+                    } else switch ( event.key.keysym.sym ) {
                         case SDLK_ESCAPE: 
                             if ( confirm( large_font, _("End Game? y/n"), CONFIRM_YES_NO ) ) 
                                 for ( i = 0; i < BOWL_COUNT; i++ )

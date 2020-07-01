@@ -1425,6 +1425,8 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         	if (bowl->block_drop_vel > vy)
         		if (config.modern || (!lshift && !rshift))
         			vy = bowl->block_drop_vel;
+        if (bowl->zero_gravity)
+        	vy = 0; /* for training */
         bowl->block.cur_y += vy * ms;
 
         /* update vertical bowl position */
@@ -1754,4 +1756,14 @@ void bowl_draw_stats(Bowl *bowl)
 	else
 		dc = -1;
 	write_stat_line(bowl, _("Drought:   "), dc, x, &y);
+}
+
+void bowl_toggle_gravity(Bowl *bowl)
+{
+	if (!bowl)
+		return;
+	bowl->zero_gravity = !bowl->zero_gravity;
+	if (bowl->zero_gravity)
+		counter_set(&bowl->score, 0);
+
 }
