@@ -32,8 +32,8 @@ Config config;
 #define CONFIG_FILE_NAME "ltris.conf"
 
 /* game type names. hacky place to define them but who cares? */
-char gametype_names[8][64];
-char gametype_ids[8][64];
+char gametype_names[GAME_TYPENUM][64];
+char gametype_ids[GAME_TYPENUM][64];
 
 /* check if config directory exists; if not create it and set config_dir */
 void config_check_dir()

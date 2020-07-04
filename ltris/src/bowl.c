@@ -1069,7 +1069,7 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->das_drop = 100;
 
     /* stats are only display for demo, normal and figures */
-    if (config.gametype <= 2) {
+    if (config.gametype <= 2 || config.gametype <= GAME_TRAINING) {
 	    bowl->stats_x = 30;
 	    bowl->stats_y = 60;
 	    bowl->stats_w = 160;
@@ -1368,7 +1368,10 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                 bowl_compute_help_pos( bowl );
                 break;
             case KEY_DROP:
-                bowl_drop_block(bowl);
+                if (config.gametype == GAME_TRAINING)
+                    bowl_toggle_gravity(bowl);
+                else
+                    bowl_drop_block(bowl);
                 break;
         }
         /* update horizontal bowl position */
@@ -1763,7 +1766,4 @@ void bowl_toggle_gravity(Bowl *bowl)
 	if (!bowl)
 		return;
 	bowl->zero_gravity = !bowl->zero_gravity;
-	if (bowl->zero_gravity)
-		counter_set(&bowl->score, 0);
-
 }

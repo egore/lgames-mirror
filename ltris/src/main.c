@@ -30,8 +30,8 @@
 int term_game = 0;
 extern Sdl sdl;
 extern Config config;
-extern char gametype_names[8][64];
-extern char gametype_ids[8][64];
+extern char gametype_names[GAME_TYPENUM][64];
+extern char gametype_ids[GAME_TYPENUM][64];
 
 extern int display_w, display_h, video_forced_w, video_forced_h;
 
@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
     strcpy(gametype_ids[5],"vshumanhuman");
     strcpy(gametype_ids[6],"vshumancpu");
     strcpy(gametype_ids[7],"vscpucpu");
+    strcpy(gametype_ids[8],"training");
     /* game names - translated for display */
     strcpy(gametype_names[0],_("Demo"));
     strcpy(gametype_names[1],_("Normal"));
@@ -76,6 +77,7 @@ int main(int argc, char *argv[])
     strcpy(gametype_names[5],_("Vs Human&Human"));
     strcpy(gametype_names[6],_("Vs Human&CPU"));
     strcpy(gametype_names[7],_("Vs CPU&CPU"));
+    strcpy(gametype_names[8],_("Training"));
     config_load();
 
     while ( ( c = getopt( argc, argv, "wr:" ) ) != -1 )

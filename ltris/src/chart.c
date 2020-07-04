@@ -343,7 +343,7 @@ void chart_show( Set_Chart *chart, int x, int y, int w, int h )
 	 * are not so many charts it does not hurt either... if name cannot
 	 * be mapped, use plain id. */
 	cname = NULL;
- 	for (i=0;i<GAME_LAST;i++)
+ 	for (i=0;i<GAME_TYPENUM;i++)
 		if (strcmp(chart->name,gametype_ids[i])==0) {
 			cname=gametype_names[i];
 			break;

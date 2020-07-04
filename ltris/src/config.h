@@ -28,7 +28,8 @@ enum {
     GAME_VS_HUMAN_HUMAN,
     GAME_VS_HUMAN_CPU,
     GAME_VS_CPU_CPU,
-    GAME_LAST
+    GAME_TRAINING,
+    GAME_TYPENUM
 };
 
 typedef struct {
