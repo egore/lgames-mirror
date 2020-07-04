@@ -101,7 +101,8 @@ Hint strings for the menu.
                   "7-12 there will be randomly appearing single tiles and from level 13-... there will be whole lines appearing at the "\
                   "bottom of your bowl. Fun!#TWO/THREE-PLAYER:#Either play against other humans or CPU. If you complete multiple lines they'll "\
                   "be send to your opponents according to the multiplayer settings you made.##"\
-                  "And in DEMO you can see your CPU do the work. So relax! ;-)")
+                  "In DEMO you can see your CPU do the work. So relax! ;-)##"\
+		  "In TRAINING you can disable gravity (key for hard drop) to think about piece placement.")
 #define HINT_BKGND _("If you turn this on the background will change every level else it's always the same.")
 #define HINT_KEYSTATE _("If you enable this option the keystate of either the 'Down' key or all the keys are cleared so you can't accidently move the next block.")
 #define HINT_CENTERPREVIEW _("If this is enabled the preview in Two-Player is centered in the middle of the screen instead that one is drawn at the bottom and one at the top.")
@@ -239,14 +240,15 @@ void manager_create()
     Menu *cont = 0;
     Menu *cont_player1 = 0, *cont_player2 = 0, *cont_player3 = 0;
     Menu *twoplayer = 0;
-    char *lc_gametype_names[8] = {gametype_names[0],
+    char *lc_gametype_names[GAME_TYPENUM] = {gametype_names[0],
         gametype_names[1],
         gametype_names[2],
         gametype_names[3],
         gametype_names[4],
         gametype_names[5],
         gametype_names[6],
-        gametype_names[7]};
+        gametype_names[7],
+	gametype_names[8]};
     
     /* load graphics and sounds */
     mbkgnd = load_surf( "menuback.bmp", SDL_SWSURFACE );
@@ -363,7 +365,7 @@ void manager_create()
     menu_add( game, item_create_edit( _("3rd Player:"), HINT_NAME, config.player3.name, 12 ) );
     menu_add( game, item_create_separator( "" ) );
     menu_add( game, item_create_switch( _("Game Style:"), HINT_GAMESTYLE, &config.modern, _("Classic"), _("Modern") ) );
-    menu_add( game, item_create_switch_x( _("Game Mode:"), HINT_GAMEMODE, &config.gametype, lc_gametype_names, 8 ) );
+    menu_add( game, item_create_switch_x( _("Game Mode:"), HINT_GAMEMODE, &config.gametype, lc_gametype_names, GAME_TYPENUM ) );
     menu_add( game, item_create_range( _("Starting Level:"), HINT_STARTLEVEL, &config.starting_level, 0, 19, 1 ) );
     menu_add( game, item_create_switch( _("Preview:"), HINT_PREVIEW, &config.preview, _("Off"), _("On") ) );
     menu_add( game, item_create_separator( "" ) );

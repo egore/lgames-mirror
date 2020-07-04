@@ -279,6 +279,7 @@ int  tetris_init()
             bowls[0] = bowl_create( 220, 0, 530, 200, blocks, qmark, "Demo", 0 );
             break;
         case GAME_CLASSIC:
+        case GAME_TRAINING:
         case GAME_FIGURES:
             bowls[0] = bowl_create( 220, 0, 530, 200, blocks, qmark, config.player1.name, &config.player1.controls );
             break;
@@ -412,10 +413,7 @@ void tetris_run()
                         leave = 1;
                     else if (event.key.keysym.sym == config.pause_key)
                         request_pause = 1;
-                    else if (event.key.keysym.sym == SDLK_LCTRL) {
-                	    for ( i = 0; i < BOWL_COUNT; i++ )
-                		    bowl_toggle_gravity(bowls[i]);
-                    } else switch ( event.key.keysym.sym ) {
+                    else switch ( event.key.keysym.sym ) {
                         case SDLK_ESCAPE: 
                             if ( confirm( large_font, _("End Game? y/n"), CONFIRM_YES_NO ) ) 
                                 for ( i = 0; i < BOWL_COUNT; i++ )
