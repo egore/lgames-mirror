@@ -171,5 +171,8 @@ if (count($list)>0) {
 if ($_SESSION['allow_newgame'])
 	echo '<P>[ <A href="newgame.php">New Game</A> ]</P>';
 
+if ($releaseinfo)
+	echo '<P class="releaseInfo">'.$releaseinfo.'</P>';
+
 renderPageEnd(null);
 ?>
