@@ -9,6 +9,7 @@ fi
 
 # Build package structure
 mkdir $pkg
+mkdir $pkg/images
 mkdir $pkg/occ-data
 mkdir $pkg/occ-data/games
 mkdir $pkg/occ-data/archive
@@ -18,7 +19,7 @@ mkdir $pkg/occ-data/users/lhistory
 mkdir $pkg/tmp
 
 # Copy data
-cp -R images $pkg
+cp -R images/default $pkg/images/default
 find $pkg/images | grep \.svn | xargs rm -fr
 cp *.php *.js COPYING README Changelog makedist $pkg
 cp occ-data/users/accounts.php $pkg/occ-data/users
