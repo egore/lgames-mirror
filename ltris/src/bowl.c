@@ -828,9 +828,10 @@ Initate block masks.
 */
 void bowl_init_block_masks() 
 {
+	int i;
 	int masksize = sizeof(block_masks[0].mask); // same for all
 
-	for (int i = 0; i < 7; i++) {
+	for (i = 0; i < 7; i++) {
 		block_masks[i].rx = 2;
 		block_masks[i].ry = 2;
 		memset(block_masks[i].mask, 0, masksize );
