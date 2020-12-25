@@ -1064,10 +1064,15 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->wav_excellent = sound_chunk_load( "excellent.wav" );
 #endif
 
-    /* das charge */
-    bowl->das_maxcharge = 267;
+    /* das charge, either class 16/6 or fast 10/3 */
+    if (config.hyper_das) {
+	    bowl->das_maxcharge = 167;
+	    bowl->das_drop = 50;
+    } else {
+	    bowl->das_maxcharge = 267;
+	    bowl->das_drop = 100;
+    }
     bowl->das_charge = 0;
-    bowl->das_drop = 100;
 
     /* stats are only display for demo, normal and figures */
     if (config.gametype <= 2 || config.gametype <= GAME_TRAINING) {

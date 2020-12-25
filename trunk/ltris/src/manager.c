@@ -122,6 +122,7 @@ Hint strings for the menu.
 			"Classic doesn't give you any of this making the game "\
 			"really hard but also very interesting.")
 #define HINT_SHIFTSOUND _("Enable/Disable piece shift sound.")
+#define HINT_DASMODE _("Normal is the classic 16/6 and Fast is 10/3 which roughly equals what hypertappers can achieve.")
                        
 /*
 ====================================================================
@@ -428,6 +429,8 @@ void manager_create()
     //menu_add( cont, item_create_range( _("Horizontal Delay:"),  HINT_HORIDEL,&config.hori_delay, 0, 9, 1 ) );
     //menu_add( cont, item_create_range( _("Vertical Delay:"),  HINT_VERTDEL,&config.vert_delay, 0, 9, 1 ) );
     menu_add( cont, pause_key );
+    menu_add( cont, item_create_separator( "" ) );
+    menu_add( cont, item_create_switch( _("DAS Mode:"), HINT_DASMODE, &config.hyper_das, _("Normal"), _("Fast") ));
     menu_add( cont, item_create_separator( "" ) );
     menu_add( cont, item_create_link( _("Back"), HINT_, _main ) );
     /* controls player 1 */
