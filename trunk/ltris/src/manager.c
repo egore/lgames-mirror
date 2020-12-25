@@ -280,7 +280,14 @@ void manager_create()
     filter_set( filter, SDLK_0, SDLK_9, 1 );
     filter_set( filter, SDLK_KP0, SDLK_KP9, 1 );
     filter_set( filter, SDLK_UP, SDLK_PAGEDOWN, 1 );
+    filter[SDLK_RCTRL] = 1;
+    filter[SDLK_LCTRL] = 1;
+    filter[SDLK_RSHIFT] = 1;
+    filter[SDLK_LSHIFT] = 1;
+    filter[SDLK_RALT] = 1;
+    filter[SDLK_LALT] = 1;
     filter[SDLK_SPACE] = 1;
+
     filter[SDLK_ESCAPE] = 0;
     filter[SDLK_RETURN] = 0;
     filter[SDLK_q] = 0;
