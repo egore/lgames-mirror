@@ -42,12 +42,12 @@ void value_update_str( Value *value )
                 case SDLK_RIGHT: strcpy( value->val_str, _("Right") ); break;
                 case SDLK_UP: strcpy( value->val_str, _("Up") ); break;
                 case SDLK_DOWN: strcpy( value->val_str, _("Down") ); break;
-                case SDLK_RSHIFT: strcpy( value->val_str, _("Right Shift") ); break;
-                case SDLK_LSHIFT: strcpy( value->val_str, _("Left Shift") ); break;
-                case SDLK_RCTRL: strcpy( value->val_str, _("Right Ctrl") ); break;
-                case SDLK_LCTRL: strcpy( value->val_str, _("Left Ctrl") ); break;
-                case SDLK_RALT: strcpy( value->val_str, _("Right Alt") ); break;
-                case SDLK_LALT: strcpy( value->val_str, _("Left Alt") ); break;
+                case SDLK_RSHIFT: strcpy( value->val_str, _("RShift") ); break;
+                case SDLK_LSHIFT: strcpy( value->val_str, _("LShift") ); break;
+                case SDLK_RCTRL: strcpy( value->val_str, _("RCtrl") ); break;
+                case SDLK_LCTRL: strcpy( value->val_str, _("LCtrl") ); break;
+                case SDLK_RALT: strcpy( value->val_str, _("RAlt") ); break;
+                case SDLK_LALT: strcpy( value->val_str, _("LAlt") ); break;
                 case SDLK_INSERT: strcpy( value->val_str, _("Insert") ); break;
                 case SDLK_END: strcpy( value->val_str, _("End") ); break;
                 case SDLK_PAGEUP: strcpy( value->val_str, _("PageUp") ); break;
