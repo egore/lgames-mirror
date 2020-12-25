@@ -82,6 +82,7 @@ void config_reset()
     /* controls */
     config.hori_delay = 3;
     config.vert_delay= 3;
+    config.hyper_das = 0;
     config.pause_key = SDLK_p;
     config.player1.controls.left = SDLK_LEFT;
     config.player1.controls.right = SDLK_RIGHT;
@@ -193,6 +194,7 @@ void config_load( )
     parser_get_int( pd, "grap_input", &config.grab );
     parser_get_int( pd, "invert_mouse", &config.invert );
     parser_get_int( pd, "quick_help", &config.quick_help );
+    parser_get_int( pd, "hyper_das", &config.hyper_das );
     parser_free( &pd );
 }
 
@@ -254,5 +256,6 @@ void config_save( )
         fprintf( file, "grab_input=%i\n", config.grab );
         fprintf( file, "invert_mouse=%i\n", config.invert );
         fprintf( file, "quick_help=%i\n", config.quick_help );
+        fprintf( file, "hyper_das=%i\n", config.hyper_das );
     }
 }

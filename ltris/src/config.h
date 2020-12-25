@@ -72,6 +72,7 @@ typedef struct {
     int	hori_delay;
     int vert_delay;
     int pause_key;
+    int hyper_das;
     /* sound */
     int sound;
     int volume; /* 1 - 8 */
