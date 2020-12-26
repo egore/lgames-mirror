@@ -360,6 +360,14 @@ int bowl_check_piece_position(Bowl *bowl, int x, int y, int r)
 	return POSVALID;
 }
 
+/** Check if current piece can drop one tile down. */
+int bowl_piece_can_drop(Bowl *bowl)
+{
+	return (bowl_check_piece_position(bowl,
+			bowl->block.x, bowl->block.y+1,
+			bowl->block.rot_id) == POSVALID);
+}
+
 /*
 ====================================================================
 Draw block to offscreen.
@@ -1039,8 +1047,8 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
 		    bowl->firstlevelup_lines = b;
 	    bowl->level = config.starting_level;
     }
-    printf("First level %d requires %d lines.\n",
-		    	    bowl->level,bowl->firstlevelup_lines);
+    //printf("First level %d requires %d lines.\n",
+    //		    	    bowl->level,bowl->firstlevelup_lines);
 
     bowl->stored_key = -1;
     bowl_reset_contents( bowl );
@@ -1073,6 +1081,13 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
 	    bowl->das_drop = 100;
     }
     bowl->das_charge = 0;
+
+    /* lock delay */
+    if (config.modern)
+	    bowl->ldelay_max = 500;
+    else
+	    bowl->ldelay_max = 0;
+    bowl->ldelay_cur = 0;
 
     /* stats are only display for demo, normal and figures */
     if (config.gametype <= 2 || config.gametype <= GAME_TRAINING) {
@@ -1214,10 +1229,11 @@ void bowl_show( Bowl *bowl )
                     }
                     /* block */
                     if (bowl->are == 0) {
+                	    int id = block_masks[bowl->block.id].blockid;
+                	    if (bowl->ldelay_cur > 0)
+                		    id = 10;
 			    DEST( sdl.screen, x, y, bowl->block_size, bowl->block_size );
-			    SOURCE( bowl->blocks,
-					    block_masks[bowl->block.id].blockid
-					    * bowl->block_size, 0 );
+			    SOURCE( bowl->blocks,id * bowl->block_size, 0 );
 			    blit_surf();
 			    add_refresh_rect( x, y, bowl->block_size, bowl->block_size );
                     }
@@ -1434,38 +1450,57 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         	if (bowl->block_drop_vel > vy)
         		if (config.modern || (!lshift && !rshift))
         			vy = bowl->block_drop_vel;
-        if (bowl->zero_gravity)
-        	vy = 0; /* for training */
+        if (bowl->zero_gravity || bowl->ldelay_cur > 0)
+        	vy = 0;
         bowl->block.cur_y += vy * ms;
 
         /* update vertical bowl position */
         bowl->block.y = bowl_convert_cury2y(bowl);
 
-        /* if we entered a new tile check if block stops */
+        /* check lock delay */
+        if (bowl->ldelay_cur > 0) {
+        	bowl->ldelay_cur -= ms;
+        	if (bowl->ldelay_cur < 0) {
+        		bowl->ldelay_cur = 0;
+			bowl_insert_block(bowl);
+        	} else if (bowl_piece_can_drop(bowl)) {
+        		bowl->ldelay_cur = 0;
+        		/* XXX does not work for negative y needs
+        		 * convert_ytocury */
+        		bowl->block.cur_y = bowl->block.y * bowl->block_size;
+        	}
+        } else
+        /* insert block or start lock delay on y-position change */
         if (old_y != bowl->block.y) {
-            if (bowl_check_piece_position(bowl,
-        		    bowl->block.x, bowl->block.y,
-			    bowl->block.rot_id) != POSVALID) {
-        	    /* we collide at current position, insert one above */
-        	    bowl->block.y -= 1;
-        	    bowl->block.cur_y = bowl->block.y * bowl->block_size;
-        	    bowl_insert_block(bowl);
-            }
+        	if (bowl->block.y - old_y > 1)
+        		fprintf(stderr, "Oops, non-consecutive y-values...\n");
+        	if (bowl->ldelay_max == 0) {
+        	        /* without lock delay, check if new tile was entered and
+        	         * insert block one above on collision
+        	         * FIXME: this requires enough frames to not skip lines
+        	         * otherwise we might tunnel through blocked lines */
+        		if (bowl_check_piece_position(bowl,
+        				bowl->block.x, bowl->block.y,
+        				bowl->block.rot_id) != POSVALID) {
+        			bowl->block.y -= 1;
+        			bowl->block.cur_y = bowl->block.y * bowl->block_size;
+        			bowl_insert_block(bowl);
+        		}
+        	} else {
+        		/* with lock delay check if we can drop further.
+        		 * if not start lock delay */
+        	        if (!bowl_piece_can_drop(bowl))
+       	        		bowl->ldelay_cur = bowl->ldelay_max;
+        	}
         }
 
-        /* update vertical screen position */
-        if ( config.block_by_block )
+        /* use discrete y position if configured block_by_block, during
+         * lock delay or if next position is blocked, otherwise go smooth  */
+        if (bowl->ldelay_cur > 0 || config.block_by_block ||
+        				!bowl_piece_can_drop(bowl))
             bowl->block.sy = bowl->block.y * bowl->block_size + bowl->sy;
-        else {
-            /* to allow horizontal movement after the block touched
-               the ground we allow moving into the next block.
-               this shouldn't be seen, of course */
-            if (bowl_check_piece_position(bowl, bowl->block.x,
-        		    bowl->block.y+1, bowl->block.rot_id) == POSVALID)
-                bowl->block.sy = (int)bowl->block.cur_y + bowl->sy;
-            else
-                bowl->block.sy = bowl->block.y * bowl->block_size + bowl->sy;
-        }
+        else
+            bowl->block.sy = (int)bowl->block.cur_y + bowl->sy;
 
         /* clear stored key */
         bowl->stored_key = -1;
