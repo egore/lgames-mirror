@@ -1432,8 +1432,12 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
             case KEY_DROP:
                 if (config.gametype == GAME_TRAINING)
                     bowl_toggle_gravity(bowl);
-                else
+                else {
                     bowl_drop_block(bowl);
+                    bowl_check_lockdelay(bowl);
+                    if (bowl->ldelay_cur > 0)
+                	    bowl->ldelay_cur = 1;
+                }
                 break;
         }
 
