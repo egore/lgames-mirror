@@ -1301,6 +1301,7 @@ void bowl_check_lockdelay(Bowl *bowl)
 		if (!bowl_piece_can_drop(bowl)) {
 			bowl->ldelay_cur = bowl->ldelay_max;
 			bowl->block.cur_y = bowl->block.y * bowl->block_size;
+			printf("lock delay started %d (%d,%d)\n",bowl->block.id,bowl->block.x,bowl->block.y);
 		}
 	}
 }
@@ -1500,7 +1501,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         /* check lock delay */
         if (bowl->ldelay_cur > 0) {
         	bowl->ldelay_cur -= ms;
-        	if (bowl->ldelay_cur < 0) {
+        	if (bowl->ldelay_cur <= 0) {
         		bowl->ldelay_cur = 0;
 			bowl_insert_block(bowl);
         	}
