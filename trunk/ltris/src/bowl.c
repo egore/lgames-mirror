@@ -1301,7 +1301,6 @@ void bowl_check_lockdelay(Bowl *bowl)
 		if (!bowl_piece_can_drop(bowl)) {
 			bowl->ldelay_cur = bowl->ldelay_max;
 			bowl->block.cur_y = bowl->block.y * bowl->block_size;
-			printf("lock delay started %d (%d,%d)\n",bowl->block.id,bowl->block.x,bowl->block.y);
 		}
 	}
 }
@@ -1497,6 +1496,11 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         	bowl->block.cur_y += vy * ms;
         	bowl->block.y = bowl_convert_cury2y(bowl);
         }
+
+        /* skip lock delay with soft drop */
+        if (bowl->controls && keystate[bowl->controls->down])
+        	if (bowl->ldelay_cur > 0)
+        		bowl->ldelay_cur = 1;
 
         /* check lock delay */
         if (bowl->ldelay_cur > 0) {
