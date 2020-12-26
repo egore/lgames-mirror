@@ -1285,11 +1285,31 @@ int bowl_convert_cury2y(Bowl *bowl)
 	return y;
 }
 
+/** Check if a running lock delay is obsolete or lock delay
+ * needs to be started for current block position.
+ */
+void bowl_check_lockdelay(Bowl *bowl)
+{
+	if (bowl->ldelay_max == 0)
+		return;
+	if (bowl->ldelay_cur > 0) {
+		if (bowl_piece_can_drop(bowl)) {
+			bowl->ldelay_cur = 0;
+			bowl->block.cur_y = bowl->block.y * bowl->block_size;
+		}
+	} else {
+		if (!bowl_piece_can_drop(bowl)) {
+			bowl->ldelay_cur = bowl->ldelay_max;
+			bowl->block.cur_y = bowl->block.y * bowl->block_size;
+		}
+	}
+}
+
 void bowl_update( Bowl *bowl, int ms, int game_over )
 {
     int old_y = bowl_convert_cury2y(bowl);
     int hori_movement = 0;
-    int new_rot, hori_mod, ret;
+    int new_rot, hori_mod, vert_mod, ret;
     float vy;
 
     /* SCORE */
@@ -1353,6 +1373,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
        		    else {
        			    bowl->block.x += hori_mod;
        			    hori_movement = 1;
+       			    bowl_check_lockdelay(bowl);
        		    }
                 break;
             case KEY_ROT_LEFT:
@@ -1368,26 +1389,45 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                     if ( new_rot == 4 )
                         new_rot = 0;
                 }
+                /* the original wall kick rules allow for ridiculous
+                 * moves so we go with a relatable simple version.
+                 * it is tried to move the piece one to the right, one
+                 * to the left and then one up (in this order). if
+                 * any if these single steps fails the rotation fails.
+                 */
                 hori_mod = 0;
-                do {
-                    ret = bowl_check_piece_position(bowl,
-                		    bowl->block.x + hori_mod,
-                                    bowl->block.y, new_rot);
-                    if (ret == POSINVAL_LEFT)
-                        hori_mod++;
-                    else if (ret == POSINVAL_RIGHT)
-                        hori_mod--;
-                    else {
-                        if (ret == POSVALID && (config.modern || hori_mod == 0))
-                            bowl->block.rot_id = new_rot;
-                        break;
-                    }
-                } while (abs(hori_mod) < 3);
-                if (ret == POSVALID && hori_mod && config.modern) {
-                    bowl->block.x += hori_mod;
-                    hori_movement = 1;
+                vert_mod = 0;
+                ret = bowl_check_piece_position(bowl,
+                		bowl->block.x, bowl->block.y, new_rot);
+                if (ret != POSVALID) {
+                	if (bowl_check_piece_position(bowl,
+                			bowl->block.x+1, bowl->block.y,
+                			new_rot) == POSVALID) {
+                		hori_mod = 1;
+                		ret = POSVALID;
+                	} else if (bowl_check_piece_position(bowl,
+                			bowl->block.x-1, bowl->block.y,
+                			new_rot) == POSVALID) {
+                		hori_mod = -1;
+                		ret = POSVALID;
+                	} else if (bowl_check_piece_position(bowl,
+                			bowl->block.x, bowl->block.y-1,
+                			new_rot) == POSVALID) {
+                		hori_mod = 0;
+                		vert_mod = -1;
+                		ret = POSVALID;
+                	}
                 }
-                bowl_compute_help_pos( bowl );
+                if (ret == POSVALID && (config.modern ||
+                			(hori_mod == 0 && vert_mod==0))) {
+                	bowl->block.rot_id = new_rot;
+                	bowl->block.x += hori_mod;
+                	bowl->block.y += vert_mod;
+                	if (vert_mod)
+                		bowl->block.cur_y = bowl->block.y*bowl->block_size;
+                        bowl_compute_help_pos(bowl);
+                        bowl_check_lockdelay(bowl);
+                }
                 break;
             case KEY_DROP:
                 if (config.gametype == GAME_TRAINING)
@@ -1396,6 +1436,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                     bowl_drop_block(bowl);
                 break;
         }
+
         /* update horizontal bowl position */
         int lshift = 0, rshift = 0;
         /* check if left or right shift requested */
@@ -1426,6 +1467,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                 		bowl->block.x += hori_mod;
                 		hori_movement = 1;
                         	bowl->das_charge -= bowl->das_drop;
+                        	bowl_check_lockdelay(bowl);
                 	}
                 }
         }
@@ -1440,22 +1482,20 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         /* update horizontal float&screen position */
         bowl->block.sx = bowl->block.x * bowl->block_size + bowl->sx;
 
-        /* update vertical float position */
+        /* update vertical position */
         if ( !bowl->controls && !bowl->cpu_down )
         	if ( delay_timed_out( &bowl->cpu_delay, ms ) )
         		bowl->cpu_down = 1;
         vy = bowl->block_vert_vel;
         if ((bowl->controls && keystate[bowl->controls->down]) ||
-        		bowl_cpu_may_move_down(bowl))
+        				bowl_cpu_may_move_down(bowl))
         	if (bowl->block_drop_vel > vy)
         		if (config.modern || (!lshift && !rshift))
         			vy = bowl->block_drop_vel;
-        if (bowl->zero_gravity || bowl->ldelay_cur > 0)
-        	vy = 0;
-        bowl->block.cur_y += vy * ms;
-
-        /* update vertical bowl position */
-        bowl->block.y = bowl_convert_cury2y(bowl);
+        if (!bowl->zero_gravity && bowl->ldelay_cur == 0) {
+        	bowl->block.cur_y += vy * ms;
+        	bowl->block.y = bowl_convert_cury2y(bowl);
+        }
 
         /* check lock delay */
         if (bowl->ldelay_cur > 0) {
@@ -1463,15 +1503,9 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         	if (bowl->ldelay_cur < 0) {
         		bowl->ldelay_cur = 0;
 			bowl_insert_block(bowl);
-        	} else if (bowl_piece_can_drop(bowl)) {
-        		bowl->ldelay_cur = 0;
-        		/* XXX does not work for negative y needs
-        		 * convert_ytocury */
-        		bowl->block.cur_y = bowl->block.y * bowl->block_size;
         	}
-        } else
-        /* insert block or start lock delay on y-position change */
-        if (old_y != bowl->block.y) {
+        } else {
+        	/* insert block or start lock delay on y-position change */
         	if (bowl->block.y - old_y > 1)
         		fprintf(stderr, "Oops, non-consecutive y-values...\n");
         	if (bowl->ldelay_max == 0) {
@@ -1489,8 +1523,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         	} else {
         		/* with lock delay check if we can drop further.
         		 * if not start lock delay */
-        	        if (!bowl_piece_can_drop(bowl))
-       	        		bowl->ldelay_cur = bowl->ldelay_max;
+        	        bowl_check_lockdelay(bowl);
         	}
         }
 
