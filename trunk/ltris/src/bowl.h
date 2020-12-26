@@ -64,7 +64,8 @@ typedef struct {
     int das_maxcharge; /* maximum charge in ms */
     int das_drop; /* das charge drop if shifting piece */
     int are; /* in ms, if > 0 next piece is blocked until delay times out */
-    int lock_delay; /* time on collision until piece is inserted */
+    int ldelay_max; /* time on collision until piece is inserted */
+    int ldelay_cur; /* current value if > 0 */
     int stored_key; /* key that was stored this programme cycle */
     SDL_Surface *blocks; /* pointer to the block graphics */
     SDL_Surface *unknown_preview; /* if preview's unknown this is displayed */
@@ -96,7 +97,7 @@ typedef struct {
     int draw_contents; /* set if bowl needs a full redraw next bowl_show() */
     int help_sx, help_sy, help_sw, help_sh; /* position of helping shadow */
     int preview_center_sx, preview_center_sy; /* preview is centered here if preview_center_x != -1  */
-    int preview_sx, preview_sy; /* actuall preview is drawn here */
+    int preview_sx, preview_sy; /* actual preview is drawn here */
     int cpu_dest_x; /* move block to this position (computed in bowl_select_next_block() */
     int cpu_dest_rot; /* destination rotation */
     int cpu_dest_score; /* AI score */
