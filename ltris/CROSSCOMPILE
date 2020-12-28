@@ -13,10 +13,10 @@ for configure.ac:
 run /usr/i686-w64-mingw32/sys-root/mingw/bin/sdl-config --cflags
 and replace $(sdl-config --cflags)
 run /usr/i686-w64-mingw32/sys-root/mingw/bin/sdl-config --libs
-and replace $(sdl-config --libs) WITHOUT -mwindows
-(that's why just export SDL_CONFIG=/usr/i686-w64-mingw32/sys-root/mingw/bin/sdl-config
-before configure won't do the trick)
+and replace $(sdl-config --libs) WITHOUT -mwindows (will crash on exit otherwise)
+    and add -lintl in the end or use --disable-nls
 comment out AM_SDL_PATH as test program will not run (why? dunno)
+    or after running configure once use --disable-sdltest
 
 autoconf
 
