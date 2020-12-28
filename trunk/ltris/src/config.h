@@ -82,6 +82,7 @@ typedef struct {
     int fullscreen;
     int fade;
     int fps; /* frames per second: 0 - no limit, 1 - 50, 2 - 100, 3 - 200 */
+    int show_fps;
     int bkgnd;
     int block_by_block;
     /* lbreakout2 event data */
