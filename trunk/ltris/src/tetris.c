@@ -110,10 +110,12 @@ int confirm( Font *font, char *str, int type )
                     }
 					else
 					if ( event.key.keysym.sym == SDLK_f ) {
+#ifndef WIN32
 						config.fullscreen = !config.fullscreen;
 						set_video_mode( config.fullscreen );
 						draw_confirm_screen( font, buffer, str );
 						refresh_screen( 0, 0, 0, 0 );
+#endif
 					}
                 }
                 else
@@ -421,11 +423,14 @@ void tetris_run()
                                         bowl_finish_game( bowls[i] );
                             break;
                          case SDLK_f:
+#ifndef WIN32
                              /* switch fullscreen */
                             config.fullscreen = !config.fullscreen;
                             set_video_mode( config.fullscreen );
                             FULL_DEST( sdl.screen ); FULL_SOURCE( offscreen ); blit_surf();
                             refresh_screen( 0, 0, 0, 0 );
+#endif
+                            break;
                         case SDLK_TAB:
                             sprintf( sshot_str, "ss%i.bmp", screenshot_id++ );
                             SDL_SaveBMP( sdl.screen, sshot_str );
