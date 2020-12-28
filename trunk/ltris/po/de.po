@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2020-12-26 18:33+0100\n"
+"POT-Creation-Date: 2020-12-28 16:46+0100\n"
 "PO-Revision-Date: 2005-10-05 22:46+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <de@li.org>\n"
@@ -337,7 +337,7 @@ msgstr "50 FPS"
 msgid "Defensive"
 msgstr "Defensiv"
 
-#: src/manager.c:226 src/manager.c:354 src/manager.c:440 src/main.c:73
+#: src/manager.c:226 src/manager.c:354 src/manager.c:442 src/main.c:73
 msgid "Normal"
 msgstr "Normal"
 
@@ -365,19 +365,19 @@ msgstr "Neues Spiel"
 msgid "Controls"
 msgstr "Kontrollen"
 
-#: src/manager.c:303 src/manager.c:432
+#: src/manager.c:303 src/manager.c:434
 msgid "Player1"
 msgstr "Spieler1"
 
-#: src/manager.c:304 src/manager.c:433
+#: src/manager.c:304 src/manager.c:435
 msgid "Player2"
 msgstr "Spieler2"
 
-#: src/manager.c:305 src/manager.c:434
+#: src/manager.c:305 src/manager.c:436
 msgid "Player3"
 msgstr "Spieler3"
 
-#: src/manager.c:306 src/manager.c:380
+#: src/manager.c:306 src/manager.c:382
 msgid "Multiplayer Options"
 msgstr "Mehrspieler-Optionen"
 
@@ -398,9 +398,9 @@ msgstr "Audio"
 msgid "Quit"
 msgstr "Beenden"
 
-#: src/manager.c:339 src/manager.c:351 src/manager.c:367 src/manager.c:382
-#: src/manager.c:395 src/manager.c:442 src/manager.c:447 src/manager.c:452
-#: src/manager.c:457 src/manager.c:465 src/menu.c:168
+#: src/manager.c:339 src/manager.c:351 src/manager.c:369 src/manager.c:384
+#: src/manager.c:397 src/manager.c:444 src/manager.c:449 src/manager.c:454
+#: src/manager.c:459 src/manager.c:467 src/menu.c:168
 msgid "Back"
 msgstr "Zurueck"
 
@@ -408,15 +408,15 @@ msgstr "Zurueck"
 msgid "Sound:"
 msgstr "Sound:"
 
-#: src/manager.c:343 src/manager.c:349 src/manager.c:358 src/manager.c:378
-#: src/manager.c:386 src/manager.c:387 src/manager.c:388 src/manager.c:390
-#: src/manager.c:462
+#: src/manager.c:343 src/manager.c:349 src/manager.c:358 src/manager.c:380
+#: src/manager.c:388 src/manager.c:389 src/manager.c:390 src/manager.c:392
+#: src/manager.c:464
 msgid "Off"
 msgstr "Aus"
 
-#: src/manager.c:343 src/manager.c:349 src/manager.c:358 src/manager.c:378
-#: src/manager.c:386 src/manager.c:387 src/manager.c:388 src/manager.c:390
-#: src/manager.c:462
+#: src/manager.c:343 src/manager.c:349 src/manager.c:358 src/manager.c:380
+#: src/manager.c:388 src/manager.c:389 src/manager.c:390 src/manager.c:392
+#: src/manager.c:464
 msgid "On"
 msgstr "An"
 
@@ -437,7 +437,7 @@ msgstr "Animationen:"
 msgid "Simple"
 msgstr ""
 
-#: src/manager.c:356 src/manager.c:403 src/manager.c:409 src/manager.c:415
+#: src/manager.c:356 src/manager.c:405 src/manager.c:411 src/manager.c:417
 msgid "Drop:"
 msgstr "Fall:"
 
@@ -453,142 +453,142 @@ msgstr "Stueckweise"
 msgid "Quick Help:"
 msgstr "Schnellhilfe:"
 
-#: src/manager.c:362
+#: src/manager.c:363
 msgid "Display:"
 msgstr "Anzeige:"
 
-#: src/manager.c:362
+#: src/manager.c:363
 msgid "Window"
 msgstr "Fenster"
 
-#: src/manager.c:362
+#: src/manager.c:363
 msgid "Fullscreen"
 msgstr "Vollbild"
 
-#: src/manager.c:365
+#: src/manager.c:367
 msgid "Frame Rate:"
 msgstr "Frame-Rate:"
 
-#: src/manager.c:369
+#: src/manager.c:371
 msgid "Start Game"
 msgstr "Starte Spiel"
 
-#: src/manager.c:371
+#: src/manager.c:373
 msgid "1st Player:"
 msgstr "1. Spieler:"
 
-#: src/manager.c:372
+#: src/manager.c:374
 msgid "2nd Player:"
 msgstr "2. Spieler:"
 
-#: src/manager.c:373
+#: src/manager.c:375
 msgid "3rd Player:"
 msgstr "3. Spieler:"
 
-#: src/manager.c:375
+#: src/manager.c:377
 #, fuzzy
 msgid "Game Style:"
 msgstr "CPU Stil:"
 
-#: src/manager.c:375
+#: src/manager.c:377
 msgid "Classic"
 msgstr "Klassisch"
 
-#: src/manager.c:375
+#: src/manager.c:377
 msgid "Modern"
 msgstr ""
 
-#: src/manager.c:376
+#: src/manager.c:378
 #, fuzzy
 msgid "Game Mode:"
 msgstr "Spieltyp:"
 
-#: src/manager.c:377
+#: src/manager.c:379
 msgid "Starting Level:"
 msgstr "Startebene:"
 
-#: src/manager.c:378
+#: src/manager.c:380
 msgid "Preview:"
 msgstr "Vorschau:"
 
-#: src/manager.c:385
+#: src/manager.c:387
 msgid "Holes:"
 msgstr "Loecher:"
 
-#: src/manager.c:386
+#: src/manager.c:388
 msgid "Random Holes:"
 msgstr "Zufaellige Loecher:"
 
-#: src/manager.c:387
+#: src/manager.c:389
 msgid "Send All Lines:"
 msgstr "Sende Alle Reihen:"
 
-#: src/manager.c:388
+#: src/manager.c:390
 msgid "Always Send Tetris:"
 msgstr "Sende Immer Tetris:"
 
-#: src/manager.c:390
+#: src/manager.c:392
 msgid "Center Preview:"
 msgstr "Vorschau zentrieren:"
 
-#: src/manager.c:392
+#: src/manager.c:394
 msgid "CPU Style:"
 msgstr "CPU Stil:"
 
-#: src/manager.c:393
+#: src/manager.c:395
 msgid "CPU Drop Delay:"
 msgstr "CPU Verzoegerung:"
 
-#: src/manager.c:397
+#: src/manager.c:399
 msgid "Pause Key:"
 msgstr "Pausetaste:"
 
-#: src/manager.c:398 src/manager.c:404 src/manager.c:410
+#: src/manager.c:400 src/manager.c:406 src/manager.c:412
 msgid "Left:"
 msgstr "Links:"
 
-#: src/manager.c:399 src/manager.c:405 src/manager.c:411
+#: src/manager.c:401 src/manager.c:407 src/manager.c:413
 msgid "Right:"
 msgstr "Rechts:"
 
-#: src/manager.c:400 src/manager.c:406 src/manager.c:412
+#: src/manager.c:402 src/manager.c:408 src/manager.c:414
 msgid "Rotate Left:"
 msgstr "Rotiere Links:"
 
-#: src/manager.c:401 src/manager.c:407 src/manager.c:413
+#: src/manager.c:403 src/manager.c:409 src/manager.c:415
 msgid "Rotate Right:"
 msgstr "Rotiere Rechts:"
 
-#: src/manager.c:402 src/manager.c:408 src/manager.c:414
+#: src/manager.c:404 src/manager.c:410 src/manager.c:416
 msgid "Down:"
 msgstr "Runter:"
 
-#: src/manager.c:440
+#: src/manager.c:442
 #, fuzzy
 msgid "DAS Mode:"
 msgstr "Spieltyp:"
 
-#: src/manager.c:440
+#: src/manager.c:442
 msgid "Fast"
 msgstr ""
 
-#: src/manager.c:461
+#: src/manager.c:463
 msgid "Test CPU Algorithm"
 msgstr ""
 
-#: src/manager.c:462
+#: src/manager.c:464
 msgid "Visualization"
 msgstr "Visualisierung"
 
-#: src/tetris.c:127
+#: src/tetris.c:129
 msgid "y"
 msgstr "j"
 
-#: src/tetris.c:128
+#: src/tetris.c:130
 msgid "n"
 msgstr "n"
 
-#: src/tetris.c:418
+#: src/tetris.c:430
 msgid "End Game? y/n"
 msgstr "Spiel beenden? j/n"
 

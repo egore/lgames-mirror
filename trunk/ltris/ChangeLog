@@ -1,8 +1,8 @@
 1.2.2:
 - don't redraw stack in pause after animation (2020/12/28 MS)
 - avoid odd resolutions like 1366x768 (2020/12/28 MS)
-- console option to force fullscreen (2020/12/28 MS)
-- cleaned up configure process (2020/12/28 MS)
+- console option for fullscreen (2020/12/28 MS)
+- cleaned up configure (2020/12/28 MS)
 - improved wall kicks (2020/12/25 MS)
 - added lock delay (2020/12/25 MS)
 - allow more keys for controls (2020/12/25 MS)
