@@ -361,9 +361,9 @@ void manager_create()
     menu_add( gfx, item_create_separator( "" ) );
 #ifndef WIN32
     item = item_create_switch( _("Display:"), HINT_DISPLAY, &config.fullscreen, _("Window"), _("Fullscreen") );
-#endif
     item->callback = cb_fullscreen;
     menu_add( gfx, item );
+#endif
     menu_add( gfx, item_create_switch_x( _("Frame Rate:"), HINT_FPS, &config.fps, str_fps, 2 ) );
     menu_add( gfx, item_create_separator( "" ) );
     menu_add( gfx, item_create_link( _("Back"), HINT_, _main ) );
@@ -524,6 +524,7 @@ int manager_run()
         }
 		/* fullscreen if no item selected */
 		if ( event_polled ) {
+#ifndef WIN32
 			if ( cur_menu->cur_item == 0 || ( cur_menu->cur_item->type != ITEM_EDIT && cur_menu->cur_item->type != ITEM_KEY ) )
 				if ( event.type == SDL_KEYUP )
 					if ( event.key.keysym.sym == SDLK_f ) {
@@ -533,6 +534,7 @@ int manager_run()
 					    chart_show( chart_set_query_id( chart_id ), cx, cy, cw, ch );
 						refresh_screen( 0, 0 ,0, 0 );
 					}
+#endif
 			/* check if clicked on highscore */
 			if ( event.type == SDL_MOUSEBUTTONUP ) 
 				if ( motion_x >= cx && motion_y >= cy )
@@ -591,7 +593,9 @@ Update screen without menu itself as this is shown next frame.
 */
 void manager_show()
 {
+#ifndef WIN32
     set_video_mode( config.fullscreen );
+#endif
     FULL_DEST( sdl.screen ); FULL_SOURCE( mbkgnd ); blit_surf();
     chart_show( chart_set_query_id( chart_id ), cx, cy, cw, ch );
     add_refresh_rect( 0, 0, sdl.screen->w, sdl.screen->h );
