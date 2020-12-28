@@ -1,4 +1,5 @@
 1.2.2:
+- avoid odd resolutions like 1366x768 (2020/12/28 MS)
 - console option to force fullscreen (2020/12/28 MS)
 - cleaned up configure process (2020/12/28 MS)
 - improved wall kicks (2020/12/25 MS)
