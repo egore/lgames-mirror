@@ -764,12 +764,10 @@ Happens next in update().
 */
 void bowl_drop_block( Bowl *bowl )
 {
-    while (bowl_check_piece_position(bowl,
-		    bowl->block.x, bowl->block.y+1,
-		    bowl->block.rot_id) == POSVALID) {
-        bowl->block.cur_y += bowl->block_size;
-        bowl->block.y = (int)bowl->block.cur_y / bowl->block_size;
-    }
+	while (bowl_piece_can_drop(bowl)) {
+		bowl->block.y++;
+		bowl->block.cur_y = bowl->block.y * bowl->block_size;
+	}
 }
 
 /*
@@ -1434,6 +1432,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
                     bowl_toggle_gravity(bowl);
                 else {
                     bowl_drop_block(bowl);
+                    old_y = bowl->block.y-1; /* prevent warning below */
                     bowl_check_lockdelay(bowl);
                     if (bowl->ldelay_cur > 0)
                 	    bowl->ldelay_cur = 1;
