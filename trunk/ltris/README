@@ -14,9 +14,8 @@ V.   Feedback
 ********************
 I.   Requirements
 ********************
-LTris runs in X and uses SDL (any version though >= 1.1.4
-is recommended) and SDL_mixer (optional for sound). Both libraries
-can be found at http://libsdl.org. 
+LTris runs in X and uses SDL and SDL_mixer (optional for sound). 
+Both libraries can be found at http://libsdl.org. 
 
 ********************
 II.  Installation
@@ -25,7 +24,6 @@ Enter your favorite shell and type in the following stuff (in the
 directory you extracted the LTris source)
 > ./configure [--disable-sound] [--disable-install] [--disable-nls]
               [--localstatedir=HIDIR]
-    --disable-sound:       no sound
     --with-buffer-size:    modify audio buffer size (set this value
                            to 2048 if you encounter any sound delays)
     --disable-install:     no installation; play from source directory
