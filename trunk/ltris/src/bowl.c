@@ -1199,7 +1199,7 @@ void bowl_show( Bowl *bowl )
     char aux[24];
 
     /* draw contents? */
-    if ( bowl->draw_contents ) {
+    if ( bowl->draw_contents && !bowl->paused ) {
         bowl->draw_contents = 0;
         bowl_draw_contents( bowl );
     }
