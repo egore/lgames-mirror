@@ -18,7 +18,7 @@
 #ifndef SDL_H
 #define SDL_H
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 #define BITDEPTH 16
 
