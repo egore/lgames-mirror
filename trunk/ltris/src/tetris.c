@@ -136,6 +136,14 @@ int confirm( Font *font, char *str, int type )
                             go_on = 0;
                             ret = 0;
                         }
+#ifdef WIN32
+                        /* y/z not recognized properly in windows */
+                        if (event.key.keysym.sym == SDLK_y ||
+                        		event.key.keysym.sym == SDLK_z) {
+                        	go_on = 0;
+                        	ret = 1;
+                        }
+#endif
                     }
                 break;
         }
