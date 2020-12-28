@@ -343,6 +343,8 @@ void tetris_clear()
 
 /** Display FPS in console */
 void show_fps(int fps) {
+	if (!config.show_fps)
+		return;
 	SDL_Rect r = {0,0,40,20};
 	char str[32];
 	sprintf(str,"%d",fps);

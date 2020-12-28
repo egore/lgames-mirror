@@ -111,6 +111,7 @@ void config_reset()
     config.fullscreen = 0;
     config.fade = 1;
     config.fps = 0; /* frames per second: 0 - 60Hz, 1 - 50Hz */
+    config.show_fps = 0;
     config.bkgnd = 0;
     config.block_by_block = 0;
     /* lbreakout2 event data */
@@ -183,6 +184,7 @@ void config_load( )
     parser_get_int( pd, "fullscreen", &config.fullscreen );
     parser_get_int( pd, "fading", &config.fade );
     parser_get_int( pd, "fps", &config.fps );
+    parser_get_int( pd, "show_fps", &config.show_fps );
     parser_get_int( pd, "background", &config.bkgnd );
     parser_get_int( pd, "static_background", &config.keep_bkgnd );
     parser_get_int( pd, "hori_delay", &config.hori_delay );
@@ -245,6 +247,7 @@ void config_save( )
         fprintf( file, "fullscreen=%i\n", config.fullscreen );
         fprintf( file, "fading=%i\n", config.fade );
         fprintf( file, "fps=%i\n", config.fps );
+        fprintf( file, "show_fps=%i\n", config.show_fps );
         fprintf( file, "background=%i\n", config.bkgnd );
         fprintf( file, "static_background=%i\n", config.keep_bkgnd );
         fprintf( file, "hori_delay=%i\n", config.hori_delay );
