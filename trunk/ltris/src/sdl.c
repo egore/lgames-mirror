@@ -360,15 +360,11 @@ void unlock_surf(SDL_Surface *sur)
 */
 void blit_surf(void)
 {
-#ifdef SDL_1_1_5
     if (sdl.s.s->flags & SDL_SRCALPHA)
         SDL_SetAlpha(sdl.s.s, SDL_SRCALPHA, 255 - sdl.s.s->format->alpha);
-#endif
     SDL_BlitSurface(sdl.s.s, &sdl.s.r, sdl.d.s, &sdl.d.r);
-#ifdef SDL_1_1_5
     if (sdl.s.s->flags & SDL_SRCALPHA)
         SDL_SetAlpha(sdl.s.s, SDL_SRCALPHA, 255 - sdl.s.s->format->alpha);
-#endif
 }
 
 /*
@@ -376,11 +372,7 @@ void blit_surf(void)
 */
 void alpha_blit_surf(int alpha)
 {
- #ifdef SDL_1_1_5
     SDL_SetAlpha(sdl.s.s, SDL_SRCALPHA, 255 - alpha);
-#else
-    SDL_SetAlpha(sdl.s.s, SDL_SRCALPHA, alpha);
-#endif
     SDL_BlitSurface(sdl.s.s, &sdl.s.r, sdl.d.s, &sdl.d.r);
     SDL_SetAlpha(sdl.s.s, 0, 0);
 }
@@ -396,15 +388,11 @@ void fill_surf(int c)
 /* set clipping rect */
 void set_surf_clip( SDL_Surface *surf, int x, int y, int w, int h )
 {
-#ifdef SDL_1_1_5
     SDL_Rect rect = { x, y, w, h };
     if ( w == h || h == 0 )
         SDL_SetClipRect( surf, 0 );
     else
         SDL_SetClipRect( surf, &rect );
-#else
-    SDL_SetClipping( surf, x, y, w, h );
-#endif
 }
 
 /* set pixel */

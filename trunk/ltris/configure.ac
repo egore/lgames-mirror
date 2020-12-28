@@ -20,29 +20,15 @@ AC_ARG_ENABLE( zaurus,
 AC_ARG_ENABLE( softfloat,
 [  --enable-softfloat      Use Softfloat for CPUs without FPU], CFLAGS="$CFLAGS -msoft-float"; LIBS="$LIBS $float")
 
-dnl check SDL version
-sdl_flag=""
+dnl check SDL
 AM_PATH_SDL(1.0.0,, AC_MSG_ERROR(lib SDL is needed))
-CFLAGS="$CFLAGS $SDL_CFLAGS"
-LIBS="$LIBS $SDL_LIBS"
-AM_PATH_SDL(1.1.5, sdl_flag="-DSDL_1_1_5",)
-CFLAGS="$CFLAGS $sdl_flag"
+CFLAGS="$CFLAGS $(sdl-config --cflags)"
+LIBS="$LIBS $(sdl-config --libs)"
 
-dnl check sound
-sound_flag="-DSOUND"
-mixer_flag="-lSDL_mixer"
-
-AC_ARG_ENABLE( sound,
-[  --disable-sound         Disables sound], sound_flag=""; mixer_flag="")
-
-dnl check if SDL_mixer's installed
-dnl if not: clear sound_flag and mixer_flag
+dnl check SDL_mixer
 AC_CHECK_LIB(SDL_mixer, main,
-AC_MSG_RESULT("SDL_Mixer found"), 
-AC_MSG_RESULT("SDL_Mixer NOT found: Audio disabled"); sound_flag=""; mixer_flag="")
-
-AC_SUBST(sound_flag)
-AC_SUBST(mixer_flag)
+CFLAGS="$CFLAGS -DSOUND";LIBS="$LIBS -lSDL_mixer", 
+AC_MSG_RESULT(SDL_Mixer NOT found: Audio disabled))
 
 dnl set sound buffer size
 buf_flag="-DAUDIO_BUFFER_SIZE=256"

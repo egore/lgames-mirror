@@ -1,10 +1,9 @@
-DEFS = @DEFS@ @sound_flag@ @buf_flag@ @inst_flag@ @hi_inst_flag@ @dis_flag@ @locdir_flag@
+DEFS = @DEFS@ @buf_flag@ @inst_flag@ @hi_inst_flag@ @dis_flag@ @locdir_flag@
 
 bin_PROGRAMS = ltris
 ltris_SOURCES = sdl.c menu.c item.c manager.c value.c main.c audio.c event.c \
 list.c tools.c config.c chart.c tetris.c bowl.c shrapnells.c cpu.c hint.c \
 parser.c
-ltris_LDADD   = @mixer_flag@
 
 EXTRA_DIST = sdl.c menu.c item.c manager.c value.c main.c audio.c event.c \
 list.c tools.c config.c chart.c tetris.c bowl.c shrapnells.c cpu.c \
