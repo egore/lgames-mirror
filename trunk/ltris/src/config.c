@@ -62,7 +62,7 @@ void config_check_dir()
 void config_reset()
 {
     /* game options */
-    config.gametype = GAME_DEMO;
+    config.gametype = GAME_CLASSIC;
     config.starting_level = 0;
     config.preview = 1;
     strcpy( config.player1.name, "Michael" );
