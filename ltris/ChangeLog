@@ -1,6 +1,11 @@
+1.2.2:
+- improved wall kicks (2020/12/25 MS)
 - added lock delay (2020/12/25 MS)
 - allow more keys for controls (2020/12/25 MS)
 - added hyper DAS option (2020/12/25 MS)
+
+1.2.1:
+- fixed build failure with gcc 4.8 (2020/07/27 Fabrice Fontaine)
 - added training mode with optional zero gravity (2020/07/01 MS) 
 
 1.2: 
