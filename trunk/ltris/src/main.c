@@ -80,10 +80,11 @@ int main(int argc, char *argv[])
     strcpy(gametype_names[8],_("Training"));
     config_load();
 
-    while ( ( c = getopt( argc, argv, "wr:" ) ) != -1 )
+    while ( ( c = getopt( argc, argv, "fwr:" ) ) != -1 )
       {
         switch (c)
   	{
+  	case 'f': config.fullscreen=1; break;
   	case 'w': config.fullscreen=0; break;
   	case 'r':
   		sscanf(optarg, "%dx%d", &video_forced_w, &video_forced_h);
