@@ -359,7 +359,9 @@ void manager_create()
     item->callback = cb_hints;
     menu_add( gfx, item );
     menu_add( gfx, item_create_separator( "" ) );
+#ifndef WIN32
     item = item_create_switch( _("Display:"), HINT_DISPLAY, &config.fullscreen, _("Window"), _("Fullscreen") );
+#endif
     item->callback = cb_fullscreen;
     menu_add( gfx, item );
     menu_add( gfx, item_create_switch_x( _("Frame Rate:"), HINT_FPS, &config.fps, str_fps, 2 ) );
