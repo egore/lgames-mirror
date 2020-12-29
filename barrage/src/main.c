@@ -95,7 +95,7 @@ static void select_best_video_mode(int *best_w, int *best_h)
 	int i;
 	int dratio;
 
-	dratio = 100*display_w/display_h;
+	dratio = 1000*display_w/display_h;
 	wanted_mode.w = display_w;
 	wanted_mode.h = display_h;
 
@@ -118,7 +118,7 @@ static void select_best_video_mode(int *best_w, int *best_h)
 
 		/* select lowest mode with same ratio as display */
 		for(i=0;modes[i];++i)
-			if (100*modes[i]->w/modes[i]->h == dratio) {
+			if (1000*modes[i]->w/modes[i]->h == dratio) {
 				if (modes[i]->h < wanted_mode.h)
 					wanted_mode = *modes[i];
 			}
