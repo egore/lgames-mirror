@@ -47,9 +47,12 @@ AC_ARG_ENABLE( debug,
 debugflags="-O0 -g")
 AC_SUBST(datdir)
 
-CXXFLAGS="$CXXFLAGS $(sdl2-config --cflags) -Wall $debugflags"
+SDL_CFLAGS=$(sdl2-config --cflags)
+SDL_LIBS=$(sdl2-config --libs)
+
+CXXFLAGS="$CXXFLAGS $SDL_CFLAGS -Wall $debugflags"
 CXXFLAGS="$CXXFLAGS -std=c++11 -DLOCALEDIR=\\\"$localedir\\\" -DCONFIGDIR=\\\"$configdir\\\" -DDATADIR=\\\"$datdir\\\""
-LIBS="$LIBS $(sdl2-config --libs)"
+LIBS="$LIBS $SDL_LIBS"
 
 # Makefiles
 AC_OUTPUT(
