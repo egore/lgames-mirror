@@ -89,11 +89,11 @@ Config::Config()
 	}
 
 	/* set file name */
-	fname = dname + "/lbreakouthd.conf";
+	path = dname + "/lbreakouthd.conf";
 
 	/* load */
-	_loginfo("Loading configuration %s\n",fname.c_str());
-	FileParser fp(fname);
+	_loginfo("Loading configuration %s\n",path.c_str());
+	FileParser fp(path);
 	fp.get("set_id_home", levelset_id_home );
 	fp.get( "set_count_home", levelset_count_home );
 	fp.get( "player_count", player_count );
@@ -147,9 +147,9 @@ Config::Config()
 
 void Config::save()
 {
-	ofstream ofs(fname);
+	ofstream ofs(path);
 	if (!ofs.is_open()) {
-		_logerr("Could not open config file %s\n",fname.c_str());
+		_logerr("Could not open config file %s\n",path.c_str());
 		return;
 	}
 
@@ -202,7 +202,7 @@ void Config::save()
 	ofs << "theme_count=" << theme_count << "\n";
 
 	ofs.close();
-	_loginfo("Configuration saved to %s\n",fname.c_str());
+	_loginfo("Configuration saved to %s\n",path.c_str());
 }
 
 

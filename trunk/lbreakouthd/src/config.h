@@ -29,7 +29,7 @@ class ClientGame;
 class Config {
 public:
 	string dname;
-	string fname;
+	string path;
 
 	/* levels */
 	int levelset_id_home;
