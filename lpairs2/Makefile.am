@@ -1,7 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
 SUBDIRS = po src 
 EXTRA_DIST = gettext.h config.rpath \
-	TODO COPYING README INSTALL ChangeLog \
+	TODO COPYING README INSTALL ChangeLog CROSSCOMPILE \
 	lpairs2.desktop.in lpairs2.png
 
 desktopdir = $(datadir)/applications
