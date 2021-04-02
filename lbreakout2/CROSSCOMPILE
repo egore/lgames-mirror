@@ -1,0 +1,47 @@
+Use 64 bit toolchain x86_64-w64-mingw32
+
+In addition to base system install
+x86_64-SDL/image/mixer/ttf
+x86_64-gcc-core/debuginfo/g++
+x86_64-gettext
+automake
+make
+along with all dependencies
+
+if AM_PATH_SDL is used:
+	disable it
+	SDL_CFLAGS="-I/usr/x86_64-w64-mingw32/sys-root/mingw/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main"
+	SDL_LIBS="-L/usr/x86_64-w64-mingw32/sys-root/mingw/lib -lmingw32 -lSDLmain -lSDL -mwindows -lintl"
+dnl SDL_mixer check
+
+autoconf
+
+in config.h comment out #define ENABLE_NLS 1
+
+CFLAGS="-DWIN32" ./configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --disable-install --disable-network
+
+make
+
+in case intl fails:
+in intl/localname.c:588/589 define both macros 
+
+it will fail as ar instead of x86_64-w64-mingw32-ar is used, 
+manually build libraries:
+cd intl; x86_64-w64-mingw32-ar.exe cru libintl.a bindtextdom.o dcgettext.o dgettext.o gettext.o finddomain.o loadmsgcat.o localealias.o textdomain.o l10nflist.o explodename.o dcigettext.o dcngettext.o dngettext.o ngettext.o plural.o plural-exp.o localcharset.o relocatable.o localename.o log.o printf.o osdep.o intl-compat.o; cd .. 
+cd common; x86_64-w64-mingw32-ar.exe cru libcommon.a list.o net.o tools.o parser.o; cd ..
+cd gui; x86_64-w64-mingw32-ar.exe cru libGui.a list.o stk.o gui.o gui_widget.o gui_theme.o gui_box.o gui_button.o gui_label.o gui_icon.o gui_radiogroup.o gui_scrollbar.o gui_progressbar.o gui_list.o gui_edit.o gui_spinbutton.o; cd ..
+cd game; x86_64-w64-mingw32-ar.exe cru libgame.a game.o levels.o shots.o bricks.o paddle.o extras.o balls.o mathfuncs.o comm.o; cd ..
+
+copy the following dlls from 
+/usr/x86_64-w64-mingw32/sys-root/mingw to src:
+SDL.dll
+SDL_image.dll
+SDL_mixer.dll
+libpng16-16.dll
+libFLAC-8.dll
+libogg-0.dll
+libvorbis-0.dll
+libvorbisfile-3.dll
+zlib1.dll (no direct requirement but libpng does not work without)
+
+controls do not work, ball not released???
