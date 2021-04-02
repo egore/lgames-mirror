@@ -2,7 +2,8 @@ SUBDIRS = intl m4 po common gui game server client docs
 
 EXTRA_DIST = config.rpath AUTHORS COPYING ChangeLog INSTALL README \
 README-SDL.txt TODO lbreakout2.spec touchall lbreakout32.gif \
-lbreakout48.gif lbreakout2.desktop.in win32_mancomp win32_preparchive
+lbreakout48.gif lbreakout2.desktop.in win32_mancomp win32_preparchive \
+CROSSCOMPILE
 
 desktopdir = $(datadir)/applications
 desktop_DATA = lbreakout2.desktop
