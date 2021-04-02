@@ -339,9 +339,17 @@ int ClientGame::loadAllLevels()
 	List *sets;
 
 	readDir(string(DATADIR)+"/levels", RD_FILES, list);
+#ifdef WIN32
+	/* we need to make item non-const which will make compiler
+	 * complain about c_str() being const. */
+	sets = list_create( LIST_AUTO_DELETE, 0 );
+	for (auto& s : list)
+		list_add(sets, strdup(s.c_str()));
+#else
 	sets = list_create( LIST_NO_AUTO_DELETE, 0 );
 	for (auto& s : list)
 		list_add(sets, s.c_str());
+#endif
 
 	levelset = levelset_load_all(sets, config.freakout_seed,
 						config.add_bonus_levels);

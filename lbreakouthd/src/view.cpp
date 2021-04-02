@@ -179,6 +179,10 @@ View::~View()
 	theme.fMenuNormal.free();
 	theme.fMenuFocus.free();
 
+#ifdef WIN32
+	/* in windows saving in destructor does not work on exit */
+	config.save();
+#endif
 	_loginfo("Finalizing SDL\n");
 	TTF_Quit();
 	SDL_Quit();

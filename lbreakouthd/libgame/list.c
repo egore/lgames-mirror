@@ -96,7 +96,11 @@ int list_insert( List *list, void *item, int pos )
 Add new item at the end of the list.
 ====================================================================
 */
+#ifdef WIN32
+int list_add( List *list, void *item )
+#else
 int list_add( List *list, const void *item )
+#endif
 {
     ListEntry    *new_entry = 0;
     /* check if insertion possible */
