@@ -1,3 +1,5 @@
+- show stats only for game modes with one bowl (2021/04/03 MS)
+
 1.2.2:
 - don't redraw stack in pause after animation (2020/12/28 MS)
 - avoid odd resolutions like 1366x768 (2020/12/28 MS)

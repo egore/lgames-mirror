@@ -324,8 +324,11 @@ int  tetris_init()
                 bowls[2] = bowl_create( 430, 0, -1, -1, blocks, qmark, "CPU-2", 0 );
             break;
     }
+    /* enable stats for one bowl games */
+    if (config.gametype <= GAME_FIGURES)
+        bowls[0]->show_stats = 1;
     /* background */
-    tetris_recreate_bkgnd( 1 );
+    tetris_recreate_bkgnd(1);
     /* shrapnells */
     shrapnells_init();
     return 1;

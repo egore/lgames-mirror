@@ -1087,13 +1087,14 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
 	    bowl->ldelay_max = 0;
     bowl->ldelay_cur = 0;
 
-    /* stats are only display for demo, normal and figures */
-    if (config.gametype <= 2 || config.gametype <= GAME_TRAINING) {
-	    bowl->stats_x = 30;
-	    bowl->stats_y = 60;
-	    bowl->stats_w = 160;
-	    bowl->stats_h = 280;
-    }
+    /* stats are only display for games with one bowl
+     * which is determined in tetris.c:tetris_init()
+     * XXX as it is only one bowl we hard code position here */
+    bowl->show_stats = 0;
+    bowl->stats_x = 30;
+    bowl->stats_y = 60;
+    bowl->stats_w = 160;
+    bowl->stats_h = 280;
 
     return bowl;
 }
@@ -1181,7 +1182,7 @@ void bowl_hide( Bowl *bowl )
     blit_surf();
     add_refresh_rect( bowl->score_sx, bowl->score_sy, bowl->score_sw, bowl->score_sh );
     /* stats */
-    if (bowl->stats_w > 0) {
+    if (bowl->show_stats) {
 	    DEST(sdl.screen, bowl->stats_x, bowl->stats_y, bowl->stats_w, bowl->stats_h);
 	    SOURCE(offscreen, bowl->stats_x, bowl->stats_y);
 	    blit_surf();
@@ -1267,7 +1268,7 @@ void bowl_show( Bowl *bowl )
     write_text( bowl->font, sdl.screen, bowl->score_sx + bowl->score_sw - 4, bowl->score_sy + bowl->score_sh, aux, OPAQUE );
 
     /* stats */
-    if (bowl->stats_w > 0)
+    if (bowl->show_stats)
 	    bowl_draw_stats(bowl);
 }
 
@@ -1662,7 +1663,7 @@ void bowl_draw_frames( Bowl *bowl )
     bowl->score_sw = dw / 2 + 36;
     bowl->score_sh = dh - bowl->font->height - 8;
     /* stats */
-    if (bowl->stats_w > 0)
+    if (bowl->show_stats)
 	    draw_3dframe(bkgnd, bowl->stats_x, bowl->stats_y, bowl->stats_w, bowl->stats_h, 4);
 }
 
