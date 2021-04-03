@@ -23,6 +23,7 @@
 #include "tetris.h"
 
 SDL_Surface *blocks = 0;
+SDL_Surface *previewpieces = 0;
 SDL_Surface *logo = 0;
 Font *font = 0, *large_font = 0;
 SDL_Surface *qmark = 0; /* question mark */
@@ -211,6 +212,29 @@ void tetris_recreate_bkgnd( int id )
     FULL_DEST( sdl.screen ); FULL_SOURCE( offscreen ); blit_surf();
 }
 
+extern Block_Mask block_masks[BLOCK_COUNT];
+
+/** Render preview of all pieces to previewpieces */
+static void render_preview_pieces()
+{
+	int bs = BOWL_BLOCK_SIZE;
+	int xoff[7] = {-10,-10,-10,0,-10,-10,0};
+	int yoff[7] = {-40,-40,-40,-40,-40,-40,-30};
+
+	for (int k = 0; k < 7; k++)
+		for (int j = 0; j < 4; j++)
+			for (int i = 0; i < 4; i++) {
+				if (!block_masks[k].mask[block_masks[k].rstart][i][j])
+					continue;
+	                        DEST( previewpieces,
+	                        	xoff[k] + i*bs,
+	                        	yoff[k] + j*bs + k*bs*2,
+	                        	bs, bs);
+	                        SOURCE( blocks, block_masks[k].blockid * bs, 0);
+	                        blit_surf();
+			}
+}
+
 /*
 ====================================================================
 Publics
@@ -237,6 +261,11 @@ void tetris_create()
     SDL_SetColorKey( offscreen, 0, 0 );
     bowl_load_figures();
     bowl_init_block_masks();
+
+    /* pre-render pieces for preview (7x4x2 in one column) */
+    previewpieces = create_surf(BOWL_BLOCK_SIZE*4,7*BOWL_BLOCK_SIZE*2,SDL_SWSURFACE);
+    render_preview_pieces();
+
 #ifdef SOUND
     wav_click = sound_chunk_load( "click.wav" );
 #endif
@@ -249,6 +278,9 @@ void tetris_delete()
     if ( blocks )
 	    SDL_FreeSurface( blocks );
     blocks = 0;
+    if ( previewpieces )
+	    SDL_FreeSurface( previewpieces );
+    previewpieces = 0;
     if ( qmark )
 	    SDL_FreeSurface( qmark );
     qmark = 0;
@@ -286,28 +318,28 @@ int  tetris_init()
     /* create bowls according to the gametype */
     switch ( config.gametype ) {
         case GAME_DEMO:
-            bowls[0] = bowl_create( 220, 0, 530, 200, blocks, qmark, "Demo", 0 );
+            bowls[0] = bowl_create( 220, 0, 490, 180, blocks, qmark, "Demo", 0 );
             break;
         case GAME_CLASSIC:
         case GAME_TRAINING:
         case GAME_FIGURES:
-            bowls[0] = bowl_create( 220, 0, 530, 200, blocks, qmark, config.player1.name, &config.player1.controls );
+            bowls[0] = bowl_create( 220, 0, 490, 180, blocks, qmark, config.player1.name, &config.player1.controls );
             break;
         case GAME_VS_HUMAN:
         case GAME_VS_CPU:
             if ( config.center_preview ) {
-                bowls[0] = bowl_create( 20, 0, 273, 200, blocks, qmark, config.player1.name, &config.player1.controls );
+                bowls[0] = bowl_create( 20, 0, 233, 180, blocks, qmark, config.player1.name, &config.player1.controls );
                 if ( config.gametype == GAME_VS_HUMAN )
-                    bowls[1] = bowl_create( 420, 0, 367, 200, blocks, qmark, config.player2.name, &config.player2.controls );
+                    bowls[1] = bowl_create( 420, 0, 327, 180, blocks, qmark, config.player2.name, &config.player2.controls );
                 else
-                    bowls[1] = bowl_create( 420, 0, 367, 200, blocks, qmark, "CPU-1", 0 );
+                    bowls[1] = bowl_create( 420, 0, 347, 180, blocks, qmark, "CPU-1", 0 );
             }
             else {
-                bowls[0] = bowl_create( 20, 0, 290, 340, blocks, qmark, config.player1.name, &config.player1.controls );
+                bowls[0] = bowl_create( 20, 0, 250, 320, blocks, qmark, config.player1.name, &config.player1.controls );
                 if ( config.gametype == GAME_VS_HUMAN )
-                    bowls[1] = bowl_create( 420, 0, 350, 60, blocks, qmark, config.player2.name, &config.player2.controls );
+                    bowls[1] = bowl_create( 420, 0, 310, 40, blocks, qmark, config.player2.name, &config.player2.controls );
                 else
-                    bowls[1] = bowl_create( 420, 0, 350, 60, blocks, qmark, "CPU-1", 0 );
+                    bowls[1] = bowl_create( 420, 0, 310, 40, blocks, qmark, "CPU-1", 0 );
             }
             break;
         case GAME_VS_HUMAN_HUMAN:
@@ -329,6 +361,7 @@ int  tetris_init()
         bowls[0]->show_stats = 1;
     /* background */
     tetris_recreate_bkgnd(1);
+
     /* shrapnells */
     shrapnells_init();
     return 1;
