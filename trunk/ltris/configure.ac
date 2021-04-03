@@ -37,6 +37,13 @@ AC_ARG_WITH( buffer-size,
 buf_flag="-DAUDIO_BUFFER_SIZE=$withval",)
 AC_SUBST(buf_flag)
 
+dnl allow changing config dir
+configdir=".lgames"
+AC_ARG_WITH( configdir,
+[  --with-configdir=CONFIGDIR       Set directory for config file in home directory (default: .lgames).],
+configdir="$withval",)
+CFLAGS="$CFLAGS -DCONFIG_DIR_NAME=\\\"$configdir\\\""
+
 dnl set localedir
 localedir=$datadir/locale
 locdir_flag="-DLOCALEDIR=\\\"$localedir\\\""

@@ -97,9 +97,6 @@ typedef struct {
     int center_preview;
 } Config;
 
-/* config directory name in home directory */
-#define CONFIG_DIR_NAME ".lgames"
-
 /* set config to default */
 void config_reset();
 
