@@ -1,3 +1,5 @@
+- added configure option --with-configdir (2021/04/03 MS) 
+- added ltris.appdata.xml (2021/04/03 SB)
 - show stats only for game modes with one bowl (2021/04/03 MS)
 
 1.2.2:
