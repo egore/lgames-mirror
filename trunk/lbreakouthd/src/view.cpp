@@ -228,6 +228,7 @@ void View::run()
 
 	while (!leave) {
 		renderTicks.reset();
+		flags = 0;
 
 		/* handle events */
 		if (SDL_PollEvent(&ev)) {
@@ -244,6 +245,18 @@ void View::run()
 					break;
 				case SDL_SCANCODE_F:
 					config.show_fps = !config.show_fps;
+					break;
+				case SDL_SCANCODE_R:
+					if (cgame.getCurrentPlayer()->getLives() > 1 ) {
+						text.clear();
+						text.push_back(_("Restart level? y/n"));
+						text.push_back(_("(Costs a life.)"));
+						if (showInfo(text, WT_YESNO)) {
+							flags |= CGF_RESTARTLEVEL;
+							ticks.reset();
+						}
+					} else
+						showInfo("No life left to restart.", WT_ANYKEY);
 					break;
 				case SDL_SCANCODE_D:
 					if (!cgame.isBonusLevel()) {
@@ -334,7 +347,10 @@ void View::run()
 			getNewShinePosition();
 
 		/* update game context */
-		flags = cgame.update(ms, rx, pis);
+		if (flags & CGF_RESTARTLEVEL)
+			flags = cgame.restartLevel();
+		else
+			flags = cgame.update(ms, rx, pis);
 		if (flags & CGF_LIFELOST) {
 			mixer.playx(theme.sLooseLife,0);
 			if (config.speech && config.badspeech && (rand()%2))
@@ -359,12 +375,13 @@ void View::run()
 			showInfo(cgame.getPlayerMessage());
 		if (flags & CGF_GAMEOVER)
 			break;
-		if (flags & CGF_NEWLEVEL) {
+		if ((flags & CGF_NEWLEVEL) || (flags & CGF_RESTARTLEVEL)) {
 			flags |= CGF_UPDATEBACKGROUND | CGF_UPDATEBRICKS |
 					CGF_UPDATESCORE | CGF_UPDATEEXTRAS;
 			curWallpaperId = rand() % theme.numWallpapers;
-			if (!(flags & CGF_LIFELOST) && config.speech && (rand()%2))
-				mixer.play((rand()%2)?theme.sVeryGood:theme.sExcellent);
+			if (flags & CGF_NEWLEVEL)
+				if (!(flags & CGF_LIFELOST) && config.speech && (rand()%2))
+					mixer.play((rand()%2)?theme.sVeryGood:theme.sExcellent);
 			dim();
 			ticks.reset();
 			if (!(flags & CGF_LIFELOST)) {
@@ -1234,7 +1251,8 @@ void View::runMenu()
 				MenuItemKey *keyItem = dynamic_cast<MenuItemKey*>
 							(curMenu->getCurItem());
 				switch (ev.key.keysym.scancode) {
-				case SDL_SCANCODE_P: break;
+				case SDL_SCANCODE_P:
+					break;
 				case SDL_SCANCODE_ESCAPE:
 					keyItem->cancelChange();
 					changingKey = false;

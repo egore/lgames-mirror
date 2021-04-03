@@ -357,3 +357,25 @@ int ClientGame::loadAllLevels()
 
 	return (levelset!=NULL);
 }
+
+/** Restart level */
+int ClientGame::restartLevel()
+{
+	ClientPlayer *p = players[curPlayer].get();
+
+	_logdebug(1,"Restarting level ...\n");
+
+	p->looseLife(); /* we checked that this is not the last life */
+	p->setLevelSnapshot(levelset->levels[p->getLevel()]);
+	p = getNextPlayer();
+	if (p == NULL)
+		_logerr("Next player is NULL while restarting?!?\n");
+
+	_logdebug(1,"Next player: %s\n",p->getName().c_str());
+	game_finalize(game);
+	game_init(game,p->getLevelSnapshot());
+	/* score is reset to 0 again so adjust */
+	game->paddles[0]->score = p->getScore();
+
+	return CGF_RESTARTLEVEL | CGF_LIFELOST;
+}
