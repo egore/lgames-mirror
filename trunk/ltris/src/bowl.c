@@ -26,6 +26,7 @@ extern Config config;
 extern Sdl sdl;
 extern SDL_Surface *offscreen;
 extern SDL_Surface *bkgnd;
+extern SDL_Surface *previewpieces;
 extern int keystate[SDLK_LAST];
 extern Bowl *bowls[BOWL_COUNT];
 
@@ -122,66 +123,6 @@ void bowl_compute_help_pos( Bowl *bowl )
 
 /*
 ====================================================================
-Compute position of preview
-====================================================================
-*/
-void bowl_compute_preview_pos( Bowl *bowl )
-{
-    int i, j;
-    int x1, y1, x2, y2; /* corners of the tile */
-    int w, h;
-    Block_Mask *bm = &block_masks[bowl->next_block_id];
-    if ( bowl->preview_center_sx == -1 ) 
-        return;
-    /* first tile */
-    x1 = y1 = -1;
-    for ( j = 0; j < 4; j++ ) {
-        for ( i = 0; i < 4; i++ ) {
-            if ( bm->mask[bm->rstart][i][j] ) {
-                y1 = j;
-                break;
-            }
-        }
-        if ( y1 != -1 ) break;
-    }
-    for ( i = 0; i < 4; i++ ) {
-        for ( j = 0; j < 4; j++ ) {
-            if ( bm->mask[bm->rstart][i][j] ) {
-                x1 = i;
-                break;
-            }
-        }
-        if ( x1 != -1 ) break;
-    }
-    /* last tile */
-    x2 = y2 = -1;
-    for ( j = 3; j >= 0; j-- ) {
-        for ( i = 3; i >= 0; i-- ) {
-            if ( bm->mask[bm->rstart][i][j] ) {
-                y2 = j;
-                break;
-            }
-        }
-        if ( y2 != -1 ) break;
-    }
-    for ( i = 3; i >= 0; i-- ) {
-        for ( j = 3; j >= 0; j-- ) {
-            if ( bm->mask[bm->rstart][i][j] ) {
-                x2 = i;
-                break;
-            }
-        }
-        if ( x2 != -1 ) break;
-    }
-    /* preview position */
-    w = (x2 - x1 + 1) * bowl->block_size;
-    h = (y2 - y1 + 1) * bowl->block_size;
-    bowl->preview_sx = bowl->preview_center_sx - x1*bowl->block_size - w/2;
-    bowl->preview_sy = bowl->preview_center_sy - y1*bowl->block_size - h/2;
-}
-
-/*
-====================================================================
 Compute computer target
 ====================================================================
 */
@@ -270,7 +211,6 @@ void bowl_select_next_block( Bowl *bowl )
 	bowl->block.sw = bowl->block.sh = 4 * bowl->block_size;
 	bowl->block.cur_y = bowl->block.y * bowl->block_size;
 	bowl_compute_help_pos( bowl );
-	bowl_compute_preview_pos( bowl );
 
 	/* count i pieces for drought and stats */
 	if (bowl->block.id == 6) {
@@ -544,7 +484,7 @@ void bowl_add_score(Bowl *bowl, int lc)
 	score = base[lc] * (bowl->level + 1);
 
 	/* add 20% if no preview */
-	if ( !config.preview || bowl->preview_center_sx == -1 )
+	if ( !config.preview || bowl->preview_sx == -1 )
 		score += 20 * score / 100;
 
 	counter_add(&bowl->score, score);
@@ -1058,8 +998,10 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->block_drop_vel = 0.6; // fixed to 0.6; 0.8 - config.vert_delay*0.07;
     bowl_set_vert_block_vel( bowl );
     bowl->help_sw = bowl->help_sh = bowl->block_size * 4;
-    bowl->preview_center_sx = preview_x;
-    bowl->preview_center_sy = preview_y;
+    bowl->preview_sx = preview_x;
+    bowl->preview_sy = preview_y;
+    bowl->preview_sw = bowl->block_size*4;
+    bowl->preview_sh = bowl->block_size*2;
     bowl_select_next_block( bowl );
     bowl->font = load_fixed_font( "f_small_white.bmp", 32, 96, 8 );
 #ifdef SOUND
@@ -1165,16 +1107,13 @@ void bowl_hide( Bowl *bowl )
         add_refresh_rect( bowl->help_sx, bowl->help_sy, bowl->help_sw, bowl->help_sh );
     }
     /* preview */
-    if ( bowl->preview_center_sx != -1 ) {
-        DEST( sdl.screen, bowl->preview_center_sx - ( bowl->block_size << 1 ), 
-                          bowl->preview_center_sy - ( bowl->block_size << 1 ), 
-                          bowl->block_size << 2, bowl->block_size << 2 );
-        SOURCE( offscreen, bowl->preview_center_sx - ( bowl->block_size << 1 ), 
-                           bowl->preview_center_sy - ( bowl->block_size << 1 ) );
+    if ( bowl->preview_sx != -1 ) {
+        DEST( sdl.screen, bowl->preview_sx, bowl->preview_sy,
+        		bowl->preview_sw, bowl->preview_sh);
+        SOURCE( offscreen, bowl->preview_sx, bowl->preview_sy);
         blit_surf();
-        add_refresh_rect( bowl->preview_center_sx - ( bowl->block_size << 1 ), 
-                          bowl->preview_center_sy - ( bowl->block_size << 1 ), 
-                          bowl->block_size << 2, bowl->block_size << 2 );
+        add_refresh_rect(bowl->preview_sx, bowl->preview_sy,
+        		bowl->preview_sw, bowl->preview_sh);
     }
     /* score */
     DEST( sdl.screen, bowl->score_sx, bowl->score_sy, bowl->score_sw, bowl->score_sh );
@@ -1203,21 +1142,10 @@ void bowl_show( Bowl *bowl )
         bowl_draw_contents( bowl );
     }
 
-    /* block&help */
+    /* piece & help */
     if ( !bowl->hide_block ) {
         for ( j = 0; j < 4; j++ ) {
             for ( i = 0; i < 4; i++ ) {
-                if ( block_masks[bowl->next_block_id].mask[block_masks[bowl->next_block_id].rstart][i][j] ) {
-                    /* preview */
-                    if ( config.preview &&  bowl->preview_center_sx != -1 ) {
-                        DEST( sdl.screen, bowl->preview_sx + tile_x, bowl->preview_sy + tile_y, bowl->block_size, bowl->block_size );
-                        SOURCE( bowl->blocks,
-                        	block_masks[bowl->next_block_id].blockid
-				* bowl->block_size, 0 );
-                        blit_surf();
-                        add_refresh_rect( bowl->preview_sx + tile_x, bowl->preview_sy + tile_y, bowl->block_size, bowl->block_size );
-                    }
-                }
                 if ( block_masks[bowl->block.id].mask[bowl->block.rot_id][i][j] ) {
                     /* help */
                     if ( config.modern && bowl->are == 0) {
@@ -1247,16 +1175,14 @@ void bowl_show( Bowl *bowl )
         }
     }
 
-    /* check if question mark must be displayed */
-    if ( bowl->preview_center_sx != -1 && !config.preview ) {
-        DEST( sdl.screen, bowl->preview_center_sx - bowl->unknown_preview->w / 2, 
-                          bowl->preview_center_sy - bowl->unknown_preview->h / 2, 
-                          bowl->unknown_preview->w, bowl->unknown_preview->h );
-        SOURCE( bowl->unknown_preview, 0, 0 );
-        blit_surf();
-        add_refresh_rect( bowl->preview_center_sx - bowl->unknown_preview->w / 2, 
-                          bowl->preview_center_sy - bowl->unknown_preview->h / 2, 
-                          bowl->unknown_preview->w, bowl->unknown_preview->h  );
+    /* piece preview */
+    if (bowl->preview_sx != -1) {
+	    DEST( sdl.screen, bowl->preview_sx,bowl->preview_sy,
+			    bowl->preview_sw,bowl->preview_sh);
+	    SOURCE( previewpieces, 0, bowl->next_block_id * bowl->block_size * 2 );
+	    blit_surf();
+	    add_refresh_rect(bowl->preview_sx,bowl->preview_sy,
+			    bowl->preview_sw,bowl->preview_sh );
     }
 
     /* score, lines, level */
@@ -1652,11 +1578,10 @@ void bowl_draw_frames( Bowl *bowl )
     bowl->font->align = ALIGN_X_LEFT | ALIGN_Y_BOTTOM;
     write_text( bowl->font, bkgnd, dx + 4, dy + dh - 4, _("Lines:"), OPAQUE );
     /* preview */
-    if ( bowl->preview_center_sx != -1 )
+    if ( bowl->preview_sx != -1 )
         draw_3dframe( bkgnd, 
-                      bowl->preview_center_sx - 2 * bowl->block_size - 2, bowl->preview_center_sy - 2 * bowl->block_size - 2, 
-                      4 * bowl->block_size + 4, 4 * bowl->block_size + 4,
-                      4 );
+                      bowl->preview_sx - 2, bowl->preview_sy - 2,
+                      bowl->preview_sw + 4, bowl->preview_sh + 4, 4 );
     /* part that is updated when redrawing score/level */
     bowl->score_sx = dx + dw / 2 - 36;
     bowl->score_sy = dy + bowl->font->height + 4;
