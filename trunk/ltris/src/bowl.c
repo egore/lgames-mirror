@@ -484,7 +484,7 @@ void bowl_add_score(Bowl *bowl, int lc)
 	score = base[lc] * (bowl->level + 1);
 
 	/* add 20% if no preview */
-	if ( !config.preview || bowl->preview_sx == -1 )
+	if (!bowl->preview)
 		score += 20 * score / 100;
 
 	counter_add(&bowl->score, score);
@@ -998,10 +998,16 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->block_drop_vel = 0.6; // fixed to 0.6; 0.8 - config.vert_delay*0.07;
     bowl_set_vert_block_vel( bowl );
     bowl->help_sw = bowl->help_sh = bowl->block_size * 4;
+    if (preview_x == -1)
+	    bowl->preview = 0;
+    else if (config.modern)
+	    bowl->preview = 3;
+    else
+	    bowl->preview = 1;
     bowl->preview_sx = preview_x;
     bowl->preview_sy = preview_y;
     bowl->preview_sw = bowl->block_size*4;
-    bowl->preview_sh = bowl->block_size*2;
+    bowl->preview_sh = bowl->block_size*3*bowl->preview;
     bowl_select_next_block( bowl );
     bowl->font = load_fixed_font( "f_small_white.bmp", 32, 96, 8 );
 #ifdef SOUND
@@ -1107,7 +1113,7 @@ void bowl_hide( Bowl *bowl )
         add_refresh_rect( bowl->help_sx, bowl->help_sy, bowl->help_sw, bowl->help_sh );
     }
     /* preview */
-    if ( bowl->preview_sx != -1 ) {
+    if ( bowl->preview ) {
         DEST( sdl.screen, bowl->preview_sx, bowl->preview_sy,
         		bowl->preview_sw, bowl->preview_sh);
         SOURCE( offscreen, bowl->preview_sx, bowl->preview_sy);
@@ -1176,13 +1182,26 @@ void bowl_show( Bowl *bowl )
     }
 
     /* piece preview */
-    if (bowl->preview_sx != -1) {
-	    DEST( sdl.screen, bowl->preview_sx,bowl->preview_sy,
-			    bowl->preview_sw,bowl->preview_sh);
-	    SOURCE( previewpieces, 0, bowl->next_block_id * bowl->block_size * 2 );
+    if (bowl->preview) {
+	    int pw = bowl->block_size*4, ph = bowl->block_size*2;
+	    DEST( sdl.screen, bowl->preview_sx,
+			    bowl->preview_sy + bowl->block_size/2,
+			    pw,ph);
+	    SOURCE( previewpieces, 0, bowl->next_block_id * ph );
 	    blit_surf();
-	    add_refresh_rect(bowl->preview_sx,bowl->preview_sy,
-			    bowl->preview_sw,bowl->preview_sh );
+
+	    /* only for modern show next two pieces of piece bag */
+	    for (int i = 0; i < bowl->preview-1; i++) {
+		    int pid = next_blocks[bowl->next_blocks_pos+i];
+		    DEST( sdl.screen, bowl->preview_sx,
+				    bowl->preview_sy + bowl->block_size/2
+				    	    + (ph + bowl->block_size)*(i+1),
+				    pw,ph);
+		    SOURCE( previewpieces, 0, pid * ph );
+		    blit_surf();
+	    }
+
+	    add_refresh_rect(bowl->preview_sx,bowl->preview_sy,pw,ph);
     }
 
     /* score, lines, level */
@@ -1578,7 +1597,7 @@ void bowl_draw_frames( Bowl *bowl )
     bowl->font->align = ALIGN_X_LEFT | ALIGN_Y_BOTTOM;
     write_text( bowl->font, bkgnd, dx + 4, dy + dh - 4, _("Lines:"), OPAQUE );
     /* preview */
-    if ( bowl->preview_sx != -1 )
+    if ( bowl->preview )
         draw_3dframe( bkgnd, 
                       bowl->preview_sx - 2, bowl->preview_sy - 2,
                       bowl->preview_sw + 4, bowl->preview_sh + 4, 4 );
