@@ -335,11 +335,11 @@ int  tetris_init()
                     bowls[1] = bowl_create( 420, 0, 347, 180, blocks, qmark, "CPU-1", 0 );
             }
             else {
-                bowls[0] = bowl_create( 20, 0, 250, 320, blocks, qmark, config.player1.name, &config.player1.controls );
+                bowls[0] = bowl_create( 20, 0, 250, 280, blocks, qmark, config.player1.name, &config.player1.controls );
                 if ( config.gametype == GAME_VS_HUMAN )
-                    bowls[1] = bowl_create( 420, 0, 310, 40, blocks, qmark, config.player2.name, &config.player2.controls );
+                    bowls[1] = bowl_create( 420, 0, 310, 80, blocks, qmark, config.player2.name, &config.player2.controls );
                 else
-                    bowls[1] = bowl_create( 420, 0, 310, 40, blocks, qmark, "CPU-1", 0 );
+                    bowls[1] = bowl_create( 420, 0, 310, 80, blocks, qmark, "CPU-1", 0 );
             }
             break;
         case GAME_VS_HUMAN_HUMAN:
