@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ltris\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2020-12-28 16:46+0100\n"
+"POT-Creation-Date: 2021-04-03 11:32+0200\n"
 "PO-Revision-Date: 2006-02-05 15:08+0200\n"
 "Last-Translator: Server Acim <sacim@kde.org.tr>\n"
 "Language-Team: Turkce <yerellestirme@kde.org.tr>\n"
@@ -57,35 +57,28 @@ msgid "Change frames per second."
 msgstr ""
 
 #: src/manager.c:75
+#, fuzzy
 msgid ""
-"Horizontally move block either tile-by-tile or smooth. This is just eye-"
-"candy and doesn't effect the moving speed at all."
+"Shift piece either tile-by-tile or smooth. This option does not affect shift "
+"speed."
 msgstr ""
 "Yatay olarak obegi doseyerek veya duzgun tası. Bu sadece gorsel bir unsurdur "
 "ve hareket hızını tam olarak etkilemez."
 
 #: src/manager.c:76
+#, fuzzy
 msgid ""
-"Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you to "
-"move a block below a tile multiple times you'll only be able to do so one "
-"time when choosing 'smooth'!#See 'Advanced Options/Collision Check' to "
-"improve this."
+"Drop piece tile-by-tile or smooth. This option does not affect drop speed."
 msgstr ""
-"Obegi doseyerek veya duzgun olarak bırak. ##DIKKAT: Doseye doseye gitmek "
-"sizin obegi birden fazla defa asagıya tasımanıza izin verir eger duzgun'u "
-"secerseniz bu islemi sadece bir kez yapabilirsiniz !#Bakınız Bunu "
-"iyilestirmek icin Gelismis Secenekler / Cakısma Kontrolu."
+"Yatay olarak obegi doseyerek veya duzgun tası. Bu sadece gorsel bir unsurdur "
+"ve hareket hızını tam olarak etkilemez."
 
 #: src/manager.c:77
-msgid ""
-"The less delay you take the faster the block will horizontally move and the "
-"more sensitive the input is handled."
+msgid "The less delay the faster a piece will shift."
 msgstr ""
-"Obegi ne kadar yatay olarak hızlı hareket ettirirseniz daha az gecikme "
-"olacak ve tanıtılan giris daha hassaslasacaktır."
 
 #: src/manager.c:78
-msgid "Delay for vertical movement when using Down key."
+msgid "Delay for soft drop."
 msgstr ""
 
 #: src/manager.c:79
@@ -586,7 +579,7 @@ msgstr ""
 msgid "n"
 msgstr "Acık"
 
-#: src/tetris.c:430
+#: src/tetris.c:433
 msgid "End Game? y/n"
 msgstr "Oyun Bitsin mi? e/h"
 
@@ -594,7 +587,7 @@ msgstr "Oyun Bitsin mi? e/h"
 msgid "Game Over"
 msgstr "Oyun Bitti"
 
-#: src/bowl.c:1268
+#: src/bowl.c:1267
 #, c-format
 msgid "%i Lvl: %i"
 msgstr "%i Lvl: %i"
@@ -768,6 +761,24 @@ msgstr "Asagı Sayfa"
 #: src/value.c:55
 msgid "Home"
 msgstr "Baslangıc"
+
+#~ msgid ""
+#~ "The less delay you take the faster the block will horizontally move and "
+#~ "the more sensitive the input is handled."
+#~ msgstr ""
+#~ "Obegi ne kadar yatay olarak hızlı hareket ettirirseniz daha az gecikme "
+#~ "olacak ve tanıtılan giris daha hassaslasacaktır."
+
+#~ msgid ""
+#~ "Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you "
+#~ "to move a block below a tile multiple times you'll only be able to do so "
+#~ "one time when choosing 'smooth'!#See 'Advanced Options/Collision Check' "
+#~ "to improve this."
+#~ msgstr ""
+#~ "Obegi doseyerek veya duzgun olarak bırak. ##DIKKAT: Doseye doseye gitmek "
+#~ "sizin obegi birden fazla defa asagıya tasımanıza izin verir eger duzgun'u "
+#~ "secerseniz bu islemi sadece bir kez yapabilirsiniz !#Bakınız Bunu "
+#~ "iyilestirmek icin Gelismis Secenekler / Cakısma Kontrolu."
 
 #~ msgid "Right Alt"
 #~ msgstr "Sag Alt"

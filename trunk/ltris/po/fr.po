@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2020-12-28 16:46+0100\n"
+"POT-Creation-Date: 2021-04-03 11:32+0200\n"
 "PO-Revision-Date: 2008-03-30 22:49+0200\n"
 "Last-Translator: Jose Jorge <lists.jjorge@free.fr>\n"
 "Language-Team: francais <fr@li.org>\n"
@@ -61,26 +61,21 @@ msgstr ""
 
 #: src/manager.c:75
 msgid ""
-"Horizontally move block either tile-by-tile or smooth. This is just eye-"
-"candy and doesn't effect the moving speed at all."
+"Shift piece either tile-by-tile or smooth. This option does not affect shift "
+"speed."
 msgstr ""
 
 #: src/manager.c:76
 msgid ""
-"Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you to "
-"move a block below a tile multiple times you'll only be able to do so one "
-"time when choosing 'smooth'!#See 'Advanced Options/Collision Check' to "
-"improve this."
+"Drop piece tile-by-tile or smooth. This option does not affect drop speed."
 msgstr ""
 
 #: src/manager.c:77
-msgid ""
-"The less delay you take the faster the block will horizontally move and the "
-"more sensitive the input is handled."
+msgid "The less delay the faster a piece will shift."
 msgstr ""
 
 #: src/manager.c:78
-msgid "Delay for vertical movement when using Down key."
+msgid "Delay for soft drop."
 msgstr ""
 
 #: src/manager.c:79
@@ -522,7 +517,7 @@ msgstr ""
 msgid "n"
 msgstr ""
 
-#: src/tetris.c:430
+#: src/tetris.c:433
 msgid "End Game? y/n"
 msgstr "Terminer le jeu? y/n"
 
@@ -530,7 +525,7 @@ msgstr "Terminer le jeu? y/n"
 msgid "Game Over"
 msgstr "Jeu Termine"
 
-#: src/bowl.c:1268
+#: src/bowl.c:1267
 #, c-format
 msgid "%i Lvl: %i"
 msgstr "%i Lvl: %i"
