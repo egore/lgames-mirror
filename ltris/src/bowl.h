@@ -113,6 +113,7 @@ typedef struct {
 #endif
 
     /* statistics */
+    int show_stats;
     int stats_x, stats_y, stats_w, stats_h;
     BowlStats stats;
     int drought; /* current drought: pieces since last i piece */
