@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ltris 1.0.14\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2020-12-28 16:46+0100\n"
+"POT-Creation-Date: 2021-04-03 11:32+0200\n"
 "PO-Revision-Date: 2010-04-12 00:10+0100\n"
 "Last-Translator: Desty Nova <anggasp@infinito.it>\n"
 "Language-Team: Italian\n"
@@ -58,35 +58,28 @@ msgid "Change frames per second."
 msgstr ""
 
 #: src/manager.c:75
+#, fuzzy
 msgid ""
-"Horizontally move block either tile-by-tile or smooth. This is just eye-"
-"candy and doesn't effect the moving speed at all."
+"Shift piece either tile-by-tile or smooth. This option does not affect shift "
+"speed."
 msgstr ""
 "Muove orizzontalmente il blocco pezzo-per-pezzo o liscio. Questo e' solo un "
 "abbellimento e non influisce affatto sulla velocita' di movimento."
 
 #: src/manager.c:76
+#, fuzzy
 msgid ""
-"Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you to "
-"move a block below a tile multiple times you'll only be able to do so one "
-"time when choosing 'smooth'!#See 'Advanced Options/Collision Check' to "
-"improve this."
+"Drop piece tile-by-tile or smooth. This option does not affect drop speed."
 msgstr ""
-"Caduta blocco pezzo-per-pezzo o liscio.#NOTA: Mentre pezzo-per-pezzo ti "
-"permette di muovere un blocco sotto un pezzo molte volte, sarai in grado di "
-"farlo solo una volta scegliendo 'liscio'!#Vedi 'Opzioni Avanzate/Check "
-"Collisione' per migliorare questo."
+"Muove orizzontalmente il blocco pezzo-per-pezzo o liscio. Questo e' solo un "
+"abbellimento e non influisce affatto sulla velocita' di movimento."
 
 #: src/manager.c:77
-msgid ""
-"The less delay you take the faster the block will horizontally move and the "
-"more sensitive the input is handled."
+msgid "The less delay the faster a piece will shift."
 msgstr ""
-"Meno ritardo prendi piu' velocemente il blocco si muovera' orizzontalmente e "
-"piu' sensibile e' la gestione dell'ingresso."
 
 #: src/manager.c:78
-msgid "Delay for vertical movement when using Down key."
+msgid "Delay for soft drop."
 msgstr ""
 
 #: src/manager.c:79
@@ -585,7 +578,7 @@ msgstr "s"
 msgid "n"
 msgstr "n"
 
-#: src/tetris.c:430
+#: src/tetris.c:433
 msgid "End Game? y/n"
 msgstr "Fine Gioco? s/n"
 
@@ -593,7 +586,7 @@ msgstr "Fine Gioco? s/n"
 msgid "Game Over"
 msgstr "Game Over"
 
-#: src/bowl.c:1268
+#: src/bowl.c:1267
 #, c-format
 msgid "%i Lvl: %i"
 msgstr "%i Lvl: %i"
@@ -767,6 +760,24 @@ msgstr "PagGiù"
 #: src/value.c:55
 msgid "Home"
 msgstr "Home"
+
+#~ msgid ""
+#~ "The less delay you take the faster the block will horizontally move and "
+#~ "the more sensitive the input is handled."
+#~ msgstr ""
+#~ "Meno ritardo prendi piu' velocemente il blocco si muovera' "
+#~ "orizzontalmente e piu' sensibile e' la gestione dell'ingresso."
+
+#~ msgid ""
+#~ "Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you "
+#~ "to move a block below a tile multiple times you'll only be able to do so "
+#~ "one time when choosing 'smooth'!#See 'Advanced Options/Collision Check' "
+#~ "to improve this."
+#~ msgstr ""
+#~ "Caduta blocco pezzo-per-pezzo o liscio.#NOTA: Mentre pezzo-per-pezzo ti "
+#~ "permette di muovere un blocco sotto un pezzo molte volte, sarai in grado "
+#~ "di farlo solo una volta scegliendo 'liscio'!#Vedi 'Opzioni Avanzate/Check "
+#~ "Collisione' per migliorare questo."
 
 #~ msgid "Right Alt"
 #~ msgstr "Alt Destro"

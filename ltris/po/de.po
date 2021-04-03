@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2020-12-28 16:46+0100\n"
+"POT-Creation-Date: 2021-04-03 11:32+0200\n"
 "PO-Revision-Date: 2005-10-05 22:46+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <de@li.org>\n"
@@ -64,38 +64,31 @@ msgid "Change frames per second."
 msgstr ""
 
 #: src/manager.c:75
+#, fuzzy
 msgid ""
-"Horizontally move block either tile-by-tile or smooth. This is just eye-"
-"candy and doesn't effect the moving speed at all."
+"Shift piece either tile-by-tile or smooth. This option does not affect shift "
+"speed."
 msgstr ""
 "Die horizontale Bewegung eines Blocks ist entweder weich oder stueckweise. "
-"Das ist lediglich eine grafische Einstellung, die keinen Einfluss auf die "
-"Geschwindigkeit hat."
+"Diese Einstellung hat keinen Einfluss auf die Geschwindigkeit."
 
 #: src/manager.c:76
+#, fuzzy
 msgid ""
-"Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you to "
-"move a block below a tile multiple times you'll only be able to do so one "
-"time when choosing 'smooth'!#See 'Advanced Options/Collision Check' to "
-"improve this."
+"Drop piece tile-by-tile or smooth. This option does not affect drop speed."
 msgstr ""
-"Bloecke fallen entweder weich oder stueckweise.##ACHTUNG: Stueckweiser Fall "
-"erlaubt, einen Block mehrere Stuecke unter einen anderen zu schieben, bevor "
-"er aufsetzt. Bei weichem Fall geht das nicht, es sei denn 'Erweiterte "
-"Optionen/Kollisionstest' ist entsprechend gesetzt."
+"Der Fall eines Blocks ist entweder weich oder stueckweise. Diese Einstellung "
+"hat keinen Einfluss auf die Geschwindigkeit."
 
 #: src/manager.c:77
-msgid ""
-"The less delay you take the faster the block will horizontally move and the "
-"more sensitive the input is handled."
+msgid "The less delay the faster a piece will shift."
 msgstr ""
-"Je geringer die Verzoegerung ist, desto sensitiver aber auch schneller "
-"reagiert der Block."
+"Je niedriger die Verzoegerung, desto schneller bewegt sich ein Block nach "
+"links oder rechts."
 
 #: src/manager.c:78
-msgid "Delay for vertical movement when using Down key."
+msgid "Delay for soft drop."
 msgstr ""
-"Verzoegerung fuer vertikale Bewegung wenn die Runter-Taste verwendet wird."
 
 #: src/manager.c:79
 msgid ""
@@ -588,7 +581,7 @@ msgstr "j"
 msgid "n"
 msgstr "n"
 
-#: src/tetris.c:430
+#: src/tetris.c:433
 msgid "End Game? y/n"
 msgstr "Spiel beenden? j/n"
 
@@ -596,7 +589,7 @@ msgstr "Spiel beenden? j/n"
 msgid "Game Over"
 msgstr "Spiel vorbei"
 
-#: src/bowl.c:1268
+#: src/bowl.c:1267
 #, c-format
 msgid "%i Lvl: %i"
 msgstr "%i Ebn: %i"
@@ -770,6 +763,28 @@ msgstr "BildRunter"
 #: src/value.c:55
 msgid "Home"
 msgstr "Pos1"
+
+#~ msgid ""
+#~ "The less delay you take the faster the block will horizontally move and "
+#~ "the more sensitive the input is handled."
+#~ msgstr ""
+#~ "Je geringer die Verzoegerung ist, desto sensitiver aber auch schneller "
+#~ "reagiert der Block."
+
+#~ msgid "Delay for vertical movement when using Down key."
+#~ msgstr ""
+#~ "Verzoegerung fuer vertikale Bewegung wenn die Runter-Taste verwendet wird."
+
+#~ msgid ""
+#~ "Drop block tile-by-tile or smooth.##NOTE: While tile-by-tile allows you "
+#~ "to move a block below a tile multiple times you'll only be able to do so "
+#~ "one time when choosing 'smooth'!#See 'Advanced Options/Collision Check' "
+#~ "to improve this."
+#~ msgstr ""
+#~ "Bloecke fallen entweder weich oder stueckweise.##ACHTUNG: Stueckweiser "
+#~ "Fall erlaubt, einen Block mehrere Stuecke unter einen anderen zu "
+#~ "schieben, bevor er aufsetzt. Bei weichem Fall geht das nicht, es sei denn "
+#~ "'Erweiterte Optionen/Kollisionstest' ist entsprechend gesetzt."
 
 #~ msgid "Right Alt"
 #~ msgstr "Alt Rechts"
