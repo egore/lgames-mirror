@@ -92,7 +92,8 @@ enum {
 	CGF_LIFELOST = 256,
 	CGF_LASTLIFELOST = 512,
 	CGF_WARPOK = 1024,
-	CGF_UPDATEINFO = 2048
+	CGF_UPDATEINFO = 2048,
+	CGF_RESTARTLEVEL = 4096
 };
 class ClientGame {
 	Config &config;
@@ -167,6 +168,7 @@ public:
 		return 0;
 	}
 	const string &getBonusLevelInfo();
+	int restartLevel();
 };
 
 #endif /* SRC_CLIENTGAME_H_ */
