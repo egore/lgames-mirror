@@ -96,7 +96,8 @@ typedef struct {
     int paused;
     int draw_contents; /* set if bowl needs a full redraw next bowl_show() */
     int help_sx, help_sy, help_sw, help_sh; /* position of helping shadow */
-    int preview_sx, preview_sy; /* preview position, x = -1 means no preview */
+    int preview; /* 0 = no preview, otherwise number of pieces */
+    int preview_sx, preview_sy; /* preview position */
     int preview_sw, preview_sh; /* preview size */
     int cpu_dest_x; /* move block to this position (computed in bowl_select_next_block() */
     int cpu_dest_rot; /* destination rotation */
