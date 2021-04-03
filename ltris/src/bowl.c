@@ -1008,6 +1008,8 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->preview_sy = preview_y;
     bowl->preview_sw = bowl->block_size*4;
     bowl->preview_sh = bowl->block_size*3*bowl->preview;
+    if (bowl->preview == 3) /* passed value is for 1 piece */
+	    bowl->preview_sy -= bowl->block_size*3;
     bowl_select_next_block( bowl );
     bowl->font = load_fixed_font( "f_small_white.bmp", 32, 96, 8 );
 #ifdef SOUND
