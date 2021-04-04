@@ -53,6 +53,13 @@ Config::Config()
 	maxballspeed_int1000 = 900;
 	maxballspeed_float = 0.7;
 	ball_auto_turbo = 0;
+	/* gamepad */
+	gp_enabled = 1;
+	gp_lfire = 3;
+	gp_rfire = 0;
+	gp_turbo = 1;
+	gp_warp = 4;
+	gp_maxballspeed=2;
 	/* sounds */
 	sound = 1;
 	volume = 50;
