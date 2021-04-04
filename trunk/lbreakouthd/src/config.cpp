@@ -120,6 +120,12 @@ Config::Config()
 	fp.get( "return", k_return );
 	fp.get( "turbo", k_turbo );
 	fp.get( "ballturbo", k_maxballspeed );
+	fp.get( "gp_enabled", gp_enabled );
+	fp.get( "gp_lfire", gp_lfire );
+	fp.get( "gp_rfire", gp_rfire );
+	fp.get( "gp_turbo", gp_turbo );
+	fp.get( "gp_maxballspeed", gp_maxballspeed );
+	fp.get( "gp_warp", gp_warp );
 	fp.get( "ball_auto_turbo", ball_auto_turbo );
 	fp.get( "rel_motion", rel_motion );
 	fp.get( "grab", grab );
@@ -179,6 +185,12 @@ void Config::save()
 	ofs << "return=" << k_return << "\n";
 	ofs << "turbo=" << k_turbo << "\n";
 	ofs << "ballturbo=" << k_maxballspeed << "\n";
+	ofs << "gp_enabled=" << gp_enabled << "\n";
+	ofs << "gp_lfire=" << gp_lfire << "\n";
+	ofs << "gp_rfire=" << gp_rfire << "\n";
+	ofs << "gp_turbo=" << gp_turbo << "\n";
+	ofs << "gp_warp=" << gp_warp << "\n";
+	ofs << "gp_maxballspeed=" << gp_maxballspeed << "\n";
 	ofs << "ball_auto_turbo=" << ball_auto_turbo << "\n";
 	ofs << "rel_motion=" << rel_motion << "\n";
 	ofs << "grab=" << grab << "\n";
