@@ -67,6 +67,14 @@ public:
 	float maxballspeed_float; /* per millisecond */
 	int ball_auto_turbo;
 
+	/* gamepad */
+	int gp_enabled;
+	int gp_lfire;
+	int gp_rfire;
+	int gp_turbo;
+	int gp_warp;
+	int gp_maxballspeed;
+
 	/* sound */
 	int sound;
 	int volume; /* 1 - 8 */

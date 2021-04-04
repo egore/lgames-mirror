@@ -34,7 +34,7 @@ View::View(Config &cfg, ClientGame &_cg)
 	  fpsCycles(0), fpsStart(0), fps(0)
 {
 	_loginfo("Initializing SDL\n");
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
 			SDL_Log("SDL_Init failed: %s\n", SDL_GetError());
 	if (TTF_Init() < 0)
 	 		SDL_Log("TTF_Init failed: %s\n", SDL_GetError());
@@ -65,6 +65,8 @@ View::View(Config &cfg, ClientGame &_cg)
 	if ((uint)config.mode >= modeNames.size())
 		config.mode = 0;
 	viewport.x = viewport.y = viewport.w = viewport.h = 0;
+
+	gamepad.open();
 
 	shineX = -1;
 	shineY = -1;
@@ -171,6 +173,7 @@ View::~View()
 {
 	delete mw;
 	mixer.close();
+	gamepad.close();
 
 	/* XXX fonts need to be killed before SDL/TTF_Quit otherwise they
 	 * segfault but attribute's dtors are called after ~View is finished */
@@ -322,6 +325,22 @@ void View::run()
 			pis.turbo = 1;
 		if (keystate[config.k_warp])
 			pis.warp = 1;
+		/* gamepad input */
+		const Uint8 *gpadstate = gamepad.update();
+		if (gpadstate[GPAD_LEFT])
+			pis.left = 1;
+		if (gpadstate[GPAD_RIGHT])
+			pis.right = 2;
+		if (gpadstate[GPAD_BUTTON0 + config.gp_lfire])
+			pis.leftFire = 1;
+		if (gpadstate[GPAD_BUTTON0 + config.gp_rfire])
+			pis.rightFire = 1;
+		if (gpadstate[GPAD_BUTTON0 + config.gp_turbo])
+			pis.turbo = 1;
+		if (gpadstate[GPAD_BUTTON0 + config.gp_warp])
+			pis.warp = 1;
+		if (gpadstate[GPAD_BUTTON0 + config.gp_maxballspeed])
+			pis.speedUp = 1;
 
 		/* get passed time */
 		ms = ticks.get();

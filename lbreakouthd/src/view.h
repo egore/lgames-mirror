@@ -43,6 +43,7 @@ class View {
 	Mixer mixer;
 	MainWindow *mw;
 	SDL_Rect viewport; /* used if width not 0 */
+	Gamepad gamepad;
 
 	/* menu */
 	unique_ptr<Menu> rootMenu;

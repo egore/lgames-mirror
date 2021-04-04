@@ -538,3 +538,51 @@ void Label::setText(Font &font, const string &str, uint maxw)
 	SDL_SetRenderTarget(mrc,old);
 	empty = false;
 }
+
+/** Try to find and open a joystick (game controller) */
+void Gamepad::open()
+{
+	if (js)
+		close(); /* make sure none is opened yet */
+
+	if (SDL_NumJoysticks() == 0) {
+		_loginfo("No game controller found...\n");
+		return;
+	}
+
+	if ((js = SDL_JoystickOpen(0)) == NULL) {
+		_logerr("Couldn't open game controller: %s\n",SDL_GetError());
+		return;
+	}
+
+	_loginfo("Opened game controller 0\n");
+	_logdebug(1,"  num axes: %d, num buttons: %d, num balls: %d\n",
+			SDL_JoystickNumAxes(js),SDL_JoystickNumButtons(js),
+			SDL_JoystickNumBalls(js));
+
+	numbuttons = SDL_JoystickNumButtons(js);
+	if (numbuttons > 10)
+		numbuttons = 10;
+}
+
+/** Update joystick state and return state array (0=off,1=on) */
+const Uint8 *Gamepad::update() {
+	SDL_JoystickUpdate();
+
+	memset(state,0,sizeof(state));
+	if (js == NULL)
+		return state;
+
+	if (SDL_JoystickGetAxis(js,0) < -3200)
+		state[GPAD_LEFT] = 1;
+	if (SDL_JoystickGetAxis(js,0) > 3200)
+		state[GPAD_RIGHT] = 1;
+	if (SDL_JoystickGetAxis(js,1) < -3200)
+		state[GPAD_UP] = 1;
+	if (SDL_JoystickGetAxis(js,1) > 3200)
+		state[GPAD_DOWN] = 1;
+	for (uint i = 0; i < numbuttons; i++)
+		state[GPAD_BUTTON0 + i] = SDL_JoystickGetButton(js,i);
+
+	return state;
+}
