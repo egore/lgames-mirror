@@ -540,6 +540,10 @@ void tetris_run()
                     else if (event.key.keysym.sym == config.pause_key)
                         request_pause = 1;
                     else switch ( event.key.keysym.sym ) {
+                        case SDLK_F5:
+                        	gamepad_close();
+                        	gamepad_open();
+                        	break;
                         case SDLK_ESCAPE: 
                             if ( confirm( large_font, _("End Game? y/n"), CONFIRM_YES_NO ) ) 
                                 for ( i = 0; i < BOWL_COUNT; i++ )
