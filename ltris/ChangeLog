@@ -1,5 +1,5 @@
+- added gamepad support (not configurable via menu yet) (2021/04/05 MS)
 - show three pieces as preview for modern style (2021/04/03 MS)
-- use pre-rendered preview pieces (2021/04/03 MS)
 - updated some menu hints (2021/04/03 MS)
 - added configure option --with-configdir (2021/04/03 MS) 
 - added ltris.appdata.xml (2021/04/03 SB)

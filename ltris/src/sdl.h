@@ -151,6 +151,32 @@ SDL_Cursor* create_cursor( int width, int height, int hot_x, int hot_y, char *so
 int get_time();
 void reset_timer();
 
+/* gamepad aka joystick support */
+enum {
+	GPAD_NONE = 0,
+	GPAD_LEFT,
+	GPAD_RIGHT,
+	GPAD_UP,
+	GPAD_DOWN,
+	GPAD_BUTTON0,
+	GPAD_BUTTON1,
+	GPAD_BUTTON2,
+	GPAD_BUTTON3,
+	GPAD_BUTTON4,
+	GPAD_BUTTON5,
+	GPAD_BUTTON6,
+	GPAD_BUTTON7,
+	GPAD_BUTTON8,
+	GPAD_BUTTON9,
+	GPAD_LAST1
+};
+void gamepad_open();
+void gamepad_close();
+const Uint8 *gamepad_update();
+int gamepad_ctrl_isdown(uint cid);
+int gamepad_ctrl_ispressed(uint cid);
+int gamepad_ctrl_isactive(uint cid);
+
 #ifdef __cplusplus
 };
 #endif

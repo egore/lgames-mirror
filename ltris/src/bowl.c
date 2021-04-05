@@ -27,7 +27,6 @@ extern Sdl sdl;
 extern SDL_Surface *offscreen;
 extern SDL_Surface *bkgnd;
 extern SDL_Surface *previewpieces;
-extern int keystate[SDLK_LAST];
 extern Bowl *bowls[BOWL_COUNT];
 
 enum {
@@ -227,7 +226,7 @@ void bowl_select_next_block( Bowl *bowl )
 		bowl->drought++;
 
 	/* if CPU is in control get destination row & other stuff */
-	if ( !bowl->controls ) {
+	if ( !bowl->cpu_player ) {
 		/* destination */
 		bowl_compute_cpu_dest( bowl );
 		
@@ -717,7 +716,9 @@ Return True if CPU may drop/move down.
 */
 int bowl_cpu_may_move_down( Bowl *bowl )
 {
-    if ( !bowl->controls && bowl->cpu_down && bowl->block.x == bowl->cpu_dest_x && bowl->block.rot_id == bowl->cpu_dest_rot )
+    if ( bowl->cpu_player && bowl->cpu_down &&
+		    bowl->block.x == bowl->cpu_dest_x &&
+		    bowl->block.rot_id == bowl->cpu_dest_rot )
         return 1;
     return 0;
 }
@@ -966,8 +967,10 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->blocks = blocks;
     bowl->unknown_preview = unknown_preview;
     strcpy( bowl->name, name );
-    bowl->controls = controls;
     bowl->use_figures = ( config.gametype == 2 );
+    /* we use controls only to determine cpu play.
+     * actual controls are determined in tetris_set_bowl_controls */
+    bowl->cpu_player = (controls == 0);
 
     if (config.gametype == 2) {
 	    bowl->firstlevelup_lines = 10;
@@ -985,10 +988,7 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
 		    bowl->firstlevelup_lines = b;
 	    bowl->level = config.starting_level;
     }
-    //printf("First level %d requires %d lines.\n",
-    //		    	    bowl->level,bowl->firstlevelup_lines);
 
-    bowl->stored_key = -1;
     bowl_reset_contents( bowl );
     bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
     delay_set( &bowl->block_hori_delay, 100/*config.hori_delay * 12 + 63*/ );
@@ -1069,28 +1069,6 @@ void bowl_delete( Bowl *bowl )
     bowl->wav_explosion = 0;
 #endif
     free( bowl );
-}
-
-/*
-====================================================================
-Check if key belongs to this bowl and store the value for use in
-bowl_update().
-====================================================================
-*/
-void bowl_store_key( Bowl *bowl, int keysym )
-{
-    if ( !bowl->controls ) return; /* CPU handles this bowl */
-    if ( bowl->controls->left  == keysym ) bowl->stored_key = KEY_LEFT;
-    else
-    if ( bowl->controls->right == keysym ) bowl->stored_key = KEY_RIGHT;
-    else
-    if ( bowl->controls->rot_left  == keysym ) bowl->stored_key = KEY_ROT_LEFT;
-    else
-    if ( bowl->controls->rot_right == keysym ) bowl->stored_key = KEY_ROT_RIGHT;
-    else
-    if ( bowl->controls->down  == keysym ) bowl->stored_key = KEY_DOWN;
-    else
-    if ( bowl->controls->drop == keysym ) bowl->stored_key = KEY_DROP;
 }
 
 /*
@@ -1251,7 +1229,7 @@ void bowl_check_lockdelay(Bowl *bowl)
 	}
 }
 
-void bowl_update( Bowl *bowl, int ms, int game_over )
+void bowl_update( Bowl *bowl, int ms, BowlControls *bc, int game_over )
 {
     int old_y = bowl_convert_cury2y(bowl);
     int hori_movement = 0;
@@ -1269,135 +1247,105 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
 	    bowl->are -= ms;
 	    if (bowl->are <= 0) {
 		    bowl->are = 0;
-		    if (bowl->stored_key == KEY_LEFT ||
-				    bowl->stored_key == KEY_RIGHT)
-			    bowl->stored_key = -1; /* kill input to keep das */
-		    if (bowl->stored_key == KEY_DROP)
-			    bowl->stored_key = -1; /* prevent accidental drop */
+		    /* kill input to keep DAS and prevent drops */
+		    memset(bc,0,sizeof(BowlControls));
 		    /* running are means block was inserted. when expired
 		     * remove empty lines and get next block */
 		    bowl_collapse(bowl);
 		    bowl_select_next_block(bowl);
 		    bowl->draw_contents = 1;
 		    /* for simple modern version charge das if shift pressed */
-		    if (config.modern) {
-			    if ((bowl->controls && keystate[bowl->controls->left]) ||
-					    ( !bowl->controls && bowl->cpu_dest_x < bowl->block.x))
-				    bowl->das_charge = bowl->das_maxcharge;
-			    if ((bowl->controls && keystate[bowl->controls->right]) ||
-					    ( !bowl->controls && bowl->cpu_dest_x > bowl->block.x))
-				    bowl->das_charge = bowl->das_maxcharge;
-		    }
+		    if (config.modern)
+			    bowl->das_charge = bowl->das_maxcharge;
 	    }
     }
 
     /* BLOCK */
     if ( !bowl->hide_block && bowl->are == 0) {
-        /* fake a key event to rotate with cpu */
-        if ( !bowl->controls && bowl->cpu_dest_rot != bowl->block.rot_id ) 
-            if ( delay_timed_out( &bowl->cpu_rot_delay, ms ) )
-                bowl->stored_key = KEY_ROT_LEFT;
-        /* if CPU may drop in one p-cycle set key */
-        if ( bowl_cpu_may_drop( bowl ) )
-            bowl->stored_key = KEY_DROP;
-        /* handle stored key */
-        switch ( bowl->stored_key ) {
-            case KEY_LEFT:
-            case KEY_RIGHT:
-        	    /* try to instantly move and reset das charge.
-        	     * if shifting not possible, charge to the max */
-        	    bowl->das_charge = 0;
-        	    if (bowl->stored_key == KEY_LEFT)
-        		    hori_mod = -1;
-        	    else
-        		    hori_mod = 1;
-       		    if (bowl_check_piece_position(bowl,
-        				    bowl->block.x + hori_mod,
-					    bowl->block.y,
-					    bowl->block.rot_id) != POSVALID)
-       			    bowl->das_charge = bowl->das_maxcharge;
-       		    else {
-       			    bowl->block.x += hori_mod;
-       			    hori_movement = 1;
-       			    bowl_check_lockdelay(bowl);
-       		    }
-                break;
-            case KEY_ROT_LEFT:
-            case KEY_ROT_RIGHT:
-        	    /* test if we actually can rotate
-        	     * if not shift block if modern and rotate anyways */
-                if (bowl->stored_key == KEY_ROT_LEFT) {
-                    new_rot = bowl->block.rot_id - 1;
-                    if ( new_rot < 0 )
-                        new_rot = 3;
-                } else {
-                    new_rot = bowl->block.rot_id + 1;
-                    if ( new_rot == 4 )
-                        new_rot = 0;
-                }
-                /* the original wall kick rules allow for ridiculous
-                 * moves so we go with a relatable simple version.
-                 * it is tried to move the piece one to the right, one
-                 * to the left and then one up (in this order). if
-                 * any if these single steps fails the rotation fails.
-                 */
-                hori_mod = 0;
-                vert_mod = 0;
-                ret = bowl_check_piece_position(bowl,
-                		bowl->block.x, bowl->block.y, new_rot);
-                if (ret != POSVALID) {
-                	if (bowl_check_piece_position(bowl,
-                			bowl->block.x+1, bowl->block.y,
-                			new_rot) == POSVALID) {
-                		hori_mod = 1;
-                		ret = POSVALID;
-                	} else if (bowl_check_piece_position(bowl,
-                			bowl->block.x-1, bowl->block.y,
-                			new_rot) == POSVALID) {
-                		hori_mod = -1;
-                		ret = POSVALID;
-                	} else if (bowl_check_piece_position(bowl,
-                			bowl->block.x, bowl->block.y-1,
-                			new_rot) == POSVALID) {
-                		hori_mod = 0;
-                		vert_mod = -1;
-                		ret = POSVALID;
-                	}
-                }
-                if (ret == POSVALID && (config.modern ||
-                			(hori_mod == 0 && vert_mod==0))) {
-                	bowl->block.rot_id = new_rot;
-                	bowl->block.x += hori_mod;
-                	bowl->block.y += vert_mod;
-                	if (vert_mod)
-                		bowl->block.cur_y = bowl->block.y*bowl->block_size;
-                        bowl_compute_help_pos(bowl);
-                        bowl_check_lockdelay(bowl);
-                }
-                break;
-            case KEY_DROP:
-                if (config.gametype == GAME_TRAINING)
-                    bowl_toggle_gravity(bowl);
-                else {
-                    bowl_drop_block(bowl);
-                    old_y = bowl->block.y-1; /* prevent warning below */
-                    bowl_check_lockdelay(bowl);
-                    if (bowl->ldelay_cur > 0)
-                	    bowl->ldelay_cur = 1;
-                }
-                break;
-        }
+	    /* handle controls */
+	    if (bc->lshift == CS_DOWN || bc->rshift == CS_DOWN) {
+		    /* try to instantly move and reset das charge.
+		     * if shifting not possible, charge to the max */
+		    bowl->das_charge = 0;
+		    if (bc->lshift == CS_DOWN)
+			    hori_mod = -1;
+		    else
+			    hori_mod = 1;
+		    if (bowl_check_piece_position(bowl,
+				    bowl->block.x + hori_mod,
+				    bowl->block.y,
+				    bowl->block.rot_id) != POSVALID)
+			    bowl->das_charge = bowl->das_maxcharge;
+		    else {
+			    bowl->block.x += hori_mod;
+			    hori_movement = 1;
+			    bowl_check_lockdelay(bowl);
+		    }
+	    } else if (bc->lrot == CS_DOWN || bc->rrot == CS_DOWN) {
+		    /* test if we actually can rotate
+		     * if not shift block if modern and rotate anyways */
+		    if (bc->lrot == CS_DOWN) {
+			    new_rot = bowl->block.rot_id - 1;
+			    if ( new_rot < 0 )
+				    new_rot = 3;
+		    } else {
+			    new_rot = bowl->block.rot_id + 1;
+			    if ( new_rot == 4 )
+				    new_rot = 0;
+		    }
+		    /* the original wall kick rules allow for ridiculous
+		     * moves so we go with a relatable simple version.
+		     * it is tried to move the piece one to the right, one
+		     * to the left and then one up (in this order). if
+		     * any if these single steps fails the rotation fails.
+		     */
+		    hori_mod = 0;
+		    vert_mod = 0;
+		    ret = bowl_check_piece_position(bowl,
+				    bowl->block.x, bowl->block.y, new_rot);
+		    if (ret != POSVALID) {
+			    if (bowl_check_piece_position(bowl,
+					    bowl->block.x+1, bowl->block.y,
+					    new_rot) == POSVALID) {
+				    hori_mod = 1;
+				    ret = POSVALID;
+			    } else if (bowl_check_piece_position(bowl,
+					    bowl->block.x-1, bowl->block.y,
+					    new_rot) == POSVALID) {
+				    hori_mod = -1;
+				    ret = POSVALID;
+			    } else if (bowl_check_piece_position(bowl,
+					    bowl->block.x, bowl->block.y-1,
+					    new_rot) == POSVALID) {
+				    hori_mod = 0;
+				    vert_mod = -1;
+				    ret = POSVALID;
+			    }
+		    }
+		    if (ret == POSVALID && (config.modern ||
+				    (hori_mod == 0 && vert_mod==0))) {
+			    bowl->block.rot_id = new_rot;
+			    bowl->block.x += hori_mod;
+			    bowl->block.y += vert_mod;
+			    if (vert_mod)
+				    bowl->block.cur_y = bowl->block.y*bowl->block_size;
+			    bowl_compute_help_pos(bowl);
+			    bowl_check_lockdelay(bowl);
+		    }
+	    } else if (bc->hdrop == CS_DOWN) {
+		    if (config.gametype == GAME_TRAINING)
+			    bowl_toggle_gravity(bowl);
+		    else {
+			    bowl_drop_block(bowl);
+			    old_y = bowl->block.y-1; /* prevent warning below */
+			    bowl_check_lockdelay(bowl);
+			    if (bowl->ldelay_cur > 0)
+				    bowl->ldelay_cur = 1;
+		    }
+	    }
 
         /* update horizontal bowl position */
-        int lshift = 0, rshift = 0;
-        /* check if left or right shift requested */
-        if ((bowl->controls && keystate[bowl->controls->left]) ||
-        		( !bowl->controls && bowl->cpu_dest_x < bowl->block.x))
-        	lshift = 1;
-        if ((bowl->controls && keystate[bowl->controls->right]) ||
-        		( !bowl->controls && bowl->cpu_dest_x > bowl->block.x))
-        	rshift = 1;
-        if (lshift || rshift) {
+        if (bc->lshift == CS_PRESSED || bc->rshift == CS_PRESSED) {
                 /* charge das */
         	if (bowl->das_charge < bowl->das_maxcharge) {
         		bowl->das_charge += ms;
@@ -1406,7 +1354,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         	}
                 /* perform auto shift */
                 if (bowl->das_charge == bowl->das_maxcharge) {
-                	if (lshift)
+                	if (bc->lshift == CS_PRESSED)
                 		hori_mod = -1;
                 	else
                 		hori_mod = 1;
@@ -1434,14 +1382,13 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         bowl->block.sx = bowl->block.x * bowl->block_size + bowl->sx;
 
         /* update vertical position */
-        if ( !bowl->controls && !bowl->cpu_down )
+        if ( bowl->cpu_player && !bowl->cpu_down )
         	if ( delay_timed_out( &bowl->cpu_delay, ms ) )
         		bowl->cpu_down = 1;
         vy = bowl->block_vert_vel;
-        if ((bowl->controls && keystate[bowl->controls->down]) ||
-        				bowl_cpu_may_move_down(bowl))
+        if (bc->sdrop == CS_PRESSED || bowl_cpu_may_move_down(bowl))
         	if (bowl->block_drop_vel > vy)
-        		if (config.modern || (!lshift && !rshift))
+        		if (config.modern || (bc->lshift!=CS_PRESSED && bc->rshift!=CS_PRESSED))
         			vy = bowl->block_drop_vel;
         if (!bowl->zero_gravity && bowl->ldelay_cur == 0) {
         	bowl->block.cur_y += vy * ms;
@@ -1449,7 +1396,7 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
         }
 
         /* skip lock delay with soft drop */
-        if (bowl->controls && keystate[bowl->controls->down])
+        if (bc->sdrop == CS_PRESSED)
         	if (bowl->ldelay_cur > 0)
         		bowl->ldelay_cur = 1;
 
@@ -1490,9 +1437,6 @@ void bowl_update( Bowl *bowl, int ms, int game_over )
             bowl->block.sy = bowl->block.y * bowl->block_size + bowl->sy;
         else
             bowl->block.sy = (int)bowl->block.cur_y + bowl->sy;
-
-        /* clear stored key */
-        bowl->stored_key = -1;
     }
 
     /* CHECK SPECIAL EVENTS */
@@ -1625,7 +1569,6 @@ void bowl_toggle_pause( Bowl *bowl )
         bowl->hide_block = 0;
         bowl_draw_contents( bowl );
         bowl->paused = 0;
-		bowl->stored_key = -1;
     }
     else {
         /* pause */

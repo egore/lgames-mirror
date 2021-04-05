@@ -102,6 +102,11 @@ void config_reset()
     config.player3.controls.rot_right = SDLK_KP6;
     config.player3.controls.down = SDLK_KP2;
     config.player3.controls.drop = SDLK_KP8;
+    config.gp_enabled = 1;
+    config.gp_lrot = 3;
+    config.gp_rrot = 0;
+    config.gp_hdrop = 2;
+    config.gp_pause = 9;
     /* sound */
     config.sound = 1;
     config.volume = 6; /* 1 - 8 */
@@ -174,6 +179,13 @@ void config_load( )
         parse_player( sub, &config.player2 );
     if ( parser_get_pdata( pd, "player3", &sub ) )
         parse_player( sub, &config.player3 );
+
+    parser_get_int( pd, "gp_enabled", &config.gp_enabled );
+    parser_get_int( pd, "gp_lrot", &config.gp_lrot );
+    parser_get_int( pd, "gp_rrot", &config.gp_rrot );
+    parser_get_int( pd, "gp_hdrop", &config.gp_hdrop );
+    parser_get_int( pd, "gp_pause", &config.gp_pause );
+
     parser_get_int( pd, "cpu_aggr", &config.cpu_aggr );
     parser_get_int( pd, "cpu_delay", &config.cpu_delay );
     parser_get_int( pd, "cpu_rot_delay", &config.cpu_rot_delay );
@@ -237,6 +249,13 @@ void config_save( )
         print_player( file, 1, &config.player1 );
         print_player( file, 2, &config.player2 );
         print_player( file, 3, &config.player3 );
+
+        fprintf( file, "gp_enabled=%d\n", config.gp_enabled );
+        fprintf( file, "gp_lrot=%d\n", config.gp_lrot );
+        fprintf( file, "gp_rrot=%d\n", config.gp_rrot );
+        fprintf( file, "gp_hdrop=%d\n", config.gp_hdrop );
+        fprintf( file, "gp_pause=%d\n", config.gp_pause );
+
         fprintf( file, "cpu_aggr=%i\n", config.cpu_aggr );
         fprintf( file, "cpu_delay=%i\n", config.cpu_delay );
         fprintf( file, "cpu_rot_delay=%i\n", config.cpu_rot_delay );
