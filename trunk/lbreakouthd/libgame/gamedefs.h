@@ -179,7 +179,7 @@ enum {
 	MAX_MODS = 256,
 
 	/* difficulty */
-	DIFF_COUNT = 4,
+	DIFF_COUNT = 5,
 
 	/* players */
 	MAX_PLAYERS = 4,
