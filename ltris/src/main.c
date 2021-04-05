@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
   	}
       }
 
-    init_sdl( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK );
+    init_sdl(SDL_INIT_EVERYTHING);
     gamepad_open();
 
     info = SDL_GetVideoInfo();
