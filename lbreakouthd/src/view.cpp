@@ -242,6 +242,10 @@ void View::run()
 			}
 			if (ev.type == SDL_KEYUP) {
 				switch (ev.key.keysym.scancode) {
+				case SDL_SCANCODE_F5:
+					gamepad.close();
+					gamepad.open();
+					break;
 				case SDL_SCANCODE_P:
 					showInfo(_("Pause"),WT_PAUSE);
 					ticks.reset();
