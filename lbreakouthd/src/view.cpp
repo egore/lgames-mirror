@@ -1097,7 +1097,7 @@ void View::playSounds()
 void View::createMenus()
 {
 	Menu *mNewGame, *mOptions, *mAudio, *mGraphics, *mControls, *mAdv;
-	const char *diffNames[] = {_("Kids"),_("Easy"),_("Medium"),_("Hard") } ;
+	const char *diffNames[] = {_("Kids"),_("Very Easy"),_("Easy"),_("Medium"),_("Hard") } ;
 	const char *fpsLimitNames[] = {_("No Limit"),_("200 FPS"),_("100 FPS") } ;
 	const int bufSizes[] = { 256, 512, 1024, 2048, 4096 };
 	const int channelNums[] = { 8, 16, 32 };
@@ -1129,7 +1129,7 @@ void View::createMenus()
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemList(_("Difficulty"),
 			_("This affects lives, paddle size and ball speed. For Kids and Easy score is reduced, for Hard a bonus is given."),
-			AID_NONE,config.diff,diffNames,4));
+			AID_NONE,config.diff,diffNames,DIFF_COUNT));
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemRange(_("Players"),
 			_("Number and names of players. Players alternate whenever a life is lost."),
@@ -1604,7 +1604,7 @@ void View::updateResumeGameTooltip()
 	}
 
 	/* XXX multiple locations... */
-	const char *diffNames[] = {_("Kids"),_("Easy"),_("Medium"),_("Hard") } ;
+	const char *diffNames[] = {_("Kids"),_("Very Easy"),_("Easy"),_("Medium"),_("Hard") } ;
 	string text, str;
 	uint diff, pnum;
 	FileParser fp(saveFileName);
@@ -1612,7 +1612,7 @@ void View::updateResumeGameTooltip()
 	fp.get("difficulty",diff);
 	fp.get("players",pnum);
 	text += " - ";
-	if (diff < 4)
+	if (diff < DIFF_COUNT)
 		text += diffNames[diff];
 	text += " - ";
 	text += to_string(pnum);
