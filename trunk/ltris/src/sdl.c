@@ -29,6 +29,10 @@ extern int  term_game;
 Sdl sdl;
 SDL_Cursor *empty_cursor = 0;
 SDL_Cursor *std_cursor = 0;
+SDL_Joystick *gamepad = 0;
+int gamepad_numbuttons = 0;
+Uint8 gamepad_state[GPAD_LAST1];
+Uint8 gamepad_oldstate[GPAD_LAST1];
 
 /* shadow surface stuff */
 int use_shadow_surface = 0;
@@ -1395,4 +1399,82 @@ void take_screenshot( int i )
     char str[32];
     sprintf( str, "screenshot%i.bmp", i );
     SDL_SaveBMP( sdl.screen, str );
+}
+
+void gamepad_open()
+{
+	gamepad_close();
+
+	if (SDL_NumJoysticks() == 0) {
+		fprintf(stderr,"No game controller found...\n");
+		return;
+	}
+
+	if ((gamepad = SDL_JoystickOpen(0)) == NULL) {
+		fprintf(stderr,"Couldn't open game controller: %s\n",SDL_GetError());
+		return;
+	}
+
+	printf("Opened game controller 0\n");
+	printf("  num axes: %d, num buttons: %d, num balls: %d\n",
+			SDL_JoystickNumAxes(gamepad),SDL_JoystickNumButtons(gamepad),
+			SDL_JoystickNumBalls(gamepad));
+
+	gamepad_numbuttons = SDL_JoystickNumButtons(gamepad);
+	if (gamepad_numbuttons > 10)
+		gamepad_numbuttons = 10;
+
+	memset(gamepad_state,0,sizeof(gamepad_state));
+	memset(gamepad_oldstate,0,sizeof(gamepad_oldstate));
+}
+void gamepad_close()
+{
+	if (gamepad) {
+		SDL_JoystickClose(gamepad);
+		gamepad = 0;
+	}
+}
+const Uint8 *gamepad_update()
+{
+	SDL_JoystickUpdate();
+
+	memcpy(gamepad_oldstate,gamepad_state,sizeof(gamepad_state));
+	memset(gamepad_state,0,sizeof(gamepad_state));
+
+	if (gamepad == NULL)
+		return gamepad_state;
+
+	if (SDL_JoystickGetAxis(gamepad,0) < -3200)
+		gamepad_state[GPAD_LEFT] = 1;
+	if (SDL_JoystickGetAxis(gamepad,0) > 3200)
+		gamepad_state[GPAD_RIGHT] = 1;
+	if (SDL_JoystickGetAxis(gamepad,1) < -3200)
+		gamepad_state[GPAD_UP] = 1;
+	if (SDL_JoystickGetAxis(gamepad,1) > 3200)
+		gamepad_state[GPAD_DOWN] = 1;
+	for (uint i = 0; i < gamepad_numbuttons; i++)
+		gamepad_state[GPAD_BUTTON0 + i] = SDL_JoystickGetButton(gamepad,i);
+
+	return gamepad_state;
+}
+
+int gamepad_ctrl_isdown(uint cid)
+{
+	if (cid >= GPAD_LAST1)
+		return 0;
+	if (gamepad_oldstate[cid] == 0 && gamepad_state[cid] == 1)
+		return 1;
+	return 0;
+}
+int gamepad_ctrl_ispressed(uint cid)
+{
+	if (cid >= GPAD_LAST1)
+		return 0;
+	if (gamepad_oldstate[cid] == 1 && gamepad_state[cid] == 1)
+		return 1;
+	return 0;
+}
+int gamepad_ctrl_isactive(uint cid)
+{
+	return gamepad_ctrl_ispressed(cid) || gamepad_ctrl_isdown(cid);
 }

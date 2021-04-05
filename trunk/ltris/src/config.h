@@ -59,6 +59,12 @@ typedef struct {
     Player player1;
     Player player2;
     Player player3;
+    /* gamepad */
+    int gp_enabled;
+    int gp_lrot;
+    int gp_rrot;
+    int gp_hdrop;
+    int gp_pause;
     /* multiplayer */
     int holes;
     int rand_holes;

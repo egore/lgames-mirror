@@ -38,6 +38,7 @@ int  *next_blocks = NULL, next_blocks_size = 0; /* all receive same blocks */
 int last_generated_block = -1; /* block id of last block generated when filling bag */
 
 extern Sdl sdl;
+extern int keystate[SDLK_LAST];
 extern Config config;
 extern int term_game;
 extern char gametype_ids[8][64];
@@ -403,6 +404,84 @@ void show_fps(int fps) {
 	}
 }
 
+/* Set bow controls by checking pressed/released keys and gamepad */
+void tetris_set_bowl_controls(int i, SDL_Event *ev, BowlControls *bc)
+{
+	Bowl *b = bowls[i];
+	Controls *ctrl = 0;
+
+	memset(bc,0,sizeof(BowlControls));
+
+	/* TODO improve this by using an array in config ... */
+	if (i == 0)
+		ctrl = &config.player1.controls;
+	else if (i == 1)
+		ctrl = &config.player2.controls;
+	else if (i == 2)
+		ctrl = &config.player3.controls;
+	else return;
+
+	if (!b->cpu_player) {
+		if (keystate[ctrl->left])
+			bc->lshift = CS_PRESSED;
+		if (keystate[ctrl->right])
+			bc->rshift = CS_PRESSED;
+		if (keystate[ctrl->down])
+			bc->sdrop = CS_PRESSED;
+
+		if (ev->type == SDL_KEYDOWN) {
+			if (ev->key.keysym.sym == ctrl->left)
+				bc->lshift = CS_DOWN;
+			if (ev->key.keysym.sym == ctrl->right)
+				bc->rshift = CS_DOWN;
+			if (ev->key.keysym.sym == ctrl->rot_left)
+				bc->lrot = CS_DOWN;
+			if (ev->key.keysym.sym == ctrl->rot_right)
+				bc->rrot = CS_DOWN;
+			if (ev->key.keysym.sym == ctrl->drop)
+				bc->hdrop = CS_DOWN;
+		}
+
+		/* allow gamepad for bowl 0 */
+		if (i == 0 && config.gp_enabled) {
+			if (gamepad_ctrl_isdown(GPAD_BUTTON0 + config.gp_lrot))
+				bc->lrot = CS_DOWN;
+			if (gamepad_ctrl_isdown(GPAD_BUTTON0 + config.gp_rrot))
+				bc->rrot = CS_DOWN;
+			if (gamepad_ctrl_isdown(GPAD_BUTTON0 + config.gp_hdrop))
+				bc->hdrop = CS_DOWN;
+			if (gamepad_ctrl_isactive(GPAD_DOWN))
+				bc->sdrop = CS_PRESSED;
+			if (gamepad_ctrl_isdown(GPAD_LEFT))
+				bc->lshift = CS_DOWN;
+			else if (gamepad_ctrl_ispressed(GPAD_LEFT))
+				bc->lshift = CS_PRESSED;
+			if (gamepad_ctrl_isdown(GPAD_RIGHT))
+				bc->rshift = CS_DOWN;
+			else if (gamepad_ctrl_ispressed(GPAD_RIGHT))
+				bc->rshift = CS_PRESSED;
+		}
+	}
+
+	/* do cpu move, soft drop is done in bowl_update because of timer */
+	if (b->cpu_player) {
+		/* left/right shift
+		 * XXX we always set PRESSED skipping DOWN ... cheater! */
+		if (b->cpu_dest_x > b->block.x)
+			bc->rshift = CS_PRESSED;
+		else if (b->cpu_dest_x < b->block.x)
+			bc->lshift = CS_PRESSED;
+		/* rotation
+		 * XXX instant, no delay, but CPU is just damn fast isn't it? */
+		if (b->cpu_dest_rot != b->block.rot_id)
+			//if (delay_timed_out( &bowl->cpu_rot_delay, ms))
+			bc->lrot = CS_DOWN;
+		/* if CPU may drop in one p-cycle set key */
+		if (bowl_cpu_may_drop(b))
+			bc->hdrop = CS_DOWN;
+	}
+}
+
 /*
 ====================================================================
 Run a successfully initated game.
@@ -446,16 +525,12 @@ void tetris_run()
     while ( !leave && !term_game ) {
 	    cycle_start = SDL_GetTicks();
 
+	    event.type = SDL_NOEVENT;
         if ( event_poll( &event ) ) {
             switch ( event.type ) {
 		case SDL_QUIT:
 			term_game = 1;
 		    break;
-                case SDL_KEYDOWN:
-                    for ( i = 0; i < BOWL_COUNT; i++ )
-                        if ( bowls[i] ) 
-                            bowl_store_key( bowls[i], event.key.keysym.sym );
-                    break;
                 case SDL_KEYUP:
                     if (game_over)
                         leave = 1;
@@ -500,9 +575,13 @@ void tetris_run()
             request_pause = 0;
         }
             
+        gamepad_update();
         for ( i = 0; i < BOWL_COUNT; i++ )
-            if ( bowls[i] )
-                bowl_update( bowls[i], ms, game_over );
+            if ( bowls[i] ) {
+                BowlControls bc;
+                tetris_set_bowl_controls(i, &event, &bc);
+                bowl_update( bowls[i], ms, &bc, game_over );
+            }
         
         /* check if any of the bowls entered a new level and change background if so */
         if ( !config.keep_bkgnd ) {

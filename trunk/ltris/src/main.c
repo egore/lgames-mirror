@@ -94,7 +94,8 @@ int main(int argc, char *argv[])
   	}
       }
 
-    init_sdl( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER );
+    init_sdl( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK );
+    gamepad_open();
 
     info = SDL_GetVideoInfo();
     printf("Display resolution: %d x %d\n", info->current_w, info->current_h);
@@ -157,6 +158,7 @@ int main(int argc, char *argv[])
     chart_delete();
     hint_delete_res();
     
+    gamepad_close();
 #ifdef SOUND
     audio_close();
 #endif

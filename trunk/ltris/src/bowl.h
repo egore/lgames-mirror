@@ -20,15 +20,20 @@
 
 #include "ltris.h"
 
-enum { 
-    KEY_NONE = -1,
-    KEY_LEFT, 
-    KEY_RIGHT,
-    KEY_ROT_LEFT,
-    KEY_ROT_RIGHT,
-    KEY_DOWN,
-    KEY_DROP
+/* control states */
+enum {
+	CS_RELEASED = 0, /* continuously released */
+	CS_PRESSED, /* continuously pressed */
+	CS_DOWN, /* just pressed down */
+	CS_UP /* just released */
 };
+
+/* bowl controls */
+typedef struct {
+	int lshift, rshift;
+	int lrot, rrot;
+	int sdrop, hdrop;
+} BowlControls;
 
 typedef struct {
     int sx, sy; /* screen position */
@@ -59,14 +64,12 @@ typedef struct {
     int sw, sh; /* screen size */
     int w, h; /* measurements in blocks */
     int block_size; /* blocksize in pixels */
-    Controls *controls; /* reacts to these controls */
     int das_charge; /* current charge in ms */
     int das_maxcharge; /* maximum charge in ms */
     int das_drop; /* das charge drop if shifting piece */
     int are; /* in ms, if > 0 next piece is blocked until delay times out */
     int ldelay_max; /* time on collision until piece is inserted */
     int ldelay_cur; /* current value if > 0 */
-    int stored_key; /* key that was stored this programme cycle */
     SDL_Surface *blocks; /* pointer to the block graphics */
     SDL_Surface *unknown_preview; /* if preview's unknown this is displayed */
     char name[32]; /* player's name for this bowl */
@@ -99,6 +102,7 @@ typedef struct {
     int preview; /* 0 = no preview, otherwise number of pieces */
     int preview_sx, preview_sy; /* preview position */
     int preview_sw, preview_sh; /* preview size */
+    int cpu_player; /* if 1 cpu controlled */
     int cpu_dest_x; /* move block to this position (computed in bowl_select_next_block() */
     int cpu_dest_rot; /* destination rotation */
     int cpu_dest_score; /* AI score */
@@ -147,14 +151,6 @@ void bowl_delete( Bowl *bowl );
 
 /*
 ====================================================================
-Check if key belongs to this bowl and store the value for use in
-bowl_update().
-====================================================================
-*/
-void bowl_store_key( Bowl *bowl, int keysym );
-
-/*
-====================================================================
 Finish game and set game over.
 ====================================================================
 */
@@ -168,7 +164,7 @@ If game_over only score is updated in bowl_update().
 */
 void bowl_hide( Bowl *bowl );
 void bowl_show( Bowl *bowl );
-void bowl_update( Bowl *bowl, int ms, int game_over );
+void bowl_update( Bowl *bowl, int ms, BowlControls *bc, int game_over );
 
 /*
 ====================================================================
