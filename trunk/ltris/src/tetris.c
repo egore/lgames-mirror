@@ -444,14 +444,6 @@ void tetris_set_bowl_controls(int i, SDL_Event *ev, BowlControls *bc)
 
 		/* allow gamepad for bowl 0 */
 		if (i == 0 && config.gp_enabled) {
-			if (gamepad_ctrl_isdown(GPAD_BUTTON0 + config.gp_lrot))
-				bc->lrot = CS_DOWN;
-			if (gamepad_ctrl_isdown(GPAD_BUTTON0 + config.gp_rrot))
-				bc->rrot = CS_DOWN;
-			if (gamepad_ctrl_isdown(GPAD_BUTTON0 + config.gp_hdrop))
-				bc->hdrop = CS_DOWN;
-			if (gamepad_ctrl_isactive(GPAD_DOWN))
-				bc->sdrop = CS_PRESSED;
 			if (gamepad_ctrl_isdown(GPAD_LEFT))
 				bc->lshift = CS_DOWN;
 			else if (gamepad_ctrl_ispressed(GPAD_LEFT))
@@ -460,6 +452,17 @@ void tetris_set_bowl_controls(int i, SDL_Event *ev, BowlControls *bc)
 				bc->rshift = CS_DOWN;
 			else if (gamepad_ctrl_ispressed(GPAD_RIGHT))
 				bc->rshift = CS_PRESSED;
+			if (gamepad_ctrl_isactive(GPAD_DOWN))
+				bc->sdrop = CS_PRESSED;
+
+			if (ev->type == SDL_JOYBUTTONDOWN) {
+				if (ev->jbutton.button == config.gp_lrot)
+					bc->lrot = CS_DOWN;
+				if (ev->jbutton.button == config.gp_rrot)
+					bc->rrot = CS_DOWN;
+				if (ev->jbutton.button == config.gp_hdrop)
+					bc->hdrop = CS_DOWN;
+			}
 		}
 	}
 
