@@ -18,6 +18,8 @@
 #ifndef __CONFIG_H
 #define __CONFIG_H
 
+#define CONFIG_FILE_NAME "ltris.conf"
+
 /* game type ids */
 enum {
     GAME_DEMO = 0,

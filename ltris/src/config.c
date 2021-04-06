@@ -29,8 +29,6 @@
 
 Config config;
 
-#define CONFIG_FILE_NAME "ltris.conf"
-
 /* game type names. hacky place to define them but who cares? */
 char gametype_names[GAME_TYPENUM][64];
 char gametype_ids[GAME_TYPENUM][64];
