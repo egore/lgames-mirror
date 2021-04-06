@@ -171,6 +171,7 @@ enum {
 	GPAD_LAST1
 };
 void gamepad_open();
+int gamepad_opened();
 void gamepad_close();
 const Uint8 *gamepad_update();
 int gamepad_ctrl_isdown(uint cid);

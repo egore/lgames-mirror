@@ -96,6 +96,11 @@ int main(int argc, char *argv[])
 
     init_sdl(SDL_INIT_EVERYTHING);
     gamepad_open();
+    if (gamepad_opened()) {
+	    printf("  NOTE: Gamepad cannot be configured via menu yet but you\n");
+	    printf("  can edit the gp_ entries in config file %s/%s.\n",
+			    	    config.dir_name, CONFIG_FILE_NAME );
+    }
 
     info = SDL_GetVideoInfo();
     printf("Display resolution: %d x %d\n", info->current_w, info->current_h);

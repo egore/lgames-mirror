@@ -1430,6 +1430,10 @@ void gamepad_open()
 	memset(gamepad_state,0,sizeof(gamepad_state));
 	memset(gamepad_oldstate,0,sizeof(gamepad_oldstate));
 }
+int gamepad_opened()
+{
+	return (gamepad != 0);
+}
 void gamepad_close()
 {
 	if (gamepad) {
