@@ -58,6 +58,8 @@ if test "x$host" = "xx86_64-w64-mingw32"; then
 	CFLAGS="$CFLAGS -DWIN32 -I/usr/$host/sys-root/mingw/include"
 	CXXFLAGS="$CXXFLAGS -DWIN32 -I/usr/$host/sys-root/mingw/include"
 	CXXFLAGS="$CXXFLAGS $(/usr/$host/sys-root/mingw/bin/sdl2-config --cflags)"
+	# we can't use sdl2-config as we want to skip -mwindows as it
+	# does funny things (not like a clown tho) also -lintl is needed
 	LIBS="$LIBS -lintl -L/usr/$host/sys-root/mingw/lib -lmingw32 -lSDL2main -lSDL2"
 else
 	CXXFLAGS="$CXXFLAGS $(sdl2-config --cflags)"
