@@ -67,6 +67,11 @@ View::View(Config &cfg, ClientGame &_cg)
 	viewport.x = viewport.y = viewport.w = viewport.h = 0;
 
 	gamepad.open();
+	if (gamepad.opened()) {
+		printf("  NOTE: Gamepad cannot be configured via menu yet but you\n");
+		printf("  can edit the gp_ entries in config file %s .\n",config.path.c_str());
+		printf("  In case connection to gamepad gets lost, you can press F5 do reconnect.\n");
+	}
 
 	shineX = -1;
 	shineY = -1;
