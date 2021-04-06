@@ -8,20 +8,10 @@ automake
 make
 along with all dependencies
 
-in configure.ac:
+if configure complains about intl/po stuff, run autoreconf
+gettext macro is not found although present with aclocal
 
-add
-CFLAGS="$CFLAGS -I/usr/x86_64-w64-mingw32/sys-root/mingw/include"
-CXXFLAGS="$CXXFLAGS -I/usr/x86_64-w64-mingw32/sys-root/mingw/include"
-
-prepend /usr/x86_64-w64-mingw32/sys-root/mingw/bin/ to sdl2-config
-
-add
-LIBS="$LIBS -lintl -L/usr/x86_64-w64-mingw32/sys-root/mingw/lib -lmingw32 -lSDL2main -lSDL2"
-
-autoconf
-
-CXXFLAGS="-DWIN32" CFLAGS="-DWIN32" ./configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --disable-install
+./configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --disable-install --disable-nls
 
 make
 
