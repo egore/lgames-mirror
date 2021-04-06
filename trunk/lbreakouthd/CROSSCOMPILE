@@ -1,6 +1,6 @@
 Use 64 bit toolchain x86_64-w64-mingw32
 
-In addition to base system install
+In addition to cygwin base system install
 x86_64-SDL/image/mixer/ttf
 x86_64-gcc-core/debuginfo/g++
 x86_64-gettext

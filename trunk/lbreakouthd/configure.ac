@@ -52,9 +52,17 @@ AC_SUBST(hiscoredir)
 
 CFLAGS="$CFLAGS -Wno-int-conversion -Wno-format -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS $debugflags -DSRC_DIR=\\\"$datdir\\\" -DCONFIG_DIR_NAME=\\\"$configdir\\\""
-CXXFLAGS="$CXXFLAGS $(sdl2-config --cflags) -Wall $debugflags"
-CXXFLAGS="$CXXFLAGS -std=c++11 -DLOCALEDIR=\\\"$localedir\\\" -DCONFIGDIR=\\\"$configdir\\\" -DDATADIR=\\\"$datdir\\\" -DHISCOREDIR=\\\"$hiscoredir\\\""
-LIBS="$LIBS $(sdl2-config --libs)"
+CXXFLAGS="$CXXFLAGS -std=c++11 -Wall $debugflags -DLOCALEDIR=\\\"$localedir\\\" -DCONFIGDIR=\\\"$configdir\\\" -DDATADIR=\\\"$datdir\\\" -DHISCOREDIR=\\\"$hiscoredir\\\""
+
+if test "x$host" = "xx86_64-w64-mingw32"; then
+	CFLAGS="$CFLAGS -DWIN32 -I/usr/$host/sys-root/mingw/include"
+	CXXFLAGS="$CXXFLAGS -DWIN32 -I/usr/$host/sys-root/mingw/include"
+	CXXFLAGS="$CXXFLAGS $(/usr/$host/sys-root/mingw/bin/sdl2-config --cflags)"
+	LIBS="$LIBS -lintl -L/usr/$host/sys-root/mingw/lib -lmingw32 -lSDL2main -lSDL2"
+else
+	CXXFLAGS="$CXXFLAGS $(sdl2-config --cflags)"
+	LIBS="$LIBS $(sdl2-config --libs)"
+fi
 
 # Makefiles
 AC_OUTPUT(
