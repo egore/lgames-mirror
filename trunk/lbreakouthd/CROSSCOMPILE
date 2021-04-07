@@ -15,6 +15,9 @@ gettext macro is not found although present with aclocal
 
 make
 
+ar in libgame fails, do it manually with right ar:
+cd libgame; x86_64-w64-mingw32-ar.exe cru libgame.a game.o levels.o shots.o bricks.o paddle.o extras.o balls.o mathfuncs.o list.o tools.o; cd ..
+
 copy the following dlls from /usr/x86_64-w64-mingw32/sys-root/mingw/bin to src:
 iconv.dll
 libbz2-1.dll
