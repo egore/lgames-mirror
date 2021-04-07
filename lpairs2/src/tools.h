@@ -19,6 +19,11 @@ using namespace std;
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef WIN32
+  #include <time.h>
+  #include <stdint.h>
+  typedef uint32_t uint;
+#endif
 #include <math.h>
 #include <dirent.h>
 #include <list>
