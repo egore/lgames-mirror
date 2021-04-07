@@ -21,6 +21,10 @@ using namespace std;
 #include <stdlib.h>
 #include <math.h>
 #include <dirent.h>
+#ifdef WIN32
+  #include <stdint.h>
+  typedef uint32_t uint;
+#endif
 #include <list>
 #include <string>
 #include <vector>

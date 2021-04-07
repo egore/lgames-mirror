@@ -34,8 +34,10 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	else
 		path = string(DATADIR) + "/themes/" + name;
 
+#ifndef WIN32
 	if (!fileExists(path))
 		_logerr("CRITICAL ERROR: theme %s not found. I will continue but most likely crash...\n",path.c_str());
+#endif
 	_loginfo("Loading theme %s\n",path.c_str());
 
 	/* set default config values for old themes */
