@@ -133,7 +133,11 @@ bool dirExists(const string& name) {
 }
 
 bool makeDir(const string& name) {
+#ifdef WIN32	
+	return mkdir(name.c_str()) == 0;
+#else
 	return mkdir(name.c_str(), S_IRWXU) == 0;
+#endif
 }
 
 bool fileExists(const string& name) {
