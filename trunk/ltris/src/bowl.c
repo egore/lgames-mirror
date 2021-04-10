@@ -167,7 +167,8 @@ void bowl_select_next_block( Bowl *bowl )
 	bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
 	DPRINTF("Bowl %p: Current = %d, Next = %d\n", bowl, bowl->block.id, 
 							bowl->next_block_id);
-	if ( bowl->next_blocks_pos == next_blocks_size ) {
+	/* get new blocks before they run out so three piece preview will not crash */
+	if ( bowl->next_blocks_pos >= next_blocks_size - 3 ) {
 		DPRINTF("Need to fill new tetrominoes bags\n");
 		/* we have to keep part of buffer which other bowls 
 		 * might still need to go through */
