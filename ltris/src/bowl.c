@@ -226,7 +226,7 @@ void bowl_select_next_block( Bowl *bowl )
 		bowl->drought++;
 
 	/* if CPU is in control get destination row & other stuff */
-	if ( !bowl->cpu_player ) {
+	if (bowl->cpu_player) {
 		/* destination */
 		bowl_compute_cpu_dest( bowl );
 		
