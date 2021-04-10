@@ -1409,7 +1409,7 @@ void gamepad_open()
 	SDL_JoystickEventState(SDL_ENABLE);
 
 	if (SDL_NumJoysticks() == 0) {
-		fprintf(stderr,"No game controller found...\n");
+		printf("No game controller found...\n");
 		return;
 	}
 
