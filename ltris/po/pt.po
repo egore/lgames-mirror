@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ltris_pt_prod\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2021-04-10 18:08+0200\n"
+"POT-Creation-Date: 2021-04-10 19:50+0200\n"
 "PO-Revision-Date: 2008-03-30 22:19+0200\n"
 "Last-Translator: Jose Jorge <jjorge@free.fr>\n"
 "Language-Team: portugues <pt@li.org>\n"
@@ -580,74 +580,74 @@ msgstr "Sim"
 msgid "End Game? y/n"
 msgstr "Terminar o Jogo? y/n"
 
-#: src/bowl.c:465 src/bowl.c:466
+#: src/bowl.c:466 src/bowl.c:467
 msgid "Game Over"
 msgstr "Fim do Jogo"
 
-#: src/bowl.c:1192
+#: src/bowl.c:1193
 #, c-format
 msgid "%i Lvl: %i"
 msgstr "%i Nvl: %i"
 
-#: src/bowl.c:1538
+#: src/bowl.c:1539
 msgid "Player:"
 msgstr "Jogador:"
 
-#: src/bowl.c:1542
+#: src/bowl.c:1543
 msgid "Score:"
 msgstr "Pontuacao:"
 
-#: src/bowl.c:1544
+#: src/bowl.c:1545
 msgid "Lines:"
 msgstr "Linhas:"
 
-#: src/bowl.c:1694
+#: src/bowl.c:1695
 msgid "Pieces Placed:"
 msgstr ""
 
-#: src/bowl.c:1695
+#: src/bowl.c:1696
 msgid "I-Pieces:     "
 msgstr ""
 
-#: src/bowl.c:1698
+#: src/bowl.c:1699
 msgid "Singles: "
 msgstr ""
 
-#: src/bowl.c:1699
+#: src/bowl.c:1700
 #, fuzzy
 msgid "Doubles: "
 msgstr "Buracos:"
 
-#: src/bowl.c:1700
+#: src/bowl.c:1701
 msgid "Triples: "
 msgstr ""
 
-#: src/bowl.c:1701
+#: src/bowl.c:1702
 msgid "Tetrises:"
 msgstr ""
 
-#: src/bowl.c:1713
+#: src/bowl.c:1714
 msgid "Droughts:   "
 msgstr ""
 
-#: src/bowl.c:1714
+#: src/bowl.c:1715
 msgid "Drought Max:"
 msgstr ""
 
-#: src/bowl.c:1719
+#: src/bowl.c:1720
 msgid "Drought Avg:"
 msgstr ""
 
-#: src/bowl.c:1726
+#: src/bowl.c:1727
 #, fuzzy
 msgid "Transition:"
 msgstr "Animacoes:"
 
-#: src/bowl.c:1728
+#: src/bowl.c:1729
 msgid "DAS Charge:"
 msgstr ""
 
-#: src/bowl.c:1733
+#: src/bowl.c:1734
 msgid "Drought:   "
 msgstr ""
 
