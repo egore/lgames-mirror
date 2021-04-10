@@ -998,7 +998,7 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
     bowl->block_drop_vel = 0.6; // fixed to 0.6; 0.8 - config.vert_delay*0.07;
     bowl_set_vert_block_vel( bowl );
     bowl->help_sw = bowl->help_sh = bowl->block_size * 4;
-    if (preview_x == -1)
+    if (!config.preview || preview_x == -1)
 	    bowl->preview = 0;
     else if (config.modern)
 	    bowl->preview = 3;
