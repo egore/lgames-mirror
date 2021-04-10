@@ -19,6 +19,10 @@
 #define SDL_H
 
 #include <SDL/SDL.h>
+#ifdef WIN32
+  #include <stdint.h>
+  typedef uint32_t uint;
+#endif
 
 #define BITDEPTH 16
 
