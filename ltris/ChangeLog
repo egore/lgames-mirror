@@ -1,3 +1,5 @@
+1.2.3:
+- simplified cross compiling (2021/04/10 MS)
 - added gamepad support (not configurable via menu yet) (2021/04/05 MS)
 - show three pieces as preview for modern style (2021/04/03 MS)
 - updated some menu hints (2021/04/03 MS)

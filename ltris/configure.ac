@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT(ltris,1.2.2)
+AC_INIT(ltris,1.2.3)
 AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CANONICAL_TARGET
@@ -20,10 +20,22 @@ AC_ARG_ENABLE( zaurus,
 AC_ARG_ENABLE( softfloat,
 [  --enable-softfloat      Use Softfloat for CPUs without FPU], CFLAGS="$CFLAGS -msoft-float"; LIBS="$LIBS $float")
 
+if test "x$host" = "xi686-w64-mingw32"; then
+
+	# set CFLAGS and LIBS directly for windows port as we need to e.g. 
+	# skip -mwindows flag
+	
+	CFLAGS="-DWIN32 -I/usr/i686-w64-mingw32/sys-root/mingw/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main"
+	LIBS="-L/usr/i686-w64-mingw32/sys-root/mingw/lib -lmingw32 -lSDLmain -lSDL -mwindows -lintl"
+
+else
+
 dnl check SDL
 AM_PATH_SDL(1.0.0,, AC_MSG_ERROR(lib SDL is needed))
 CFLAGS="$CFLAGS $(sdl-config --cflags)"
 LIBS="$LIBS $(sdl-config --libs)"
+
+fi
 
 dnl check SDL_mixer
 AC_CHECK_LIB(SDL_mixer, main,

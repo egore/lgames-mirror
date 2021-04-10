@@ -1,5 +1,3 @@
-some scratch notes...
-
 Get cygwin and in addition to base system install
 mingw64-i686-SDL/mixer
 mingw64-i686-gcc-core/debuginfo
@@ -9,20 +7,7 @@ along with all dependencies
 
 i686-w64-mingw32-gcc is the 32 bit compiler
 
-for configure.ac:
-run /usr/i686-w64-mingw32/sys-root/mingw/bin/sdl-config --cflags
-and replace $(sdl-config --cflags)
-run /usr/i686-w64-mingw32/sys-root/mingw/bin/sdl-config --libs
-and replace $(sdl-config --libs)
-    and add -lintl in the end or use --disable-nls
-maybe -mwindows needs to be removed it there is trouble with closing the
-program
-comment out AM_SDL_PATH as test program will not run (why? dunno)
-    or after running configure once use --disable-sdltest
-
-autoconf
-
-CFLAGS="-DWIN32" ./configure --build=i686-w64-mingw32 --host=i686-w64-mingw32 --disable-install
+./configure --build=i686-w64-mingw32 --host=i686-w64-mingw32 --disable-install
 
 make
 
