@@ -1,4 +1,5 @@
 1.0.8:
+- fixed instant set selection in custom set dialog (2021/08/08 MS) 
 - added paddle acceleration for keys/gamepad (2021/08/08 MS)
 - added missing cross compiling stuff (2021/04/07 MS)
 
