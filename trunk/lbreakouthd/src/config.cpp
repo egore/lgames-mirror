@@ -47,8 +47,8 @@ Config::Config()
 	convex = 1;
 	linear_corner = 0;
 	invert = 0;
-	i_key_speed = 500;
-	key_speed = 0.5;
+	i_key_speed = 600;
+	key_speed = 0.6;
 	random_angle = 1;
 	maxballspeed_int1000 = 900;
 	maxballspeed_float = 0.7;

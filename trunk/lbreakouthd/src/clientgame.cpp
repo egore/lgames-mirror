@@ -21,9 +21,12 @@ extern GameDiff diffs[DIFF_COUNT];
 
 ClientGame::ClientGame(Config &cfg) : config(cfg), levelset(0), game(0),
 		curPlayer(0), lastDeadPlayer(NULL), msg(""), extrasActive(false),
-		lastpx(-1)
+		lastpx(-1), pvel(0), pveldir(0)
 {
 	extrasUpdateTimeout.set(200);
+	pvelmax = config.key_speed;
+	pvelmin = pvelmax / 2;
+	pacc = (pvelmax - pvelmin) / 300;
 }
 
 ClientGame::~ClientGame()
@@ -78,6 +81,8 @@ int ClientGame::init(const string& setname, int levelid)
 	game_set_ball_accelerated_speed( config.maxballspeed_float );
 	game->ball_auto_speedup = config.ball_auto_turbo;
 	extrasActive = false;
+	pvel = pvelmin;
+	pveldir = 0;
 
 	/* set first level as snapshot to all players */
 	for (auto& p : players)
@@ -144,10 +149,25 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 	if (game->paddles[0]->frozen)
 		rx = 0; /* no friction as well */
 	else if (pis.left || pis.right) {
-		if (pis.left)
-			px -= config.key_speed * (ms << pis.turbo);
-		if (pis.right)
-			px += config.key_speed * (ms << pis.turbo);
+		if (pis.left) {
+			if (pveldir != -1) {
+				pvel = pvelmin;
+				pveldir = -1;
+			}
+			px -= pvel * (ms << pis.turbo);
+		}
+		if (pis.right) {
+			if (pveldir != 1) {
+				pvel = pvelmin;
+				pveldir = 1;
+			}
+			px += pvel * (ms << pis.turbo);
+		}
+		if (pvel < pvelmax) {
+			pvel += pacc * ms;
+			if (pvel > pvelmax)
+				pvel = pvelmax;
+		}
 	} else if (config.rel_motion)
 		px += rx;
 	else {
@@ -157,6 +177,10 @@ int ClientGame::update(uint ms, double rx, PaddleInputState &pis)
 			px = rx;
 			lastpx = px;
 		}
+	}
+	if (!pis.left && !pis.right) {
+		pveldir = 0;
+		pvel = pvelmin;
 	}
 
 	/* check friction if normal paddle has moved */

@@ -108,6 +108,9 @@ class ClientGame {
 	bool extrasActive;
 	Timeout extrasUpdateTimeout;
 	double lastpx;
+	/* paddle acceleration settings for key/gamepad input */
+	double pvel, pacc, pvelmax, pvelmin;
+	int pveldir; /* -1 left, 0 none, 1 right */
 
 	ClientPlayer *getNextPlayer();
 	void initLevel(Level *l);
@@ -169,6 +172,7 @@ public:
 	}
 	const string &getBonusLevelInfo();
 	int restartLevel();
+	double getPaddleVelocity() { return pvel; }
 };
 
 #endif /* SRC_CLIENTGAME_H_ */

@@ -648,6 +648,7 @@ void View::render()
 	if (config.show_fps) {
 		theme.fSmall.setAlign(ALIGN_X_LEFT | ALIGN_Y_TOP);
 		theme.fSmall.write(0,0,to_string((int)fps));
+		//theme.fSmall.write(0,theme.fSmall.getLineHeight(),to_string((int)(cgame.getPaddleVelocity()*1000)));
 	}
 
 	if (viewport.w)
