@@ -268,7 +268,7 @@ int SelectDialog::run()
 					sel = SEL_NONE;
 				}
 			}
-			if (ev.type == SDL_MOUSEBUTTONUP) {
+			if (ev.type == SDL_MOUSEBUTTONDOWN) {
 				if (sel == SEL_PREV)
 					goPrevPage();
 				else if (sel == SEL_NEXT)
