@@ -63,7 +63,6 @@ extern int last_shot_fire_x; /* HACK: used to play local sound */
  * game and clear these entries. the current game entry must've
  * been set to 'game'. Ball and shot updates have already been
  * applied to the game context. */
-#ifdef NETWORK_ENABLED
 static void handle_mods()
 {
 	BrickHit *brickhits;
@@ -118,9 +117,7 @@ static void handle_mods()
 	
 	game_reset_mods();
 }
-#endif
 
-#ifdef NETWORK_ENABLED
 /* copy stuff from local_game to game */
 static void comm_recv_local( void )
 {
@@ -183,6 +180,7 @@ static void comm_recv_local( void )
 	return;
 }
 
+#ifdef NETWORK_ENABLED
 /* parse incoming packets and handle them according to the client's
  * state */
 static void comm_parse_packet()
@@ -420,7 +418,6 @@ void comm_send_short( int msg )
  * in the current state. */
 void comm_recv( void )
 {
-#ifdef NETWORK_ENABLED
 	int recv_limit;
 	
 	/* fake communication in local game */
@@ -429,6 +426,7 @@ void comm_recv( void )
 		return;
 	}
 	
+#ifdef NETWORK_ENABLED
 	if ( !client_is_connected ) return;
 
 	recv_limit = client_recv_limit; /* limited number of packets if not -1 */
