@@ -955,7 +955,7 @@ int client_game_init_local( const char *setname )
 	 * settings as a network game. the receiving of packets
 	 * is simply faked by a local_game context that
 	 * runs the game locally. but to use only one game loop
-	 * we do not use it directly but apply its modificiations
+	 * we do not use it directly but apply its modifications
 	 * to game which is visualized */
 	local_game = game_create( GT_LOCAL, config.diff, warp_limit );
 	game_set_current( local_game );
@@ -1505,14 +1505,16 @@ void client_game_run( void )
 
 	event_clear_sdl_queue();
 
-	/* update the selected user and the user list in network as 
-	 * we received ADD/REMOVE_USER messages */
-	gui_list_update( list_users, client_users->count );
-	/* re-select current entry */
-	if ( client_user ) {
-		i = list_check( client_users, client_user );
-		if ( i != -1 )
-			gui_list_select( list_users, 0, i, 1 );
+	if (client_users) {
+		/* update the selected user and the user list in network as
+		 * we received ADD/REMOVE_USER messages */
+		gui_list_update( list_users, client_users->count );
+		/* re-select current entry */
+		if ( client_user ) {
+			i = list_check( client_users, client_user );
+			if ( i != -1 )
+				gui_list_select( list_users, 0, i, 1 );
+		}
 	}
 }
 

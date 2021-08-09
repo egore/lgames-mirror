@@ -65,7 +65,7 @@ void extra_use( Paddle *paddle, int extra_type )
 	int 	i, j;
 	int 	tm = cur_game->diff->time_mod; /* time modifier */
 
-	printf("%d\n",tm);
+	//printf("%d\n",tm);
 
 	if ( cur_game->diff->allow_maluses ) {
 		while( extra_type == EX_RANDOM )

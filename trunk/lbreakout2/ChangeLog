@@ -1,3 +1,4 @@
+- fixed compiling without network support (2021/08/09 MS)
 - locale include for compiling on musl libc system (2016/05/12 Kylie McClain)
 - fixed spelling error: wether -> whether (2016/04/03 Colin Tuckley)
 

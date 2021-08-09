@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lbreakout2\n"
 "Report-Msgid-Bugs-To: http://lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2013-07-29 20:02+0200\n"
+"POT-Creation-Date: 2021-04-02 15:53+0200\n"
 "PO-Revision-Date: 2013-07-30 14:43+0000\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <doudoulinux-lang@gna.org>\n"
@@ -130,7 +130,7 @@ msgstr "Send"
 msgid "Whisper"
 msgstr "Hviske"
 
-#: client/client.c:324 server/server.c:1108
+#: client/client.c:324 server/server.c:1115
 msgid "MAIN"
 msgstr "HOVED"
 
@@ -308,13 +308,13 @@ msgstr ""
 "dette."
 
 #: client/client_data.c:208
-#, no-c-format
+#, fuzzy, no-c-format
 msgid ""
 "Basically you play the game as in single player mode but their are some "
 "special things you might find useful to know.##PINGPONG:#The point here is "
 "to play it fast and to use all of your balls. Use the right and left mouse "
 "button to fire the balls while moving the paddle. Your opponent will have "
-"trouble to reflect all balls if you do it right. If you are not sure wether "
+"trouble to reflect all balls if you do it right. If you are not sure whether "
 "you got balls left click anyway. Keep the button pressed for a while! The "
 "fire rate is restricted to one ball every 500 milliseconds.##NORMAL:#Your "
 "goal here is too gain more score than your opponent to win a round. "
@@ -672,9 +672,9 @@ msgid ""
 msgstr ""
 "***** Runde %i *****###Du kontrollerer %s-brættet på denne bane!#For at "
 "affyre en bold så hold museknappen NEDE.#Du kan ikke bare klikke.###Tryk på "
-"en knap når du er klar ...###(Du kan sætte spillet på pause med »p«.)"
-"###BEMÆRK: På grund af latency, så er bonusser på serveren tættere på end de "
-"fremstår! Jeg forsøger at rette dette."
+"en knap når du er klar ...###(Du kan sætte spillet på pause med "
+"»p«.)###BEMÆRK: På grund af latency, så er bonusser på serveren tættere på "
+"end de fremstår! Jeg forsøger at rette dette."
 
 #: client/game.c:791
 msgid "BOTTOM"
@@ -1107,7 +1107,7 @@ msgstr "                         Nyd spillet!"
 msgid "                                                 Michael Speck"
 msgstr "                                                 Michael Speck"
 
-#: client/main.c:202
+#: client/main.c:203
 msgid "Set Name:"
 msgstr "Angiv navn:"
 
@@ -1212,18 +1212,18 @@ msgstr ""
 #: client/manager.c:73
 msgid ""
 "KIDS:#Lives: 9 (max. 12)#Paddle Size: 252 (max. 396)#Ball Speed: "
-"100-200#Bonus: -50% (no penalties, no bad speech)##EASY:#Lives: 6 (max. 9)"
-"#Paddle Size: 72 (max. 180)#Ball Speed: 240-400 pixels/sec#Bonus: "
+"100-200#Bonus: -50% (no penalties, no bad speech)##EASY:#Lives: 6 (max. "
+"9)#Paddle Size: 72 (max. 180)#Ball Speed: 240-400 pixels/sec#Bonus: "
 "-20%##MEDIUM:#Lives: 5 (max. 7)#Paddle Size: 54 (max. 144)#Ball Speed: "
 "270-430 pixels/sec##HARD:#Lives: 4 (max. 5)#Paddle Size: 54 (max. 108)#Ball "
 "Speed: 300-450 pixels/sec#Bonus: +30%"
 msgstr ""
 "FOR BØRN:#Liv: 9 (maks 12)#Brætstørrelse: 252 (maks 396)#Boldhastighed: "
-"100-200#Bonus: -50 % (ingen straffe, ingen dårlig tale)##NEM:#Liv: 6 (maks 9)"
-"#Brætstørrelse: 72 (maks 180)#Boldhastighed: 240-400 billedpunkter/"
-"sek#Bonus: -20 %##NORMAL:#Liv: 5 (maks. 7)#Brætstørrelse: 54 (maks 144)"
-"#Boldhastighed: 270-430 billedpunkter/sek.##SVÆR:#Liv: 4 (maks 5)"
-"#Brætstørrelse: 54 (maks 108)#Boldhastighed: 300-450 billedpunkter/sek."
+"100-200#Bonus: -50 % (ingen straffe, ingen dårlig tale)##NEM:#Liv: 6 (maks "
+"9)#Brætstørrelse: 72 (maks 180)#Boldhastighed: 240-400 billedpunkter/"
+"sek#Bonus: -20 %##NORMAL:#Liv: 5 (maks. 7)#Brætstørrelse: 54 (maks "
+"144)#Boldhastighed: 270-430 billedpunkter/sek.##SVÆR:#Liv: 4 (maks "
+"5)#Brætstørrelse: 54 (maks 108)#Boldhastighed: 300-450 billedpunkter/sek."
 "#Bonus: +30%"
 
 #: client/manager.c:77
@@ -2101,331 +2101,331 @@ msgstr "<OPRET SÆT>"
 msgid "!FREAKOUT!"
 msgstr "!KAOS!"
 
-#: server/server.c:76
+#: server/server.c:77
 #, c-format
 msgid "server is going down...\n"
 msgstr "server går ned ...\n"
 
-#: server/server.c:80
+#: server/server.c:81
 #, c-format
 msgid "SERVER IS GOING DOWN!!!"
 msgstr "SERVER GÅR NED!!!"
 
-#: server/server.c:111
+#: server/server.c:112
 #, c-format
 msgid "channel added: %s\n"
 msgstr "kanal tilføjet: %s\n"
 
-#: server/server.c:120
+#: server/server.c:121
 #, c-format
 msgid "channel deleted: %s (%i users)\n"
 msgstr "kanal slettet: %s (%i brugere)\n"
 
-#: server/server.c:208
+#: server/server.c:209
 #, c-format
 msgid "user added: %s (%i) from %s\n"
 msgstr "bruger tilføjet: %s (%i) fra %s\n"
 
-#: server/server.c:238
+#: server/server.c:239
 #, c-format
 msgid "user removed: %s (%i)\n"
 msgstr "bruger fjernet: %s (%i)\n"
 
-#: server/server.c:275
+#: server/server.c:276
 #, c-format
 msgid "You have been kicked! Reason: %s"
 msgstr "Du er blevet smidt ud! Årsag: %s"
 
-#: server/server.c:281
+#: server/server.c:282
 #, c-format
 msgid "user kicked (%s): %s (%i)\n"
 msgstr "bruger smidt ud (%s): %s (%i)\n"
 
-#: server/server.c:316
+#: server/server.c:317
 #, c-format
 msgid "you have entered a new channel: %s"
 msgstr "du er gået ind i en ny kanal: %s"
 
-#: server/server.c:455
+#: server/server.c:456
 #, c-format
 msgid "Login data corrupted, please retry."
 msgstr "Loginddata ødelagt, prøv igen."
 
-#: server/server.c:460
+#: server/server.c:461
 msgid "Your username may only contain letters, digits and underscores.\n"
 msgstr "Dit brugernavn må kun indeholde bogstaver, tal og understreg.\n"
 
-#: server/server.c:473
+#: server/server.c:474
 #, c-format
 msgid "Your protocol is out of date, please update."
 msgstr "Din protokol er forældet, opdater venligst."
 
-#: server/server.c:475
+#: server/server.c:476
 #, c-format
 msgid "Server uses an older protocol (%i), sorry."
 msgstr "Server bruger en ældre protokol (%i), beklager."
 
-#: server/server.c:480
+#: server/server.c:481
 #, c-format
 msgid "Server is full!"
 msgstr "Server er fuld!"
 
-#: server/server.c:484
+#: server/server.c:485
 #, c-format
 msgid "Please enter a name!"
 msgstr "Indtast venligst et navn!"
 
-#: server/server.c:488
+#: server/server.c:489
 #, c-format
 msgid "Your name must not contain blanks! (But can have underscores.)"
 msgstr ""
 "Dit navn må ikke indeholde blanke tegn! (men kan have understregninger)."
 
-#: server/server.c:491 server/server.c:503
+#: server/server.c:492 server/server.c:504
 msgid "admin"
 msgstr "administrator"
 
-#: server/server.c:492
+#: server/server.c:493
 #, c-format
 msgid "This name is already in use. Please choose another one."
 msgstr "Navnet er allerede i brug. Vælg et andet."
 
-#: server/server.c:527
+#: server/server.c:528
 msgid "1 user online"
 msgstr "1 bruger på"
 
-#: server/server.c:529
+#: server/server.c:530
 #, c-format
 msgid "%i users online"
 msgstr "%i brugere på"
 
-#: server/server.c:586
+#: server/server.c:587
 msgid "search"
 msgstr "søg"
 
-#: server/server.c:588
+#: server/server.c:589
 msgid "search: specify a user name!"
 msgstr "søg: angiv et brugernavn!"
 
-#: server/server.c:592
+#: server/server.c:593
 msgid "search: user is not online."
 msgstr "søg: bruger er ikke på."
 
-#: server/server.c:594
+#: server/server.c:595
 #, c-format
 msgid "search: %s: in channel %s: %s"
 msgstr "søg: %s: i kanal %s: %s"
 
-#: server/server.c:596
+#: server/server.c:597
 msgid "playing"
 msgstr "spiller"
 
-#: server/server.c:596
+#: server/server.c:597
 msgid "chatting"
 msgstr "snakker"
 
-#: server/server.c:600
+#: server/server.c:601
 msgid "version"
 msgstr "version"
 
-#: server/server.c:601
+#: server/server.c:602
 #, c-format
 msgid "transmission protocol: %i"
 msgstr "transmissionsprotokol: %i"
 
-#: server/server.c:604
+#: server/server.c:605
 msgid "info"
 msgstr "info"
 
-#: server/server.c:605
+#: server/server.c:606
 #, c-format
 msgid "user limit: %i#frame rate: %i#packet limit: %i"
 msgstr "brugerbegrænsning: %i#billedhastighed: %i#pakkebegrænsning: %i"
 
-#: server/server.c:609
+#: server/server.c:610
 msgid "addset"
 msgstr "addset"
 
-#: server/server.c:611
+#: server/server.c:612
 msgid "addset: name missing"
 msgstr "addset: navn mangler"
 
-#: server/server.c:627
+#: server/server.c:628
 #, c-format
 msgid "addset: file %s corrupted"
 msgstr "addset: filen %s er ødelagt"
 
-#: server/server.c:630
+#: server/server.c:631
 #, c-format
 msgid "addset: file %s not found"
 msgstr "addset: filen %s blev ikke fundet"
 
-#: server/server.c:632
+#: server/server.c:633
 msgid "addbot"
 msgstr "addbot"
 
-#: server/server.c:634
+#: server/server.c:635
 msgid "addbot: name missing"
 msgstr "addbot: navn mangler"
 
-#: server/server.c:638
+#: server/server.c:639
 #, c-format
 msgid "addbot: bot '%s' exists"
 msgstr "addbot: robotten »%s« findes"
 
-#: server/server.c:642
+#: server/server.c:643
 msgid "addbot: strength missing"
 msgstr "addbot: styrke mangler"
 
-#: server/server.c:648
+#: server/server.c:649
 msgid "delbot"
 msgstr "delbot"
 
-#: server/server.c:650
+#: server/server.c:651
 msgid "delbot: name missing"
 msgstr "delbot: navn mangler"
 
-#: server/server.c:654
+#: server/server.c:655
 #, c-format
 msgid "delbot: bot '%s' not found"
 msgstr "delbot: robotten »%s« blev ikke fundet"
 
-#: server/server.c:659
+#: server/server.c:660
 msgid "set"
 msgstr "sæt"
 
-#: server/server.c:661
+#: server/server.c:662
 msgid "set: variable missing"
 msgstr "sæt: variabel mangler"
 
-#: server/server.c:665
+#: server/server.c:666
 msgid "set: value missing"
 msgstr "sæt: værdi mangler"
 
-#: server/server.c:669
+#: server/server.c:670
 msgid "userlimit"
 msgstr "brugerbegrænsning"
 
-#: server/server.c:671
+#: server/server.c:672
 #, c-format
 msgid "userlimit: set to %i"
 msgstr "brugerbegrænsing: sæt til %i"
 
-#: server/server.c:674
+#: server/server.c:675
 msgid "packetlimit"
 msgstr "pakkebegræsning"
 
-#: server/server.c:676
+#: server/server.c:677
 #, c-format
 msgid "packetlimit: set to %i"
 msgstr "pakkebegrænsning: sæt til %i"
 
-#: server/server.c:679
+#: server/server.c:680
 msgid "fps"
 msgstr "fps"
 
-#: server/server.c:682
+#: server/server.c:685
 #, c-format
 msgid "fps: set to %i"
 msgstr "fps: sat til %i"
 
-#: server/server.c:691
+#: server/server.c:695
 msgid "kick"
 msgstr "kick"
 
-#: server/server.c:693
+#: server/server.c:697
 msgid "kick: specify a user name!"
 msgstr "kick: angiv et brugernavn!"
 
-#: server/server.c:697
+#: server/server.c:701
 msgid "kick: user is not online."
 msgstr "kick: bruger er ikke på."
 
-#: server/server.c:706
+#: server/server.c:710
 #, c-format
 msgid "Sorry, but your opponent has been kicked!"
 msgstr "Beklager, men din modstander er blevet smidt ud!"
 
-#: server/server.c:714
+#: server/server.c:718
 #, c-format
 msgid "ADMIN has kicked %s."
 msgstr "ADMINISTRATOREN har smidt %s ud."
 
-#: server/server.c:716
+#: server/server.c:720
 msgid "admin kick"
 msgstr "administratorudsmidning"
 
-#: server/server.c:720
+#: server/server.c:724
 msgid "admin_says"
 msgstr "admin_says"
 
-#: server/server.c:722
+#: server/server.c:726
 msgid "info: a message is required!"
 msgstr "info: en besked er krævet!"
 
-#: server/server.c:729
+#: server/server.c:733
 #, c-format
 msgid "ADMIN says: %s"
 msgstr "Besked fra ADMINISTRATOREN: %s"
 
-#: server/server.c:732
+#: server/server.c:736
 msgid "halt"
 msgstr "stop"
 
-#: server/server.c:736
+#: server/server.c:740
 #, c-format
 msgid "unknown command: %s"
 msgstr "ukendt kommando: %s"
 
-#: server/server.c:771 server/server_game.c:397
+#: server/server.c:775 server/server_game.c:397
 #, c-format
 msgid "%s (%i) disconnected\n"
 msgstr "%s (%i) er koblet af\n"
 
-#: server/server.c:802
+#: server/server.c:806
 #, c-format
 msgid "There is no user by that name."
 msgstr "Der er ingen bruger med dette navn."
 
-#: server/server.c:821
+#: server/server.c:825
 #, c-format
 msgid "Channel name must not contain blanks!"
 msgstr "Kanalnavnet må ikke indeholder blanke tegn!"
 
-#: server/server.c:841
+#: server/server.c:845
 #, c-format
 msgid "OpenGame message corrupted!"
 msgstr "OpenGame-besked ødelagt!"
 
-#: server/server.c:843
+#: server/server.c:847
 #, c-format
 msgid "User with id %i does not exist!"
 msgstr "Bruger med id %i findes ikke!"
 
-#: server/server.c:850
+#: server/server.c:854
 #, c-format
 msgid "channel %i: %s: invalid message %x: skipping %i bytes\n"
 msgstr "kanal %i: %s: ugyldig besked %x: udelader %i byte\n"
 
-#: server/server.c:913
+#: server/server.c:917
 msgid "Remote player has disconnected!"
 msgstr "Ekstern spiller har frakoblet sig!"
 
-#: server/server.c:916
+#: server/server.c:920
 msgid "zombie"
 msgstr "zombie"
 
-#: server/server.c:981
+#: server/server.c:985
 #, c-format
 msgid "couldn't open directory %s!\n"
 msgstr "Kunne ikke åbne mappe %s!\n"
 
-#: server/server.c:990
+#: server/server.c:994
 #, c-format
 msgid "loaded %i levelsets from directory %s\n"
 msgstr "Indlæst %i banesæt fra mappe %s\n"
 
-#: server/server.c:1000
+#: server/server.c:1004
 #, c-format
 msgid ""
 "Usage:\n"
@@ -2434,13 +2434,13 @@ msgstr ""
 "Brug:\n"
 "  lbreakout2server\n"
 
-#: server/server.c:1001
+#: server/server.c:1005
 #, c-format
 msgid "    [-p <SERVER_PORT>]      Bind server to this port (Default: %i).\n"
 msgstr ""
 "    [-p <SERVER_PORT>]      Bind server til denne port (Standard: %i).\n"
 
-#: server/server.c:1002
+#: server/server.c:1006
 #, c-format
 msgid ""
 "    [-l <USER_LIMIT>]       Maximum number of users that can login to "
@@ -2449,7 +2449,7 @@ msgstr ""
 "    [-l <USER_LIMIT>]       Maksimalt antal af brugere som kan logge ind på "
 "serveren.\n"
 
-#: server/server.c:1003
+#: server/server.c:1007
 #, c-format
 msgid ""
 "    [-m <WELCOME_FILE>]     The text in this file is send to new users on "
@@ -2459,7 +2459,7 @@ msgstr ""
 "logind.\n"
 "\n"
 
-#: server/server.c:1004
+#: server/server.c:1008
 #, c-format
 msgid ""
 "    [-a <ADMIN_PWD>]        The user logging in as <ADMIN_PWD> will become\n"
@@ -2467,12 +2467,12 @@ msgstr ""
 "    [-a <ADMIN_PWD>]        Brugeren som logger ind som <ADMIN_PWD> vil "
 "blive\n"
 
-#: server/server.c:1005
+#: server/server.c:1009
 #, c-format
 msgid "                            the administrator named 'admin'.\n"
 msgstr "                            administratoren navngivet »admin«.\n"
 
-#: server/server.c:1009
+#: server/server.c:1013
 #, c-format
 msgid ""
 "    [-f <FRAMERATE>]        Number of send/recv handlings in a second.\n"
@@ -2480,12 +2480,12 @@ msgstr ""
 "    [-f <FRAMERATE>]        Antallet af send/modtag handlinger på et "
 "sekund.\n"
 
-#: server/server.c:1010
+#: server/server.c:1014
 #, c-format
 msgid "                            (Default: 33)\n"
 msgstr "                           (Standard: 33)\n"
 
-#: server/server.c:1011
+#: server/server.c:1015
 #, c-format
 msgid ""
 "    [-b <BOTNUM>]           Number of paddle bots with 800 and 1000 "
@@ -2493,52 +2493,52 @@ msgid ""
 msgstr ""
 "    [-b <BOTNUM>]           Antallet af brætrobotter med styrke 800 og 1000\n"
 
-#: server/server.c:1012
+#: server/server.c:1016
 #, c-format
 msgid "                            each. (Default: 0)\n"
 msgstr "                            hver. (Standard: 0)\n"
 
-#: server/server.c:1044
+#: server/server.c:1051
 #, c-format
 msgid "greetings file not found, setting directly: %s\n"
 msgstr "velkomstfil blev ikke fundet, angiver direkte: %s\n"
 
-#: server/server.c:1051
+#: server/server.c:1058
 #, c-format
 msgid "greetings loaded: %s\n"
 msgstr "velkomst indlæst: %s\n"
 
-#: server/server.c:1084
+#: server/server.c:1091
 #, c-format
 msgid "server halted\n"
 msgstr "server stoppet\n"
 
-#: server/server.c:1105
+#: server/server.c:1112
 #, c-format
 msgid "Welcome to LBreakout2 online!"
 msgstr "Velkommen til LBreakout2 på nettet!"
 
-#: server/server.c:1125
+#: server/server.c:1132
 #, c-format
 msgid "user limit is %i\n"
 msgstr "brugerbegrænsningen er %i\n"
 
-#: server/server.c:1126
+#: server/server.c:1133
 #, c-format
 msgid "FPS: %i (delay: %i ms)\n"
 msgstr "FPS: %i (forsinkelse: %i ms)\n"
 
-#: server/server.c:1134
+#: server/server.c:1141
 #, c-format
 msgid "BOT%i-800"
 msgstr "BOT%i-800"
 
-#: server/server.c:1139
+#: server/server.c:1146
 #, c-format
 msgid "BOT%i-1000"
 msgstr "BOT%i-1000"
 
-#: server/server.c:1189
+#: server/server.c:1196
 #, c-format
 msgid "LBreakout2 has been compiled without network support.\n"
 msgstr "LBreakout2 er blevet kompileret uden netværksunderstøttelse.\n"
@@ -2565,5 +2565,3 @@ msgstr "Ekstern spiller har forladt spillet ..."
 #, c-format
 msgid "game %i: %s: state %i: invalid message %x: skipping %i bytes\n"
 msgstr "spil %i: %s: tilstand %i: ugyldig besked %x: udelader %i byte\n"
-
-
