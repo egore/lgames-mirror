@@ -1,5 +1,14 @@
-LBreakoutHD
------------
+ToC
+---
+  Introduction
+  Extras/Bricks
+  Minigames
+  Themes
+  Troubleshooting
+
+
+Introduction
+------------
 
 First and foremost to make things clear: LBreakoutHD is an HD remake 
 of LBreakout2 (all levelsets and themes will work). The game itself is
@@ -97,6 +106,7 @@ successful catch you'll get more score but have less time.
 
 Jumping Jack: Try to hit the brick before time runs out. If you succeed it jumps
 to a new position. With every hit you'll gain more score but have less time. 
+
 
 Themes
 ------
@@ -198,6 +208,19 @@ Use GIMP to mix colors or translate #...... hex values.
 menu.* in theme.ini allows to modify some menu position stuff. All values are in
 pixels in theme resolution. Just play around with the values if you're 
 interested in changing it.
+
+
+Troubleshooting
+---------------
+1) If bonuses/maluses are not shown properly on older machines it's an SDL2 
+problem connected to older versions of OpenGL (already reported to SDL 
+thanks to Antoni Aloy Torrens). If you have this problem you can try to run
+  LIBGL_ALWAYS_SOFTWARE=1 lbreakouthd 
+to use software rendering. This might fix the problem of not showing 
+bonuses/maluses but will be slower.
+
+2) If the screen is cut off this might be due to an older non-16:9 
+resolution like 1366x768. Either switch to 1280x720 or play in window mode.
 
 Enjoy,
 Michael
