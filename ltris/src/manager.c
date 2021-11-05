@@ -290,7 +290,6 @@ void manager_create()
 
     filter[SDLK_ESCAPE] = 0;
     filter[SDLK_RETURN] = 0;
-    filter[SDLK_q] = 0;
     filter[SDLK_f] = 0;
     
     /* menus are added to this list for deleting later */
