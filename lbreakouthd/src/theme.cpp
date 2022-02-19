@@ -496,8 +496,8 @@ void Theme::load(string name, uint screenWidth, uint screenHeight,
 	sExtras[EX_SCORE5000].load(testRc(path,"score.wav"));
 	sExtras[EX_SCORE10000].load(testRc(path,"score.wav"));
 	sExtras[EX_GOLDSHOWER].load(testRc(path,"score.wav"));
-	sExtras[EX_SHORTEN].load(testRc(path,"expand.wav"));
-	sExtras[EX_LENGTHEN].load(testRc(path,"shrink.wav"));
+	sExtras[EX_SHORTEN].load(testRc(path,"shrink.wav"));
+	sExtras[EX_LENGTHEN].load(testRc(path,"expand.wav"));
 	sExtras[EX_LIFE].load(testRc(path,"gainlife.wav"));
 	sExtras[EX_SLIME].load(testRc(path,"attach.wav"));
 	sExtras[EX_METAL].load(testRc(path,"energyhit.wav"));
