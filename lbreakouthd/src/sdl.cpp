@@ -104,31 +104,119 @@ int Image::createFromScreen()
 	return ret;
 }
 
+/** OLD STUFF FOR SOFTWARE SCALE AS FALLBACK */
+
+/** Set pixel in surface. */
+Uint32 set_pixel( SDL_Surface *surf, int x, int y, Uint32 pixel )
+{
+    int pos = 0;
+
+    if (x < 0 || y < 0 || x >= surf->w || y >= surf->h)
+	    return pixel;
+
+    pos = y * surf->pitch + x * surf->format->BytesPerPixel;
+    memcpy( (char*)(surf->pixels) + pos, &pixel, surf->format->BytesPerPixel );
+    return pixel;
+}
+
+/** Get pixel from surface. */
+Uint32 get_pixel( SDL_Surface *surf, int x, int y )
+{
+    int pos = 0;
+    Uint32 pixel = 0;
+
+    pos = y * surf->pitch + x * surf->format->BytesPerPixel;
+    memcpy( &pixel, (char*)(surf->pixels) + pos, surf->format->BytesPerPixel );
+    return pixel;
+}
+
+/** Scale surface to half the size */
+SDL_Surface *create_small_surface(SDL_Surface *src) {
+	SDL_Surface *dst = 0;
+	SDL_PixelFormat *spf = src->format;
+
+	if ((dst = SDL_CreateRGBSurface(SDL_SWSURFACE,
+			src->w/2, src->h/2,
+			spf->BitsPerPixel,
+			spf->Rmask, spf->Gmask, spf->Bmask,
+			spf->Amask)) == 0) {
+		_logsdlerr();
+		return 0;
+	}
+
+        for ( int j = 0; j < dst->h; j++ ) {
+            for ( int i = 0; i < dst->w; i++ )
+                set_pixel(dst, i, j,
+                           get_pixel( src, i*2, j*2 ) );
+        }
+	return dst;
+}
+
+/** OLD STUFF END */
+
+/** Load image from file. Return
+ *   1 on success without any problems
+ *   2 on successfully loading surface but failing to create hardware texture
+ *     then surface is scaled to half size and smaller texture is created
+ *   0 on complete failure
+ */
 int Image::load(const string& fname)
 {
 	_logdebug(1,"Loading texture %s\n",fname.c_str());
 
+	/* delete old texture */
 	if (tex) {
 		SDL_DestroyTexture(tex);
 		tex = NULL;
 	}
+	w = 0;
+	h = 0;
 
+	/* load image as software surface */
 	SDL_Surface *surf = IMG_Load(fname.c_str());
 	if (surf == NULL) {
 		_logsdlerr();
 		return 0;
 	}
+
+	/* set black as color key if requested for old images */
 	if (Image::useColorKeyBlack)
 		SDL_SetColorKey(surf, SDL_TRUE, 0x0);
-	if ((tex = SDL_CreateTextureFromSurface(mrc, surf)) == NULL) {
+
+	/* create hardware texture from software surface */
+	if ((tex = SDL_CreateTextureFromSurface(mrc, surf))) {
+		w = surf->w;
+		h = surf->h;
+		SDL_FreeSurface(surf);
+		return 1;
+	}
+	_logsdlerr();
+
+	/* if we get here, surface was loaded thus file found
+	 * but we couldn't create the texture strongly suggesting
+	 * it is too large for video memory. so we scale down and
+	 * retry once before we give up. */
+
+	/* get new surface half the size */
+	SDL_Surface *newsurf = create_small_surface(surf);
+	if (newsurf == 0) {
 		_logsdlerr();
+		SDL_FreeSurface(surf);
 		return 0;
 	}
-	w = surf->w;
-	h = surf->h;
+
+	/* create texture with new surface */
+	int ret = 0;
+	if ((tex = SDL_CreateTextureFromSurface(mrc, newsurf))) {
+		w = newsurf->w;
+		h = newsurf->h;
+		ret = 2;
+	}
 	SDL_FreeSurface(surf);
-	return 1;
+	SDL_FreeSurface(newsurf);
+	return ret;
 }
+
 int Image::load(SDL_Surface *s)
 {
 	_logdebug(1,"Loading texture from surface %dx%d\n",s->w,s->h);
@@ -291,9 +379,19 @@ int Image::createShadow(Image &img)
 
 int GridImage::load(const string& fname, int _gw, int _gh)
 {
+	/* set grid size and load basic image */
 	gw = _gw;
 	gh = _gh;
-	return Image::load(fname);
+	int ret = Image::load(fname);
+	/* if 2 is returned the image was scaled down to
+	 * half the size so adjust grid size accordingly. */
+	if (ret == 2) {
+		gw /= 2;
+		gh /= 2;
+		_logerr("Grid image %s too big for hardware texture: scaled to half size %dx%d",
+				fname.c_str(),gw,gh);
+	}
+	return ret;
 }
 
 int GridImage::load(SDL_Surface *s, int _gw, int _gh)
