@@ -54,7 +54,7 @@ AC_ARG_ENABLE( audio,
 AC_SUBST(datdir)
 AC_SUBST(hiscoredir)
 
-CFLAGS="$CFLAGS -Wall -Wno-int-conversion -Wno-format -Wno-implicit-function-declaration"
+CFLAGS="$CFLAGS -Wall"
 CFLAGS="$CFLAGS $SDL_CFLAGS $audio_flag $debugflags -DSRC_DIR=\\\"$datdir\\\" -DCONFIGDIRNAME=\\\"$configdir\\\" -DHISCOREDIR=\\\"$hiscoredir\\\""
 LIBS="$LIBS -lm $SDL_LIBS $audio_lib"
 
