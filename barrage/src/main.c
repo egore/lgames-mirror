@@ -349,7 +349,7 @@ static void draw_score()
 static void draw_time( int ms )
 {
 	static int old_secs = 0;
-	char str[8];
+	char str[16];
 	int secs = game_end - time(0);
 	
 	/* blink timer when time is running out in such a way
@@ -366,7 +366,7 @@ static void draw_time( int ms )
 	}
 	
 	if ( !timer_visible ) return;
-	snprintf( str, 8, "%i:%02i", secs/60, secs%60 ); str[7] = 0;
+	snprintf( str, 16, "%d:%02d", secs/60, secs%60 ); str[15] = 0;
 	SDL_WriteTextRight( ft_main, screen, 630, 10, str );
 }
 
@@ -757,7 +757,7 @@ int main( int argc, char **argv )
   const SDL_VideoInfo* info;
 
   printf( "BARRAGE v%s\n", VERSION );
-  printf( "Copyright 2003-2019 Michael Speck (http://lgames.sf.net)\n" );
+  printf( "Copyright 2003-2022 Michael Speck (http://lgames.sf.net)\n" );
   printf( "Released under GNU GPL\n---\n" );
 
   while ( ( c = getopt( argc, argv, "d:wsr:" ) ) != -1 )
