@@ -388,7 +388,7 @@ int GridImage::load(const string& fname, int _gw, int _gh)
 	if (ret == 2) {
 		gw /= 2;
 		gh /= 2;
-		_logerr("Grid image %s too big for hardware texture: scaled to half size %dx%d",
+		_logerr("Grid image %s too large for hardware texture: scaled to half size %dx%d\n",
 				fname.c_str(),gw,gh);
 	}
 	return ret;
