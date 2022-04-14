@@ -123,6 +123,8 @@ Hint strings for the menu.
 			"really hard but also very interesting.")
 #define HINT_SHIFTSOUND _("Enable/Disable piece shift sound.")
 #define HINT_DASMODE _("Normal is the classic 16/6 and Fast is 10/3 which roughly equals what hypertappers can achieve.")
+#define HINT_ASDELAY _("Initial delay before auto shift starts. Classic DAS equals 270.")
+#define HINT_ASSPEED _("Delay between auto shift steps. Classic DAS equals 100.")
                        
 /*
 ====================================================================
@@ -434,11 +436,11 @@ void manager_create()
     menu_add( cont, item_create_link( _("Player2"), HINT_CONTROLS, cont_player2 ) );
     menu_add( cont, item_create_link( _("Player3"), HINT_CONTROLS, cont_player3 ) );
     menu_add( cont, item_create_separator( "" ) );
-    //menu_add( cont, item_create_range( _("Horizontal Delay:"),  HINT_HORIDEL,&config.hori_delay, 0, 9, 1 ) );
-    //menu_add( cont, item_create_range( _("Vertical Delay:"),  HINT_VERTDEL,&config.vert_delay, 0, 9, 1 ) );
     menu_add( cont, pause_key );
     menu_add( cont, item_create_separator( "" ) );
-    menu_add( cont, item_create_switch( _("DAS Mode:"), HINT_DASMODE, &config.hyper_das, _("Normal"), _("Fast") ));
+    menu_add( cont, item_create_range( _("Auto-Shift Delay:"),  HINT_ASDELAY,&config.as_delay, 20, 400, 10 ) );
+    menu_add( cont, item_create_range( _("Auto-Shift Speed:"),  HINT_ASSPEED,&config.as_speed, 20, 400, 10 ) );
+    //menu_add( cont, item_create_switch( _("DAS Mode:"), HINT_DASMODE, &config.hyper_das, _("Normal"), _("Fast") ));
     menu_add( cont, item_create_separator( "" ) );
     menu_add( cont, item_create_link( _("Back"), HINT_, _main ) );
     /* controls player 1 */
