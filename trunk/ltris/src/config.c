@@ -78,7 +78,8 @@ void config_reset()
     config.cpu_delay = 700;
     config.cpu_rot_delay = 100;
     /* controls */
-    config.hori_delay = 3;
+    config.as_delay = 170;
+    config.as_speed = 50;
     config.vert_delay= 3;
     config.hyper_das = 0;
     config.pause_key = SDLK_p;
@@ -197,7 +198,8 @@ void config_load( )
     parser_get_int( pd, "show_fps", &config.show_fps );
     parser_get_int( pd, "background", &config.bkgnd );
     parser_get_int( pd, "static_background", &config.keep_bkgnd );
-    parser_get_int( pd, "hori_delay", &config.hori_delay );
+    parser_get_int( pd, "as_delay", &config.as_delay );
+    parser_get_int( pd, "as_speed", &config.as_speed );
     parser_get_int( pd, "vert_delay", &config.vert_delay );
     parser_get_int( pd, "pause_key", &config.pause_key );
     parser_get_int( pd, "block_by_block", &config.block_by_block );
@@ -267,7 +269,8 @@ void config_save( )
         fprintf( file, "show_fps=%i\n", config.show_fps );
         fprintf( file, "background=%i\n", config.bkgnd );
         fprintf( file, "static_background=%i\n", config.keep_bkgnd );
-        fprintf( file, "hori_delay=%i\n", config.hori_delay );
+        fprintf( file, "as_delay=%i\n", config.as_delay );
+        fprintf( file, "as_speed=%i\n", config.as_speed );
         fprintf( file, "vert_delay=%i\n", config.vert_delay );
         fprintf( file, "pause_key=%i\n", config.pause_key );
         fprintf( file, "block_by_block=%i\n", config.block_by_block );
