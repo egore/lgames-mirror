@@ -1,6 +1,7 @@
 - allow changing cpu difficulty
 - allow skipping triplets on mismatch
 - auto layout cards
+- tile sets with captions for cards and matching opposites
 
 known bugs:
 - view gets into state OPENINGCARD without id in game.openCardIds
