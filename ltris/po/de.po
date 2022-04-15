@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2022-04-14 14:02+0200\n"
+"POT-Creation-Date: 2022-04-14 14:14+0200\n"
 "PO-Revision-Date: 2005-10-05 22:46+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <de@li.org>\n"
@@ -342,7 +342,7 @@ msgstr "50 FPS"
 msgid "Defensive"
 msgstr "Defensiv"
 
-#: src/manager.c:228 src/manager.c:356 src/main.c:73
+#: src/manager.c:228 src/manager.c:355 src/main.c:73
 msgid "Normal"
 msgstr "Normal"
 
@@ -354,233 +354,233 @@ msgstr "Aggressiv"
 msgid "Kamikaze"
 msgstr "Kamikaze"
 
-#: src/manager.c:301
+#: src/manager.c:300
 msgid "Menu"
 msgstr "Menue"
 
-#: src/manager.c:302 src/manager.c:324 src/manager.c:337
+#: src/manager.c:301 src/manager.c:323 src/manager.c:336
 msgid "Graphics"
 msgstr "Grafik"
 
-#: src/manager.c:303 src/manager.c:318
+#: src/manager.c:302 src/manager.c:317
 msgid "New Game"
 msgstr "Neues Spiel"
 
-#: src/manager.c:304 src/manager.c:323 src/manager.c:336
+#: src/manager.c:303 src/manager.c:322 src/manager.c:335
 msgid "Controls"
 msgstr "Kontrollen"
 
-#: src/manager.c:305 src/manager.c:436
+#: src/manager.c:304 src/manager.c:435
 msgid "Player1"
 msgstr "Spieler1"
 
-#: src/manager.c:306 src/manager.c:437
+#: src/manager.c:305 src/manager.c:436
 msgid "Player2"
 msgstr "Spieler2"
 
-#: src/manager.c:307 src/manager.c:438
+#: src/manager.c:306 src/manager.c:437
 msgid "Player3"
 msgstr "Spieler3"
 
-#: src/manager.c:308 src/manager.c:384
+#: src/manager.c:307 src/manager.c:383
 msgid "Multiplayer Options"
 msgstr "Mehrspieler-Optionen"
 
-#: src/manager.c:309
+#: src/manager.c:308
 msgid "Advanced Options"
 msgstr "Erweiterte Optionen"
 
-#: src/manager.c:311 src/manager.c:321
+#: src/manager.c:310 src/manager.c:320
 msgid "Options"
 msgstr "Optionen"
 
-#: src/manager.c:314 src/manager.c:326 src/manager.c:328 src/manager.c:338
-#: src/manager.c:339
+#: src/manager.c:313 src/manager.c:325 src/manager.c:327 src/manager.c:337
+#: src/manager.c:338
 msgid "Audio"
 msgstr "Audio"
 
-#: src/manager.c:333 src/menu.c:171
+#: src/manager.c:332 src/menu.c:171
 msgid "Quit"
 msgstr "Beenden"
 
-#: src/manager.c:341 src/manager.c:353 src/manager.c:371 src/manager.c:386
-#: src/manager.c:399 src/manager.c:446 src/manager.c:451 src/manager.c:456
-#: src/manager.c:461 src/manager.c:469 src/menu.c:168
+#: src/manager.c:340 src/manager.c:352 src/manager.c:370 src/manager.c:385
+#: src/manager.c:398 src/manager.c:445 src/manager.c:450 src/manager.c:455
+#: src/manager.c:460 src/manager.c:468 src/menu.c:168
 msgid "Back"
 msgstr "Zurueck"
 
-#: src/manager.c:345
+#: src/manager.c:344
 msgid "Sound:"
 msgstr "Sound:"
 
-#: src/manager.c:345 src/manager.c:351 src/manager.c:360 src/manager.c:382
-#: src/manager.c:390 src/manager.c:391 src/manager.c:392 src/manager.c:394
-#: src/manager.c:466
+#: src/manager.c:344 src/manager.c:350 src/manager.c:359 src/manager.c:381
+#: src/manager.c:389 src/manager.c:390 src/manager.c:391 src/manager.c:393
+#: src/manager.c:465
 msgid "Off"
 msgstr "Aus"
 
-#: src/manager.c:345 src/manager.c:351 src/manager.c:360 src/manager.c:382
-#: src/manager.c:390 src/manager.c:391 src/manager.c:392 src/manager.c:394
-#: src/manager.c:466
+#: src/manager.c:344 src/manager.c:350 src/manager.c:359 src/manager.c:381
+#: src/manager.c:389 src/manager.c:390 src/manager.c:391 src/manager.c:393
+#: src/manager.c:465
 msgid "On"
 msgstr "An"
 
-#: src/manager.c:348
+#: src/manager.c:347
 msgid "Volume:"
 msgstr "Lautstaerke:"
 
-#: src/manager.c:351
+#: src/manager.c:350
 #, fuzzy
 msgid "Shift Sound:"
 msgstr "Sound:"
 
-#: src/manager.c:356
+#: src/manager.c:355
 msgid "Animations:"
 msgstr "Animationen:"
 
-#: src/manager.c:356
+#: src/manager.c:355
 msgid "Simple"
 msgstr ""
 
-#: src/manager.c:358 src/manager.c:407 src/manager.c:413 src/manager.c:419
+#: src/manager.c:357 src/manager.c:406 src/manager.c:412 src/manager.c:418
 msgid "Drop:"
 msgstr "Fall:"
 
-#: src/manager.c:358
+#: src/manager.c:357
 msgid "Smooth"
 msgstr "Weich"
 
-#: src/manager.c:358
+#: src/manager.c:357
 msgid "Tile By Tile"
 msgstr "Stueckweise"
 
-#: src/manager.c:360
+#: src/manager.c:359
 msgid "Quick Help:"
 msgstr "Schnellhilfe:"
 
-#: src/manager.c:365
+#: src/manager.c:364
 msgid "Display:"
 msgstr "Anzeige:"
 
-#: src/manager.c:365
+#: src/manager.c:364
 msgid "Window"
 msgstr "Fenster"
 
-#: src/manager.c:365
+#: src/manager.c:364
 msgid "Fullscreen"
 msgstr "Vollbild"
 
-#: src/manager.c:369
+#: src/manager.c:368
 msgid "Frame Rate:"
 msgstr "Frame-Rate:"
 
-#: src/manager.c:373
+#: src/manager.c:372
 msgid "Start Game"
 msgstr "Starte Spiel"
 
-#: src/manager.c:375
+#: src/manager.c:374
 msgid "1st Player:"
 msgstr "1. Spieler:"
 
-#: src/manager.c:376
+#: src/manager.c:375
 msgid "2nd Player:"
 msgstr "2. Spieler:"
 
-#: src/manager.c:377
+#: src/manager.c:376
 msgid "3rd Player:"
 msgstr "3. Spieler:"
 
-#: src/manager.c:379
+#: src/manager.c:378
 #, fuzzy
 msgid "Game Style:"
 msgstr "CPU Stil:"
 
-#: src/manager.c:379
+#: src/manager.c:378
 msgid "Classic"
 msgstr "Klassisch"
 
-#: src/manager.c:379
+#: src/manager.c:378
 msgid "Modern"
 msgstr ""
 
-#: src/manager.c:380
+#: src/manager.c:379
 #, fuzzy
 msgid "Game Mode:"
 msgstr "Spieltyp:"
 
-#: src/manager.c:381
+#: src/manager.c:380
 msgid "Starting Level:"
 msgstr "Startebene:"
 
-#: src/manager.c:382
+#: src/manager.c:381
 msgid "Preview:"
 msgstr "Vorschau:"
 
-#: src/manager.c:389
+#: src/manager.c:388
 msgid "Holes:"
 msgstr "Loecher:"
 
-#: src/manager.c:390
+#: src/manager.c:389
 msgid "Random Holes:"
 msgstr "Zufaellige Loecher:"
 
-#: src/manager.c:391
+#: src/manager.c:390
 msgid "Send All Lines:"
 msgstr "Sende Alle Reihen:"
 
-#: src/manager.c:392
+#: src/manager.c:391
 msgid "Always Send Tetris:"
 msgstr "Sende Immer Tetris:"
 
-#: src/manager.c:394
+#: src/manager.c:393
 msgid "Center Preview:"
 msgstr "Vorschau zentrieren:"
 
-#: src/manager.c:396
+#: src/manager.c:395
 msgid "CPU Style:"
 msgstr "CPU Stil:"
 
-#: src/manager.c:397
+#: src/manager.c:396
 msgid "CPU Drop Delay:"
 msgstr "CPU Verzoegerung:"
 
-#: src/manager.c:401
+#: src/manager.c:400
 msgid "Pause Key:"
 msgstr "Pausetaste:"
 
-#: src/manager.c:402 src/manager.c:408 src/manager.c:414
+#: src/manager.c:401 src/manager.c:407 src/manager.c:413
 msgid "Left:"
 msgstr "Links:"
 
-#: src/manager.c:403 src/manager.c:409 src/manager.c:415
+#: src/manager.c:402 src/manager.c:408 src/manager.c:414
 msgid "Right:"
 msgstr "Rechts:"
 
-#: src/manager.c:404 src/manager.c:410 src/manager.c:416
+#: src/manager.c:403 src/manager.c:409 src/manager.c:415
 msgid "Rotate Left:"
 msgstr "Rotiere Links:"
 
-#: src/manager.c:405 src/manager.c:411 src/manager.c:417
+#: src/manager.c:404 src/manager.c:410 src/manager.c:416
 msgid "Rotate Right:"
 msgstr "Rotiere Rechts:"
 
-#: src/manager.c:406 src/manager.c:412 src/manager.c:418
+#: src/manager.c:405 src/manager.c:411 src/manager.c:417
 msgid "Down:"
 msgstr "Runter:"
 
-#: src/manager.c:442
+#: src/manager.c:441
 msgid "Auto-Shift Delay:"
 msgstr ""
 
-#: src/manager.c:443
+#: src/manager.c:442
 msgid "Auto-Shift Speed:"
 msgstr ""
 
-#: src/manager.c:465
+#: src/manager.c:464
 msgid "Test CPU Algorithm"
 msgstr ""
 
-#: src/manager.c:466
+#: src/manager.c:465
 msgid "Visualization"
 msgstr "Visualisierung"
 

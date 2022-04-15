@@ -992,8 +992,6 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
 
     bowl_reset_contents( bowl );
     bowl->next_block_id = next_blocks[bowl->next_blocks_pos++];
-    delay_set( &bowl->block_hori_delay, 100/*config.hori_delay * 12 + 63*/ );
-    bowl->block_hori_vel = (float)bowl->block_size / bowl->block_hori_delay.limit;
     /* translate config option vert_delay into drop_vel to avoid unnecessary
      * changes in the code. the lower the delay the higher the velocity. */
     bowl->block_drop_vel = 0.6; // fixed to 0.6; 0.8 - config.vert_delay*0.07;
