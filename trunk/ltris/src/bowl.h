@@ -86,12 +86,11 @@ typedef struct {
     Delay add_delay; /* delay until next add action */
     int contents[BOWL_WIDTH][BOWL_HEIGHT]; /* indices of blocks or -1 */
     Block block;/* current block */
-    Delay block_hori_delay; /* horizontal movement delay */
     int next_block_id; /* id of next block */
     int use_same_blocks; /* use global block list? */
     int next_blocks_pos; /* position in tetris next_blocks for 
                             mulitplayer games */
-    float block_vert_vel, block_hori_vel; /* velocity per ms */
+    float block_vert_vel; /* velocity per ms */
     float block_drop_vel;
     int score_sx, score_sy, score_sw, score_sh; /* region with score and lines/level */
     int game_over; /* set if bowl is filled */
