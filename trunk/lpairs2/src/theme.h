@@ -20,7 +20,26 @@ class Menu;
 
 enum {
 	MAXWALLPAPERS = 10,
-	MAXPICTURES = 50
+	MAXMOTIFS = 50
+};
+
+class Motif {
+	Texture motif;
+	string caption;
+	Label label;
+public:
+	void set(Texture &t, const string &c, Font &f) {
+		motif.duplicate(t);
+		size_t pos = c.find('.');
+		if (pos != string::npos)
+			caption = c.substr(0,pos);
+		else
+			caption = c;
+		label.setText(f,caption);
+	}
+	Texture& getTexture() {return motif;}
+	const string& getCaption() {return caption;}
+	Label& getLabel() {return label;}
 };
 
 class Theme {
@@ -35,10 +54,9 @@ class Theme {
 
 	Texture wallpapers[MAXWALLPAPERS];
 	uint numWallpapers;
-	Texture cardBack, cardFocus;
-	Texture cards[MAXPICTURES];
-	Texture cardShadow;
-	uint numCards;
+	Texture cardBack, cardFocus, cardShadow;
+	Motif motifs[MAXMOTIFS];
+	uint numMotifs;
 	Font fSmall, fNormal, fNormalHighlighted;
 
 	Sound sClick, sFail, sRemove;
@@ -54,7 +72,7 @@ class Theme {
 	}
 public:
 	Theme() : menuX(0), menuY(0), menuItemWidth(0), menuItemHeight(0),
-			numWallpapers(0)
+			numWallpapers(0), numMotifs(0)
 	{
 		stdPath = string(DATADIR) + "/themes/Standard";
 	}

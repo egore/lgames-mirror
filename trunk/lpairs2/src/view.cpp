@@ -88,7 +88,7 @@ void View::init(string t, uint f)
 	if (noGameYet) {
 		changeWallpaper();
 		game.init(renderer.rx2sx(1), renderer.ry2sy(0.90),
-				GM_SOLO, GM_HUGE, 2, config.fullscreen, theme.numCards*2);
+				GM_SOLO, GM_HUGE, 2, config.fullscreen, theme.numMotifs*2);
 	} else
 		startGame();
 	cxoff = renderer.rx2sx(0.00);
@@ -244,7 +244,7 @@ void View::run()
 				if (game.curPlayer == 1)
 					dx = renderer.rx2sx(1) - c.w;
 				a = new FadeAnimation(
-					theme.cards[c.id], cxoff+c.x, cyoff+c.y,
+					theme.motifs[c.id].getTexture(), cxoff+c.x, cyoff+c.y,
 							dx, renderer.ry2sy(1), c.w, c.h,
 							ANIM_FADEDURATION);
 				sprites.push_back(unique_ptr<FadeAnimation>(a));
@@ -296,7 +296,7 @@ void View::render()
 		if (c.removed || skipAnimatedCard(i))
 			continue;
 		if (c.open || noGameYet)
-			theme.cards[c.id].copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
+			theme.motifs[c.id].getTexture().copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
 		else if (!menuActive && state == VS_IDLE &&
 				!game.getCurrentPlayer().isCPU() &&
 				c.hasFocus(mcx - cxoff, mcy - cyoff))
@@ -316,6 +316,14 @@ void View::render()
 			ALIGN_X_LEFT | ALIGN_Y_CENTER);
 	lblErrors.copy(renderer.rx2sx(0.99),renderer.ry2sy(0.975),
 			ALIGN_X_RIGHT | ALIGN_Y_CENTER);
+	if (state == VS_IDLE)
+		for (uint i = 0; i < game.numOpenCards; i++) {
+			Card &c = game.cards[game.openCardIds[i]];
+			theme.motifs[c.id].getLabel().copy(
+					cxoff + c.x + c.w/2,
+					cyoff + c.y + c.h,
+					ALIGN_X_CENTER | ALIGN_Y_BOTTOM);
+		}
 
 	if (game.gameover && !menuActive) {
 		lblRestart.copy(renderer.rx2sx(0.5),renderer.ry2sy(0.5),
@@ -647,7 +655,7 @@ void View::startGame()
 	changeWallpaper();
 	game.init(renderer.rx2sx(1), renderer.ry2sy(0.90),
 			config.gamemode, config.setsize, config.matchsize,
-			config.fullscreen, theme.numCards*config.matchsize);
+			config.fullscreen, theme.numMotifs*config.matchsize);
 	noGameYet = false;
 	lblTime.setText(theme.fNormal, _("Time: 0:00"));
 	renderPlayerInfo();
@@ -673,11 +681,11 @@ void View::startTurningAnimation(uint cid)
 			c.w, c.h, ANIM_TURNDURATION);
 	sprites.push_back(unique_ptr<TurnAnimation>(ta));
 	if (c.open)
-		ta = new TurnAnimation(theme.cardBack, theme.cards[c.id],
+		ta = new TurnAnimation(theme.cardBack, theme.motifs[c.id].getTexture(),
 				cxoff+c.x+c.w/2, cyoff+c.y+c.h/2, c.w, c.h,
 				ANIM_TURNDURATION);
 	else
-		ta = new TurnAnimation(theme.cards[c.id], theme.cardBack,
+		ta = new TurnAnimation(theme.motifs[c.id].getTexture(), theme.cardBack,
 				cxoff+c.x+c.w/2, cyoff+c.y+c.h/2, c.w, c.h,
 				ANIM_TURNDURATION);
 	sprites.push_back(unique_ptr<TurnAnimation>(ta));
