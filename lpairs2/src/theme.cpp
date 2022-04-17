@@ -26,7 +26,7 @@ void Theme::load(string name, Renderer &r)
 {
 	string path, fpath;
 	vector<string> fnames;
-	Texture cbase; /* card front */
+	Texture cbase, card; /* card front and assembled card */
 	Texture pic;
 	int dx, dy, dw, dh;
 
@@ -39,6 +39,12 @@ void Theme::load(string name, Renderer &r)
 	Texture::setRenderScaleQuality(1);
 
 	readDir(path, RD_FILES, fnames);
+
+	/* fonts */
+	fSmall.load(testRc(path,"f_normal.otf"), r.ry2sy(0.028));
+	fNormal.load(testRc(path,"f_bold.otf"), r.ry2sy(0.037));
+	fNormalHighlighted.load(testRc(path,"f_bold.otf"), r.ry2sy(0.037));
+	fNormalHighlighted.setColor(255,220,0,255);
 
 	/* load wallpapers */
 	numWallpapers = 0;
@@ -61,16 +67,17 @@ void Theme::load(string name, Renderer &r)
 	cardBack.load(testRc(path,"c_back.png"));
 	cardFocus.load(testRc(path,"c_focus.png"));
 	cbase.load(testRc(path,"c_front.png"));
+	cardShadow.createShadow(cbase);
 
-	/* cards - no fallback this has to be present */
-	numCards = 0;
+	/* motifs - no fallback this has to be present */
+	numMotifs = 0;
 	for (uint i = 0; i < fnames.size(); i++) {
 		if (fnames[i].substr(0,2) == "p_") {
 			_logdebug(1,"  Building %s\n",fnames[i].c_str());
 			pic.load(path + "/" + fnames[i]);
-			cards[numCards].duplicate(cbase);
-			cards[numCards].setBlendMode(1);
-			r.setTarget(cards[numCards]);
+			card.duplicate(cbase);
+			card.setBlendMode(1);
+			r.setTarget(card);
 			if (pic.getWidth() > pic.getHeight()) {
 				dw = 0.94 * cbase.getWidth();
 				dh = dw * pic.getHeight() / pic.getWidth();
@@ -82,18 +89,12 @@ void Theme::load(string name, Renderer &r)
 			dy = (cbase.getHeight() - dh) / 2;
 			pic.copy(dx,dy,dw,dh);
 			r.clearTarget();
-			numCards++;
+			motifs[numMotifs].set(card,fnames[i],fSmall);
+			numMotifs++;
 		}
-		if (numCards == MAXPICTURES)
+		if (numMotifs == MAXMOTIFS)
 			break;
 	}
-	cardShadow.createShadow(cbase);
-
-	/* fonts */
-	fSmall.load(testRc(path,"f_normal.otf"), r.ry2sy(0.028));
-	fNormal.load(testRc(path,"f_bold.otf"), r.ry2sy(0.037));
-	fNormalHighlighted.load(testRc(path,"f_bold.otf"), r.ry2sy(0.037));
-	fNormalHighlighted.setColor(255,220,0,255);
 
 	/* menu */
 	menuX = r.rx2sx(0.16);
