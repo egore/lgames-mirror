@@ -66,6 +66,7 @@ class View {
 	Label lblRestart, lblResult;
 	int mcx, mcy; /* mouse cursor position */
 	list<unique_ptr<Sprite>> sprites;
+	int captionKeyPressed;
 
 	/* stats */
 	Uint32 fpsCycles, fpsStart;

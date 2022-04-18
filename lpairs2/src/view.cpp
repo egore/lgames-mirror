@@ -31,6 +31,7 @@ View::View(Renderer &r, Config &cfg, Game &gm)
 	  game(gm), quitReceived(false),
 	  lblScore(true), lblTime(true), lblErrors(true),
 	  mcx(-1), mcy(-1),
+	  captionKeyPressed(0),
 	  fpsCycles(0), fpsStart(0), fps(0)
 {
 	mixer.open(config.channels, config.audiobuffersize);
@@ -175,6 +176,13 @@ void View::run()
 			buttonY += cyoff;
 		}
 
+		/* get key state */
+		const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+		if (keystate[SDL_SCANCODE_LSHIFT] || keystate[SDL_SCANCODE_RSHIFT])
+			captionKeyPressed = 1;
+		else
+			captionKeyPressed = 0;
+
 		/* get passed time */
 		ms = ticks.get();
 
@@ -306,6 +314,8 @@ void View::render()
 
 		/* motif caption */
 		if (!menuActive && state == VS_IDLE &&
+				(config.motifcaption == 2 ||
+				(config.motifcaption == 1 && captionKeyPressed)) &&
 					!game.getCurrentPlayer().isCPU() &&
 					c.open == true &&
 					c.hasFocus(mcx - cxoff, mcy - cyoff))
@@ -416,6 +426,7 @@ void View::createMenus()
 	const int bufSizes[] = { 256, 512, 1024, 2048, 4096 };
 	const int channelNums[] = { 8, 16, 32 };
 	const char *modeNames[] = {_("Solo"), _("Vs CPU"), _("Vs Human") };
+	const char *captionModeNames[] = {_("Off"),_("On Shift"),_("Always")};
 
 	/* XXX too lazy to set fonts for each and every item...
 	 * use static pointers instead */
@@ -447,6 +458,9 @@ void View::createMenus()
 	mNewGame->add(new MenuItemRange(_("Close Delay"),
 			"Time in seconds until opened cards are turned over again.",
 			AID_NONE,config.closedelay,1,5,1));
+	mNewGame->add(new MenuItemList(_("Captions"),
+			_("Display caption of card if mouse pointer is on open card. With 'On Shift' a shift key must additionally be pressed."),
+			AID_NONE,config.motifcaption,captionModeNames,3));
 	mNewGame->add(new MenuItemSep());
 /*	mNewGame->add(new MenuItemRange(_("Players"),
 			_("Number and names of players. Players alternate whenever a life is lost."),
