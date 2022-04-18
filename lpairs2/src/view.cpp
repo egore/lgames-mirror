@@ -420,7 +420,7 @@ bool View::showInfo(const vector<string> &text, int type)
 
 void View::createMenus()
 {
-	Menu *mNewGame, *mOptions, *mAudio, *mGraphics;
+	Menu *mNewGame, *mAudio, *mGraphics;
 	const char *diffNames[] = {_("Small"),_("Medium"),_("Large"),_("Huge") } ;
 	const char *fpsLimitNames[] = {_("No Limit"),_("200 FPS"),_("100 FPS") } ;
 	const int bufSizes[] = { 256, 512, 1024, 2048, 4096 };
@@ -433,7 +433,7 @@ void View::createMenus()
 	MenuItem::fNormal = &theme.fMenuNormal;
 	MenuItem::fFocus = &theme.fMenuFocus;
 	MenuItem::fTooltip = &theme.fSmall;
-	MenuItem::tooltipWidth = 0.3 * theme.menuBackground.getWidth();
+	MenuItem::tooltipWidth = 0.4 * renderer.w;
 
 	rootMenu.reset(); /* delete any old menu ... */
 
