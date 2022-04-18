@@ -439,7 +439,7 @@ void View::createMenus()
 
 	rootMenu = unique_ptr<Menu>(new Menu(theme)); /* .. or is assigning a new object doing it? */
 	mNewGame = new Menu(theme);
-	mOptions = new Menu(theme);
+	//mOptions = new Menu(theme);
 	mAudio = new Menu(theme);
 	mGraphics = new Menu(theme);
 	graphicsMenu = mGraphics; /* needed to return after mode/theme change */
@@ -459,7 +459,7 @@ void View::createMenus()
 			"Time in seconds until opened cards are turned over again.",
 			AID_NONE,config.closedelay,1,5,1));
 	mNewGame->add(new MenuItemList(_("Captions"),
-			_("Display caption of card if mouse pointer is on open card. With 'On Shift' a shift key must additionally be pressed."),
+			_("Display caption of open card if mouse pointer is on it. With 'On Shift' a shift key must additionally be pressed."),
 			AID_NONE,config.motifcaption,captionModeNames,3));
 	mNewGame->add(new MenuItemSep());
 /*	mNewGame->add(new MenuItemRange(_("Players"),
@@ -487,7 +487,7 @@ void View::createMenus()
 			"Maximum number of frames per second.",
 			AID_NONE,config.fps,fpsLimitNames,3));
 	mGraphics->add(new MenuItemSep());
-	mGraphics->add(new MenuItemBack(mOptions));
+	mGraphics->add(new MenuItemBack(rootMenu.get()));
 
 	mAudio->add(new MenuItemSwitch(_("Sound"),"",AID_SOUND,config.sound));
 	mAudio->add(new MenuItemRange(_("Volume"),"",AID_VOLUME,config.volume,0,100,10));
@@ -502,17 +502,19 @@ void View::createMenus()
 	mAudio->add(new MenuItem(_("Apply Size&Channels"),
 			_("Apply above settings"),AID_APPLYAUDIO));
 	mAudio->add(new MenuItemSep());
-	mAudio->add(new MenuItemBack(mOptions));
+	mAudio->add(new MenuItemBack(rootMenu.get()));
 
-	mOptions->add(new MenuItemSub(_("Graphics"),mGraphics));
+	/* mOptions->add(new MenuItemSub(_("Graphics"),mGraphics));
 	mOptions->add(new MenuItemSub(_("Audio"),mAudio));
-	mOptions->add(new MenuItemBack(rootMenu.get()));
+	mOptions->add(new MenuItemBack(rootMenu.get())); */
 
 	rootMenu->add(new MenuItemSub(_("New Game"), mNewGame));
 	rootMenu->add(new MenuItemSep());
-	rootMenu->add(new MenuItemSub(_("Settings"), mOptions));
+	rootMenu->add(new MenuItemSub(_("Graphics"),mGraphics));
+	rootMenu->add(new MenuItemSub(_("Audio"),mAudio));
+	//rootMenu->add(new MenuItemSub(_("Settings"), mOptions));
 	//rootMenu->add(new MenuItem(_("Help"), "", AID_HELP));
-	//rootMenu->add(new MenuItemSep());
+	rootMenu->add(new MenuItemSep());
 	rootMenu->add(new MenuItem(_("Quit"), "", AID_QUIT));
 
 	rootMenu->adjust();
