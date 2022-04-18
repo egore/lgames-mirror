@@ -491,7 +491,7 @@ void View::createMenus()
 
 	mAudio->add(new MenuItemSwitch(_("Sound"),"",AID_SOUND,config.sound));
 	mAudio->add(new MenuItemRange(_("Volume"),"",AID_VOLUME,config.volume,0,100,10));
-	mAudio->add(new MenuItemSwitch(_("Speech"),"",AID_NONE,config.speech));
+	//mAudio->add(new MenuItemSwitch(_("Speech"),"",AID_NONE,config.speech));
 	mAudio->add(new MenuItemSep());
 	mAudio->add(new MenuItemIntList(_("Buffer Size"),
 			_("Reduce buffer size if you experience sound delays. Might have more CPU impact though. (not applied yet)"),
