@@ -31,6 +31,7 @@ public:
 	int setsize;
 	int matchsize;
 	int closedelay;
+	int motifcaption;
 
 	/* sound */
 	int sound;
