@@ -304,6 +304,16 @@ void View::render()
 		else
 			theme.cardBack.copy(cxoff + c.x,cyoff + c.y,c.w,c.h);
 
+		/* motif caption */
+		if (!menuActive && state == VS_IDLE &&
+					!game.getCurrentPlayer().isCPU() &&
+					c.open == true &&
+					c.hasFocus(mcx - cxoff, mcy - cyoff))
+			theme.motifs[c.id].getLabel().copy(
+					cxoff + c.x + c.w/2,
+					cyoff + c.y + c.h,
+					ALIGN_X_CENTER | ALIGN_Y_BOTTOM);
+
 		/* DEBUG
 		theme.fSmall.setAlign(ALIGN_X_RIGHT | ALIGN_Y_BOTTOM);
 		theme.fSmall.write(cxoff + c.x+c.w, cyoff + c.y+c.h,
@@ -316,14 +326,6 @@ void View::render()
 			ALIGN_X_LEFT | ALIGN_Y_CENTER);
 	lblErrors.copy(renderer.rx2sx(0.99),renderer.ry2sy(0.975),
 			ALIGN_X_RIGHT | ALIGN_Y_CENTER);
-	if (state == VS_IDLE)
-		for (uint i = 0; i < game.numOpenCards; i++) {
-			Card &c = game.cards[game.openCardIds[i]];
-			theme.motifs[c.id].getLabel().copy(
-					cxoff + c.x + c.w/2,
-					cyoff + c.y + c.h,
-					ALIGN_X_CENTER | ALIGN_Y_BOTTOM);
-		}
 
 	if (game.gameover && !menuActive) {
 		lblRestart.copy(renderer.rx2sx(0.5),renderer.ry2sy(0.5),
