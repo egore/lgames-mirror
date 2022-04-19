@@ -1,8 +1,10 @@
+SUBDIRS = backgrounds motifs
+
 EXTRA_DIST = \
-c_back.png c_focus.png c_front.png CREDITS
+c_back.png c_focus.png c_front.png CREDITS \
 f_bold.otf f_normal.otf SIL-OFL.txt \
 menu.png \
-s_fail.wav s_menuclick.wav s_menumotion.wav s_remove.wav
+s_click.wav s_fail.wav s_menuclick.wav s_menumotion.wav s_remove.wav
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(datdir)/themes/Standard
