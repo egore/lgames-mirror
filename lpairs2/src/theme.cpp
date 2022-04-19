@@ -46,55 +46,11 @@ void Theme::load(string name, Renderer &r)
 	fNormalHighlighted.load(testRc(path,"f_bold.otf"), r.ry2sy(0.037));
 	fNormalHighlighted.setColor(255,220,0,255);
 
-	/* load wallpapers */
-	numWallpapers = 0;
-	for (uint i = 0; i < fnames.size(); i++) {
-		if (fnames[i].substr(0,2) == "b_") {
-			wallpapers[numWallpapers].load(path + "/" + fnames[i]);
-			wallpapers[numWallpapers].setBlendMode(0);
-			numWallpapers++;
-		}
-		if (numWallpapers == MAXWALLPAPERS)
-			break;
-	}
-	if (numWallpapers == 0) {
-		wallpapers[0].load(stdPath + "/b_0.jpg");
-		wallpapers[0].setBlendMode(0);
-		numWallpapers = 1;
-	}
-
 	/* base images for cards */
 	cardBack.load(testRc(path,"c_back.png"));
 	cardFocus.load(testRc(path,"c_focus.png"));
 	cbase.load(testRc(path,"c_front.png"));
 	cardShadow.createShadow(cbase);
-
-	/* motifs - no fallback this has to be present */
-	numMotifs = 0;
-	for (uint i = 0; i < fnames.size(); i++) {
-		if (fnames[i].substr(0,2) == "p_") {
-			_logdebug(1,"  Building %s\n",fnames[i].c_str());
-			pic.load(path + "/" + fnames[i]);
-			card.duplicate(cbase);
-			card.setBlendMode(1);
-			r.setTarget(card);
-			if (pic.getWidth() > pic.getHeight()) {
-				dw = 0.94 * cbase.getWidth();
-				dh = dw * pic.getHeight() / pic.getWidth();
-			} else {
-				dh = 0.94 * cbase.getHeight();
-				dw = dh * pic.getWidth() / pic.getHeight();
-			}
-			dx = (cbase.getWidth() - dw) / 2;
-			dy = (cbase.getHeight() - dh) / 2;
-			pic.copy(dx,dy,dw,dh);
-			r.clearTarget();
-			motifs[numMotifs].set(card,fnames[i],fSmall);
-			numMotifs++;
-		}
-		if (numMotifs == MAXMOTIFS)
-			break;
-	}
 
 	/* menu */
 	menuX = r.rx2sx(0.16);
@@ -113,4 +69,53 @@ void Theme::load(string name, Renderer &r)
 	sFail.load(testRc(path,"s_fail.wav"));
 	sMenuClick.load(testRc(path,"s_menuclick.wav"));
 	sMenuMotion.load(testRc(path,"s_menumotion.wav"));
+
+	readDir(path + "/backgrounds", RD_FILES, fnames);
+
+	/* load wallpapers */
+	numWallpapers = 0;
+	for (uint i = 0; i < fnames.size(); i++) {
+		if (fnames[i][0] == '.')
+			continue;
+		wallpapers[numWallpapers].load(path + "/backgrounds/" + fnames[i]);
+		wallpapers[numWallpapers].setBlendMode(0);
+		numWallpapers++;
+		if (numWallpapers == MAXWALLPAPERS)
+			break;
+	}
+	if (numWallpapers == 0) {
+		wallpapers[0].load(stdPath + "/backgrounds/metal.jpg");
+		wallpapers[0].setBlendMode(0);
+		numWallpapers = 1;
+	}
+
+	readDir(path + "/motifs", RD_FILES, fnames);
+
+	/* motifs - no fallback this has to be present */
+	numMotifs = 0;
+	for (uint i = 0; i < fnames.size(); i++) {
+		if (fnames[i][0] == '.')
+			continue;
+		_logdebug(1,"  Building %s\n",fnames[i].c_str());
+		pic.load(path + "/motifs/" + fnames[i]);
+		card.duplicate(cbase);
+		card.setBlendMode(1);
+		r.setTarget(card);
+		if (pic.getWidth() > pic.getHeight()) {
+			dw = 0.94 * cbase.getWidth();
+			dh = dw * pic.getHeight() / pic.getWidth();
+		} else {
+			dh = 0.94 * cbase.getHeight();
+			dw = dh * pic.getWidth() / pic.getHeight();
+		}
+		dx = (cbase.getWidth() - dw) / 2;
+		dy = (cbase.getHeight() - dh) / 2;
+		pic.copy(dx,dy,dw,dh);
+		r.clearTarget();
+		motifs[numMotifs].set(card,fnames[i],fSmall);
+		numMotifs++;
+		if (numMotifs == MAXMOTIFS)
+			break;
+	}
+
 }

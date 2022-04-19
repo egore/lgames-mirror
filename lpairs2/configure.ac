@@ -60,6 +60,8 @@ Makefile
 po/Makefile.in
 src/Makefile 
 src/themes/Makefile 
-src/themes/Standard/Makefile 
+src/themes/Standard/Makefile
+src/themes/Standard/backgrounds/Makefile
+src/themes/Standard/motifs/Makefile
 )
 

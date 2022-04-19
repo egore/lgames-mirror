@@ -1,14 +1,9 @@
-- select theme
-- add theme config file
-- move images to subfolders backgrounds and motifs
-
-- allow changing cpu difficulty
 - auto layout cards
+- allow changing cpu difficulty
 - tile sets with matching opposites
 
 known bugs:
 - view gets into state OPENINGCARD without id in game.openCardIds
 - adjust cpuFindBestKnownPairCard for triplets and quadruplets
-- no auto line breaks in hints yet
 - game mode shows wrong hint
 - matchsize can be changed in game w/o new start screwing it up
