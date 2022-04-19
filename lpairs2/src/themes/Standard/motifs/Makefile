@@ -247,7 +247,7 @@ top_builddir = ../../../..
 top_srcdir = ../../../..
 EXTRA_DIST = \
 Badger.jpg \
-Brown\ Bear.jpg \
+Brown_Bear.jpg \
 Cat.jpg \
 Cobra.jpg \
 Colibri.jpg \
@@ -257,8 +257,8 @@ Dolphin.jpg \
 Eagle.jpg \
 Elephant.jpg \
 Fox.jpg \
-German\ Sheperd.jpg \
-Ginuea\ Pig.jpg \
+German_Sheperd.jpg \
+Ginuea_Pig.jpg \
 Giraffe.jpg \
 Goat.jpg \
 Gorilla.jpg \
@@ -271,7 +271,7 @@ Orca.jpg \
 Owl.jpg \
 Parrot.jpg \
 Penguin.jpg \
-Polar\ Bear.jpg \
+Polar_Bear.jpg \
 Rabbit.jpg \
 Rhino.jpg \
 Seagull.jpg \
@@ -295,9 +295,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/themes/Standard/motifs/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/themes/Standard/motifs/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/themes/Standard/motifs/Makefile
+	  $(AUTOMAKE) --gnu src/themes/Standard/motifs/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
