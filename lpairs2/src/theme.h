@@ -35,6 +35,9 @@ public:
 			caption = c.substr(0,pos);
 		else
 			caption = c;
+		for (uint i = 0; i < caption.size();i++)
+			if (caption[i] == '_')
+				caption[i] = ' ';
 		label.setText(f,caption);
 	}
 	Texture& getTexture() {return motif;}
