@@ -5,5 +5,4 @@
 known bugs:
 - view gets into state OPENINGCARD without id in game.openCardIds
 - adjust cpuFindBestKnownPairCard for triplets and quadruplets
-- game mode shows wrong hint
 - matchsize can be changed in game w/o new start screwing it up
