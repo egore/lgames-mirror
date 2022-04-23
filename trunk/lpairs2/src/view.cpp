@@ -447,10 +447,10 @@ void View::createMenus()
 	mNewGame->add(new MenuItem(_("Start Game"),"",AID_STARTGAME));
 	mNewGame->add(new MenuItemSep());
 	mNewGame->add(new MenuItemList(_("Mode"),
-			_("In fullscreen: Small=6x4, Medium=8x4, Large=10x5, Huge=12x6.\nNote that it's slightly different in window mode to match the different ratio."),
+			_("You can play alone (Solo) or against a human or CPU opponent."),
 			AID_NONE,config.gamemode,modeNames,3));
 	mNewGame->add(new MenuItemList(_("Set Size"),
-			_("In fullscreen: Small=6x4, Medium=8x4, Large=10x5, Huge=12x6.\nNote that it's slightly different in window mode to match the different ratio."),
+			_("Small=6x4, Medium=8x4, Large=10x5, Huge=12x6.\nNote, that it's slightly different in window mode to match the different ratio."),
 			AID_NONE,config.setsize,diffNames,4));
 	mNewGame->add(new MenuItemRange(_("Match Size"),
 			"2 = Pairs, 3 = Triplets, 4 = Quadruplets\nNote that you always have to turn over that many cards regardless of a mismatch.",
