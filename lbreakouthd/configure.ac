@@ -36,10 +36,15 @@ AC_FUNC_REALLOC
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([memset strchr strdup strrchr])
 
-# Flags
+dnl allow changing config dir
+configdir=.lbreakouthd
+AC_ARG_WITH( configdir,
+[  --with-configdir=CONFIGDIR       Set directory for config/data files in home directory (default: .lbreakouthd).],
+configdir="$withval",)
+
+# other flags
 datdir=$datadir/$PACKAGE
 hiscoredir=$localstatedir
-configdir=.lbreakouthd
 debugflags=""
 AC_ARG_ENABLE( install,
 [  --disable-install       No installation. Start from source directory.], 
