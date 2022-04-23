@@ -1,3 +1,5 @@
+2.2:
+- themes now have subfolders for motifs and backgrounds (2022/04/18 MS)   
 - added caption for cards (2022/04/18 MS)
 - added missing cross compiling stuff (2021/04/07 MS)
 - allow using SPACE to open cards (2019/11/25 MS)
