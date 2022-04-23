@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lbreakouthd 1.0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-02 13:48+0100\n"
+"POT-Creation-Date: 2022-04-23 17:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -530,6 +530,12 @@ msgstr ""
 
 #: src/view.cpp:1243
 msgid "Bonus Levels"
+msgstr ""
+
+#: src/view.cpp:1243
+msgid ""
+"Add bonus levels with a mini game every 4 regular levels. Game over will end "
+"the mini game without loosing a life."
 msgstr ""
 
 #: src/view.cpp:1247
