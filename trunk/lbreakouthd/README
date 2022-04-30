@@ -212,14 +212,8 @@ interested in changing it.
 
 Troubleshooting
 ---------------
-1) If bonuses/maluses are not shown properly on older machines it's an SDL2 
-problem connected to older versions of OpenGL (already reported to SDL 
-thanks to Antoni Aloy Torrens). If you have this problem you can try to run
-  LIBGL_ALWAYS_SOFTWARE=1 lbreakouthd 
-to use software rendering. This might fix the problem of not showing 
-bonuses/maluses but will be slower.
 
-2) If the screen is cut off this might be due to an older non-16:9 
+1) If the screen is cut off this might be due to an older non-16:9 
 resolution like 1366x768. Either switch to 1280x720 or play in window mode.
 
 Enjoy,
