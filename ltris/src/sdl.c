@@ -859,9 +859,9 @@ static void select_best_video_mode(int *best_w, int *best_h)
 	int i;
 	int dratio;
 
-	/* with 100 odd resolutions like 1366x768 will be selected
-	 * with 1000 (first decimal must match) these are ruled out */
-	dratio = 1000*display_w/display_h;
+	/* use one decimal place for ratio which allows matching
+	 * slightly odd but roughly matching resolutions like 1366x768 */
+	dratio = 10*display_w/display_h;
 	wanted_mode.w = display_w;
 	wanted_mode.h = display_h;
 
@@ -882,12 +882,12 @@ static void select_best_video_mode(int *best_w, int *best_h)
 			printf("%d x %d, ", modes[i]->w, modes[i]->h);
 		printf("\n");
 
-		/* select lowest mode with same ratio as display */
+		/* select lowest mode >=720p with same ratio as display if any */
 		for(i=0;modes[i];++i)
-			if (1000*modes[i]->w/modes[i]->h == dratio) {
-				if (modes[i]->h < wanted_mode.h)
-					wanted_mode = *modes[i];
-			}
+			if (modes[i]->h >= 720)
+				if (10*modes[i]->w/modes[i]->h == dratio)
+					if (modes[i]->h < wanted_mode.h)
+						wanted_mode = *modes[i];
 		printf("Best mode: %d x %d\n",wanted_mode.w,wanted_mode.h);
 	}
 
@@ -950,7 +950,7 @@ int	set_video_mode( int fullscreen )
 		    video_sh = 480;
 	    }
 	    printf("Using scale factor %s\n",
-			    (video_scale==2)?"2":((video_scale==1)?"1.5":0));
+			    (video_scale==2)?"2":((video_scale==1)?"1.5":"1"));
 	    video_xoff = (w - video_sw) / 2;
 	    video_yoff = (h - video_sh) / 2;
     }
