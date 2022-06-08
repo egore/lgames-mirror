@@ -2,13 +2,13 @@ SUBDIRS = intl m4 po src icons
 
 EXTRA_DIST = config.rpath  AUTHORS COPYING ChangeLog INSTALL \
 README TODO touchall ABOUT-NLS po/tr.po_full po/pt.po_full \
-po/nonascii.pl ltris32.gif ltris48.gif ltris.desktop.in \
+po/nonascii.pl ltris128.png ltris.desktop.in \
 CROSSCOMPILE ltris.appdata.xml
 
 desktopdir = $(datadir)/applications
 desktop_DATA = ltris.desktop
 icondir = $(datadir)/icons
-icon_DATA = ltris48.gif
+icon_DATA = ltris128.png
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -16,7 +16,7 @@ AUTOMAKE_OPTIONS = foreign
 # the right way to handle it? At least it works... as long as $datadir
 # does not contain plus signs. :-)
 ltris.desktop:
-	@sed -e "s+Icon=+Icon=$(datadir)/icons/ltris48.gif+" \
+	@sed -e "s+Icon=+Icon=$(datadir)/icons/ltris128.png+" \
 	< ltris.desktop.in > ltris.desktop
 
 ACLOCAL_AMFLAGS = -I m4
