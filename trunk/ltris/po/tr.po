@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ltris\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2022-04-14 14:14+0200\n"
+"POT-Creation-Date: 2022-06-17 17:52+0200\n"
 "PO-Revision-Date: 2006-02-05 15:08+0200\n"
 "Last-Translator: Server Acim <sacim@kde.org.tr>\n"
 "Language-Team: Turkce <yerellestirme@kde.org.tr>\n"
@@ -84,8 +84,9 @@ msgstr ""
 #: src/manager.c:79
 #, fuzzy
 msgid ""
-"Left/Right: horizontal movement#Rotate Left/Right: block rotation#Down: "
-"faster Dropping#Drop: INSTANT drop"
+"Left/Right: horizontal movement##Rotate Left/Right: block rotation##Down: "
+"faster dropping##Drop: INSTANT drop##Hold: Put current piece to hold (only "
+"for modern style)"
 msgstr ""
 "Her kontrol degerinin tanıtılmak icin bir anahtara ihtiyacı vardır. ##Sol/"
 "Sag: yatay hareket.#Dondur Sol/Sag: donusu engelle#Asagı:daha hızlı "
@@ -119,8 +120,8 @@ msgstr ""
 #: src/manager.c:87
 #, fuzzy, c-format
 msgid ""
-"Enable/Disable piece preview.##If disabled you'll instantly gain 20% score "
-"when clearing lines."
+"Enable/Disable piece preview.##If disabled you'll instantly gain 20% more "
+"score when clearing lines."
 msgstr "Obek onizlemesini Etkinlestir/Etkisizlestir."
 
 #: src/manager.c:88
@@ -289,9 +290,10 @@ msgstr ""
 #: src/manager.c:118
 msgid ""
 "Modern enables all that stuff that makes tetris casual like piece shadow, "
-"wall-kicks, DAS charge during ARE (allows to shift next piece faster), piece "
-"bag (at max 12 pieces before getting same piece again).##Classic doesn't "
-"give you any of this making the game really hard but also very interesting."
+"wall-kicks, hold, DAS charge during ARE (allows to shift next piece faster), "
+"piece bag (at max 12 pieces before getting same piece again).##Classic "
+"doesn't give you any of this making the game really hard but also very "
+"interesting."
 msgstr ""
 
 #: src/manager.c:124
@@ -335,7 +337,7 @@ msgstr "50 FPS"
 msgid "Defensive"
 msgstr "Savunmalı"
 
-#: src/manager.c:228 src/manager.c:355 src/main.c:73
+#: src/manager.c:228 src/manager.c:356 src/main.c:73
 msgid "Normal"
 msgstr "Normal"
 
@@ -347,235 +349,233 @@ msgstr "Gergin"
 msgid "Kamikaze"
 msgstr "Kamikaze"
 
-#: src/manager.c:300
+#: src/manager.c:301
 msgid "Menu"
 msgstr "Menu"
 
-#: src/manager.c:301 src/manager.c:323 src/manager.c:336
+#: src/manager.c:302 src/manager.c:324 src/manager.c:337
 msgid "Graphics"
 msgstr "Cizgeleme"
 
-#: src/manager.c:302 src/manager.c:317
+#: src/manager.c:303 src/manager.c:318
 msgid "New Game"
 msgstr "Yeni Oyun"
 
-#: src/manager.c:303 src/manager.c:322 src/manager.c:335
+#: src/manager.c:304 src/manager.c:323 src/manager.c:336
 msgid "Controls"
 msgstr "Denetimler"
 
-#: src/manager.c:304 src/manager.c:435
+#: src/manager.c:305 src/manager.c:437
 msgid "Player1"
 msgstr "Oyuncu1"
 
-#: src/manager.c:305 src/manager.c:436
+#: src/manager.c:306 src/manager.c:438
 msgid "Player2"
 msgstr "Oyuncu2"
 
-#: src/manager.c:306 src/manager.c:437
+#: src/manager.c:307 src/manager.c:439
 msgid "Player3"
 msgstr "Oyuncu3"
 
-#: src/manager.c:307 src/manager.c:383
+#: src/manager.c:308 src/manager.c:384
 msgid "Multiplayer Options"
 msgstr "Cok Oyunculu Secenekler"
 
-#: src/manager.c:308
+#: src/manager.c:309
 msgid "Advanced Options"
 msgstr "Gelismis Secenekler"
 
-#: src/manager.c:310 src/manager.c:320
+#: src/manager.c:311 src/manager.c:321
 msgid "Options"
 msgstr "Secenekler"
 
-#: src/manager.c:313 src/manager.c:325 src/manager.c:327 src/manager.c:337
-#: src/manager.c:338
+#: src/manager.c:314 src/manager.c:326 src/manager.c:328 src/manager.c:338
+#: src/manager.c:339
 msgid "Audio"
 msgstr "Ses"
 
-#: src/manager.c:332 src/menu.c:171
+#: src/manager.c:333 src/menu.c:171
 msgid "Quit"
 msgstr "Cık"
 
-#: src/manager.c:340 src/manager.c:352 src/manager.c:370 src/manager.c:385
-#: src/manager.c:398 src/manager.c:445 src/manager.c:450 src/manager.c:455
-#: src/manager.c:460 src/manager.c:468 src/menu.c:168
+#: src/manager.c:341 src/manager.c:353 src/manager.c:371 src/manager.c:386
+#: src/manager.c:397 src/manager.c:447 src/manager.c:452 src/manager.c:457
+#: src/manager.c:462 src/manager.c:470 src/menu.c:168
 msgid "Back"
 msgstr "Geri"
 
-#: src/manager.c:344
+#: src/manager.c:345
 msgid "Sound:"
 msgstr "Ses:"
 
-#: src/manager.c:344 src/manager.c:350 src/manager.c:359 src/manager.c:381
-#: src/manager.c:389 src/manager.c:390 src/manager.c:391 src/manager.c:393
-#: src/manager.c:465
+#: src/manager.c:345 src/manager.c:351 src/manager.c:360 src/manager.c:382
+#: src/manager.c:390 src/manager.c:391 src/manager.c:392 src/manager.c:467
 msgid "Off"
 msgstr "Kapalı"
 
-#: src/manager.c:344 src/manager.c:350 src/manager.c:359 src/manager.c:381
-#: src/manager.c:389 src/manager.c:390 src/manager.c:391 src/manager.c:393
-#: src/manager.c:465
+#: src/manager.c:345 src/manager.c:351 src/manager.c:360 src/manager.c:382
+#: src/manager.c:390 src/manager.c:391 src/manager.c:392 src/manager.c:467
 msgid "On"
 msgstr "Acık"
 
-#: src/manager.c:347
+#: src/manager.c:348
 msgid "Volume:"
 msgstr "Ses Duzeyi:"
 
-#: src/manager.c:350
+#: src/manager.c:351
 #, fuzzy
 msgid "Shift Sound:"
 msgstr "Ses:"
 
-#: src/manager.c:355
+#: src/manager.c:356
 msgid "Animations:"
 msgstr "Canlandırmalar:"
 
-#: src/manager.c:355
+#: src/manager.c:356
 msgid "Simple"
 msgstr ""
 
-#: src/manager.c:357 src/manager.c:406 src/manager.c:412 src/manager.c:418
+#: src/manager.c:358 src/manager.c:405 src/manager.c:412 src/manager.c:419
 msgid "Drop:"
 msgstr "Bırak:"
 
-#: src/manager.c:357
+#: src/manager.c:358
 msgid "Smooth"
 msgstr "Duzgun"
 
-#: src/manager.c:357
+#: src/manager.c:358
 msgid "Tile By Tile"
 msgstr "Doseye-Doseye"
 
-#: src/manager.c:359
+#: src/manager.c:360
 msgid "Quick Help:"
 msgstr "Hızlı Yardım:"
 
-#: src/manager.c:364
+#: src/manager.c:365
 msgid "Display:"
 msgstr "Goruntule:"
 
-#: src/manager.c:364
+#: src/manager.c:365
 msgid "Window"
 msgstr "Pencere"
 
-#: src/manager.c:364
+#: src/manager.c:365
 msgid "Fullscreen"
 msgstr "Tam Ekran"
 
-#: src/manager.c:368
+#: src/manager.c:369
 msgid "Frame Rate:"
 msgstr "Cerceve Oranı:"
 
-#: src/manager.c:372
+#: src/manager.c:373
 msgid "Start Game"
 msgstr "Oyuna Basla"
 
-#: src/manager.c:374
+#: src/manager.c:375
 msgid "1st Player:"
 msgstr "Birinci Oyuncu:"
 
-#: src/manager.c:375
+#: src/manager.c:376
 msgid "2nd Player:"
 msgstr "Ikinci Oyuncu:"
 
-#: src/manager.c:376
+#: src/manager.c:377
 msgid "3rd Player:"
 msgstr "Ucuncu Oyuncu:"
 
-#: src/manager.c:378
+#: src/manager.c:379
 #, fuzzy
 msgid "Game Style:"
 msgstr "Islemci Tarzı:"
 
-#: src/manager.c:378
+#: src/manager.c:379
 msgid "Classic"
 msgstr "Klasik"
 
-#: src/manager.c:378
+#: src/manager.c:379
 msgid "Modern"
 msgstr ""
 
-#: src/manager.c:379
+#: src/manager.c:380
 #, fuzzy
 msgid "Game Mode:"
 msgstr "Oyun:"
 
-#: src/manager.c:380
+#: src/manager.c:381
 msgid "Starting Level:"
 msgstr "Baslama Duzeyi:"
 
-#: src/manager.c:381
+#: src/manager.c:382
 msgid "Preview:"
 msgstr "Onizleme:"
 
-#: src/manager.c:388
+#: src/manager.c:389
 msgid "Holes:"
 msgstr "Delikler:"
 
-#: src/manager.c:389
+#: src/manager.c:390
 msgid "Random Holes:"
 msgstr "Rasgele Delikler:"
 
-#: src/manager.c:390
+#: src/manager.c:391
 msgid "Send All Lines:"
 msgstr "Butun Hatları Gonder:"
 
-#: src/manager.c:391
+#: src/manager.c:392
 msgid "Always Send Tetris:"
 msgstr "Her zaman Tetris'i Gonder:"
 
-#: src/manager.c:393
-msgid "Center Preview:"
-msgstr "Ortada Onizle:"
-
-#: src/manager.c:395
+#: src/manager.c:394
 msgid "CPU Style:"
 msgstr "Islemci Tarzı:"
 
-#: src/manager.c:396
+#: src/manager.c:395
 msgid "CPU Drop Delay:"
 msgstr "Islemci Bırakma Gecikmesi:"
 
-#: src/manager.c:400
+#: src/manager.c:399
 msgid "Pause Key:"
 msgstr ""
 
-#: src/manager.c:401 src/manager.c:407 src/manager.c:413
+#: src/manager.c:400 src/manager.c:407 src/manager.c:414
 msgid "Left:"
 msgstr "Sol:"
 
-#: src/manager.c:402 src/manager.c:408 src/manager.c:414
+#: src/manager.c:401 src/manager.c:408 src/manager.c:415
 msgid "Right:"
 msgstr "Sag:"
 
-#: src/manager.c:403 src/manager.c:409 src/manager.c:415
+#: src/manager.c:402 src/manager.c:409 src/manager.c:416
 msgid "Rotate Left:"
 msgstr "Sola Dondur:"
 
-#: src/manager.c:404 src/manager.c:410 src/manager.c:416
+#: src/manager.c:403 src/manager.c:410 src/manager.c:417
 msgid "Rotate Right:"
 msgstr "Saga Dondur:"
 
-#: src/manager.c:405 src/manager.c:411 src/manager.c:417
+#: src/manager.c:404 src/manager.c:411 src/manager.c:418
 msgid "Down:"
 msgstr "Asagı:"
 
-#: src/manager.c:441
+#: src/manager.c:406 src/manager.c:413 src/manager.c:420
+msgid "Hold:"
+msgstr ""
+
+#: src/manager.c:443
 #, fuzzy
 msgid "Auto-Shift Delay:"
 msgstr "Yatay Gecikme:"
 
-#: src/manager.c:442
+#: src/manager.c:444
 #, fuzzy
 msgid "Auto-Shift Speed:"
 msgstr "Yatay Gecikme:"
 
-#: src/manager.c:464
+#: src/manager.c:466
 msgid "Test CPU Algorithm"
 msgstr "Islemci Algoritmasını Sına"
 
-#: src/manager.c:465
+#: src/manager.c:467
 msgid "Visualization"
 msgstr "Gorsellestirme"
 
@@ -592,74 +592,82 @@ msgstr "Acık"
 msgid "End Game? y/n"
 msgstr "Oyun Bitsin mi? e/h"
 
-#: src/bowl.c:466 src/bowl.c:467
+#: src/bowl.c:474 src/bowl.c:475
 msgid "Game Over"
 msgstr "Oyun Bitti"
 
-#: src/bowl.c:1196
+#: src/bowl.c:1210
+msgid "Hold"
+msgstr ""
+
+#: src/bowl.c:1231
+msgid "Next"
+msgstr ""
+
+#: src/bowl.c:1260
 #, c-format
 msgid "%i Lvl: %i"
 msgstr "%i Lvl: %i"
 
-#: src/bowl.c:1542
+#: src/bowl.c:1625
 msgid "Player:"
 msgstr "Oyuncu:"
 
-#: src/bowl.c:1546
+#: src/bowl.c:1629
 msgid "Score:"
 msgstr "Sonuc:"
 
-#: src/bowl.c:1548
+#: src/bowl.c:1631
 msgid "Lines:"
 msgstr "Hatlar:"
 
-#: src/bowl.c:1698
+#: src/bowl.c:1784
 msgid "Pieces Placed:"
 msgstr ""
 
-#: src/bowl.c:1699
+#: src/bowl.c:1785
 msgid "I-Pieces:     "
 msgstr ""
 
-#: src/bowl.c:1702
+#: src/bowl.c:1788
 msgid "Singles: "
 msgstr ""
 
-#: src/bowl.c:1703
+#: src/bowl.c:1789
 #, fuzzy
 msgid "Doubles: "
 msgstr "Delikler:"
 
-#: src/bowl.c:1704
+#: src/bowl.c:1790
 msgid "Triples: "
 msgstr ""
 
-#: src/bowl.c:1705
+#: src/bowl.c:1791
 msgid "Tetrises:"
 msgstr ""
 
-#: src/bowl.c:1717
+#: src/bowl.c:1803
 msgid "Droughts:   "
 msgstr ""
 
-#: src/bowl.c:1718
+#: src/bowl.c:1804
 msgid "Drought Max:"
 msgstr ""
 
-#: src/bowl.c:1723
+#: src/bowl.c:1809
 msgid "Drought Avg:"
 msgstr ""
 
-#: src/bowl.c:1730
+#: src/bowl.c:1816
 #, fuzzy
 msgid "Transition:"
 msgstr "Canlandırmalar:"
 
-#: src/bowl.c:1732
+#: src/bowl.c:1818
 msgid "DAS Charge:"
 msgstr ""
 
-#: src/bowl.c:1737
+#: src/bowl.c:1823
 msgid "Drought:   "
 msgstr ""
 
@@ -770,6 +778,13 @@ msgstr "Asagı Sayfa"
 #: src/value.c:55
 msgid "Home"
 msgstr "Baslangıc"
+
+#: src/value.c:56
+msgid "Delete"
+msgstr ""
+
+#~ msgid "Center Preview:"
+#~ msgstr "Ortada Onizle:"
 
 #, fuzzy
 #~ msgid "DAS Mode:"

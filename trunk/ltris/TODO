@@ -1,12 +1,8 @@
-Hold function:
-- control key for every player
-- box underneath next box with captions (next and hold)
-- bowl: hold_id (-1 no piece) and hold_used (true if used until next block locks)
-- if key pressed switch pieces and reset piece to top
 - half size pieces attached to bowls top/bottom for 2-player
-
 - remove 3player options
-- highlight next piece with white background
+- highlight next piece with white background for modern
+- adjust score counter to count faster with larger offsets
+- menu to configure gamepad and assign it to one player
 
 Known Bugs:
 SDL does not properly get cursor position if switching from 
