@@ -148,6 +148,21 @@ void bowl_compute_cpu_dest( Bowl *bowl )
     bowl->cpu_dest_score = cpu_data.dest_score;
 }
 
+/** Initialize bowl's block structure to hold piece with id at top of bowl
+ * and also compute position of shadow piece. */
+void bowl_init_current_piece(Bowl *bowl, int id) {
+	bowl->block.id = id;
+	bowl->block.x = 5 - block_masks[bowl->block.id].rx;
+	bowl->block.y = 0 - block_masks[bowl->block.id].ry;
+	bowl->block.sx = bowl->sx + bowl->block_size * bowl->block.x;
+	bowl->block.sy = bowl->sy + bowl->block_size * bowl->block.y;
+	bowl->block.rot_id = block_masks[bowl->block.id].rstart;
+	bowl->block.sw = 4 * bowl->block_size;
+	bowl->block.sh = 4 * bowl->block_size;
+	bowl->block.cur_y = bowl->block.y * bowl->block_size;
+	bowl_compute_help_pos(bowl);
+}
+
 /*
 ====================================================================
 Initiate next block. Set bowl::block::id to preview and get id of next
@@ -203,14 +218,7 @@ void bowl_select_next_block( Bowl *bowl )
 	}
     
 	/* init rest of block structure */
-	bowl->block.x = 5 - block_masks[bowl->block.id].rx;
-	bowl->block.y = 0 - block_masks[bowl->block.id].ry;
-	bowl->block.sx = bowl->sx + bowl->block_size * bowl->block.x;
-	bowl->block.sy = bowl->sy + bowl->block_size * bowl->block.y;
-	bowl->block.rot_id = block_masks[bowl->block.id].rstart;
-	bowl->block.sw = bowl->block.sh = 4 * bowl->block_size;
-	bowl->block.cur_y = bowl->block.y * bowl->block_size;
-	bowl_compute_help_pos( bowl );
+	bowl_init_current_piece(bowl, bowl->block.id);
 
 	/* count i pieces for drought and stats */
 	if (bowl->block.id == 6) {
@@ -956,7 +964,11 @@ Create a bowl at screen position x,y. Measurements are the same for
 all bowls. Controls are the player's controls defined in config.c.
 ====================================================================
 */
-Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *blocks, SDL_Surface *unknown_preview, char *name, Controls *controls )
+Bowl *bowl_create( int x, int y,
+		int preview_x, int preview_y,
+		int hold_x, int hold_y,
+		SDL_Surface *blocks, SDL_Surface *unknown_preview,
+		char *name, Controls *controls )
 {
     Bowl *bowl = calloc( 1, sizeof( Bowl ) );
     bowl->mute = 0;
@@ -1039,6 +1051,19 @@ Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *bloc
 	    bowl->ldelay_max = 0;
     bowl->ldelay_cur = 0;
 
+    /* hold settings */
+    if (hold_x == -1 || !config.modern)
+	    bowl->hold_active = 0;
+    else {
+	    bowl->hold_active = 1;
+	    bowl->hold_id = -1;
+	    bowl->hold_used = 0;
+	    bowl->hold_sx = hold_x;
+	    bowl->hold_sy = hold_y;
+	    bowl->hold_sw = bowl->block_size*4;
+	    bowl->hold_sh = bowl->block_size*3;
+    }
+
     /* stats are only display for games with one bowl
      * which is determined in tetris.c:tetris_init()
      * XXX as it is only one bowl we hard code position here */
@@ -1093,6 +1118,15 @@ void bowl_hide( Bowl *bowl )
         SOURCE( offscreen, bowl->help_sx, bowl->help_sy );
         blit_surf();
         add_refresh_rect( bowl->help_sx, bowl->help_sy, bowl->help_sw, bowl->help_sh );
+    }
+    /* hold */
+    if ( bowl->hold_active ) {
+	    DEST( sdl.screen, bowl->hold_sx, bowl->hold_sy,
+			    bowl->hold_sw, bowl->hold_sh);
+	    SOURCE( offscreen, bowl->hold_sx, bowl->hold_sy);
+	    blit_surf();
+	    add_refresh_rect(bowl->hold_sx, bowl->hold_sy,
+			    bowl->hold_sw, bowl->hold_sh);
     }
     /* preview */
     if ( bowl->preview ) {
@@ -1161,6 +1195,17 @@ void bowl_show( Bowl *bowl )
             tile_x = 0;
             tile_y += bowl->block_size;
         }
+    }
+
+    /* hold piece */
+    if (bowl->hold_active && bowl->hold_id != -1) {
+	    int hw = bowl->block_size*4, hh = bowl->block_size*2;
+	    DEST( sdl.screen, bowl->hold_sx,
+			    bowl->hold_sy + bowl->block_size/2,
+			    hw,hh);
+	    SOURCE( previewpieces, 0, bowl->hold_id * hh );
+	    blit_surf();
+	    add_refresh_rect(bowl->hold_sx,bowl->hold_sy,bowl->block_size*4,bowl->block_size*3);
     }
 
     /* piece preview */
@@ -1256,6 +1301,7 @@ void bowl_update( Bowl *bowl, int ms, BowlControls *bc, int game_over )
 		    bowl_collapse(bowl);
 		    bowl_select_next_block(bowl);
 		    bowl->draw_contents = 1;
+		    bowl->hold_used = 0; /* allow using hold again */
 		    /* for simple modern version charge das if shift pressed */
 		    if (config.modern)
 			    bowl->das_charge = bowl->das_maxcharge;
@@ -1343,6 +1389,24 @@ void bowl_update( Bowl *bowl, int ms, BowlControls *bc, int game_over )
 			    bowl_check_lockdelay(bowl);
 			    if (bowl->ldelay_cur > 0)
 				    bowl->ldelay_cur = 1;
+		    }
+	    } else if (bc->hold == CS_DOWN && bowl->hold_active && !bowl->hold_used) {
+		    /* put current piece to hold, use piece in hold or next block */
+		    bowl->hold_used = 1;
+		    if (bowl->hold_id == -1) {
+			    bowl->hold_id = bowl->block.id;
+			    bowl_select_next_block(bowl);
+		    } else {
+			    int iswap = bowl->block.id;
+			    bowl->block.id = bowl->hold_id;
+			    bowl->hold_id = iswap;
+			    bowl_init_current_piece(bowl, bowl->block.id);
+			    /* opposite to select_next_block init_current_piece
+			     * does not check for game over so we do this here */
+			    if (bowl_check_piece_position(bowl,
+					    bowl->block.x, bowl->block.y,
+					    bowl->block.rot_id) != POSVALID)
+				    bowl_finish_game(bowl);
 		    }
 	    }
 
@@ -1549,6 +1613,12 @@ void bowl_draw_frames( Bowl *bowl )
         draw_3dframe( bkgnd, 
                       bowl->preview_sx - 2, bowl->preview_sy - 2,
                       bowl->preview_sw + 4, bowl->preview_sh + 4, 4 );
+    /* hold */
+    if (bowl->hold_active) {
+	draw_3dframe( bkgnd,
+			bowl->hold_sx - 2, bowl->hold_sy - 2,
+			bowl->hold_sw + 4, bowl->hold_sh + 4, 4 );
+    }
     /* part that is updated when redrawing score/level */
     bowl->score_sx = dx + dw / 2 - 36;
     bowl->score_sy = dy + bowl->font->height + 4;

@@ -41,6 +41,7 @@ typedef struct {
     int rot_right;
     int down;
     int drop;
+    int hold;
 } Controls;
 
 typedef struct {
