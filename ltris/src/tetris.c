@@ -319,7 +319,7 @@ int  tetris_init()
     /* create bowls according to the gametype */
     switch ( config.gametype ) {
         case GAME_DEMO:
-            bowls[0] = bowl_create( 220, 0, 490, 180, -1,-1, blocks, qmark, "Demo", 0 );
+            bowls[0] = bowl_create( 220, 0, 490, 160, -1,-1, blocks, qmark, "Demo", 0 );
             break;
         case GAME_CLASSIC:
         case GAME_TRAINING:
@@ -328,20 +328,16 @@ int  tetris_init()
             break;
         case GAME_VS_HUMAN:
         case GAME_VS_CPU:
-            if ( config.center_preview ) {
-                bowls[0] = bowl_create( 20, 0, 233, 180, -1,-1, blocks, qmark, config.player1.name, &config.player1.controls );
-                if ( config.gametype == GAME_VS_HUMAN )
-                    bowls[1] = bowl_create( 420, 0, 327, 180, -1,-1, blocks, qmark, config.player2.name, &config.player2.controls );
-                else
-                    bowls[1] = bowl_create( 420, 0, 347, 180, -1,-1, blocks, qmark, "CPU-1", 0 );
-            }
-            else {
-                bowls[0] = bowl_create( 20, 0, 250, 280, -1,-1, blocks, qmark, config.player1.name, &config.player1.controls );
-                if ( config.gametype == GAME_VS_HUMAN )
-                    bowls[1] = bowl_create( 420, 0, 310, 80, -1,-1, blocks, qmark, config.player2.name, &config.player2.controls );
-                else
-                    bowls[1] = bowl_create( 420, 0, 310, 80, -1,-1, blocks, qmark, "CPU-1", 0 );
-            }
+        	bowls[0] = bowl_create( 20, 0, 233, config.modern?100:160, 233,290,
+        			blocks, qmark, config.player1.name,
+				&config.player1.controls );
+        	if ( config.gametype == GAME_VS_HUMAN )
+        		bowls[1] = bowl_create( 420, 0, 327, config.modern?100:160,
+        				327,290, blocks, qmark, config.player2.name,
+					&config.player2.controls );
+        	else
+        		bowls[1] = bowl_create( 420, 0, 327, config.modern?100:160,
+        				327,290, blocks, qmark, "CPU-1", 0 );
             break;
         case GAME_VS_HUMAN_HUMAN:
         case GAME_VS_HUMAN_CPU:

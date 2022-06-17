@@ -104,7 +104,6 @@ typedef struct {
     int quick_help;
     int visualize; /* compute stats hidden? */
     int keep_bkgnd;
-    int center_preview;
 } Config;
 
 /* set config to default */

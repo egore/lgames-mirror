@@ -130,7 +130,6 @@ void config_reset()
     config.quick_help = 1;
     config.visualize = 0;
     config.keep_bkgnd = 0;
-    config.center_preview = 0;
 }
 
 /* load config */
@@ -171,7 +170,6 @@ void config_load( )
     }
     parser_get_int( pd, "preview", &config.preview );
     parser_get_int( pd, "modern", &config.modern );
-    parser_get_int( pd, "center_preview", &config.center_preview );
     parser_get_int( pd, "holes", &config.holes );
     parser_get_int( pd, "rand_holes", &config.rand_holes );
     parser_get_int( pd, "send_all", &config.send_all );
@@ -246,7 +244,6 @@ void config_save( )
         fprintf( file, "starting_level=%i\n", config.starting_level );
         fprintf( file, "preview=%i\n", config.preview );
         fprintf( file, "modern=%i\n", config.modern );
-        fprintf( file, "center_preview=%i\n", config.center_preview );
         fprintf( file, "holes=%i\n", config.holes );
         fprintf( file, "rand_holes=%i\n", config.rand_holes );
         fprintf( file, "send_all=%i\n", config.send_all );
