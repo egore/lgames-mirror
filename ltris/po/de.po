@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: lgames.sf.net/contact.php\n"
-"POT-Creation-Date: 2022-06-17 14:19+0200\n"
+"POT-Creation-Date: 2022-06-17 17:52+0200\n"
 "PO-Revision-Date: 2005-10-05 22:46+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <de@li.org>\n"
@@ -123,8 +123,8 @@ msgstr ""
 #: src/manager.c:87
 #, fuzzy, c-format
 msgid ""
-"Enable/Disable piece preview.##If disabled you'll instantly gain 20% score "
-"when clearing lines."
+"Enable/Disable piece preview.##If disabled you'll instantly gain 20% more "
+"score when clearing lines."
 msgstr ""
 "(De-)aktiviere Anzeige des naechsten Blocks. Falls deaktiviert, gibt es "
 "direkt einen Bonus von 20%."
@@ -372,15 +372,15 @@ msgstr "Neues Spiel"
 msgid "Controls"
 msgstr "Kontrollen"
 
-#: src/manager.c:305 src/manager.c:439
+#: src/manager.c:305 src/manager.c:437
 msgid "Player1"
 msgstr "Spieler1"
 
-#: src/manager.c:306 src/manager.c:440
+#: src/manager.c:306 src/manager.c:438
 msgid "Player2"
 msgstr "Spieler2"
 
-#: src/manager.c:307 src/manager.c:441
+#: src/manager.c:307 src/manager.c:439
 msgid "Player3"
 msgstr "Spieler3"
 
@@ -406,8 +406,8 @@ msgid "Quit"
 msgstr "Beenden"
 
 #: src/manager.c:341 src/manager.c:353 src/manager.c:371 src/manager.c:386
-#: src/manager.c:399 src/manager.c:449 src/manager.c:454 src/manager.c:459
-#: src/manager.c:464 src/manager.c:472 src/menu.c:168
+#: src/manager.c:397 src/manager.c:447 src/manager.c:452 src/manager.c:457
+#: src/manager.c:462 src/manager.c:470 src/menu.c:168
 msgid "Back"
 msgstr "Zurueck"
 
@@ -416,14 +416,12 @@ msgid "Sound:"
 msgstr "Sound:"
 
 #: src/manager.c:345 src/manager.c:351 src/manager.c:360 src/manager.c:382
-#: src/manager.c:390 src/manager.c:391 src/manager.c:392 src/manager.c:394
-#: src/manager.c:469
+#: src/manager.c:390 src/manager.c:391 src/manager.c:392 src/manager.c:467
 msgid "Off"
 msgstr "Aus"
 
 #: src/manager.c:345 src/manager.c:351 src/manager.c:360 src/manager.c:382
-#: src/manager.c:390 src/manager.c:391 src/manager.c:392 src/manager.c:394
-#: src/manager.c:469
+#: src/manager.c:390 src/manager.c:391 src/manager.c:392 src/manager.c:467
 msgid "On"
 msgstr "An"
 
@@ -443,7 +441,7 @@ msgstr "Animationen:"
 msgid "Simple"
 msgstr "Einfach"
 
-#: src/manager.c:358 src/manager.c:407 src/manager.c:414 src/manager.c:421
+#: src/manager.c:358 src/manager.c:405 src/manager.c:412 src/manager.c:419
 msgid "Drop:"
 msgstr "Fall:"
 
@@ -532,58 +530,54 @@ msgid "Always Send Tetris:"
 msgstr "Sende Immer Tetris:"
 
 #: src/manager.c:394
-msgid "Center Preview:"
-msgstr "Vorschau zentrieren:"
-
-#: src/manager.c:396
 msgid "CPU Style:"
 msgstr "CPU Stil:"
 
-#: src/manager.c:397
+#: src/manager.c:395
 msgid "CPU Drop Delay:"
 msgstr "CPU Verzoegerung:"
 
-#: src/manager.c:401
+#: src/manager.c:399
 msgid "Pause Key:"
 msgstr "Pausetaste:"
 
-#: src/manager.c:402 src/manager.c:409 src/manager.c:416
+#: src/manager.c:400 src/manager.c:407 src/manager.c:414
 msgid "Left:"
 msgstr "Links:"
 
-#: src/manager.c:403 src/manager.c:410 src/manager.c:417
+#: src/manager.c:401 src/manager.c:408 src/manager.c:415
 msgid "Right:"
 msgstr "Rechts:"
 
-#: src/manager.c:404 src/manager.c:411 src/manager.c:418
+#: src/manager.c:402 src/manager.c:409 src/manager.c:416
 msgid "Rotate Left:"
 msgstr "Rotiere Links:"
 
-#: src/manager.c:405 src/manager.c:412 src/manager.c:419
+#: src/manager.c:403 src/manager.c:410 src/manager.c:417
 msgid "Rotate Right:"
 msgstr "Rotiere Rechts:"
 
-#: src/manager.c:406 src/manager.c:413 src/manager.c:420
+#: src/manager.c:404 src/manager.c:411 src/manager.c:418
 msgid "Down:"
 msgstr "Runter:"
 
-#: src/manager.c:408 src/manager.c:415 src/manager.c:422
+#: src/manager.c:406 src/manager.c:413 src/manager.c:420
 msgid "Hold:"
 msgstr "Halten:"
 
-#: src/manager.c:445
+#: src/manager.c:443
 msgid "Auto-Shift Delay:"
 msgstr ""
 
-#: src/manager.c:446
+#: src/manager.c:444
 msgid "Auto-Shift Speed:"
 msgstr ""
 
-#: src/manager.c:468
+#: src/manager.c:466
 msgid "Test CPU Algorithm"
 msgstr ""
 
-#: src/manager.c:469
+#: src/manager.c:467
 msgid "Visualization"
 msgstr "Visualisierung"
 
@@ -595,7 +589,7 @@ msgstr "j"
 msgid "n"
 msgstr "n"
 
-#: src/tetris.c:550
+#: src/tetris.c:548
 msgid "End Game? y/n"
 msgstr "Spiel beenden? j/n"
 
@@ -603,68 +597,77 @@ msgstr "Spiel beenden? j/n"
 msgid "Game Over"
 msgstr "Spiel vorbei"
 
-#: src/bowl.c:1239
+#: src/bowl.c:1210
+#, fuzzy
+msgid "Hold"
+msgstr "Halten:"
+
+#: src/bowl.c:1231
+msgid "Next"
+msgstr ""
+
+#: src/bowl.c:1260
 #, c-format
 msgid "%i Lvl: %i"
 msgstr "%i Ebn: %i"
 
-#: src/bowl.c:1604
+#: src/bowl.c:1625
 msgid "Player:"
 msgstr "Spieler:"
 
-#: src/bowl.c:1608
+#: src/bowl.c:1629
 msgid "Score:"
 msgstr "Punkte:"
 
-#: src/bowl.c:1610
+#: src/bowl.c:1631
 msgid "Lines:"
 msgstr "Reihen:"
 
-#: src/bowl.c:1766
+#: src/bowl.c:1784
 msgid "Pieces Placed:"
 msgstr ""
 
-#: src/bowl.c:1767
+#: src/bowl.c:1785
 msgid "I-Pieces:     "
 msgstr ""
 
-#: src/bowl.c:1770
+#: src/bowl.c:1788
 msgid "Singles: "
 msgstr ""
 
-#: src/bowl.c:1771
+#: src/bowl.c:1789
 msgid "Doubles: "
 msgstr ""
 
-#: src/bowl.c:1772
+#: src/bowl.c:1790
 msgid "Triples: "
 msgstr ""
 
-#: src/bowl.c:1773
+#: src/bowl.c:1791
 msgid "Tetrises:"
 msgstr ""
 
-#: src/bowl.c:1785
+#: src/bowl.c:1803
 msgid "Droughts:   "
 msgstr ""
 
-#: src/bowl.c:1786
+#: src/bowl.c:1804
 msgid "Drought Max:"
 msgstr ""
 
-#: src/bowl.c:1791
+#: src/bowl.c:1809
 msgid "Drought Avg:"
 msgstr ""
 
-#: src/bowl.c:1798
+#: src/bowl.c:1816
 msgid "Transition:"
 msgstr ""
 
-#: src/bowl.c:1800
+#: src/bowl.c:1818
 msgid "DAS Charge:"
 msgstr ""
 
-#: src/bowl.c:1805
+#: src/bowl.c:1823
 msgid "Drought:   "
 msgstr ""
 
@@ -775,6 +778,9 @@ msgstr "Pos1"
 #: src/value.c:56
 msgid "Delete"
 msgstr ""
+
+#~ msgid "Center Preview:"
+#~ msgstr "Vorschau zentrieren:"
 
 #, fuzzy
 #~ msgid "DAS Mode:"
