@@ -84,7 +84,7 @@ Hint strings for the menu.
 			"for mode 'Figures' (always start at level 0).##"\
 			"If not 0 the first level transition will require more lines to be cleared "\
 			"(the higher the starting level the more lines).")
-#define HINT_PREVIEW _("Enable/Disable piece preview.##If disabled you'll instantly gain 20% score when clearing lines.")
+#define HINT_PREVIEW _("Enable/Disable piece preview.##If disabled you'll instantly gain 20% more score when clearing lines.")
 #define HINT_HELP _("Shows guiding lines or a shadow of the currently dropping block so you see where it'll hit the ground.##This option has no penalty/bonus.")
 #define HINT_MPMENU _("Some multiplayer and CPU settings.")
 #define HINT_HOLES _("A line send to your opponent's bowl will have this number of holes in it. The more holes the harder it will be to remove this line so you should choose a low value (e.g. 1 or 2) for long multiplayer games.")
@@ -390,8 +390,6 @@ void manager_create()
     menu_add( twoplayer, item_create_switch( _("Random Holes:"), HINT_RANDHOLES, &config.rand_holes, _("Off"), _("On") ) );
     menu_add( twoplayer, item_create_switch( _("Send All Lines:"), HINT_SENDALL, &config.send_all, _("Off"), _("On") ) );
     menu_add( twoplayer, item_create_switch( _("Always Send Tetris:"), HINT_SENDTETRIS, &config.send_tetris, _("Off"), _("On") ) );
-    menu_add( twoplayer, item_create_separator( "" ) );
-    menu_add( twoplayer, item_create_switch  ( _("Center Preview:"), HINT_CENTERPREVIEW, &config.center_preview, _("Off"), _("On") ) );
     menu_add( twoplayer, item_create_separator( "" ) );
     menu_add( twoplayer, item_create_switch_x( _("CPU Style:"), HINT_CPUAGGR, &config.cpu_aggr, str_cpu_aggr, 4 ) );
     menu_add( twoplayer, item_create_range( _("CPU Drop Delay:"), HINT_CPUDROP, &config.cpu_delay, 0, 2000, 100 ) );
