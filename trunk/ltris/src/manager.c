@@ -76,7 +76,7 @@ Hint strings for the menu.
 #define HINT_SMOOTHVERT _("Drop piece tile-by-tile or smooth. This option does not affect drop speed.")
 #define HINT_HORIDEL _("The less delay the faster a piece will shift.")
 #define HINT_VERTDEL _("Delay for soft drop.")
-#define HINT_CONTROLS _("Left/Right: horizontal movement#Rotate Left/Right: block rotation#Down: faster Dropping#Drop: INSTANT drop")
+#define HINT_CONTROLS _("Left/Right: horizontal movement##Rotate Left/Right: block rotation##Down: faster dropping##Drop: INSTANT drop##Hold: Put current piece to hold (only for modern style)")
 #define HINT_PAUSEKEY _("Key used to pause and unpause a game.")
 #define HINT_START _("Let's get it on!!!!")
 #define HINT_NAME _("Human player names. If you play against CPU it will be named as CPU-x.")
@@ -116,7 +116,7 @@ Hint strings for the menu.
 			"is dealt out next. This option only works for single player. "\
 			"There is a 50% score bonus in the end.")
 #define HINT_GAMESTYLE _("Modern enables all that stuff that makes tetris "\
-			"casual like piece shadow, wall-kicks, "\
+			"casual like piece shadow, wall-kicks, hold, "\
 			"DAS charge during ARE (allows to shift next piece faster), "\
 			"piece bag (at max 12 pieces before getting same piece again).##"\
 			"Classic doesn't give you any of this making the game "\
@@ -219,7 +219,7 @@ Load/delete background and create and link all menus
 */
 void manager_create()
 {
-    Item *keys[3][6]; /* player control keys */
+    Item *keys[3][7]; /* player control keys */
     Item *pause_key; /* pause key */
     Item *item;
     int filter[SDLK_LAST]; /* key filter */
@@ -289,6 +289,7 @@ void manager_create()
     filter[SDLK_RALT] = 1;
     filter[SDLK_LALT] = 1;
     filter[SDLK_SPACE] = 1;
+    filter[SDLK_DELETE] = 1;
 
     filter[SDLK_ESCAPE] = 0;
     filter[SDLK_RETURN] = 0;
@@ -404,24 +405,27 @@ void manager_create()
     keys[0][3] = item_create_key( _("Rotate Right:"), HINT_CONTROLS, &config.player1.controls.rot_right, filter );
     keys[0][4] = item_create_key( _("Down:"), HINT_CONTROLS, &config.player1.controls.down, filter );
     keys[0][5] = item_create_key( _("Drop:"), HINT_CONTROLS, &config.player1.controls.drop, filter );
+    keys[0][6] = item_create_key( _("Hold:"), HINT_CONTROLS, &config.player1.controls.hold, filter );
     keys[1][0] = item_create_key( _("Left:"), HINT_CONTROLS, &config.player2.controls.left, filter );
     keys[1][1] = item_create_key( _("Right:"), HINT_CONTROLS, &config.player2.controls.right, filter );
     keys[1][2] = item_create_key( _("Rotate Left:"), HINT_CONTROLS, &config.player2.controls.rot_left, filter );
     keys[1][3] = item_create_key( _("Rotate Right:"), HINT_CONTROLS, &config.player2.controls.rot_right, filter );
     keys[1][4] = item_create_key( _("Down:"), HINT_CONTROLS, &config.player2.controls.down, filter );
     keys[1][5] = item_create_key( _("Drop:"), HINT_CONTROLS, &config.player2.controls.drop, filter );
+    keys[1][6] = item_create_key( _("Hold:"), HINT_CONTROLS, &config.player2.controls.hold, filter );
     keys[2][0] = item_create_key( _("Left:"), HINT_CONTROLS, &config.player3.controls.left, filter );
     keys[2][1] = item_create_key( _("Right:"), HINT_CONTROLS, &config.player3.controls.right, filter );
     keys[2][2] = item_create_key( _("Rotate Left:"), HINT_CONTROLS, &config.player3.controls.rot_left, filter );
     keys[2][3] = item_create_key( _("Rotate Right:"), HINT_CONTROLS, &config.player3.controls.rot_right, filter );
     keys[2][4] = item_create_key( _("Down:"), HINT_CONTROLS, &config.player3.controls.down, filter );
     keys[2][5] = item_create_key( _("Drop:"), HINT_CONTROLS, &config.player3.controls.drop, filter );
+    keys[2][6] = item_create_key( _("Hold:"), HINT_CONTROLS, &config.player3.controls.hold, filter );
     /* for each key all others are restricted */
     for ( k = 0; k < 3; k++ )
-        for ( l = 0; l < 6; l++ ) {
+        for ( l = 0; l < 7; l++ ) {
             /* restrict all other keys for key( k, l ) */
             for ( i = 0; i < 3; i++ )
-                for ( j = 0; j < 6; j++ ) 
+                for ( j = 0; j < 7; j++ )
                     if ( k != i || l != j )
                         value_add_other_key( keys[k][l]->value, keys[i][j]->value );
             /* restrict pause key */
@@ -429,12 +433,12 @@ void manager_create()
         }
     /* restrict controls for pause key */
     for ( i = 0; i < 3; i++ )
-        for ( j = 0; j < 6; j++ ) 
+        for ( j = 0; j < 7; j++ )
             value_add_other_key( pause_key->value, keys[i][j]->value );
     /* controls */
-    menu_add( cont, item_create_link( _("Player1"), HINT_CONTROLS, cont_player1 ) );
-    menu_add( cont, item_create_link( _("Player2"), HINT_CONTROLS, cont_player2 ) );
-    menu_add( cont, item_create_link( _("Player3"), HINT_CONTROLS, cont_player3 ) );
+    menu_add( cont, item_create_link( _("Player1"), HINT_, cont_player1 ) );
+    menu_add( cont, item_create_link( _("Player2"), HINT_, cont_player2 ) );
+    menu_add( cont, item_create_link( _("Player3"), HINT_, cont_player3 ) );
     menu_add( cont, item_create_separator( "" ) );
     menu_add( cont, pause_key );
     menu_add( cont, item_create_separator( "" ) );
@@ -444,17 +448,17 @@ void manager_create()
     menu_add( cont, item_create_separator( "" ) );
     menu_add( cont, item_create_link( _("Back"), HINT_, _main ) );
     /* controls player 1 */
-    for ( k = 0; k < 6; k++ )
+    for ( k = 0; k < 7; k++ )
         menu_add( cont_player1, keys[0][k] );
     menu_add( cont_player1, item_create_separator( "" ) );
     menu_add( cont_player1, item_create_link( _("Back"), HINT_,cont ) );
     /* controls player 2 */
-    for ( k = 0; k < 6; k++ )
+    for ( k = 0; k < 7; k++ )
         menu_add( cont_player2, keys[1][k] );
     menu_add( cont_player2, item_create_separator( "" ) );
     menu_add( cont_player2, item_create_link( _("Back"), HINT_, cont ) );
     /* controls player 3 */
-    for ( k = 0; k < 6; k++ )
+    for ( k = 0; k < 7; k++ )
         menu_add( cont_player3, keys[2][k] );
     menu_add( cont_player3, item_create_separator( "" ) );
     menu_add( cont_player3, item_create_link( _("Back"), HINT_, cont ) );

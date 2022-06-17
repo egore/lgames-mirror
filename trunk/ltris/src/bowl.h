@@ -33,6 +33,7 @@ typedef struct {
 	int lshift, rshift;
 	int lrot, rrot;
 	int sdrop, hdrop;
+	int hold;
 } BowlControls;
 
 typedef struct {
@@ -98,9 +99,16 @@ typedef struct {
     int paused;
     int draw_contents; /* set if bowl needs a full redraw next bowl_show() */
     int help_sx, help_sy, help_sw, help_sh; /* position of helping shadow */
+
     int preview; /* 0 = no preview, otherwise number of pieces */
     int preview_sx, preview_sy; /* preview position */
     int preview_sw, preview_sh; /* preview size */
+
+    int hold_active; /* whether hold can be used for this bowl */
+    int hold_id; /* block id or -1 if none */
+    int hold_used; /* true if hold was used, gets reset when block is inserted */
+    int hold_sx, hold_sy, hold_sw, hold_sh; /* region with hold block */
+
     int cpu_player; /* if 1 cpu controlled */
     int cpu_dest_x; /* move block to this position (computed in bowl_select_next_block() */
     int cpu_dest_rot; /* destination rotation */
@@ -145,7 +153,11 @@ Create a bowl at screen position x,y. Measurements are the same for
 all bowls. Controls are the player's controls defined in config.c.
 ====================================================================
 */
-Bowl *bowl_create( int x, int y, int preview_x, int preview_y, SDL_Surface *blocks, SDL_Surface *unknown_preview, char *name, Controls *controls );
+Bowl *bowl_create( int x, int y,
+		int preview_x, int preview_y,
+		int hold_x, int hold_y,
+		SDL_Surface *blocks, SDL_Surface *unknown_preview,
+		char *name, Controls *controls );
 void bowl_delete( Bowl *bowl );
 
 /*

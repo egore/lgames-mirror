@@ -53,6 +53,7 @@ void value_update_str( Value *value )
                 case SDLK_PAGEUP: strcpy( value->val_str, _("PageUp") ); break;
                 case SDLK_PAGEDOWN: strcpy( value->val_str, _("PageDown") ); break;
                 case SDLK_HOME: strcpy( value->val_str, _("Home") ); break;
+                case SDLK_DELETE: strcpy( value->val_str, _("Delete") ); break;
                 default:
                     if ( *value->val_int >= SDLK_a && *value->val_int <= SDLK_z )
                         sprintf( value->val_str, "'%c'", (char)toupper( *value->val_int ) );
@@ -63,7 +64,7 @@ void value_update_str( Value *value )
                             if ( *value->val_int >= SDLK_KP0 && *value->val_int <= SDLK_KP9 ) 
                                 sprintf( value->val_str, "'Pad %i'", *value->val_int - 256 );
                             else
-                                sprintf( value->val_str, "%i", *value->val_int );
+                                sprintf( value->val_str, "#%d", *value->val_int );
                     break;
             }
             break;

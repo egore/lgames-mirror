@@ -319,42 +319,42 @@ int  tetris_init()
     /* create bowls according to the gametype */
     switch ( config.gametype ) {
         case GAME_DEMO:
-            bowls[0] = bowl_create( 220, 0, 490, 180, blocks, qmark, "Demo", 0 );
+            bowls[0] = bowl_create( 220, 0, 490, 180, -1,-1, blocks, qmark, "Demo", 0 );
             break;
         case GAME_CLASSIC:
         case GAME_TRAINING:
         case GAME_FIGURES:
-            bowls[0] = bowl_create( 220, 0, 490, 180, blocks, qmark, config.player1.name, &config.player1.controls );
+            bowls[0] = bowl_create( 220, 0, 490, 180, 490, 360, blocks, qmark, config.player1.name, &config.player1.controls );
             break;
         case GAME_VS_HUMAN:
         case GAME_VS_CPU:
             if ( config.center_preview ) {
-                bowls[0] = bowl_create( 20, 0, 233, 180, blocks, qmark, config.player1.name, &config.player1.controls );
+                bowls[0] = bowl_create( 20, 0, 233, 180, -1,-1, blocks, qmark, config.player1.name, &config.player1.controls );
                 if ( config.gametype == GAME_VS_HUMAN )
-                    bowls[1] = bowl_create( 420, 0, 327, 180, blocks, qmark, config.player2.name, &config.player2.controls );
+                    bowls[1] = bowl_create( 420, 0, 327, 180, -1,-1, blocks, qmark, config.player2.name, &config.player2.controls );
                 else
-                    bowls[1] = bowl_create( 420, 0, 347, 180, blocks, qmark, "CPU-1", 0 );
+                    bowls[1] = bowl_create( 420, 0, 347, 180, -1,-1, blocks, qmark, "CPU-1", 0 );
             }
             else {
-                bowls[0] = bowl_create( 20, 0, 250, 280, blocks, qmark, config.player1.name, &config.player1.controls );
+                bowls[0] = bowl_create( 20, 0, 250, 280, -1,-1, blocks, qmark, config.player1.name, &config.player1.controls );
                 if ( config.gametype == GAME_VS_HUMAN )
-                    bowls[1] = bowl_create( 420, 0, 310, 80, blocks, qmark, config.player2.name, &config.player2.controls );
+                    bowls[1] = bowl_create( 420, 0, 310, 80, -1,-1, blocks, qmark, config.player2.name, &config.player2.controls );
                 else
-                    bowls[1] = bowl_create( 420, 0, 310, 80, blocks, qmark, "CPU-1", 0 );
+                    bowls[1] = bowl_create( 420, 0, 310, 80, -1,-1, blocks, qmark, "CPU-1", 0 );
             }
             break;
         case GAME_VS_HUMAN_HUMAN:
         case GAME_VS_HUMAN_CPU:
         case GAME_VS_CPU_CPU:
-            bowls[0] = bowl_create( 10, 0, -1, -1, blocks, qmark, config.player1.name, &config.player1.controls );
+            bowls[0] = bowl_create( 10, 0, -1, -1, -1,-1, blocks, qmark, config.player1.name, &config.player1.controls );
             if ( config.gametype != GAME_VS_CPU_CPU )
-                bowls[1] = bowl_create( 220, 0, -1, -1, blocks, qmark, config.player2.name, &config.player2.controls );
+                bowls[1] = bowl_create( 220, 0, -1, -1, -1,-1, blocks, qmark, config.player2.name, &config.player2.controls );
             else
-                bowls[1] = bowl_create( 220, 0, -1, -1, blocks, qmark, "CPU-1", 0 );
+                bowls[1] = bowl_create( 220, 0, -1, -1, -1,-1, blocks, qmark, "CPU-1", 0 );
             if ( config.gametype == GAME_VS_HUMAN_HUMAN )
-                bowls[2] = bowl_create( 430, 0, -1, -1, blocks, qmark, config.player3.name, &config.player3.controls );
+                bowls[2] = bowl_create( 430, 0, -1, -1, -1,-1, blocks, qmark, config.player3.name, &config.player3.controls );
             else
-                bowls[2] = bowl_create( 430, 0, -1, -1, blocks, qmark, "CPU-2", 0 );
+                bowls[2] = bowl_create( 430, 0, -1, -1, -1,-1, blocks, qmark, "CPU-2", 0 );
             break;
     }
     /* enable stats for one bowl games */
@@ -440,6 +440,8 @@ void tetris_set_bowl_controls(int i, SDL_Event *ev, BowlControls *bc)
 				bc->rrot = CS_DOWN;
 			if (ev->key.keysym.sym == ctrl->drop)
 				bc->hdrop = CS_DOWN;
+			if (ev->key.keysym.sym == ctrl->hold)
+				bc->hold = CS_DOWN;
 		}
 
 		/* allow gamepad for bowl 0 */
@@ -690,7 +692,7 @@ void tetris_make_stat()
     
     printf( "*****\n" );
     
-    bowl = bowl_create( 0, 0, -1, -1, blocks, qmark, "Demo", 0 );
+    bowl = bowl_create( 0, 0, -1, -1, -1, -1, blocks, qmark, "Demo", 0 );
     
     /* reset counters */
     total = 0; total_lines = 0;

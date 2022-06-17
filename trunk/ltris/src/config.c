@@ -89,18 +89,21 @@ void config_reset()
     config.player1.controls.rot_right = SDLK_PAGEDOWN;
     config.player1.controls.down = SDLK_DOWN;
     config.player1.controls.drop = SDLK_END;
+    config.player1.controls.hold = SDLK_DELETE;
     config.player2.controls.left = 'a';
     config.player2.controls.right = 'd';
     config.player2.controls.rot_left = 'w';
     config.player2.controls.rot_right = 'e';
     config.player2.controls.down = 's';
     config.player2.controls.drop = 'y';
+    config.player2.controls.hold = 'q';
     config.player3.controls.left = SDLK_KP1;
     config.player3.controls.right = SDLK_KP3;
     config.player3.controls.rot_left = SDLK_KP5;
     config.player3.controls.rot_right = SDLK_KP6;
     config.player3.controls.down = SDLK_KP2;
     config.player3.controls.drop = SDLK_KP8;
+    config.player3.controls.hold = SDLK_KP7;
     config.gp_enabled = 1;
     config.gp_lrot = 3;
     config.gp_rrot = 0;
@@ -144,6 +147,7 @@ static void parse_player( PData *pd, Player *player )
         parser_get_int( sub, "rot_right", &player->controls.rot_right );
         parser_get_int( sub, "down", &player->controls.down );
         parser_get_int( sub, "drop", &player->controls.drop );
+        parser_get_int( sub, "hold", &player->controls.hold );
     }
 }
 void config_load( )
@@ -224,6 +228,7 @@ static void print_player( FILE *file, int i, Player *player )
     fprintf( file, "rot_right=%i\n", player->controls.rot_right );
     fprintf( file, "down=%i\n", player->controls.down );
     fprintf( file, "drop=%i\n", player->controls.drop );
+    fprintf( file, "hold=%i\n", player->controls.hold );
     fprintf( file, ">\n" );
     fprintf( file, ">\n" );
 }
