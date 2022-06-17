@@ -12,6 +12,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifdef WIN32
+  #define _GNU_SOURCE
+#endif
+
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
