@@ -324,7 +324,7 @@ int  tetris_init()
         case GAME_CLASSIC:
         case GAME_TRAINING:
         case GAME_FIGURES:
-            bowls[0] = bowl_create( 220, 0, 490, 180, 490, 360, blocks, qmark, config.player1.name, &config.player1.controls );
+            bowls[0] = bowl_create( 220, 0, 490, config.modern?100:160, 490, 290, blocks, qmark, config.player1.name, &config.player1.controls );
             break;
         case GAME_VS_HUMAN:
         case GAME_VS_CPU:

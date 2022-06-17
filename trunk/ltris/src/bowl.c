@@ -1018,9 +1018,12 @@ Bowl *bowl_create( int x, int y,
     bowl->preview_sx = preview_x;
     bowl->preview_sy = preview_y;
     bowl->preview_sw = bowl->block_size*4;
-    bowl->preview_sh = bowl->block_size*3*bowl->preview;
-    if (bowl->preview == 3) /* passed value is for 1 piece */
+    bowl->preview_sh = bowl->block_size + bowl->block_size*3;
+    if (config.modern) {
+	    bowl->preview_sh += 2 * bowl->block_size*3;
+	    /* passed position is for 1 piece so adjust */
 	    bowl->preview_sy -= bowl->block_size*3;
+    }
     bowl_select_next_block( bowl );
     bowl->font = load_fixed_font( "f_small_white.bmp", 32, 96, 8 );
 #ifdef SOUND
@@ -1061,7 +1064,7 @@ Bowl *bowl_create( int x, int y,
 	    bowl->hold_sx = hold_x;
 	    bowl->hold_sy = hold_y;
 	    bowl->hold_sw = bowl->block_size*4;
-	    bowl->hold_sh = bowl->block_size*3;
+	    bowl->hold_sh = bowl->block_size + bowl->block_size*3;
     }
 
     /* stats are only display for games with one bowl
@@ -1198,21 +1201,39 @@ void bowl_show( Bowl *bowl )
     }
 
     /* hold piece */
-    if (bowl->hold_active && bowl->hold_id != -1) {
-	    int hw = bowl->block_size*4, hh = bowl->block_size*2;
-	    DEST( sdl.screen, bowl->hold_sx,
+    if (bowl->hold_active) {
+	    /* title */
+	    bowl->font->align = ALIGN_X_CENTER | ALIGN_Y_CENTER;
+	    write_text(bowl->font, sdl.screen,
+			    bowl->hold_sx + bowl->hold_sw/2,
 			    bowl->hold_sy + bowl->block_size/2,
-			    hw,hh);
-	    SOURCE( previewpieces, 0, bowl->hold_id * hh );
-	    blit_surf();
+			    _("Hold"), OPAQUE );
+
+	    if (bowl->hold_id != -1) {
+		    int hw = bowl->block_size*4, hh = bowl->block_size*2;
+		    DEST( sdl.screen, bowl->hold_sx,
+				    bowl->hold_sy + 3*bowl->block_size/2,
+				    hw,hh);
+		    SOURCE( previewpieces, 0, bowl->hold_id * hh );
+		    blit_surf();
+	    }
+
 	    add_refresh_rect(bowl->hold_sx,bowl->hold_sy,bowl->block_size*4,bowl->block_size*3);
     }
 
     /* piece preview */
     if (bowl->preview) {
+	    /* title */
+	    bowl->font->align = ALIGN_X_CENTER | ALIGN_Y_CENTER;
+	    write_text(bowl->font, sdl.screen,
+			    bowl->preview_sx + bowl->preview_sw/2,
+			    bowl->preview_sy + bowl->block_size/2,
+			    _("Next"), OPAQUE );
+
+	    /* first piece */
 	    int pw = bowl->block_size*4, ph = bowl->block_size*2;
 	    DEST( sdl.screen, bowl->preview_sx,
-			    bowl->preview_sy + bowl->block_size/2,
+			    bowl->preview_sy + 3*bowl->block_size/2,
 			    pw,ph);
 	    SOURCE( previewpieces, 0, bowl->next_block_id * ph );
 	    blit_surf();
@@ -1221,7 +1242,7 @@ void bowl_show( Bowl *bowl )
 	    for (int i = 0; i < bowl->preview-1; i++) {
 		    int pid = next_blocks[bowl->next_blocks_pos+i];
 		    DEST( sdl.screen, bowl->preview_sx,
-				    bowl->preview_sy + bowl->block_size/2
+				    bowl->preview_sy + 3*bowl->block_size/2
 				    	    + (ph + bowl->block_size)*(i+1),
 				    pw,ph);
 		    SOURCE( previewpieces, 0, pid * ph );
@@ -1609,16 +1630,13 @@ void bowl_draw_frames( Bowl *bowl )
     bowl->font->align = ALIGN_X_LEFT | ALIGN_Y_BOTTOM;
     write_text( bowl->font, bkgnd, dx + 4, dy + dh - 4, _("Lines:"), OPAQUE );
     /* preview */
-    if ( bowl->preview )
-        draw_3dframe( bkgnd, 
-                      bowl->preview_sx - 2, bowl->preview_sy - 2,
-                      bowl->preview_sw + 4, bowl->preview_sh + 4, 4 );
+    if (bowl->preview)
+	    draw_3dframe( bkgnd, bowl->preview_sx - 2, bowl->preview_sy - 2,
+			    bowl->preview_sw + 4, bowl->preview_sh + 4, 4 );
     /* hold */
-    if (bowl->hold_active) {
-	draw_3dframe( bkgnd,
-			bowl->hold_sx - 2, bowl->hold_sy - 2,
-			bowl->hold_sw + 4, bowl->hold_sh + 4, 4 );
-    }
+    if (bowl->hold_active)
+	    draw_3dframe( bkgnd, bowl->hold_sx - 2, bowl->hold_sy - 2,
+			    bowl->hold_sw + 4, bowl->hold_sh + 4, 4 );
     /* part that is updated when redrawing score/level */
     bowl->score_sx = dx + dw / 2 - 36;
     bowl->score_sy = dy + bowl->font->height + 4;
