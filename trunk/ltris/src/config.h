@@ -68,6 +68,7 @@ typedef struct {
     int gp_rrot;
     int gp_hdrop;
     int gp_pause;
+    int gp_hold;
     /* multiplayer */
     int holes;
     int rand_holes;

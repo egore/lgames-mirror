@@ -109,6 +109,7 @@ void config_reset()
     config.gp_rrot = 0;
     config.gp_hdrop = 2;
     config.gp_pause = 9;
+    config.gp_hold = 1;
     /* sound */
     config.sound = 1;
     config.volume = 6; /* 1 - 8 */
@@ -186,6 +187,7 @@ void config_load( )
     parser_get_int( pd, "gp_rrot", &config.gp_rrot );
     parser_get_int( pd, "gp_hdrop", &config.gp_hdrop );
     parser_get_int( pd, "gp_pause", &config.gp_pause );
+    parser_get_int( pd, "gp_hold", &config.gp_hold );
 
     parser_get_int( pd, "cpu_aggr", &config.cpu_aggr );
     parser_get_int( pd, "cpu_delay", &config.cpu_delay );
@@ -257,6 +259,7 @@ void config_save( )
         fprintf( file, "gp_rrot=%d\n", config.gp_rrot );
         fprintf( file, "gp_hdrop=%d\n", config.gp_hdrop );
         fprintf( file, "gp_pause=%d\n", config.gp_pause );
+        fprintf( file, "gp_hold=%d\n", config.gp_hold );
 
         fprintf( file, "cpu_aggr=%i\n", config.cpu_aggr );
         fprintf( file, "cpu_delay=%i\n", config.cpu_delay );

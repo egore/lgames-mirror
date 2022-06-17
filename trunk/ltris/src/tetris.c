@@ -460,6 +460,8 @@ void tetris_set_bowl_controls(int i, SDL_Event *ev, BowlControls *bc)
 					bc->rrot = CS_DOWN;
 				if (ev->jbutton.button == config.gp_hdrop)
 					bc->hdrop = CS_DOWN;
+				if (ev->jbutton.button == config.gp_hold)
+					bc->hold = CS_DOWN;
 			}
 		}
 	}
